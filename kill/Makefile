@@ -1,6 +1,8 @@
-#	$NetBSD: Makefile,v 1.8 1997/07/20 22:37:09 christos Exp $
-#	@(#)Makefile	8.1 (Berkeley) 5/31/93
+PROG         =	kill
 
-PROG=	kill
+MKC_FEATURES =	progname
 
-.include <bsd.prog.mk>
+.include "../mk/mkc_imp.f_sys_signame.mk"
+.include <mkc.mk>
+
+CPPFLAGS  +=	-I${SRCDIR_compatlib:U.}

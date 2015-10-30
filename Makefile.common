@@ -1,0 +1,10 @@
+WARNS     =	4
+
+CPPFLAGS +=	-D"__COPYRIGHT(x)="
+CPPFLAGS +=	-D"__RCSID(x)="
+
+CPPFLAGS +=	-D__dead=
+
+COMPATLIB  =	compatlib
+
+#MKC_REQUIRE_VARS +=	sys_siglist:signal.h
