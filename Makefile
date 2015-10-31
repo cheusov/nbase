@@ -2,8 +2,9 @@
 #	kill ksh ln ls mkdir mt mv pax ps pwd rcp rcmd rm rmdir sh \
 #	sleep stty sync test
 
-LIBDEPS    =	compatlib:kill
+PROJECTS   =	kill cat
+LIBDEPS    =	${PROJECTS:S/^/compatlib:/}
 
 COMPATLIB =	compatlib
 
-.include <mkc.subprj.mk>
+.include <mkc.mk>

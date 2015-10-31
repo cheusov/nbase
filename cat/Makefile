@@ -3,4 +3,4 @@
 
 PROG=	cat
 
-.include <bsd.prog.mk>
+.include <mkc.mk>
