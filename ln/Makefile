@@ -4,4 +4,4 @@
 PROG=	ln
 MAN=	ln.1
 
-.include <bsd.prog.mk>
+.include <mkc.mk>
