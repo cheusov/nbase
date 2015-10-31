@@ -30,6 +30,8 @@
  */
 
 %{
+#include "mkc_progname.h"
+
 #include <sys/cdefs.h>
 #ifndef lint
 __RCSID("$NetBSD: expr.y,v 1.38 2012/03/15 02:02:20 joerg Exp $");
@@ -46,6 +48,10 @@ __RCSID("$NetBSD: expr.y,v 1.38 2012/03/15 02:02:20 joerg Exp $");
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifndef REG_BASIC
+#define REG_BASIC 0
+#endif
 
 static const char * const *av;
 
@@ -72,14 +78,14 @@ int main(int, const char * const *);
 
 %%
 
-exp:	expr = {
+exp:	expr {
 		(void) printf("%s\n", $1);
 		return (is_zero_or_null($1));
 		}
 	;
 
 expr:	item { $$ = $1; }
-	| expr SPEC_OR expr = {
+	| expr SPEC_OR expr {
 		/*
 		 * Return evaluation of first expression if it is neither
 		 * an empty string nor zero; otherwise, returns the evaluation
@@ -90,7 +96,7 @@ expr:	item { $$ = $1; }
 		else
 			$$ = $3;
 		}
-	| expr SPEC_AND expr = {
+	| expr SPEC_AND expr {
 		/*
 		 * Returns the evaluation of first expr if neither expression
 		 * evaluates to an empty string or zero; otherwise, returns
@@ -101,7 +107,7 @@ expr:	item { $$ = $1; }
 		else
 			$$ = "0";
 		}
-	| expr SPEC_REG expr = {
+	| expr SPEC_REG expr {
 		/*
 		 * The ``:'' operator matches first expr against the second,
 		 * which must be a regular expression.
@@ -142,7 +148,7 @@ expr:	item { $$ = $1; }
 		}
 
 		}
-	| expr ADD_SUB_OPERATOR expr = {
+	| expr ADD_SUB_OPERATOR expr {
 		/* Returns the results of addition, subtraction */
 		char *val;
 		int64_t res;
@@ -154,7 +160,7 @@ expr:	item { $$ = $1; }
 		$$ = val;
                 }
 
-	| expr MUL_DIV_MOD_OPERATOR expr = {
+	| expr MUL_DIV_MOD_OPERATOR expr {
 		/* 
 		 * Returns the results of multiply, divide or remainder of 
 		 * numeric-valued arguments.
@@ -169,7 +175,7 @@ expr:	item { $$ = $1; }
 		$$ = val;
 
 		}
-	| expr COMPARE expr = {
+	| expr COMPARE expr {
 		/*
 		 * Returns the results of integer comparison if both arguments
 		 * are integers; otherwise, returns the results of string
