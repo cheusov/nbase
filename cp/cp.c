@@ -32,6 +32,9 @@
  * SUCH DAMAGE.
  */
 
+#include "mkc_strlcpy.h"
+#include "mkc_progname.h"
+
 #include <sys/cdefs.h>
 #ifndef lint
 __COPYRIGHT(
@@ -217,9 +220,11 @@ main(int argc, char *argv[])
 
 	/* Set end of argument list for fts(3). */
 	argv[argc] = NULL;     
-	
+
+#ifdef SIGINFO
 	(void)signal(SIGINFO, progress);
-	
+#endif
+
 	/*
 	 * Cp has two distinct cases:
 	 *

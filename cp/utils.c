@@ -29,6 +29,15 @@
  * SUCH DAMAGE.
  */
 
+#include "mkc_progname.h"
+
+#if HAVE_MEMBER_STRUCT_STAT_ST_ATIM_SYS_STAT_H
+#define st_atimespec st_atim
+#endif
+#if HAVE_MEMBER_STRUCT_STAT_ST_MTIM_SYS_STAT_H
+#define st_mtimespec st_mtim
+#endif
+
 #include <sys/cdefs.h>
 #ifndef lint
 #if 0
@@ -42,7 +51,8 @@ __RCSID("$NetBSD: utils.c,v 1.42 2013/12/11 06:00:11 dholland Exp $");
 #include <sys/param.h>
 #include <sys/stat.h>
 #include <sys/time.h>
-#include <sys/extattr.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include <err.h>
 #include <errno.h>
@@ -58,6 +68,10 @@ __RCSID("$NetBSD: utils.c,v 1.42 2013/12/11 06:00:11 dholland Exp $");
 
 #define	MMAP_MAX_SIZE	(8 * 1048576)
 #define	MMAP_MAX_WRITE	(64 * 1024)
+
+#ifndef MAXBSIZE
+#define MAXBSIZE (64*1024)
+#endif
 
 int
 set_utimes(const char *file, struct stat *fs)
@@ -256,8 +270,10 @@ copy_file(FTSENT *entp, int dne)
 		}
 	}
 
+#if HAVE_FUNC2_FCPXATTR_SYS_EXTATTR_H
 	if (pflag && (fcpxattr(from_fd, to_fd) != 0))
 		warn("%s: error copying extended attributes", to.p_path);
+#endif
 
 	(void)close(from_fd);
 
@@ -384,6 +400,7 @@ setfile(struct stat *fs, int fd)
 		rval = 1;
 	}
 
+#if HAVE_MEMBER_STRUCT_STAT_ST_FLAGS_SYS_STAT_H
 	if (!islink && !Nflag) {
 		unsigned long fflags = fs->st_flags;
 		/*
@@ -402,6 +419,8 @@ setfile(struct stat *fs, int fd)
 				rval = 1;
 			}
 	}
+#endif /* HAVE_MEMBER_STRUCT_STAT_ST_FLAGS_SYS_STAT_H */
+
 	/* if fd is non-zero, caller must call set_utimes() after close() */
 	if (fd == 0 && set_utimes(to.p_path, fs))
 	    rval = 1;

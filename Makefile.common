@@ -1,9 +1,19 @@
 WARNS     =	4
 
-CPPFLAGS +=	-D"__COPYRIGHT(x)="
-CPPFLAGS +=	-D"__RCSID(x)="
+CPPFLAGS +=	-D__COPYRIGHT\(x\)=
+CPPFLAGS +=	-D__RCSID\(x\)=
 CPPFLAGS +=	-D__dead=
+CPPFLAGS +=	-D__unused=
 
-MKC_FEATURES =	progname
+MKC_FEATURES =	progname strlcpy
+
+MKC_CHECK_MEMBERS =	\
+   struct-stat.st_atimespec:sys/stat.h \
+   struct-stat.st_atim:sys/stat.h \
+   struct-stat.st_mtimespec:sys/stat.h \
+   struct-stat.st_mtim:sys/stat.h \
+   struct-stat.st_flags:sys/stat.h
+
+MKC_CHECK_FUNCS2 = fcpxattr:sys/extattr.h
 
 .include "mk/mkc_imp.f_sys_signame.mk"
