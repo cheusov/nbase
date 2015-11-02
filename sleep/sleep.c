@@ -29,6 +29,8 @@
  * SUCH DAMAGE.
  */
 
+#include "mkc_progname.h"
+
 #include <sys/cdefs.h>
 #ifndef lint
 __COPYRIGHT("@(#) Copyright (c) 1988, 1993, 1994\
@@ -57,12 +59,14 @@ __dead static void alarmhandle(int);
 __dead static void usage(void);
 
 static volatile sig_atomic_t report_requested;
+#ifdef SIGINFO
 static void
 report_request(int signo __unused)
 {
 
 	report_requested = 1;
 }
+#endif
 
 int
 main(int argc, char *argv[])
@@ -124,7 +128,9 @@ main(int argc, char *argv[])
 	}
 
 	original = ntime.tv_sec;
+#ifdef SIGINFO
 	signal(SIGINFO, report_request);
+#endif
 	while ((rv = nanosleep(&ntime, &ntime)) != 0) {
 		if (report_requested) {
 		/* Reporting does not bother with nanoseconds. */
