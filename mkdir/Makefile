@@ -3,4 +3,4 @@
 
 PROG=	mkdir
 
-.include <bsd.prog.mk>
+.include <mkc.mk>
