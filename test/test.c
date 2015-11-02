@@ -10,6 +10,9 @@
  * This program is in the Public Domain.
  */
 
+#include "mkc_macro.h"
+#include "mkc_progname.h"
+
 #include <sys/cdefs.h>
 #ifndef lint
 __RCSID("$NetBSD: test.c,v 1.40 2013/05/04 06:26:44 uebayasi Exp $");
