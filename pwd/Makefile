@@ -3,4 +3,4 @@
 
 PROG=	pwd
 
-.include <bsd.prog.mk>
+.include <mkc.mk>
