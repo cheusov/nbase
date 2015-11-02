@@ -29,6 +29,8 @@
  * SUCH DAMAGE.
  */
 
+#include "mkc_progname.h"
+
 #include <sys/cdefs.h>
 #ifndef lint
 __COPYRIGHT("@(#) Copyright (c) 1992, 1993, 1994\

@@ -3,4 +3,4 @@
 
 PROG=	rmdir
 
-.include <bsd.prog.mk>
+.include <mkc.mk>
