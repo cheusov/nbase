@@ -29,6 +29,10 @@
  * SUCH DAMAGE.
  */
 
+#include "mkc_progname.h"
+#include "mkc_pwdgrp.h"
+#include "mkc_strmode.h"
+
 #include <sys/cdefs.h>
 #ifndef lint
 __COPYRIGHT("@(#) Copyright (c) 1990, 1993, 1994\
@@ -60,13 +64,23 @@ __RCSID("$NetBSD: rm.c,v 1.53 2013/04/26 18:43:22 christos Exp $");
 #include <string.h>
 #include <unistd.h>
 
+#ifndef S_ISWHT
+#define S_ISWHT(m) 0
+#endif
+
+#ifndef S_IFWHT
+#define S_IFWHT 0
+#endif
+
 static int dflag, eval, fflag, iflag, Pflag, stdin_ok, vflag, Wflag;
 static int xflag;
 static sig_atomic_t pinfo;
 
 static int	check(char *, char *, struct stat *);
 static void	checkdot(char **);
+#ifdef SIGINFO
 static void	progress(int);
+#endif
 static void	rm_file(char **);
 static int	rm_overwrite(char *, struct stat *);
 static void	rm_tree(char **);
@@ -138,7 +152,9 @@ main(int argc, char *argv[])
 		usage();
 	}
 
+#ifdef SIGINFO
 	(void)signal(SIGINFO, progress);
+#endif
 
 	checkdot(argv);
 
@@ -245,7 +261,11 @@ rm_tree(char **argv)
 			break;
 
 		case FTS_W:
+#ifdef HAVE_FUNC1_UNDELETE_UNISTD_H
 			rval = undelete(p->fts_accpath);
+#else
+			rval = EPERM;
+#endif
 			if (rval != 0 && fflag && errno == ENOENT)
 				continue;
 			break;
@@ -310,7 +330,11 @@ rm_file(char **argv)
 		if (!fflag && !S_ISWHT(sb.st_mode) && !check(f, f, &sb))
 			continue;
 		if (S_ISWHT(sb.st_mode))
+#ifdef HAVE_FUNC1_UNDELETE_UNISTD_H
 			rval = undelete(f);
+#else
+			rval = EPERM;
+#endif
 		else if (S_ISDIR(sb.st_mode))
 			rval = rmdir(f);
 		else {
@@ -386,6 +410,7 @@ rm_file(char **argv)
 static int
 rm_overwrite(char *file, struct stat *sbp)
 {
+#ifdef HAVE_FUNC0_ARC4RANDOM_STDLIB_H
 	struct stat sb, sb2;
 	int fd, randint;
 	char randchar;
@@ -512,6 +537,9 @@ err:	eval = 1;
 	if (fd != -1)
 		close(fd);
 	return 1;
+#else
+	return 0;
+#endif /* HAVE_FUNC0_ARC4RANDOM_STDLIB_H */
 }
 
 static int
@@ -603,9 +631,11 @@ usage(void)
 	/* NOTREACHED */
 }
 
+#ifdef SIGINFO
 static void
 progress(int sig __unused)
 {
 	
 	pinfo++;
 }
+#endif
