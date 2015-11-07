@@ -32,6 +32,11 @@
  * SUCH DAMAGE.
  */
 
+#include "mkc_progname.h"
+#include "mkc_strmode.h"
+#include "mkc_strlcpy.h"
+#include "mkc_pwdgrp.h"
+
 #include <sys/cdefs.h>
 #ifndef lint
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993, 1994\
@@ -50,7 +55,10 @@ __RCSID("$NetBSD: mv.c,v 1.43 2011/08/29 14:46:54 joerg Exp $");
 #include <sys/time.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
+
+#if HAVE_HEADER_SYS_EXTATTR_H
 #include <sys/extattr.h>
+#endif
 
 #include <err.h>
 #include <errno.h>
@@ -291,8 +299,10 @@ err:		if (unlink(to))
 		return (1);
 	}
 
+#if HAVE_STRUCT_STAT_ST_FLAGS
 	if (fcpxattr(from_fd, to_fd) == -1)
 		warn("%s: error copying extended attributes", to);
+#endif
 
 	(void)close(from_fd);
 #ifdef BSD4_4
@@ -317,8 +327,10 @@ err:		if (unlink(to))
 	}
 	if (fchmod(to_fd, sbp->st_mode))
 		warn("%s: set mode", to);
+#if HAVE_STRUCT_STAT_ST_FLAGS
 	if (fchflags(to_fd, sbp->st_flags) && (errno != EOPNOTSUPP))
 		warn("%s: set flags (was: 0%07o)", to, sbp->st_flags);
+#endif
 
 	if (close(to_fd)) {
 		warn("%s", to);
