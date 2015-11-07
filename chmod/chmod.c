@@ -29,6 +29,9 @@
  * SUCH DAMAGE.
  */
 
+#include "mkc_progname.h"
+#include "mkc_getsetmode.h"
+
 #include <sys/cdefs.h>
 #ifndef lint
 __COPYRIGHT(
