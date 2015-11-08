@@ -32,6 +32,8 @@
  * SUCH DAMAGE.
  */
 
+#include "mkc_vis.h"
+
 #include <sys/cdefs.h>
 #ifndef lint
 #if 0
@@ -50,7 +52,6 @@ __RCSID("$NetBSD: util.c,v 1.34 2011/08/29 14:44:21 joerg Exp $");
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <vis.h>
 #include <wchar.h>
 #include <wctype.h>
 
@@ -69,7 +70,7 @@ safe_print(const char *src)
 		flags |= VIS_CSTYLE;
 
 	len = strlen(src);
-	if (len != 0 && SIZE_T_MAX/len <= 4) {
+	if (len != 0 && /*SIZE_T_MAX*/ UINT_MAX/len <= 4) {
 		errx(EXIT_FAILURE, "%s: name too long", src);
 		/* NOTREACHED */
 	}

@@ -32,6 +32,11 @@
  * SUCH DAMAGE.
  */
 
+#include "mkc_humanize_number.h"
+#include "mkc_macro.h"
+#include "mkc_strmode.h"
+#include "mkc_tzfile.h"
+
 #include <sys/cdefs.h>
 #ifndef lint
 #if 0
@@ -54,9 +59,9 @@ __RCSID("$NetBSD: print.c,v 1.55 2014/05/10 09:39:18 martin Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <tzfile.h>
+//#include <tzfile.h>
 #include <unistd.h>
-#include <util.h>
+//#include <util.h>
 
 #include "ls.h"
 #include "extern.h"
@@ -460,9 +465,11 @@ printtype(u_int mode)
 	case S_IFSOCK:
 		(void)putchar('=');
 		return (1);
+#ifdef S_IFWHT
 	case S_IFWHT:
 		(void)putchar('%');
 		return (1);
+#endif
 	}
 	if (mode & (S_IXUSR | S_IXGRP | S_IXOTH)) {
 		(void)putchar('*');

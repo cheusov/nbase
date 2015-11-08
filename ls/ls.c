@@ -32,6 +32,11 @@
  * SUCH DAMAGE.
  */
 
+#include "mkc_pwdgrp.h"
+#include "mkc_progname.h"
+#include "mkc_getbsize.h"
+#include <stdint.h>
+
 #include <sys/cdefs.h>
 #ifndef lint
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993, 1994\
@@ -63,7 +68,7 @@ __RCSID("$NetBSD: ls.c,v 1.74 2014/04/02 10:55:47 wiz Exp $");
 #include <termios.h>
 #include <pwd.h>
 #include <grp.h>
-#include <util.h>
+//#include <util.h>
 
 #include "ls.h"
 #include "extern.h"
@@ -592,8 +597,12 @@ display(FTSENT *p, FTSENT *list)
 				if ((glen = strlen(group)) > maxgroup)
 					maxgroup = glen;
 				if (f_flags) {
+#if HAVE_STRUCT_STAT_ST_FLAGS
 					flags =
 					    flags_to_string((u_long)sp->st_flags, "-");
+#else
+					flags = 0;
+#endif
 					if ((flen = strlen(flags)) > maxflags)
 						maxflags = flen;
 				} else

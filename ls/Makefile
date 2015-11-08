@@ -4,7 +4,7 @@
 PROG=	ls
 SRCS=	cmp.c ls.c main.c print.c util.c
 
-LDADD+=	-lutil
-DPADD+=	${LIBUTIL}
+#LDADD+=	-lutil
+#DPADD+=	${LIBUTIL}
 
-.include <bsd.prog.mk>
+.include <mkc.mk>

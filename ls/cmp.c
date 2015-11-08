@@ -50,6 +50,7 @@ __RCSID("$NetBSD: cmp.c,v 1.17 2003/08/07 09:05:14 agc Exp $");
 #include "ls.h"
 #include "extern.h"
 
+/*
 #if defined(_POSIX_SOURCE) || defined(_POSIX_C_SOURCE) || \
     defined(_XOPEN_SOURCE) || defined(__NetBSD__)
 #define ATIMENSEC_CMP(x, op, y) ((x)->st_atimensec op (y)->st_atimensec)
@@ -63,6 +64,11 @@ __RCSID("$NetBSD: cmp.c,v 1.17 2003/08/07 09:05:14 agc Exp $");
 #define MTIMENSEC_CMP(x, op, y) \
 	((x)->st_mtimespec.tv_nsec op (y)->st_mtimespec.tv_nsec)
 #endif
+*/
+
+#define ATIMENSEC_CMP(x, op, y) ((x)->st_atime op (y)->st_atime)
+#define CTIMENSEC_CMP(x, op, y) ((x)->st_ctime op (y)->st_ctime)
+#define MTIMENSEC_CMP(x, op, y) ((x)->st_mtime op (y)->st_mtime)
 
 int
 namecmp(const FTSENT *a, const FTSENT *b)
