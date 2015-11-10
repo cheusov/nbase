@@ -33,6 +33,8 @@
  * SUCH DAMAGE.
  */
 
+#include "mkc_strsuftoll.h"
+
 #include <sys/cdefs.h>
 #ifndef lint
 #if 0
@@ -439,7 +441,9 @@ static const struct ioflag {
 } olist[] = {
      /* the array needs to be sorted by the first column so
 	bsearch() can be used to find commands quickly */
+#ifdef O_ALT_IO
 	{ "alt_io",	O_ALT_IO,	C_IFLAG|C_OFLAG	},
+#endif
 	{ "append",	O_APPEND,	C_OFLAG		},
 	{ "async",	O_ASYNC,	C_IFLAG|C_OFLAG	},
 	{ "cloexec",	O_CLOEXEC,	C_IFLAG|C_OFLAG	},
@@ -448,16 +452,24 @@ static const struct ioflag {
 	{ "directory",	O_DIRECTORY,	C_NONE		},
 	{ "dsync",	O_DSYNC,	C_OFLAG		},
 	{ "excl",	O_EXCL,		C_IFLAG|C_OFLAG	},
+#ifdef O_EXLOCK
 	{ "exlock",	O_EXLOCK,	C_IFLAG|C_OFLAG	},
+#endif
 	{ "noctty",	O_NOCTTY,	C_IFLAG|C_OFLAG	},
 	{ "nofollow",	O_NOFOLLOW,	C_IFLAG|C_OFLAG	},
 	{ "nonblock",	O_NONBLOCK,	C_IFLAG|C_OFLAG	},
+#ifdef O_NOSIGPIPE
 	{ "nosigpipe",	O_NOSIGPIPE,	C_IFLAG|C_OFLAG	},
+#endif
 	{ "rdonly",	O_RDONLY,	C_IFLAG		},
 	{ "rdwr",	O_RDWR,		C_IFLAG		},
 	{ "rsync",	O_RSYNC,	C_IFLAG		},
+#ifdef O_SEARCH
 	{ "search",	O_SEARCH,	C_IFLAG|C_OFLAG	},
+#endif
+#ifdef O_SHLOCK
 	{ "shlock",	O_SHLOCK,	C_IFLAG|C_OFLAG	},
+#endif
 	{ "sync",	O_SYNC,		C_IFLAG|C_OFLAG	},
 	{ "trunc",	O_TRUNC,	C_IFLAG|C_OFLAG	},
 	{ "wronly",	O_WRONLY,	C_NONE		},

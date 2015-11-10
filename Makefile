@@ -1,8 +1,8 @@
-#SUBDIR=	chio csh date dd df \
+#SUBDIR=	chio csh date df \
 #	ksh mt pax ps rcp rcmd sh \
 #	stty sync
 
-PROJECTS   =	cat chmod cp domainname echo ed expr hostname kill ln ls mkdir \
+PROJECTS   =	cat chmod cp dd domainname echo ed expr hostname kill ln ls mkdir \
 		mv pwd rm rmdir sleep test
 
 LIBDEPS    =	${PROJECTS:S/^/compatlib:/}

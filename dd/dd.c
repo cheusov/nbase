@@ -33,6 +33,8 @@
  * SUCH DAMAGE.
  */
 
+#include "mkc_progname.h"
+
 #include <sys/cdefs.h>
 #ifndef lint
 __COPYRIGHT("@(#) Copyright (c) 1991, 1993, 1994\
@@ -137,10 +139,14 @@ main(int argc, char *argv[])
 #endif
 	setup();
 
+#ifdef SIGINFO
 	(void)signal(SIGINFO, summaryx);
+#endif
 	(void)signal(SIGINT, terminate);
 	(void)sigemptyset(&infoset);
+#ifdef SIGINFO
 	(void)sigaddset(&infoset, SIGINFO);
+#endif
 
 	(void)atexit(summary);
 
