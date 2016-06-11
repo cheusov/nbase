@@ -48,9 +48,18 @@ __RCSID("$NetBSD: key.c,v 1.21 2013/09/12 19:47:23 christos Exp $");
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 
 #include "stty.h"
 #include "extern.h"
+
+#ifndef ALTWERASE
+#define ALTWERASE 0
+#endif
+
+#ifndef CDTRCTS
+#define CDTRCTS 0
+#endif
 
 __BEGIN_DECLS
 void	f_all(struct info *);
@@ -68,8 +77,10 @@ void	f_rows(struct info *);
 void	f_sane(struct info *);
 void	f_size(struct info *);
 void	f_speed(struct info *);
+#if defined(TIOCSTART) && defined(TIOCSTOP)
 void	f_ostart(struct info *);
 void	f_ostop(struct info *);
+#endif
 void	f_tty(struct info *);
 __END_DECLS
 
@@ -94,8 +105,10 @@ static const struct key {
 	{ "nl",		f_nl,		F_OFFOK },
 	{ "old",	f_tty,		0 },
 	{ "ospeed",	f_ospeed,	F_NEEDARG },
+#if defined(TIOCSTART) && defined(TIOCSTOP)
 	{ "ostart",	f_ostart,	0 },
 	{ "ostop",	f_ostop,	0 },
+#endif
 	{ "raw",	f_raw,		F_OFFOK },
 	{ "rows",	f_rows,		F_NEEDARG },
 	{ "sane",	f_sane,		0 },
@@ -316,6 +329,7 @@ f_tty(struct info *ip)
 #endif
 }
 
+#if defined(TIOCSTART) && defined(TIOCSTOP)
 void
 f_ostart(struct info *ip)
 {
@@ -329,3 +343,4 @@ f_ostop(struct info *ip)
 	if (ioctl (0, TIOCSTOP) < 0)
 		err(1, "TIOCSTOP");
 }
+#endif

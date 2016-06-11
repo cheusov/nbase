@@ -45,9 +45,13 @@ __RCSID("$NetBSD: cchar.c,v 1.16 2006/10/16 00:37:55 christos Exp $");
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <termios.h>
 
 #include "stty.h"
 #include "extern.h"
+
+#include "mkc_progname.h"
 
 /*
  * Special control characters.
@@ -58,7 +62,9 @@ __RCSID("$NetBSD: cchar.c,v 1.16 2006/10/16 00:37:55 christos Exp $");
  */
 const struct cchar cchars1[] = {
 	{ "discard",	VDISCARD, 	CDISCARD },
+#if defined(VDSUSP) && defined(CDSUSP)
 	{ "dsusp", 	VDSUSP,		CDSUSP },
+#endif
 	{ "eof",	VEOF,		CEOF },
 	{ "eol",	VEOL,		CEOL },
 	{ "eol2",	VEOL2,		CEOL },
@@ -70,7 +76,9 @@ const struct cchar cchars1[] = {
 	{ "quit",	VQUIT,		CQUIT },
 	{ "reprint",	VREPRINT, 	CREPRINT },
 	{ "start",	VSTART,		CSTART },
+#if defined(VSTATUS) && defined(CSTATUS)
 	{ "status",	VSTATUS, 	CSTATUS },
+#endif
 	{ "stop",	VSTOP,		CSTOP },
 	{ "susp",	VSUSP,		CSUSP },
 	{ "time",	VTIME,		CTIME },

@@ -43,6 +43,7 @@ __RCSID("$NetBSD: print.c,v 1.23 2013/09/12 19:47:23 christos Exp $");
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "stty.h"
 #include "extern.h"
@@ -100,12 +101,16 @@ print(struct termios *tp, struct winsize *wp, int queue, const char *ldisc,
 	put("-echonl", ECHONL, 0);
 	put("-echoctl", ECHOCTL, 0);
 	put("-echoprt", ECHOPRT, 0);
+#ifdef OXTABS
 	put("-altwerase", ALTWERASE, 0);
+#endif
 	put("-noflsh", NOFLSH, 0);
 	put("-tostop", TOSTOP, 0);
 	put("-flusho", FLUSHO, 0);
 	put("-pendin", PENDIN, 0);
+#ifdef NOKERNINFO
 	put("-nokerninfo", NOKERNINFO, 0);
+#endif
 	put("-extproc", EXTPROC, 0);
 
 	/* input flags */
@@ -131,9 +136,11 @@ print(struct termios *tp, struct winsize *wp, int queue, const char *ldisc,
 	put("-opost", OPOST, 1);
 	put("-onlcr", ONLCR, 1);
 	put("-ocrnl", OCRNL, 0);
+#ifdef OXTABS
 	put("-oxtabs", OXTABS, 1);
 	put("-onocr", OXTABS, 0);
 	put("-onlret", OXTABS, 0);
+#endif
 
 	/* control flags (hardware state) */
 	tmp = tp->c_cflag;
@@ -159,8 +166,12 @@ print(struct termios *tp, struct winsize *wp, int queue, const char *ldisc,
 	put("-clocal", CLOCAL, 0);
 	put("-cstopb", CSTOPB, 0);
 	put("-crtscts", CRTSCTS, 0);
+#ifdef MDMBUF
 	put("-mdmbuf", MDMBUF, 0);
+#endif
+#ifdef CDTRCTS
 	put("-cdtrcts", CDTRCTS, 0);
+#endif
 
 	/* special control characters */
 	cc = tp->c_cc;

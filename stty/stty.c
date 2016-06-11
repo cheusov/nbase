@@ -55,6 +55,8 @@ __RCSID("$NetBSD: stty.c,v 1.23 2013/09/12 19:47:23 christos Exp $");
 #include <string.h>
 #include <unistd.h>
 
+#include "mkc_progname.h"
+
 #include "stty.h"
 #include "extern.h"
 
@@ -97,14 +99,18 @@ main(int argc, char *argv[])
 args:	argc -= optind;
 	argv += optind;
 
+#ifdef TIOCGLINED
 	if (ioctl(i.fd, TIOCGLINED, i.ldisc) < 0)
 		err(1, "TIOCGLINED");
+#endif
 	if (tcgetattr(i.fd, &i.t) < 0)
 		err(1, "tcgetattr");
 	if (ioctl(i.fd, TIOCGWINSZ, &i.win) < 0)
 		warn("TIOCGWINSZ");
+#ifdef TIOCGQSIZE
 	if (ioctl(i.fd, TIOCGQSIZE, &i.queue) < 0)
 		warn("TIOCGQSIZE");
+#endif
 
 	switch(fmt) {
 	case STTY_NOTSET:
