@@ -19,7 +19,7 @@
 #  ifdef HAVE_MEMBER_STRUCT_STAT_ST_MTIME_SYS_STAT_H
 #    define timecmp(f1, f2, cmp) f1.st_mtime cmp f2.st_mtime
 #  else
-#    error "Neither stat.st_mtim nor stat.st_mtime is available"
+#    error "Neither stat.st_mtimespec nor stat.st_mtime is available"
 #  endif
 #endif
 
