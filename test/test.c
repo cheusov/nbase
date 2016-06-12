@@ -697,17 +697,13 @@ newerf(const char *f1, const char *f2)
 
 	return (stat(f1, &b1) == 0 &&
 		stat(f2, &b2) == 0 &&
-		timespeccmp(&b1.st_mtim, &b2.st_mtim, >));
+		timecmp(&b1, &b2, >));
 }
 
 static int
 olderf(const char *f1, const char *f2)
 {
-	struct stat b1, b2;
-
-	return (stat(f1, &b1) == 0 &&
-		stat(f2, &b2) == 0 &&
-		timespeccmp(&b1.st_mtim, &b2.st_mtim, <));
+	return newerf(f2, f1);
 }
 
 static int
