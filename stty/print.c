@@ -111,7 +111,9 @@ print(struct termios *tp, struct winsize *wp, int queue, const char *ldisc,
 #ifdef NOKERNINFO
 	put("-nokerninfo", NOKERNINFO, 0);
 #endif
+#ifdef EXTPROC
 	put("-extproc", EXTPROC, 0);
+#endif
 
 	/* input flags */
 	tmp = tp->c_iflag;

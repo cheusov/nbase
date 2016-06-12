@@ -4,7 +4,7 @@ CPPFLAGS +=	-D__COPYRIGHT\(x\)=
 CPPFLAGS +=	-D__RCSID\(x\)=
 CPPFLAGS +=	-D__printflike\(x,y\)=
 CPPFLAGS +=	-D__dead=
-CPPFLAGS +=	-D__unused=
+#CPPFLAGS +=	-D__unused=
 
 MKC_FEATURES =	progname strlcpy
 
