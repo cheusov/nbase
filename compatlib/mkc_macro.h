@@ -1,5 +1,5 @@
-#ifndef _MACRO_H_
-#define _MACRO_H_
+#ifndef _MKC_MACRO_H_
+#define _MKC_MACRO_H_
 
 #include <stdlib.h>
 #include <assert.h>
@@ -29,4 +29,4 @@
 #define _DIAGASSERT(e)
 #endif
 
-#endif // _MACRO_H_
+#endif // _MKC_MACRO_H_

@@ -34,8 +34,8 @@
  *	@(#)tzfile.h	8.1 (Berkeley) 6/2/93
  */
 
-#ifndef _TZFILE_H_
-#define	_TZFILE_H_
+#ifndef _MKC_TZFILE_H_
+#define	_MKC_TZFILE_H_
 
 /*
  * Information about time zone files.
@@ -155,4 +155,4 @@ struct tzhead {
 
 #define isleap(y) ((((y) % 4) == 0 && ((y) % 100) != 0) || ((y) % 400) == 0)
 
-#endif /* !_TZFILE_H_ */
+#endif /* !_MKC_TZFILE_H_ */

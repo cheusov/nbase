@@ -30,13 +30,12 @@
  * $FreeBSD: src/include/vis.h,v 1.11 2003/10/30 10:40:49 phk Exp $
  */
 
-#ifndef _VIS_H_
-#define	_VIS_H_
+#ifndef _MKC_VIS_H_
+#define	_MKC_VIS_H_
 
 #ifdef HAVE_HEADER_VIS_H
 #include <vis.h>
 #else
-
 #include <sys/types.h>
 
 /*
@@ -90,4 +89,4 @@ int	unvis(char *, int, int *, int);
 //__END_DECLS
 
 #endif /* HAVE_HEADER_VIS_H */
-#endif /* !_VIS_H_ */
+#endif /* !_MKC_VIS_H_ */
