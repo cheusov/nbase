@@ -9,9 +9,8 @@ CPPFLAGS +=	-D__unused=
 MKC_FEATURES =	progname strlcpy
 
 MKC_CHECK_MEMBERS =	\
-   struct-stat.st_atimespec:sys/stat.h \
-   struct-stat.st_atim:sys/stat.h \
    struct-stat.st_mtimespec:sys/stat.h \
+   struct-stat.st_mtime:sys/stat.h \
    struct-stat.st_mtim:sys/stat.h \
    struct-stat.st_flags:sys/stat.h
 
