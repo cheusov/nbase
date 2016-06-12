@@ -10,10 +10,18 @@
  */
 #define __arraycount(__x)       (sizeof(__x) / sizeof(__x[0]))
 
-#define timespeccmp(tsp, usp, cmp)                               \
-        (((tsp)->tv_sec == (usp)->tv_sec) ?                      \
-            ((tsp)->tv_nsec cmp (usp)->tv_nsec) :                \
-            ((tsp)->tv_sec cmp (usp)->tv_sec))
+#ifdef HAVE_MEMBER_STRUCT_STAT_ST_MTIM_SYS_STAT_H
+#  define timecmp(f1, f2, cmp)                                   \
+        (((f1)->st_mtim.tv_sec == (f2)->st_mtim.tv_sec) ?        \
+            ((f1)->st_mtim.tv_nsec cmp (f2)->st_mtim.tv_nsec) :  \
+            ((f1)->st_mtim.tv_sec cmp (f2)->st_mtim.tv_sec))
+#else
+#  ifdef HAVE_MEMBER_STRUCT_STAT_ST_MTIME_SYS_STAT_H
+#    define timecmp(f1, f2, cmp) f1.st_mtime cmp f2.st_mtime
+#  else
+#    error "Neither stat.st_mtim nor stat.st_mtime is available"
+#  endif
+#endif
 
 #ifndef HN_DECIMAL
 #define   HN_DECIMAL              0x01
