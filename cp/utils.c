@@ -53,6 +53,9 @@ __RCSID("$NetBSD: utils.c,v 1.42 2013/12/11 06:00:11 dholland Exp $");
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#if HAVE_FUNC2_FCPXATTR_SYS_EXTATTR_H
+#include <sys/extattr.h>
+#endif
 
 #include <err.h>
 #include <errno.h>
