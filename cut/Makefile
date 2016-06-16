@@ -3,7 +3,7 @@
 
 PROG=	cut
 
-LDADD+=	-lutil
-DPADD+=	${LIBUTIL}
+MKC_REQUIRE_FUNCLIBS = ecalloc:util
+MKC_REQUIRE_HEADERS = util.h
 
-.include <bsd.prog.mk>
+.include <mkc.mk>
