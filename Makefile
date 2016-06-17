@@ -1,10 +1,11 @@
 #PROJECTS = apply awk banner basename bdes cal calendar chio cksum \
   cleantags col colrm comm compatlib compress csh csplit ctags \
-  date db deroff df dirname doc env error expand \
+  date db deroff df dirname doc error expand \
   false ksh mk mt pax ps rcmd rcp \
   sh sync
 
-PROJECTS   =	cat chmod cmp cp cut dd domainname echo ed expr hostname kill \
+PROJECTS   =	cat chmod cmp cp cut dd domainname echo ed env \
+  expr hostname kill \
   ln ls mkdir mv pwd rm rmdir sleep stty test
 
 LIBDEPS    =	${PROJECTS:S/^/compatlib:/}
