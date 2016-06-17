@@ -1,6 +1,7 @@
 /*	$NetBSD: cut.c,v 1.29 2014/02/03 20:22:19 wiz Exp $	*/
 
 /*
+ * Copyright (c) 2016 Aleksey Cheusov <vle@gmx.net>
  * Copyright (c) 1989, 1993
  *	The Regents of the University of California.  All rights reserved.
  *
@@ -54,9 +55,13 @@ __RCSID("$NetBSD: cut.c,v 1.29 2014/02/03 20:22:19 wiz Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <util.h>
 #include <wchar.h>
 #include <sys/param.h>
+
+#include "mkc_efun.h"
+#include "mkc_fgetln.h"
+//#include "mkc_macro.h"
+#define __unused
 
 static int bflag;
 static int	cflag;
