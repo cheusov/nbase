@@ -45,6 +45,9 @@
  * assumption about the input.
  */
 
+#include "mkc_progname.h"
+#include "mkc_raise_default_signal.h"
+
 #include <sys/cdefs.h>
 #ifndef lint
 __RCSID("$NetBSD: csplit.c,v 1.6 2011/08/31 13:35:46 joerg Exp $");
@@ -64,7 +67,10 @@ __RCSID("$NetBSD: csplit.c,v 1.6 2011/08/31 13:35:46 joerg Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <util.h>
+
+#ifndef REG_BASIC
+#define REG_BASIC 0
+#endif
 
 static void	 cleanup(void);
 static void	 do_lineno(const char *);
