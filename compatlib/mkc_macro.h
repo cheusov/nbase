@@ -41,4 +41,10 @@
 #define _DIAGASSERT(e)
 #endif
 
+#ifdef HAVE_DEFINE___UNCONST_SYS_CDEFS_H
+#  include <sys/cdefs.h>
+#else
+#  define __UNCONST(a) ((void *)(unsigned long)(const void *)(a))
+#endif
+
 #endif // _MKC_MACRO_H_

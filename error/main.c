@@ -52,6 +52,9 @@ __RCSID("$NetBSD: main.c,v 1.21 2011/08/17 13:11:22 christos Exp $");
 #include "error.h"
 #include "pathnames.h"
 
+#include "mkc_macro.h"
+#include "mkc_progname.h"
+
 FILE *errorfile;     /* where error file comes from */
 FILE *queryfile;     /* input for the query responses from the user */
 

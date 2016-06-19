@@ -16,7 +16,7 @@ MKC_CHECK_FUNCLIBS =	ecalloc:util
 
 .if ${HAVE_FUNCLIB.ecalloc:U} != 1
 . if ${.CURDIR:T} == "compatlib"
-SRCS +=	mkc_efun.c
+SRCS +=	${SRCDIR_compatlib}/mkc_efun.c
 . endif
 .endif
 

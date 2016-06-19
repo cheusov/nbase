@@ -43,6 +43,8 @@ __RCSID("$NetBSD: input.c,v 1.17 2011/07/18 21:46:15 christos Exp $");
 #include <string.h>
 #include "error.h"
 
+#include "mkc_fgetln.h"
+
 int cur_wordc;		/* how long the current error message is */
 char **cur_wordv;	/* the actual error message */
 

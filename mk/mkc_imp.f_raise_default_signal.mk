@@ -10,12 +10,9 @@ MKC_CHECK_FUNCLIBS =	raise_default_signal:util
 
 .include <mkc_imp.conf-cleanup.mk>
 
-#.if ${.CURDIR:T} == "compatlib"
-. if ${HAVE_FUNCLIB.raise_default_signal:U} == 1
-LDADD += -lutil
-. else
+. if ${HAVE_FUNCLIB.raise_default_signal:U} == 0 && \
+    ${.CURDIR:T} == "compatlib"
 SRCS +=	${SRCDIR_compatlib}/mkc_raise_default_signal.c
 . endif
-#.endif
 
 .endif #_MKC_IMP_F_RAISE_DEFAULT_SIGNAL_MK

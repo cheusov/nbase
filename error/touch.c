@@ -45,11 +45,13 @@ __RCSID("$NetBSD: touch.c,v 1.27 2012/02/29 23:37:07 joerg Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <util.h>
 #include <stdarg.h>
 #include <err.h>
 #include "error.h"
 #include "pathnames.h"
+
+#include "mkc_raise_default_signal.h"
+#include "mkc_macro.h"
 
 /*
  * Iterate through errors

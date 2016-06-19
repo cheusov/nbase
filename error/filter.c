@@ -47,6 +47,9 @@ __RCSID("$NetBSD: filter.c,v 1.15 2009/08/13 05:53:58 dholland Exp $");
 #include "error.h"
 #include "pathnames.h"
 
+#include "mkc_strlcat.h"
+#include "mkc_strlcpy.h"
+
 static const char *lint_libs[] = {
 	IG_FILE1,
 	IG_FILE2,
