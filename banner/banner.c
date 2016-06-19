@@ -67,6 +67,9 @@ __RCSID("$NetBSD: banner.c,v 1.15 2012/02/29 08:55:25 wiz Exp $");
 #include <string.h>
 #include <unistd.h>
 
+#include "mkc_strlcpy.h"
+#include "mkc_progname.h"
+
 #include "banner.h"
 
 static long PW = LINELEN;

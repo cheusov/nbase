@@ -1,8 +1,6 @@
-#	$NetBSD: Makefile,v 1.4 2009/04/14 22:15:17 lukem Exp $
+PROG =	banner
 
-PROG=	banner
-
-SRCS=	$(PROG).c chset.c
+SRCS =	$(PROG).c chset.c
 
 # if you want to make chars from the letter involved (like lpd), then
 # un-comment the following.
@@ -13,5 +11,5 @@ SRCS=	$(PROG).c chset.c
 # output will not be the same as the real thing.
 #CPPFLAGS+= -DLPD_CHSET
 
-.include <bsd.prog.mk>
+.include <mkc.mk>
 
