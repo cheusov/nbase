@@ -33,6 +33,8 @@
 #include "nbtool_config.h"
 #endif
 
+#include "mkc_strlcpy.h"
+
 #include <sys/cdefs.h>
 #if defined(__COPYRIGHT) && !defined(lint)
 __COPYRIGHT("@(#) Copyright (c) 1987, 1993, 1994, 1995\
@@ -199,19 +201,19 @@ init(void)
 		_wht[i] = _etk[i] = _itk[i] = _btk[i] = NO;
 		_gd[i] = YES;
 	}
-#define	CWHITE	" \f\t\n"
+#define	CWHITE	(const unsigned char *)" \f\t\n"
 	for (sp = CWHITE; *sp; sp++)	/* white space chars */
 		_wht[*sp] = YES;
-#define	CTOKEN	" \t\n\"'#()[]{}=-+%*/&|^~!<>;,.:?"
+#define	CTOKEN	(const unsigned char *)" \t\n\"'#()[]{}=-+%*/&|^~!<>;,.:?"
 	for (sp = CTOKEN; *sp; sp++)	/* token ending chars */
 		_etk[*sp] = YES;
-#define	CINTOK	"ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz0123456789"
+#define	CINTOK	(const unsigned char *)"ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz0123456789"
 	for (sp = CINTOK; *sp; sp++)	/* valid in-token chars */
 		_itk[*sp] = YES;
-#define	CBEGIN	"ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz"
+#define	CBEGIN	(const unsigned char *)"ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz"
 	for (sp = CBEGIN; *sp; sp++)	/* token starting chars */
 		_btk[*sp] = YES;
-#define	CNOTGD	",;"
+#define	CNOTGD	(const unsigned char *)",;"
 	for (sp = CNOTGD; *sp; sp++)	/* invalid after-function chars */
 		_gd[*sp] = NO;
 }

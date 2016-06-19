@@ -33,6 +33,8 @@
 #include "nbtool_config.h"
 #endif
 
+#include "mkc_strlcpy.h"
+
 #include <sys/cdefs.h>
 #if defined(__RCSID) && !defined(lint)
 #if 0

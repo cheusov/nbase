@@ -1,11 +1,11 @@
 #PROJECTS = awk bdes cal calendar chio cksum \
-  cleantags compatlib compress csh ctags \
+  cleantags compatlib compress csh \
   date db deroff df doc \
   ksh mk mt pax ps rcmd rcp \
   sh sync
 
 PROJECTS   =	apply banner basename cat chmod cmp col colrm comm cp csplit \
-  cut dd dirname \
+  ctags cut dd dirname \
   domainname echo \
   ed env error \
   expand expr false hostname kill \
