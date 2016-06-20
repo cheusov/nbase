@@ -17,7 +17,7 @@ MKC_CHECK_HEADERS = tzfile.h
 
 .include <mkc.configure.mk>
 
-.if ${HAVE_HEADER.tzfile:U} == 1
+.if ${HAVE_HEADER.tzfile_h:U} == 1
 PROJECTS += cal calendar
 .endif
 

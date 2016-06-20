@@ -404,7 +404,8 @@ opencal(FILE **in)
 
 	/* open up calendar file as stdin */
 	if (fname == NULL) {
-		for (const char **name = defaultnames; *name != NULL; name++) {
+		const char **name;
+		for (name = defaultnames; *name != NULL; name++) {
 			if ((fd = tryopen(*name, O_RDONLY)) == -1)
 				continue;
 			else
