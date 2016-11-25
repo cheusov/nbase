@@ -11,14 +11,16 @@ PROJECTS  =	apply banner basename cat chmod cmp col colrm comm cp csplit \
   domainname echo \
   ed env error \
   expand expr false hostname kill \
-  ln ls mkdir mv pwd rm rmdir sleep stty test
+  ln ls mkdir mv pwd rm rmdir sleep stty testcmd
 
 MKC_CHECK_HEADERS = tzfile.h md2.h
 
 .include <mkc.configure.mk>
 
 .if ${HAVE_HEADER.tzfile_h:U} == 1
-PROJECTS += cal calendar
+PROJECTS += cal
+PROJECTS += calendar
+PROJECTS += date
 .endif
 
 .if ${HAVE_HEADER.md2_h:U} == 1
