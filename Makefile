@@ -1,6 +1,6 @@
 # will not be supported: chio db mt 
 
-#PROJECTS = awk bdes cksum \
+#PROJECTS = awk bdes \
   cleantags compatlib compress csh \
   db deroff df doc \
   ksh mk pax ps rcmd rcp \
@@ -13,12 +13,16 @@ PROJECTS  =	apply banner basename cat chmod cmp col colrm comm cp csplit \
   expand expr false hostname kill \
   ln ls mkdir mv pwd rm rmdir sleep stty test
 
-MKC_CHECK_HEADERS = tzfile.h
+MKC_CHECK_HEADERS = tzfile.h md2.h
 
 .include <mkc.configure.mk>
 
 .if ${HAVE_HEADER.tzfile_h:U} == 1
 PROJECTS += cal calendar
+.endif
+
+.if ${HAVE_HEADER.md2_h:U} == 1
+PROJECTS += cksum
 .endif
 
 LIBDEPS   =	${PROJECTS:S/^/compatlib:/}
