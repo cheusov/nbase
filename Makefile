@@ -1,6 +1,6 @@
 # will not be supported: chio db mt 
 
-#PROJECTS = sbdes \
+#PROJECTS = bdes \
   cleantags compatlib compress csh \
   db deroff df doc \
   ksh mk pax ps rcmd rcp \

@@ -7,7 +7,7 @@ CPPFLAGS +=	-D__printflike\(x,y\)=
 CPPFLAGS +=	-D__dead=
 #CPPFLAGS +=	-D__unused=
 
-MKC_FEATURES +=	progname strlcpy
+MKC_FEATURES +=	progname strlcpy strlcat
 
 MKC_CHECK_MEMBERS +=	\
    struct-stat.st_mtimespec:sys/stat.h \
