@@ -1,12 +1,12 @@
 # will not be supported: chio db mt 
 
-#PROJECTS = awk bdes \
+#PROJECTS = sbdes \
   cleantags compatlib compress csh \
   db deroff df doc \
   ksh mk pax ps rcmd rcp \
   sh sync
 
-PROJECTS  =	apply banner basename cat chmod cmp col colrm comm cp csplit \
+PROJECTS  =	apply awk/bin banner basename cat chmod cmp col colrm comm cp csplit \
   ctags cut dd dirname \
   domainname echo \
   ed env error \
