@@ -2,13 +2,13 @@
 
 #PROJECTS = bdes \
   compatlib compress csh \
-  db deroff df doc \
+  db df doc \
   ksh mk pax ps rcmd rcp \
   sh sync
 
 PROJECTS  =	apply awk/bin banner basename cat chmod cleantags \
   cmp col colrm comm cp csplit \
-  ctags cut dd dirname \
+  ctags cut deroff dd dirname \
   domainname echo \
   ed env error \
   expand expr false hostname kill \

@@ -75,6 +75,10 @@ __RCSID("$NetBSD: deroff.c,v 1.11 2013/10/18 20:47:06 christos Exp $");
 #include <string.h>
 #include <unistd.h>
 
+#ifndef __USE
+#define __USE(a) ((void)(a))
+#endif
+
 /*
  *	Deroff command -- strip troff, eqn, and Tbl sequences from
  *	a file.  Has two flags argument, -w, to cause output one word per line
