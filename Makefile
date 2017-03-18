@@ -2,8 +2,8 @@
 
 #PROJECTS = bdes \
   compatlib compress csh \
-  db df doc \
-  ksh mk ps rcmd rcp \
+  db doc \
+  ksh ps rcmd rcp \
   sh sync
 
 PROJECTS  =	apply awk/bin banner basename cat chmod cleantags \
@@ -31,6 +31,10 @@ PROJECTS += cksum
 .if ${HAVE_HEADER.db_h:U} == 1
 PROJECTS += db
 .endif
+
+#.if ${HAVE_MEMBER.struct_statvfs_f_mntfromname.sys_statvfs_h:U} == 1
+#PROJECTS += df
+#.endif
 
 LIBDEPS   =	${PROJECTS:S/^/compatlib:/}
 

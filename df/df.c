@@ -58,12 +58,12 @@ __RCSID("$NetBSD: df.c,v 1.90 2012/01/07 18:45:13 christos Exp $");
 #include <errno.h>
 #include <fcntl.h>
 #include <locale.h>
-#include <util.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <util.h>
+
+#include <sys/statvfs.h>
 
 static char	*getmntpt(const char *);
 static void	 prtstat(struct statvfs *, int);
