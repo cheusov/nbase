@@ -14,7 +14,7 @@ PROJECTS  =	apply awk/bin banner basename cat chmod cleantags \
   expand expr false hostname kill \
   ln ls mkdir mv pwd rm rmdir sleep stty testcmd
 
-MKC_CHECK_HEADERS = tzfile.h md2.h
+MKC_CHECK_HEADERS = tzfile.h md2.h db.h
 
 .include <mkc.configure.mk>
 
@@ -26,6 +26,10 @@ PROJECTS += date
 
 .if ${HAVE_HEADER.md2_h:U} == 1
 PROJECTS += cksum
+.endif
+
+.if ${HAVE_HEADER.db_h:U} == 1
+PROJECTS += db
 .endif
 
 LIBDEPS   =	${PROJECTS:S/^/compatlib:/}

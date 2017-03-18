@@ -49,8 +49,8 @@ __RCSID("$NetBSD: db.c,v 1.26 2012/02/17 11:37:33 apb Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <vis.h>
 
+#include "mkc_vis.h"
 
 typedef enum {
 	F_WRITE		= 1<<0,
