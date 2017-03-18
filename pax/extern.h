@@ -42,6 +42,9 @@
 #include <sys/cdefs.h>
 #include <err.h>
 
+#include <stdint.h>
+#include <inttypes.h>
+
 /*
  * ar_io.c
  */

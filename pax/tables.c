@@ -62,6 +62,8 @@ __RCSID("$NetBSD: tables.c,v 1.31 2013/10/18 19:53:34 christos Exp $");
 #include "tables.h"
 #include "extern.h"
 
+#include "mkc_strlcpy.h"
+
 /*
  * Routines for controlling the contents of all the different databases pax
  * keeps. Tables are dynamically created only when they are needed. The

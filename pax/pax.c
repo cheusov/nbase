@@ -51,7 +51,7 @@ __RCSID("$NetBSD: pax.c,v 1.47 2011/08/29 14:47:48 joerg Exp $");
 #include <sys/types.h>
 #include <sys/param.h>
 #include <sys/stat.h>
-#include <sys/time.h>
+#include <time.h>
 #include <sys/resource.h>
 #include <stdio.h>
 #include <fcntl.h>
@@ -61,9 +61,12 @@ __RCSID("$NetBSD: pax.c,v 1.47 2011/08/29 14:47:48 joerg Exp $");
 #include <string.h>
 #include <errno.h>
 #include <paths.h>
-#include <util.h>
 #include "pax.h"
 #include "extern.h"
+
+#include "mkc_progname.h"
+#include "mkc_raise_default_signal.h"
+
 static int gen_init(void);
 
 /*

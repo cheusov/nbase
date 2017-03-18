@@ -59,6 +59,8 @@ __RCSID("$NetBSD: pat_rep.c,v 1.29 2009/04/07 19:52:35 perry Exp $");
 #include "pat_rep.h"
 #include "extern.h"
 
+#include "mkc_strlcpy.h"
+
 /*
  * routines to handle pattern matching, name modification (regular expression
  * substitution and interactive renames), and destination name modification for

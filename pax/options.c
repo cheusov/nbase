@@ -73,6 +73,12 @@ __RCSID("$NetBSD: options.c,v 1.115 2013/11/14 04:00:48 christos Exp $");
 #include "mtree.h"
 #endif	/* SMALL */
 
+#include "mkc_fgetln.h"
+
+#ifndef _PATH_DEFTAPE
+#define _PATH_DEFTAPE "/dev/nrst0"
+#endif
+
 /*
  * Routines which handle command line options
  */

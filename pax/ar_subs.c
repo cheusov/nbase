@@ -37,6 +37,10 @@
 #include "nbtool_config.h"
 #endif
 
+#ifndef HAVE_NBTOOL_CONFIG_H
+#define HAVE_NBTOOL_CONFIG_H 1
+#endif
+
 #include <sys/cdefs.h>
 #if !defined(lint)
 #if 0
@@ -62,6 +66,8 @@ __RCSID("$NetBSD: ar_subs.c,v 1.56 2011/08/31 16:24:54 plunky Exp $");
 #include "pax.h"
 #include "pat_rep.h"
 #include "extern.h"
+
+#include "mkc_strlcpy.h"
 
 static int path_check(ARCHD *, int);
 static int wr_archive(ARCHD *, int is_app);

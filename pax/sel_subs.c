@@ -60,11 +60,14 @@ __RCSID("$NetBSD: sel_subs.c,v 1.24 2011/08/31 16:24:54 plunky Exp $");
 #include <time.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <tzfile.h>
 
 #include "pax.h"
 #include "sel_subs.h"
 #include "extern.h"
+
+#ifndef TM_YEAR_BASE
+#define TM_YEAR_BASE 1900
+#endif
 
 static int str_sec(const char *, time_t *);
 static int usr_match(ARCHD *);

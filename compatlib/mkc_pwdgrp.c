@@ -60,3 +60,28 @@ const char *group_from_gid(gid_t gid, int nogroup)
 	return num;
 }
 #endif
+
+#ifndef HAVE_FUNC2_UID_FROM_USER_PWD_H
+int uid_from_user(const char *name, uid_t *uid)
+{
+	struct passwd *p = getpwnam(name);
+	if (!p)
+		return -1;
+
+	*uid = p->pw_uid;
+	return 0;
+}
+#endif
+
+#ifndef HAVE_FUNC2_GID_FROM_GROUP_GRP_H
+int gid_from_group(const char *name, gid_t *gid)
+{
+	struct group *g = getgrnam(name);
+	if (!g)
+		return -1;
+
+	*gid = g->gr_gid;
+
+	return 0;
+}
+#endif

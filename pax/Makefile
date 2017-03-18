@@ -1,12 +1,12 @@
 #	$NetBSD: Makefile,v 1.39 2010/04/23 19:41:02 joerg Exp $
 #       @(#)Makefile	8.1 (Berkeley) 5/31/93
 
-.include <bsd.own.mk>
-
 PROG=   pax
 SRCS=	ar_io.c ar_subs.c buf_subs.c file_subs.c ftree.c\
 	gen_subs.c getoldopt.c options.c pat_rep.c pax.c sel_subs.c tables.c\
 	tar.c tty_subs.c
+
+SMALLPROG=1
 
 .if defined(SMALLPROG)
 CPPFLAGS+=	-DSMALL -DNO_CPIO
@@ -32,7 +32,7 @@ CPPFLAGS+=	-DHOSTPROG
 # XXX: Interix does not have it; we need a conditional for it.
 CPPFLAGS+=	-DHAVE_SYS_MTIO_H
 
-.if ${MKBSDTAR} == "no"
+.if ${MKBSDTAR:U} == "no"
 LINKS+=	${BINDIR}/pax ${BINDIR}/tar
 SYMLINKS+=${BINDIR}/tar /usr/bin/tar
 
@@ -48,4 +48,6 @@ LDADD+=	-lrmt
 DPADD+=	${LIBRMT}
 .endif
 
-.include <bsd.prog.mk>
+MKC_FEATURES =	strlcpy fgetln
+
+.include <mkc.mk>

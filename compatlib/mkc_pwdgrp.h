@@ -38,6 +38,14 @@ const char *user_from_uid(uid_t uid, int nouser);
 const char *group_from_gid(gid_t gid, int nogroup);
 #endif
 
+#ifndef HAVE_FUNC2_UID_FROM_USER_PWD_H
+int uid_from_user(const char *name, uid_t *uid);
+#endif
+
+#ifndef HAVE_FUNC2_GID_FROM_GROUP_GRP_H
+int gid_from_group(const char *name, gid_t *gid);
+#endif
+
 //__END_DECLS
 
 #endif /* _MKC_PWGGRP_H_ */

@@ -3,7 +3,7 @@
 #PROJECTS = bdes \
   compatlib compress csh \
   db df doc \
-  ksh mk pax ps rcmd rcp \
+  ksh mk ps rcmd rcp \
   sh sync
 
 PROJECTS  =	apply awk/bin banner basename cat chmod cleantags \
@@ -12,7 +12,7 @@ PROJECTS  =	apply awk/bin banner basename cat chmod cleantags \
   domainname echo \
   ed env error \
   expand expr false hostname kill \
-  ln ls mkdir mv pwd rm rmdir sleep stty testcmd
+  ln ls mkdir mv pax pwd rm rmdir sleep stty testcmd
 
 MKC_CHECK_HEADERS = tzfile.h md2.h db.h
 

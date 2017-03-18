@@ -64,6 +64,10 @@ __RCSID("$NetBSD: tar.c,v 1.71 2013/01/24 17:43:44 christos Exp $");
 #include "extern.h"
 #include "tar.h"
 
+#include "mkc_fgetln.h"
+#include "mkc_pwdgrp.h"
+#include "mkc_strlcpy.h"
+
 /*
  * Routines for reading, writing and header identify of various versions of tar
  */

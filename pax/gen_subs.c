@@ -54,16 +54,26 @@ __RCSID("$NetBSD: gen_subs.c,v 1.36 2012/08/09 08:09:21 christos Exp $");
 #include <ctype.h>
 #include <grp.h>
 #include <pwd.h>
-#include <vis.h>
+#include "mkc_vis.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <tzfile.h>
 #include <unistd.h>
 
 #include "pax.h"
 #include "extern.h"
+
+#include "mkc_strmode.h"
+#include "mkc_pwdgrp.h"
+
+#ifndef DAYSPERNYEAR
+#define DAYSPERNYEAR 365
+#endif
+
+#ifndef SECSPERDAY
+#define SECSPERDAY ((long) 60 * 60 * 24)
+#endif
 
 /*
  * a collection of general purpose subroutines used by pax
