@@ -55,6 +55,13 @@ __RCSID("$NetBSD: compress.c,v 1.26 2011/08/30 23:08:05 joerg Exp $");
 #include <string.h>
 #include <unistd.h>
 
+#if HAVE_MEMBER_STRUCT_STAT_ST_ATIM_SYS_STAT_H
+#define st_atimespec st_atim
+#endif
+#if HAVE_MEMBER_STRUCT_STAT_ST_MTIM_SYS_STAT_H
+#define st_mtimespec st_mtim
+#endif
+
 static void	compress(const char *, const char *, int);
 static void	cwarn(const char *, ...) __printflike(1, 2);
 static void	cwarnx(const char *, ...) __printflike(1, 2);
@@ -401,13 +408,15 @@ setfile(const char *name, struct stat *fs)
 	if (chmod(name, fs->st_mode))
 		cwarn("chown: %s", name);
 
-	/*
+#if HAVE_MEMBER_STRUCT_STAT_ST_FLAGS_SYS_STAT_H
+/*
 	 * Restore the file's flags.  However, do this only if the original
 	 * file had any flags set; this avoids a warning on file-systems that
 	 * do not support flags.
 	 */
 	if (fs->st_flags != 0 && chflags(name, fs->st_flags))
 		cwarn("chflags: %s", name);
+#endif
 }
 
 static int

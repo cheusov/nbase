@@ -73,6 +73,8 @@ static char rcsid[] = "$NetBSD: zopen.c,v 1.15 2011/08/16 13:55:01 joerg Exp $";
 #include <string.h>
 #include <unistd.h>
 
+#include "mkc_funopen.h"
+
 #define	BITS		16		/* Default bits. */
 #define	HSIZE		69001		/* 95% occupancy */
 
@@ -479,7 +481,7 @@ zread(void *cookie, char *rbp, int num)
 	if (fread(header,
 	    sizeof(char), sizeof(header), fp) != sizeof(header) ||
 	    memcmp(header, magic_header, sizeof(magic_header)) != 0) {
-		errno = EFTYPE;
+		errno = EINVAL;
 		return (-1);
 	}
 	maxbits = header[2];	/* Set -b from file. */
@@ -487,7 +489,7 @@ zread(void *cookie, char *rbp, int num)
 	maxbits &= BIT_MASK;
 	maxmaxcode = 1L << maxbits;
 	if (maxbits > BITS || maxbits < 12) {
-		errno = EFTYPE;
+		errno = EINVAL;
 		return (-1);
 	}
 	/* As above, initialize the first 256 entries in the table. */

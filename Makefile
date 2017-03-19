@@ -1,13 +1,13 @@
 # will not be supported: chio db mt 
 
 #PROJECTS = bdes \
-  compatlib compress csh \
+  compatlib csh \
   db doc \
   ksh ps rcmd rcp \
   sh sync
 
 PROJECTS  =	apply awk/bin banner basename cat chmod cleantags \
-  cmp col colrm comm cp csplit \
+  cmp col colrm comm compress cp csplit \
   ctags cut deroff dd dirname \
   domainname echo \
   ed env error \
