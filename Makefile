@@ -28,9 +28,9 @@ PROJECTS += date
 PROJECTS += cksum
 .endif
 
-.if ${HAVE_HEADER.db_h:U} == 1
-PROJECTS += db
-.endif
+#.if ${HAVE_HEADER.db_h:U} == 1
+#PROJECTS += db
+#.endif
 
 #.if ${HAVE_MEMBER.struct_statvfs_f_mntfromname.sys_statvfs_h:U} == 1
 #PROJECTS += df
