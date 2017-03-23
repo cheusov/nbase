@@ -1,4 +1,4 @@
-FILES    =	LICENSE NEWS ../README.pod TODO
+FILES    =	LICENSE NEWS ../README.md TODO
 FILESDIR =	${DOCDIR}
 
 .include <mkc.subprj.mk>
