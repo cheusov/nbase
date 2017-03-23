@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# This script generates diff between two netbsd tags excluding Makefile-s.
+# Usage:
+#    netbsd_netbsd_diff <netbsd_source_dir> <tag1> <tag2>
+# Example:
+#    netbsd_netbsd_diff /srv/netbsd-7 netbsd-7-0-RELEASE netbsd-7-1-RELEASE
+
+set -e
+
+test $# -eq 3
+
+dirs=`find . -mindepth 1 -maxdepth 1 -type d |
+   grep -vE '^([.]git|mk|helpers|compatlib)' |
+   sed 's|^[.]/||' |
+   sort`
+netbsd_dir="$1"
+tag1="$2"
+tag2="$3"
+
+cd "$netbsd_dir"
+
+prj2netbsd_dir (){
+    if test awk = "$1"; then
+	echo "external/historical/nawk"
+    elif test -d "$netbsd_dir/bin/$d"; then
+	echo "bin/$d"
+    elif test -d "$netbsd_dir/usr.bin/$d"; then
+	echo "usr.bin/$d"
+    else
+	echo ''
+    fi
+}
+
+for d in $dirs; do
+    dir=`prj2netbsd_dir "$d"`
+    cvs diff -r "$tag1" -r "$tag2" "$dir"
+done

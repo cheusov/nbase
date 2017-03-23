@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# This script generates diff between netbsd sources and nbase sources excluding Makefile-s.
+# Current working directory must be nbase root directory.
+# Usage:
+#    netbsd_nbase_diff <netbsd_source_dir>
+
+set -e
+
+test $# -eq 1
+
+dirs=`find . -mindepth 1 -maxdepth 1 -type d |
+   grep -vE '^([.]git|mk|helpers|compatlib)' |
+   sed 's|^[.]/||' |
+   sort`
+netbsd_dir="$1"
+
+prj2netbsd_dir (){
+    if test awk = "$1"; then
+	echo "external/historical/nawk"
+    elif test -d "bin/$d"; then
+	echo "bin/$d"
+    elif test -d "$netbsd_dir/usr.bin/$d"; then
+	echo "usr.bin/$d"
+    else
+	echo ''
+    fi
+}
+
+for d in $dirs; do
+    dir=`prj2netbsd_dir "$d"`
+    if test -n "$dir"; then
+	dir="$netbsd_dir/$dir"
+	diff -urb --exclude Makefile --exclude CVS --exclude '*.o' "$dir" "$d" || true
+    fi
+done
