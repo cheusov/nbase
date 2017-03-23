@@ -12,7 +12,7 @@ fourth release of nbase that corresponds to NetBSD 7.0-RELEASE.
 
 ## WWW
 
-L<git repository|https://github.com/cheusov/nbase>
+[git repository](https://github.com/cheusov/nbase)
 
 ## AUTHOR
 
