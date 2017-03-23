@@ -16,7 +16,7 @@ dirs=`find . -mindepth 1 -maxdepth 1 -type d |
 netbsd_dir="$1"
 
 prj2netbsd_dir (){
-    if test awk = "$1"; then
+    if test nawk = "$1"; then
 	echo "external/historical/nawk"
     elif test -d "bin/$d"; then
 	echo "bin/$d"

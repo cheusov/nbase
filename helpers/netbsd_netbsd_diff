@@ -21,7 +21,7 @@ tag2="$3"
 cd "$netbsd_dir"
 
 prj2netbsd_dir (){
-    if test awk = "$1"; then
+    if test nawk = "$1"; then
 	echo "external/historical/nawk"
     elif test -d "$netbsd_dir/bin/$d"; then
 	echo "bin/$d"

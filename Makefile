@@ -6,7 +6,7 @@
   ksh ps rcmd rcp \
   sh sync
 
-PROJECTS  =	apply awk/bin banner basename cat chmod cleantags \
+PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   cmp col colrm comm compress cp csplit \
   ctags cut deroff dd dirname \
   domainname echo \
@@ -37,7 +37,7 @@ PROJECTS += cksum
 #.endif
 
 LIBDEPS   =	${PROJECTS:S/^/compatlib:/}
-SUBPRJ    =	doc
+SUBPRJ    =	doc nawk/bin:awk
 
 MKC_REQD  =	0.29.1
 COMPATLIB =	compatlib
