@@ -1,0 +1,50 @@
+======================================================================
+
+                             INSTALLATION
+
+*)
+   You need mk-configure >= 0.29.1.
+
+   http://sourceforge.net/projects/mk-configure/
+   https://github.com/cheusov/mk-configure
+
+*) cd nbase-X-Y-Z-N
+
+*) mkcmake
+
+*) mkcmake test
+   If this step fails on your system, please let me now.
+
+*) mkcmake install
+
+*) paexec project consists of the following subprojects: cat, cut, etc.
+   By default all subprojects are built and installed. You can build and
+   install any subproject you like.
+
+   mkcmake all-cut all-cat install-cut install-cut
+
+*)
+There is a lot of Makefile variables that can be changed during
+build and installation.
+
+  PREFIX         - where executables are installed to
+  MANDIR         - root directory for manual pages
+  DESTDIR        - fake root for installation
+  CPPFLAGS
+  CFLAGS
+  LDFLAGS
+  LDADD
+  ...
+
+------------------------------
+Examples of build and installation:
+
+ 1)  export PREFIX=/usr SYSCONFDIR=/etc MANDIR=/usr/share/man
+     mkcmake all
+     env DESTDIR=/tmp/fake-root mkcmake install
+
+ 2)  env CC='icc' \
+       PREFIX=/usr/pkg \
+       CPPFLAGS='-I/usr/pkg/include' \
+       LDFLAGS='-L/usr/pkg/lib -Wl,-rpath -Wl,/usr/pkg/lib' \
+          mkcmake -s all-banner install-banner
