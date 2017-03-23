@@ -1,9 +1,9 @@
-# will not be supported: chio db mt 
+# will not be supported: chio db mt ps
 
 #PROJECTS = bdes \
-  compatlib csh \
-  db doc \
-  ksh ps rcmd rcp \
+  csh \
+  db \
+  ksh rcmd rcp \
   sh sync
 
 PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
