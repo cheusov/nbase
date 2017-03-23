@@ -10,6 +10,9 @@ NetBSD major version, y -- NetBSD minor version, z -- NetBSD patch
 level, and n -- nbase release number. For example, 7.0.0.4 means
 fourth release of nbase that corresponds to NetBSD 7.0-RELEASE.
 
+Additional documentation is under doc/
+[subdirectory](https://github.com/cheusov/nbase/tree/master/doc).
+
 ## WWW
 
 [git repository](https://github.com/cheusov/nbase)
