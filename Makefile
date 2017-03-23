@@ -37,6 +37,7 @@ PROJECTS += cksum
 #.endif
 
 LIBDEPS   =	${PROJECTS:S/^/compatlib:/}
+SUBPRJ    =	doc
 
 MKC_REQD  =	0.29.1
 COMPATLIB =	compatlib
