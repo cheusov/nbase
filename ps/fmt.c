@@ -8,7 +8,7 @@ __RCSID("$NetBSD: fmt.c,v 1.21 2007/12/12 22:55:43 lukem Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <vis.h>
+#include "mkc_vis.h"
 #include <sys/time.h>
 #include <sys/resource.h>
 #include "ps.h"
