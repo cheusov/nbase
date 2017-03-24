@@ -1,10 +1,23 @@
 # will not be supported: chio db mt ps
 
-#PROJECTS = bdes \
-  csh \
-  db \
-  ksh rcmd rcp \
-  sh sync
+#PROJECTS = bdes							\
+  csh									\
+  db									\
+  ksh rcmd rcp								\
+  sh sync								\
+									\
+									\
+  asa at checknr chflags cleantagsCVS/ cleantagscleantags.sh colcrt	\
+  column crunch du fgen find flock fmt fold fpr from fsplit ftp gcore	\
+  getaddrinfo getconf getent getopt grep head hexdump iconv id indent	\
+  infocmp ipcrm ipcs join jot lam leave locate lock logger logname	\
+  look lorder m4 machine menuc mkdep mkfifo mkstr mktemp msgc nbperf	\
+  nice nl nohup paste patch pr printenv printf qsubst rdist renice	\
+  rev rlogin rs rsh rup ruptime rusers rwall rwho script sdiff sed	\
+  seq shar shlock shuffle soelim sort split stat tabs tail tee test	\
+  time timeout touch tr true tsort tty ul uname unexpand unifdef uniq	\
+  units unvis uudecode uuencode uuidgen vgrind vis wc what whereis	\
+  whois xargs xinstall xlint xstr
 
 PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   cmp col colrm comm compress cp csplit \
@@ -12,7 +25,7 @@ PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   domainname echo \
   ed env error \
   expand expr false hostname kill \
-  ln ls mkdir mv pax pwd rm rmdir sleep stty testcmd
+  ln ls mkdir mv pax pwd rm rmdir sleep stty testcmd yes
 
 MKC_CHECK_HEADERS = tzfile.h md2.h db.h
 
