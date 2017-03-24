@@ -47,4 +47,8 @@
 #  define __UNCONST(a) ((void *)(unsigned long)(const void *)(a))
 #endif
 
+#ifndef MAXBSIZE
+#define MAXBSIZE (64*1024)
+#endif
+
 #endif // _MKC_MACRO_H_

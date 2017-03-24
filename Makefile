@@ -16,7 +16,7 @@
   rev rlogin rs rsh rup ruptime rusers rwall rwho script sdiff sed	\
   seq shar shlock shuffle soelim sort split stat tabs tail tee test	\
   time timeout touch tr true tsort tty ul uname unexpand unifdef uniq	\
-  units unvis uudecode uuencode uuidgen vgrind vis wc what whereis	\
+  units unvis uudecode uuencode uuidgen vgrind vis what whereis	\
   whois xargs xinstall xlint xstr
 
 PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
@@ -25,7 +25,7 @@ PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   domainname echo \
   ed env error \
   expand expr false hostname kill \
-  ln ls mkdir mv pax pwd rm rmdir sleep stty testcmd yes
+  ln ls mkdir mv pax pwd rm rmdir sleep stty testcmd wc yes
 
 MKC_CHECK_HEADERS = tzfile.h md2.h db.h
 
