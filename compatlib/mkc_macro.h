@@ -51,4 +51,8 @@
 #define MAXBSIZE (64*1024)
 #endif
 
+#ifndef SIZE_T_MAX
+#define SIZE_T_MAX (size_t)~0ull
+#endif
+
 #endif // _MKC_MACRO_H_

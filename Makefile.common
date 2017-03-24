@@ -21,9 +21,9 @@ MKC_CHECK_MEMBERS +=	\
    struct-stat.st_flags:sys/stat.h
    struct-statvfs.f_mntfromname:sys/statvfs.h
 
-MKC_CHECK_HEADERS += sys/extattr.h
-MKC_CHECK_FUNCS2  += fcpxattr:sys/extattr.h funopen:stdio.h
+MKC_CHECK_HEADERS += sys/extattr.h sys/event.h
 
+MKC_CHECK_FUNCS2 += fcpxattr:sys/extattr.h funopen:stdio.h
 MKC_CHECK_FUNCS0 += arc4random:stdlib.h
 
 MKC_CHECK_DEFINES +=	__UNCONST:sys/cdefs.h
