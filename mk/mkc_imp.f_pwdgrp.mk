@@ -6,7 +6,7 @@ _MKC_IMP_F_PWDGRP_MK := 1
 
 MKC_CHECK_FUNCS2   =	user_from_uid:pwd.h group_from_gid:grp.h \
 			uid_from_user:pwd.h gid_from_group:grp.h
-MKC_CHECK_FUNCLIBS =	user_from_uid group_from_gid \
+MKC_CHECK_FUNCLIBS +=	user_from_uid group_from_gid \
 			uid_from_user gid_from_group
 
 .include <mkc_imp.conf-cleanup.mk>

@@ -6,7 +6,7 @@
 _MKC_IMP_F_STRMODE_MK := 1
 
 MKC_CHECK_FUNCS2   =	strmode:unistd.h
-MKC_CHECK_FUNCLIBS =	strmode
+MKC_CHECK_FUNCLIBS +=	strmode
 
 .include <mkc_imp.conf-cleanup.mk>
 

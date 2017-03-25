@@ -6,7 +6,7 @@
 _MKC_IMP_F_GETBSIZE_MK := 1
 
 MKC_CHECK_FUNCS2   =	getbsize:stdlib.h
-MKC_CHECK_FUNCLIBS =	getbsize
+MKC_CHECK_FUNCLIBS +=	getbsize
 
 .include <mkc_imp.conf-cleanup.mk>
 

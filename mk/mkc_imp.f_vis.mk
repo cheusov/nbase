@@ -10,7 +10,7 @@ MKC_CHECK_FUNCS3   =	strvis:vis.h
 
 MKC_CHECK_HEADERS  =	vis.h
 
-MKC_CHECK_FUNCLIBS =	vis strnvis strvisx strvis
+MKC_CHECK_FUNCLIBS +=	vis strnvis strvisx strvis
 
 .include <mkc_imp.conf-cleanup.mk>
 
