@@ -11,7 +11,7 @@
   crunch du fgen flock fold fpr from fsplit ftp gcore	\
   getaddrinfo getconf getent getopt grep hexdump iconv id indent	\
   infocmp ipcrm ipcs join jot lam leave locate lock logger logname	\
-  look lorder m4 machine menuc mkdep mkfifo mkstr mktemp msgc nbperf	\
+  look lorder m4 machine menuc mkdep mkstr mktemp msgc nbperf	\
   nice nl nohup paste patch pr printenv printf qsubst rdist renice	\
   rev rlogin rs rsh rup ruptime rusers rwall rwho script sdiff sed	\
   seq shar shlock shuffle soelim sort split stat tabs test	\
@@ -25,7 +25,7 @@ PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   domainname echo \
   ed env error \
   expand expr false find fmt head hostname kill \
-  ln ls mkdir mv pax pwd rm rmdir sleep stty tail tee testcmd true \
+  ln ls mkdir mkfifo mv pax pwd rm rmdir sleep stty tail tee testcmd true \
   uniq wc yes
 
 MKC_CHECK_HEADERS = tzfile.h md2.h db.h
