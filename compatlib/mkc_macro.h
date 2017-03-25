@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <assert.h>
+#include <limits.h>
 
 /*
  * Return the number of elements in a statically-allocated array,
@@ -53,6 +54,14 @@
 
 #ifndef SIZE_T_MAX
 #define SIZE_T_MAX (size_t)~0ull
+#endif
+
+#ifndef MB_LEN_MAX
+#define MB_LEN_MAX     32      /* Allow ISO/IEC 2022 */
+#endif
+
+#ifndef CTASSERT
+#define CTASSERT(x) /* for now empty */
 #endif
 
 #endif // _MKC_MACRO_H_
