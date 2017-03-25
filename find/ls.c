@@ -59,6 +59,16 @@ __RCSID("$NetBSD: ls.c,v 1.21 2011/08/31 16:24:57 plunky Exp $");
 
 #include "find.h"
 
+#ifndef _POSIX_LOGIN_NAME_MAX
+#define _POSIX_LOGIN_NAME_MAX 9
+#endif
+
+#ifdef LOGIN_NAME_MAX
+#undef LOGIN_NAME_MAX
+#endif
+
+#define LOGIN_NAME_MAX _POSIX_LOGIN_NAME_MAX
+
 /* Derived from the print routines in the ls(1) source code. */
 
 static void printlink(char *);
