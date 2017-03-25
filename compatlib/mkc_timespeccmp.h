@@ -22,22 +22,16 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _MKC_SETMODE_H_
-#define _MKC_SETMODE_H_
+#ifndef _MKC_TIMESPECCMP_H_
+#define _MKC_TIMESPECCMP_H_ 1
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
+#  include <time.h>
 
-#if !defined(HAVE_FUNC1_SETMODE_UNISTD_H) || !defined(HAVE_FUNC2_GETMODE_UNISTD_H)
-#include "mkc_getsetmode.h"
-
-//__BEGIN_DECLS
-void *setmode(const char *mode_str);
-mode_t getmode(const void *set, mode_t mode);
-//__END_DECLS
+#  ifndef timespeccmp
+#  define timespeccmp(tsp, usp, cmp)                                      \
+        (((tsp)->tv_sec == (usp)->tv_sec) ?                             \
+            ((tsp)->tv_nsec cmp (usp)->tv_nsec) :                       \
+            ((tsp)->tv_sec cmp (usp)->tv_sec))
+#  endif
 
 #endif
-
-#endif /* _MKC_SETMODE_H_ */
