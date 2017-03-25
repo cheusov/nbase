@@ -15,7 +15,7 @@
   nice nl nohup paste patch pr printenv printf qsubst rdist renice	\
   rev rlogin rs rsh rup ruptime rusers rwall rwho script sdiff sed	\
   seq shar shlock shuffle soelim sort split stat tabs test	\
-  time timeout touch tr tsort tty ul uname unexpand unifdef	\
+  time timeout touch tsort tty ul uname unexpand unifdef	\
   units uudecode uuencode uuidgen vgrind what whereis	\
   whois xargs xinstall xlint xstr
 
@@ -25,7 +25,7 @@ PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   domainname echo \
   ed env error \
   expand expr false find fmt head hostname kill \
-  ln ls mkdir mkfifo mv pax pwd rm rmdir sleep stty tail tee testcmd true \
+  ln ls mkdir mkfifo mv pax pwd rm rmdir sleep stty tail tee testcmd tr true \
   uniq unvis vis wc yes
 
 MKC_CHECK_HEADERS = tzfile.h md2.h db.h
