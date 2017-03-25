@@ -112,6 +112,8 @@ int	strnunvis(char *, size_t, const char *);
 int	strunvisx(char *, const char *, int);
 int	strnunvisx(char *, size_t, const char *, int);
 
+int unvis(char *, int, int *, int);
+
 #endif /* HAVE_HEADER_VIS_H */
 
 #endif /* !_VIS_H_ */

@@ -17,7 +17,7 @@ MKC_CHECK_FUNCLIBS =	vis strnvis strvisx strvis
 .if ${.CURDIR:T} == "compatlib"
 . if ${HAVE_FUNCLIB.vis:U} != 1 || ${HAVE_FUNCLIB.strnvis:U} != 1 || \
      ${HAVE_FUNCLIB.strvisx:U} != 1 || ${HAVE_FUNCLIB.strvis:U} != 1
-SRCS +=	mkc_vis.c
+SRCS +=	mkc_vis.c mkc_unvis.c
 . endif
 .endif
 
