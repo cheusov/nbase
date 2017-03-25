@@ -8,7 +8,7 @@
 									\
 									\
   asa at checknr chflags cleantagsCVS/ cleantagscleantags.sh colcrt	\
-  column crunch du fgen flock fmt fold fpr from fsplit ftp gcore	\
+  crunch du fgen flock fmt fold fpr from fsplit ftp gcore	\
   getaddrinfo getconf getent getopt grep hexdump iconv id indent	\
   infocmp ipcrm ipcs join jot lam leave locate lock logger logname	\
   look lorder m4 machine menuc mkdep mkfifo mkstr mktemp msgc nbperf	\
@@ -20,7 +20,7 @@
   whois xargs xinstall xlint xstr
 
 PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
-  cmp col colrm comm compress cp csplit \
+  cmp col colrm column comm compress cp csplit \
   ctags cut deroff dd dirname \
   domainname echo \
   ed env error \
