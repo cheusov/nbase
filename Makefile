@@ -8,7 +8,7 @@
 									\
 									\
   asa at checknr chflags cleantagsCVS/ cleantagscleantags.sh colcrt	\
-  crunch du fgen flock fmt fold fpr from fsplit ftp gcore	\
+  crunch du fgen flock fold fpr from fsplit ftp gcore	\
   getaddrinfo getconf getent getopt grep hexdump iconv id indent	\
   infocmp ipcrm ipcs join jot lam leave locate lock logger logname	\
   look lorder m4 machine menuc mkdep mkfifo mkstr mktemp msgc nbperf	\
@@ -24,7 +24,7 @@ PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   ctags cut deroff dd dirname \
   domainname echo \
   ed env error \
-  expand expr false find head hostname kill \
+  expand expr false find fmt head hostname kill \
   ln ls mkdir mv pax pwd rm rmdir sleep stty tail tee testcmd true wc yes
 
 MKC_CHECK_HEADERS = tzfile.h md2.h db.h
