@@ -2,8 +2,7 @@
 #	@(#)Makefile	8.1 (Berkeley) 6/6/93
 
 PROG =	ul
-#DPADD =	${LIBTERMINFO}
 
-MKC_REQUIRE_FUNCLIBS =	setupterm:terminfo
+MKC_REQUIRE_FUNCLIBS =	cur_term:curses
 
 .include <mkc.prog.mk>

@@ -15,7 +15,7 @@
   nice nohup pr qsubst rdist renice	\
   rev rlogin rs rsh rup ruptime rusers rwall rwho script sdiff	\
   shar shlock soelim split stat \
-  time timeout touch tsort ul uname \
+  time timeout touch tsort uname \
   uuidgen vgrind whereis	\
   whois xinstall xlint
 
@@ -28,7 +28,7 @@ PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   lam ln ls m4 mkdep mkdir mkfifo mktemp mv nl paste patch pax printenv \
   printf pwd rm rmdir sed seq shuffle \
   sleep sort stty tabs tail tee testcmd tr true tty \
-  unexpand unifdef units uniq unvis uudecode uuencode \
+  ul unexpand unifdef units uniq unvis uudecode uuencode \
   vis what wc xargs xstr yes
 
 MKC_CHECK_HEADERS = tzfile.h md2.h db.h
