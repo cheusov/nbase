@@ -14,7 +14,7 @@
   look lorder machine menuc mkstr msgc nbperf	\
   nice nohup pr qsubst rdist renice	\
   rev rlogin rs rsh rup ruptime rusers rwall rwho script sdiff	\
-  shar shlock soelim split stat \
+  shar soelim split stat \
   time timeout touch tsort uname \
   uuidgen vgrind whereis	\
   whois xinstall xlint
@@ -26,7 +26,7 @@ PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   ed env error \
   expand expr false find fmt fold getopt grep head hostname join kill \
   lam ln ls m4 mkdep mkdir mkfifo mktemp mv nl paste patch pax printenv \
-  printf pwd rm rmdir sed seq shuffle \
+  printf pwd rm rmdir sed seq shlock shuffle \
   sleep sort stty tabs tail tee testcmd tr true tty \
   ul unexpand unifdef units uniq unvis uudecode uuencode \
   vis what wc xargs xstr yes
