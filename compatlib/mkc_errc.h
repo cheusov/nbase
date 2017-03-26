@@ -1,11 +1,11 @@
 /********************************************************************\
- Copyright (c) 2014 by Aleksey Cheusov
+ Copyright (c) 2017 by Aleksey Cheusov
 
  See LICENSE file in the distribution.
 \********************************************************************/
 
-#ifndef _MKC_ERR_H_
-#define _MKC_ERR_H_
+#ifndef _MKC_ERRC_H_
+#define _MKC_ERRC_H_
 
 #include <stdarg.h>
 
@@ -25,4 +25,4 @@ void verrc(int status, int code, const char *fmt, va_list args);
 
 #endif // MKC_ERRC_IS_FINE
 
-#endif // _MKC_ERR_H_
+#endif // _MKC_ERRC_H_
