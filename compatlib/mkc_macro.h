@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <limits.h>
+#include <regex.h>
 
 /*
  * Return the number of elements in a statically-allocated array,
@@ -62,6 +63,10 @@
 
 #ifndef CTASSERT
 #define CTASSERT(x) /* for now empty */
+#endif
+
+#ifndef REG_BASIC
+#define REG_BASIC 0
 #endif
 
 #endif // _MKC_MACRO_H_
