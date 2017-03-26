@@ -13,7 +13,7 @@
   infocmp ipcrm ipcs jot leave locate lock logger logname	\
   look lorder machine menuc mkstr msgc nbperf	\
   nice nohup pr qsubst rdist renice	\
-  rev rlogin rs rsh rup ruptime rusers rwall rwho script sdiff sed	\
+  rev rlogin rs rsh rup ruptime rusers rwall rwho script sdiff	\
   seq shar shlock shuffle soelim sort split stat tabs test	\
   time timeout touch tsort tty ul uname unexpand unifdef	\
   units uudecode uuencode uuidgen vgrind what whereis	\
@@ -26,7 +26,7 @@ PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   ed env error \
   expand expr false find fmt fold getopt grep head hostname join kill \
   lam ln ls m4 mkdep mkdir mkfifo mktemp mv nl paste patch pax printenv \
-  printf pwd rm rmdir \
+  printf pwd rm rmdir sed \
   sleep stty tail tee testcmd tr true \
   uniq unvis vis wc yes
 
