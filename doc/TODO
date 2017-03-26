@@ -1,1 +1,2 @@
-Support for all POSIX utils
+* Support for all POSIX utils
+* Fix check for b64_{pton,ntop} presense
