@@ -16,7 +16,7 @@
   rev rlogin rs rsh rup ruptime rusers rwall rwho script sdiff	\
   shar shlock soelim split stat tabs test	\
   time timeout touch tsort tty ul uname unifdef	\
-  uuidgen vgrind what whereis	\
+  uuidgen vgrind whereis	\
   whois xinstall xlint
 
 PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
@@ -28,7 +28,7 @@ PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   lam ln ls m4 mkdep mkdir mkfifo mktemp mv nl paste patch pax printenv \
   printf pwd rm rmdir sed seq shuffle \
   sleep sort stty tail tee testcmd tr true \
-  unexpand units uniq unvis uudecode uuencode vis wc xargs xstr yes
+  unexpand units uniq unvis uudecode uuencode vis what wc xargs xstr yes
 
 MKC_CHECK_HEADERS = tzfile.h md2.h db.h
 
