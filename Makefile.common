@@ -7,6 +7,8 @@ CPPFLAGS +=	-D__printflike\(x,y\)=
 CPPFLAGS +=	-D__dead=
 #CPPFLAGS +=	-D__unused=
 
+CFLAGS.dflt.gcc +=	-Werror=implicit-function-declaration
+
 DOCDIR ?=	${DATADIR}/doc/nbase
 
 MKC_FEATURES +=	progname strlcpy strlcat
