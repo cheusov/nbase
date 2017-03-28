@@ -51,3 +51,5 @@ MKC_PROTOTYPE_HEADERS.fopencookie = stdio.h
 .include "mk/mkc_imp.f_timespeccmp.mk"
 .include "mk/mkc_imp.f_errc.mk"
 .include "mk/mkc_imp.f_base64.mk"
+.include "mk/mkc_imp.f_fgetwln.mk"
+.include "mk/mkc_imp.f_reallocarray.mk"

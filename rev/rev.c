@@ -53,6 +53,9 @@ __RCSID("$NetBSD: rev.c,v 1.12 2011/09/16 15:39:28 joerg Exp $");
 #include <unistd.h>
 #include <wchar.h>
 
+#include "mkc_progname.h"
+#include "mkc_fgetwln.h"
+
 __dead static void usage(void);
 
 int
