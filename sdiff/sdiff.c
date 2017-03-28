@@ -26,7 +26,7 @@
 
 #include "mkc_strlcpy.h"
 #include "mkc_strlcat.h"
-//#include "mkc_fparseln.h"
+#include "mkc_fparseln.h"
 #include "mkc_macro.h"
 
 #include "common.h"
@@ -162,7 +162,8 @@ main(int argc, char **argv)
 	size_t diffargc = 0, wflag = WIDTH;
 	int ch, fd[2], status;
 	pid_t pid;
-	char **diffargv, *diffprog = "diff", *filename1, *filename2,
+	const char **diffargv, *diffprog = "diff";
+	char *filename1, *filename2,
 	    *tmp1, *tmp2, *s1, *s2;
 
 	/*
@@ -304,7 +305,7 @@ main(int argc, char **argv)
 		/* Free unused descriptor. */
 		close(fd[1]);
 
-		execvp(diffprog, diffargv);
+		execvp(diffprog, (char**)__UNCONST(diffargv));
 		err(2, "could not execute diff: %s", diffprog);
 	case -1:
 		err(2, "could not fork");
