@@ -61,7 +61,8 @@ __RCSID("$NetBSD: pr.c,v 1.24 2012/08/01 02:27:48 ginsbach Exp $");
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-#include <util.h>
+
+#include "mkc_raise_default_signal.h"
 
 #include "pr.h"
 #include "extern.h"
