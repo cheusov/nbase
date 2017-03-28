@@ -5,7 +5,7 @@
 .ifndef _MKC_IMP_F_FGETWLN_MK
 _MKC_IMP_F_FGETWLN_MK := 1
 
-.include <mkc_imp.f_reallocarray.mk>
+.include "mkc_imp.f_reallocarray.mk"
 
 MKC_CHECK_FUNCLIBS +=	fgetwln
 MKC_CHECK_FUNCS2   =	fgetwln:stdio.h
