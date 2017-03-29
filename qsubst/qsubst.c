@@ -111,9 +111,16 @@ __RCSID("$NetBSD: qsubst.c,v 1.8 2004/11/01 21:36:11 dsl Exp $");
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
+#include <string.h>
 #include <termcap.h>
 #include <termios.h>
 #include <unistd.h>
+
+#include "mkc_progname.h"
+
+#ifndef TCSASOFT
+#define TCSASOFT 0
+#endif
 
 extern const char *__progname;
 
