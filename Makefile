@@ -12,7 +12,7 @@
   getaddrinfo getconf getent hexdump iconv id indent	\
   infocmp ipcrm ipcs jot leave locate lock logger logname	\
   look lorder machine menuc mkstr msgc nbperf	\
-  nice nohup pr rdist renice	\
+  nohup pr rdist renice	\
   rlogin rsh rup ruptime rusers rwall rwho script sdiff	\
   stat \
   time timeout touch tsort uname \
@@ -25,7 +25,7 @@ PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   domainname echo \
   ed env error \
   expand expr false find fmt fold getopt grep head hostname join kill \
-  lam ln ls m4 mkdep mkdir mkfifo mktemp mv nl paste patch pax printenv \
+  lam ln ls m4 mkdep mkdir mkfifo mktemp mv nice nl paste patch pax printenv \
   printf pwd rev rm rmdir rs qsubst sed seq shar shlock shuffle \
   sleep soelim sort split stty tabs tail tee testcmd tr true tty \
   ul unexpand unifdef units uniq unvis uudecode uuencode \
