@@ -8,7 +8,7 @@ CPPFLAGS +=	-D__dead=
 #CPPFLAGS +=	-D__unused=
 
 CFLAGS.dflt.gcc +=	-Werror=implicit-function-declaration \
-  -Werror=missing-prototypes
+  -Werror=missing-prototypes # -Werror=int-to-pointer-cast
 
 DOCDIR ?=	${DATADIR}/doc/nbase
 
