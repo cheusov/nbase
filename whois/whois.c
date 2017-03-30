@@ -60,6 +60,11 @@ __RCSID("$NetBSD: whois.c,v 1.36 2013/02/20 09:27:52 ws Exp $");
 #include <unistd.h>
 #include <errno.h>
 
+#include "mkc_strlcpy.h"
+#include "mkc_strlcat.h"
+#include "mkc_progname.h"
+#include "mkc_fgetln.h"
+
 #define	ANICHOST	"whois.arin.net"
 #define	BNICHOST	"whois.registro.br"
 #define	CNICHOST	"whois.corenic.net"

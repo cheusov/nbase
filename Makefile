@@ -1,11 +1,11 @@
 # WILL NOT BE SUPPORTED: ps
-# TBD: chio db flock infocmp mt touch
+# TBD: chio db flock infocmp mt touch tsort xinstall xlint 
 # NET: ftp rdist rup rwho rwall ruptime rusers rlogin rsh 
 
 #PROJECTS = bdes csh db ksh rcmd rcp sh sync asa at checknr chflags	\
   crunch du gcore getaddrinfo getconf getent hexdump iconv ipcrm ipcs	\
   locate lock logger lorder machine menuc msgc nbperf stat time		\
-  timeout tsort uname uuidgen vgrind whereis whois xinstall xlint
+  timeout uname uuidgen vgrind whereis whois
 
 PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   cmp col colcrt colrm column comm compress cp csplit \
@@ -19,7 +19,7 @@ PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   printf pwd qsubst renice rev rm rmdir rs script sdiff sed seq shar shlock shuffle \
   sleep soelim sort split stty tabs tail tee testcmd tr true tty \
   ul unexpand unifdef units uniq unvis uudecode uuencode \
-  vis what wc xargs xstr yes
+  vis what whois wc xargs xstr yes
 
 MKC_CHECK_HEADERS = tzfile.h md2.h db.h
 
