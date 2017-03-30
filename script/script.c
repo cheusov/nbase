@@ -60,9 +60,16 @@ __RCSID("$NetBSD: script.c,v 1.21 2011/09/06 18:29:56 joerg Exp $");
 #include <string.h>
 #include <termios.h>
 #include <time.h>
-#include <tzfile.h>
 #include <unistd.h>
-#include <util.h>
+#include <stdint.h>
+#if HAVE_HEADER_UTMP_H
+#include <utmp.h>
+#endif
+#include <pty.h>
+
+#include "mkc_tzfile.h"
+#include "mkc_progname.h"
+#include "mkc_bswap.h"
 
 #define	DEF_BUF	65536
 
