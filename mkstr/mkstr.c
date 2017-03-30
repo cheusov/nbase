@@ -47,6 +47,8 @@ __RCSID("$NetBSD: mkstr.c,v 1.16 2012/03/20 20:34:58 matt Exp $");
 #include <stdlib.h>
 #include <string.h>
 
+#include "mkc_strlcpy.h"
+
 #define	ungetchar(c)	ungetc(c, stdin)
 
 /*
