@@ -1,4 +1,4 @@
-# will not be supported: chio db mt ps
+# will not be supported: chio db infocmp mt ps 
 
 #PROJECTS = bdes							\
   csh									\
@@ -10,7 +10,7 @@
   asa at checknr chflags cleantagsCVS/ cleantagscleantags.sh 	\
   crunch du flock ftp gcore	\
   getaddrinfo getconf getent hexdump iconv 	\
-  infocmp ipcrm ipcs locate lock logger	\
+  ipcrm ipcs locate lock logger	\
   lorder machine menuc msgc nbperf	\
   rdist \
   rlogin rsh rup ruptime rusers rwall rwho script sdiff \
