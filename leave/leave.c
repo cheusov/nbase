@@ -52,6 +52,8 @@ __RCSID("$NetBSD: leave.c,v 1.15 2011/09/16 15:39:27 joerg Exp $");
 #include <err.h>
 #include <unistd.h>
 
+#include "mkc_progname.h"
+
 #define	SECOND	1
 #define MINUTE	(SECOND * 60)
 #define	HOUR	(MINUTE * 60) 

@@ -10,7 +10,7 @@
   asa at checknr chflags cleantagsCVS/ cleantagscleantags.sh colcrt	\
   crunch du fgen flock fpr from fsplit ftp gcore	\
   getaddrinfo getconf getent hexdump iconv indent	\
-  infocmp ipcrm ipcs jot leave locate lock logger	\
+  infocmp ipcrm ipcs jot locate lock logger	\
   lorder machine menuc mkstr msgc nbperf	\
   pr rdist \
   rlogin rsh rup ruptime rusers rwall rwho script sdiff \
@@ -25,7 +25,7 @@ PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   domainname echo \
   ed env error \
   expand expr false find fmt fold getopt grep head hostname id join kill \
-  lam ln logname look ls m4 mkdep mkdir mkfifo mktemp mv nice nl \
+  lam leave ln logname look ls m4 mkdep mkdir mkfifo mktemp mv nice nl \
   nohup paste patch pax pr printenv \
   printf pwd qsubst renice rev rm rmdir rs script sdiff sed seq shar shlock shuffle \
   sleep soelim sort split stty tabs tail tee testcmd tr true tty \
