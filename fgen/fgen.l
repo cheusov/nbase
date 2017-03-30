@@ -67,6 +67,8 @@ tail	{white}
 #include <string.h>
 #include <unistd.h>
 
+#include "mkc_macro.h"
+	
 #include "fgen.h"
 static TOKEN ltoken;
 
