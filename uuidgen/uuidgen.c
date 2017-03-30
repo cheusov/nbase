@@ -64,6 +64,8 @@ __RCSID("$NetBSD: uuidgen.c,v 1.4 2011/09/16 15:39:30 joerg Exp $");
 #include <unistd.h>
 #include <uuid.h>
 
+#include "mkc_progname.h"
+
 __dead static void
 usage(void)
 {
