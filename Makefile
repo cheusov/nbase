@@ -7,7 +7,7 @@
 
 #PROJECTS = bdes csh db ksh rcmd rcp sh sync asa at checknr chflags	\
   crunch du gcore getaddrinfo getconf getent hexdump iconv ipcrm ipcs	\
-  locate lock logger lorder machine
+  locate lock logger lorder
 
 PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   cmp col colcrt colrm column comm compress cp csplit \
@@ -16,7 +16,8 @@ PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   ed env error \
   expand expr false fgen find fmt fold fpr from fsplit getopt grep \
   head hostname id indent join jot kill \
-  lam leave ln logname look ls m4 mkdep mkdir mkfifo mkstr mktemp menuc msgc mv nice nl \
+  lam leave ln logname look ls m4 machine mkdep mkdir mkfifo mkstr \
+  mktemp menuc msgc mv nice nl \
   nohup paste patch pax pr printenv \
   printf pwd qsubst renice rev rm rmdir rs script sdiff sed seq shar shlock shuffle \
   sleep soelim sort split stty tabs tail tee testcmd timeout tr true tty \
