@@ -53,7 +53,8 @@ __RCSID("$NetBSD: parse.c,v 1.27 2011/09/04 20:27:27 joerg Exp $");
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <util.h>
+
+#include "mkc_efun.h"
 
 #include "hexdump.h"
 

@@ -40,7 +40,10 @@ __RCSID("$NetBSD: iconv.c,v 1.19 2013/10/07 02:00:46 dholland Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <util.h>
+#include <stdint.h>
+
+#include "mkc_efun.h"
+#include "mkc_progname.h"
 
 static void usage(void) __dead;
 static int scmp(const void *, const void *);

@@ -1,5 +1,5 @@
 /*-
- * Copyright (c) 2016 Aleksey Cheusov <vle@gmx.net>
+ * Copyright (c) 2016-2017 Aleksey Cheusov <vle@gmx.net>
  * Copyright (c) 1995
  *	The Regents of the University of California.  All rights reserved.
  *
@@ -62,7 +62,7 @@ size_t estrlcat(char *dst, const char *src, size_t len);
 
 size_t estrlcpy(char *dst, const char *src, size_t len);
 
-//int evasprintf(char ** /*restrict*/ str, const char * /*restrict*/ fmt, ...);
+int evasprintf(char ** /*__restrict*/ str, const char * /*__restrict*/ fmt, va_list ap);
 
 //__END_DECLS
 

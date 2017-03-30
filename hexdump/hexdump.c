@@ -54,6 +54,8 @@ __RCSID("$NetBSD: hexdump.c,v 1.18 2012/07/06 09:06:43 wiz Exp $");
 
 #include "hexdump.h"
 
+#include "mkc_progname.h"
+
 FS *fshead;				/* head of format strings */
 int blocksize;				/* data block size */
 int exitval;				/* final exit value */

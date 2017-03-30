@@ -162,7 +162,6 @@ easprintf(char ** __restrict ret, const char * __restrict format, ...)
 	return rv;
 }
 
-/*
 int
 evasprintf(char ** __restrict ret, const char * __restrict format, va_list ap)
 {
@@ -171,7 +170,6 @@ evasprintf(char ** __restrict ret, const char * __restrict format, va_list ap)
 		(*efunc)(1, "Cannot format string");
 	return rv;
 }
-*/
 
 /*
 intmax_t

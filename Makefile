@@ -1,12 +1,12 @@
 # WILL NOT BE SUPPORTED: ps
 
-# TBD: chio db flock infocmp ipcs ipcrm lock logger mt nbperf stat time touch tsort uname
-# uuidgen vgrind whereis xinstall xlint
+# TBD: chio db flock iconv infocmp ipcs ipcrm lock logger mt nbperf
+# stat time touch tsort uname uuidgen vgrind whereis xinstall xlint
 
 # NET: ftp rdist rup rwho rwall ruptime rusers rlogin rsh
 
 #PROJECTS = bdes csh db ksh rcmd rcp sh sync asa at checknr chflags	\
-  crunch du gcore getaddrinfo getconf getent hexdump iconv	\
+  crunch du gcore getaddrinfo getconf getent \
   locate
 
 PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
@@ -15,7 +15,7 @@ PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   domainname echo \
   ed env error \
   expand expr false fgen find fmt fold fpr from fsplit getopt grep \
-  head hostname id indent join jot kill \
+  head hexdump hostname id indent join jot kill \
   lam leave ln logname look lorder ls m4 machine mkdep mkdir mkfifo mkstr \
   mktemp menuc msgc mv nice nl \
   nohup paste patch pax pr printenv \

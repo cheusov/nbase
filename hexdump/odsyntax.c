@@ -49,7 +49,8 @@ __RCSID("$NetBSD: odsyntax.c,v 1.28 2010/11/27 20:46:38 christos Exp $");
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <util.h>
+
+#include "mkc_efun.h"
 
 #include "hexdump.h"
 

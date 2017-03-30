@@ -53,9 +53,10 @@ __RCSID("$NetBSD: display.c,v 1.22 2013/10/18 20:19:03 christos Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <util.h>
 
 #include "hexdump.h"
+
+#include "mkc_efun.h"
 
 enum _vflag vflag = FIRST;
 
