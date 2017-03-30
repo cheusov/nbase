@@ -45,6 +45,17 @@ __RCSID("$NetBSD: flock.c,v 1.9.4.1 2014/08/30 14:06:55 martin Exp $");
 #include <paths.h>
 #include <limits.h>
 #include <time.h>
+#include <stdarg.h>
+#include <sys/file.h>
+
+#include "mkc_strlcpy.h"
+#include "mkc_strlcat.h"
+#include "mkc_progname.h"
+#include "mkc_macro.h"
+
+#ifndef timespecclear
+#define	timespecclear(tsp)	(tsp)->tv_sec = (time_t)((tsp)->tv_nsec = 0L)
+#endif
 
 static struct option flock_longopts[] = {
 	{ "debug",		no_argument,		0, 'd' },
