@@ -111,7 +111,8 @@ write_menu_file(char *initcode)
 	FILE *out_file, *sys_file;
 	int i, j;
 	char hname[1024], cname[1024], sname[1024];
-	char *sys_prefix, *tmpstr;
+	const char *sys_prefix;
+	char *tmpstr;
 	int name_is_code, nlen, ch;
 	optn_info *toptn;
 

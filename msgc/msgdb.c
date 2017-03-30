@@ -99,7 +99,7 @@ write_msg_file ()
 	char hname[1024];
 	char cname[1024];
 	char sname[1024];
-	char *sys_prefix;
+	const char *sys_prefix;
 
 	int nlen;
 	int ch;

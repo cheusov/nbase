@@ -60,8 +60,8 @@
 
 EXTERN char *prog_name;
 EXTERN char *src_name;
-EXTERN char *out_name INIT("menu_defs");
-EXTERN char *sys_name INIT("menu_sys.def");
+EXTERN const char *out_name INIT("menu_defs");
+EXTERN const char *sys_name INIT("menu_sys.def");
 
 EXTERN int do_dynamic INIT(0);
 EXTERN int do_msgxlat INIT(0);
