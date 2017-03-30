@@ -38,7 +38,12 @@
 #include <sys/cdefs.h>
 __RCSID("$NetBSD: nbperf.c,v 1.5 2013/01/31 16:32:02 joerg Exp $");
 
+#if HAVE_HEADER_SYS_ENDIAN_H
 #include <sys/endian.h>
+#elif HAVE_HEADER_ENDIAN_H
+#include <endian.h>
+#endif
+
 #include <err.h>
 #include <errno.h>
 #include <inttypes.h>
@@ -46,6 +51,8 @@ __RCSID("$NetBSD: nbperf.c,v 1.5 2013/01/31 16:32:02 joerg Exp $");
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
+
+#include "mkc_progname.h"
 
 #include "nbperf.h"
 
