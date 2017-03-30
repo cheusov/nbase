@@ -43,6 +43,8 @@ __RCSID("$NetBSD: getconf.c,v 1.35 2013/12/19 19:11:50 rmind Exp $");
 #include <unistd.h>
 #include <string.h>
 
+#include "mkc_progname.h"
+
 struct conf_variable
 {
   const char *name;

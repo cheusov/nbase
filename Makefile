@@ -7,15 +7,14 @@
 # NET: ftp rdist rup rwho rwall ruptime rusers rlogin rsh
 
 #PROJECTS = bdes csh db ksh rcmd rcp sh sync asa at checknr chflags	\
-  crunch du gcore getaddrinfo getconf \
-  locate
+  crunch du gcore getaddrinfo  locate
 
 PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   cmp col colcrt colrm column comm compress cp csplit \
   ctags cut deroff dd dirname \
   domainname echo \
   ed env error \
-  expand expr false fgen find fmt fold fpr from fsplit getopt grep \
+  expand expr false fgen find fmt fold fpr from fsplit getconf getopt grep \
   head hexdump hostname id indent join jot kill \
   lam leave ln logname look lorder ls m4 machine mkdep mkdir mkfifo mkstr \
   mktemp menuc msgc mv nice nl \
