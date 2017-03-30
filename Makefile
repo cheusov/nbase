@@ -1,11 +1,11 @@
 # WILL NOT BE SUPPORTED: ps
-# TBD: chio db flock infocmp mt touch tsort whereis xinstall xlint 
-# NET: ftp rdist rup rwho rwall ruptime rusers rlogin rsh 
+# TBD: chio db flock infocmp mt touch tsort vgrind whereis xinstall xlint
+# NET: ftp rdist rup rwho rwall ruptime rusers rlogin rsh
 
 #PROJECTS = bdes csh db ksh rcmd rcp sh sync asa at checknr chflags	\
   crunch du gcore getaddrinfo getconf getent hexdump iconv ipcrm ipcs	\
   locate lock logger lorder machine menuc msgc nbperf stat time		\
-  timeout uname uuidgen vgrind 
+  timeout uname uuidgen
 
 PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   cmp col colcrt colrm column comm compress cp csplit \

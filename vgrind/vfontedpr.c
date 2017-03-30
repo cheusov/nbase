@@ -54,6 +54,9 @@ __RCSID("$NetBSD: vfontedpr.c,v 1.15 2014/07/15 13:17:15 christos Exp $");
 #include <stdbool.h>
 #include <string.h>
 #include <stdio.h>
+
+#include "mkc_strlcpy.h"
+
 #include "pathnames.h"
 #include "extern.h"
 
