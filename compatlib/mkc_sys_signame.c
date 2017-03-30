@@ -10,6 +10,8 @@
 
 #ifndef HAVE_VAR_SYS_SIGNAME_SIGNAL_H
 
+const int sys_nsig = NSIG;
+
 const char ** sys_signame__ (void)
 {
 	static const char *arr [NSIG];

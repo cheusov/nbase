@@ -10,6 +10,7 @@
 #include <signal.h>
 
 #ifndef HAVE_VAR_SYS_SIGNAME_SIGNAL_H
+extern const int sys_nsig;
 extern const char * * sys_signame__ (void);
 #define sys_signame sys_signame__()
 #endif

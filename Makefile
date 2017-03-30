@@ -7,8 +7,7 @@
 
 #PROJECTS = bdes csh db ksh rcmd rcp sh sync asa at checknr chflags	\
   crunch du gcore getaddrinfo getconf getent hexdump iconv ipcrm ipcs	\
-  locate lock logger lorder machine menuc msgc nbperf stat time		\
-  timeout
+  locate lock logger lorder machine menuc msgc nbperf stat time
 
 PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   cmp col colcrt colrm column comm compress cp csplit \
@@ -20,7 +19,7 @@ PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   lam leave ln logname look ls m4 mkdep mkdir mkfifo mkstr mktemp mv nice nl \
   nohup paste patch pax pr printenv \
   printf pwd qsubst renice rev rm rmdir rs script sdiff sed seq shar shlock shuffle \
-  sleep soelim sort split stty tabs tail tee testcmd tr true tty \
+  sleep soelim sort split stty tabs tail tee testcmd timeout tr true tty \
   ul unexpand unifdef units uniq unvis uudecode uuencode \
   vis what whois wc xargs xstr yes
 
