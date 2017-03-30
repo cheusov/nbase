@@ -1,5 +1,5 @@
 #	$NetBSD: Makefile,v 1.11 2014/06/11 14:57:55 joerg Exp $
 
-PROG=	ipcs
+PROG =	ipcs
 
-.include <bsd.prog.mk>
+.include <mkc.prog.mk>

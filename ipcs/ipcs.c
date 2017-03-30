@@ -57,7 +57,7 @@
 #include <sys/cdefs.h>
 #include <sys/param.h>
 #include <sys/sysctl.h>
-#include <sys/inttypes.h>
+#include <inttypes.h>
 #include <sys/ipc.h>
 #include <sys/sem.h>
 #include <sys/shm.h>
@@ -74,6 +74,10 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
+
+#include "mkc_strlcpy.h"
+#include "mkc_progname.h"
+#include "mkc_pwdgrp.h"
 
 #define	SHMINFO		1
 #define	SHMTOTAL	2

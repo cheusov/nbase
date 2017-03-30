@@ -46,6 +46,8 @@
 #include <signal.h>
 #include <sys/sysctl.h>
 
+#include "mkc_progname.h"
+
 #define IPC_TO_STR(x) (x == 'Q' ? "msq" : (x == 'M' ? "shm" : "sem"))
 #define IPC_TO_STRING(x) (x == 'Q' ? "message queue" : \
 	(x == 'M' ? "shared memory segment" : "semaphore"))
