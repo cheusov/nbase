@@ -45,6 +45,7 @@ __RCSID("$NetBSD: sync.c,v 1.13 2008/07/20 00:52:40 lukem Exp $");
 
 #include <stdlib.h>
 #include <unistd.h>
+#include "mkc_progname.h"
 
 int main(int, char *[]);
 

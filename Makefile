@@ -6,7 +6,7 @@
 
 # NET: ftp rdist rup rwho rwall ruptime rusers rlogin rsh
 
-#PROJECTS = bdes csh db ksh rcmd rcp sh sync asa at checknr chflags	\
+#PROJECTS = bdes csh db ksh rcmd rcp sh asa at checknr chflags	\
   crunch locate
 
 PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
@@ -20,7 +20,7 @@ PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   mktemp menuc msgc mv nice nl \
   nohup paste patch pax pr printenv \
   printf pwd qsubst renice rev rm rmdir rs script sdiff sed seq shar shlock shuffle \
-  sleep soelim sort split stty tabs tail tee testcmd timeout tr true tty \
+  sleep soelim sort split stty sync tabs tail tee testcmd timeout tr true tty \
   ul unexpand unifdef units uniq unvis uudecode uuencode \
   vis what whois wc xargs xstr yes
 
