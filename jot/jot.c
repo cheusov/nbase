@@ -58,6 +58,9 @@ __RCSID("$NetBSD: jot.c,v 1.25 2009/04/12 11:19:18 lukem Exp $");
 #include <time.h>
 #include <unistd.h>
 
+#include "mkc_progname.h"
+#include "mkc_strlcpy.h"
+
 #define	REPS_DEF	100
 #define	BEGIN_DEF	1
 #define	ENDER_DEF	100
