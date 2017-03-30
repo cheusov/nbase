@@ -1,12 +1,13 @@
 # WILL NOT BE SUPPORTED: ps
 
 # TBD: chio db flock iconv infocmp ipcs ipcrm lock logger mt nbperf
-# stat time touch tsort uname uuidgen vgrind whereis xinstall xlint
+# getent stat time touch tsort uname uuidgen vgrind whereis xinstall
+# xlint
 
 # NET: ftp rdist rup rwho rwall ruptime rusers rlogin rsh
 
 #PROJECTS = bdes csh db ksh rcmd rcp sh sync asa at checknr chflags	\
-  crunch du gcore getaddrinfo getconf getent \
+  crunch du gcore getaddrinfo getconf \
   locate
 
 PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
