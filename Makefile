@@ -7,7 +7,7 @@
   sh sync								\
 									\
 									\
-  asa at checknr chflags cleantagsCVS/ cleantagscleantags.sh colcrt	\
+  asa at checknr chflags cleantagsCVS/ cleantagscleantags.sh 	\
   crunch du fgen flock fpr from fsplit ftp gcore	\
   getaddrinfo getconf getent hexdump iconv indent	\
   infocmp ipcrm ipcs locate lock logger	\
@@ -20,7 +20,7 @@
   whois xinstall xlint
 
 PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
-  cmp col colrm column comm compress cp csplit \
+  cmp col colcrt colrm column comm compress cp csplit \
   ctags cut deroff dd dirname \
   domainname echo \
   ed env error \
