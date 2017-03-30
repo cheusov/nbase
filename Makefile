@@ -1,23 +1,11 @@
-# will not be supported: chio db infocmp mt ps 
+# WILL NOT BE SUPPORTED: ps
+# TBD: chio db flock infocmp mt touch
+# NET: ftp rdist rup rwho rwall ruptime rusers rlogin rsh 
 
-#PROJECTS = bdes							\
-  csh									\
-  db									\
-  ksh rcmd rcp								\
-  sh sync								\
-									\
-									\
-  asa at checknr chflags cleantagsCVS/ cleantagscleantags.sh 	\
-  crunch du flock ftp gcore	\
-  getaddrinfo getconf getent hexdump iconv 	\
-  ipcrm ipcs locate lock logger	\
-  lorder machine menuc msgc nbperf	\
-  rdist \
-  rlogin rsh rup ruptime rusers rwall rwho script sdiff \
-  stat \
-  time timeout touch tsort uname \
-  uuidgen vgrind whereis	\
-  whois xinstall xlint
+#PROJECTS = bdes csh db ksh rcmd rcp sh sync asa at checknr chflags	\
+  crunch du gcore getaddrinfo getconf getent hexdump iconv ipcrm ipcs	\
+  locate lock logger lorder machine menuc msgc nbperf stat time		\
+  timeout tsort uname uuidgen vgrind whereis whois xinstall xlint
 
 PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
   cmp col colcrt colrm column comm compress cp csplit \
