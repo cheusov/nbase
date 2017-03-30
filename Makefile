@@ -6,10 +6,10 @@
 
 # NET: ftp rdist rup rwho rwall ruptime rusers rlogin rsh
 
-#PROJECTS = bdes csh db ksh rcmd rcp sh asa at checknr chflags	\
+#PROJECTS = bdes csh db ksh rcmd rcp sh at checknr chflags	\
   crunch locate
 
-PROJECTS  =	apply nawk/bin banner basename cat chmod cleantags \
+PROJECTS  =	apply asa nawk/bin banner basename cat chmod cleantags \
   cmp col colcrt colrm column comm compress cp csplit \
   ctags cut deroff dd dirname \
   domainname du echo \
