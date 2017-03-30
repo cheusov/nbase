@@ -53,6 +53,8 @@ __RCSID("$NetBSD: whereis.c,v 1.21 2008/10/17 10:53:26 apb Exp $");
 #include <string.h>
 #include <unistd.h>
 
+#include "mkc_progname.h"
+
 static void usage(void) __dead;
 
 int
