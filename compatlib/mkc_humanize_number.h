@@ -22,8 +22,8 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _MKC_GETBSIZE_H_
-#define _MKC_GETBSIZE_H_
+#ifndef _MKC_HUMANIZE_NUMBER_H_
+#define _MKC_HUMANIZE_NUMBER_H_
 
 #include <unistd.h>
 #include <stdint.h>
@@ -37,4 +37,4 @@ int humanize_number(char *buf, size_t len, int64_t bytes,
 int dehumanize_number(const char *str, int64_t *result);
 #endif
 
-#endif // _MKC_GETBSIZE_H_
+#endif // _MKC_HUMANIZE_NUMBER_H_

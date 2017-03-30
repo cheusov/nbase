@@ -55,12 +55,15 @@ __RCSID("$NetBSD: du.c,v 1.36 2012/03/11 11:23:20 shattered Exp $");
 #include <errno.h>
 #include <fts.h>
 #include <inttypes.h>
-#include <util.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <limits.h>
+
+#include "mkc_humanize_number.h"
+#include "mkc_getbsize.h"
+#include "mkc_macro.h"
 
 /* Count inodes or file size */
 #define	COUNT	(iflag ? 1 : p->fts_statp->st_blocks)
@@ -202,7 +205,11 @@ main(int argc, char *argv[])
 				/* nothing */
 				break;
 			default:
+#ifdef UF_NODUMP
 				if (p->fts_statp->st_flags & UF_NODUMP) {
+#else
+				if (0) {
+#endif
 					fts_set(fts, p, FTS_SKIP);
 					continue;
 				}
