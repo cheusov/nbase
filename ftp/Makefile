@@ -1,6 +1,3 @@
-#	$NetBSD: Makefile,v 1.36 2012/12/21 18:07:36 christos Exp $
-#	from: @(#)Makefile	8.2 (Berkeley) 4/3/94
-
 .include <bsd.own.mk>
 
 USE_FORT?= yes	# network client

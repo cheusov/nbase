@@ -1,5 +1,3 @@
-#	$NetBSD: Makefile,v 1.11 2007/05/28 12:06:17 tls Exp $
-
 .include <bsd.own.mk>
 
 USE_FORT?=yes	# setuid

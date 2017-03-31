@@ -1,5 +1,3 @@
-#	$NetBSD: Makefile,v 1.14 2009/10/29 14:36:14 christos Exp $
-
 PROG =		menuc
 SRCS =		main.c parse.y scan.l avl.c mdb.c util.c
 CPPFLAGS+=	-I. -I${.CURDIR} -D_PATH_DEFSYSPREFIX='"${_PATH_DEFSYSPREFIX}"'

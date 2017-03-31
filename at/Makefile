@@ -1,5 +1,3 @@
-#	$NetBSD: Makefile,v 1.11 2009/04/14 22:15:17 lukem Exp $
-
 USE_FORT?=	yes	# setuid
 
 PROG=		at

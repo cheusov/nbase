@@ -1,6 +1,3 @@
-#	$NetBSD: Makefile,v 1.22 2014/07/15 13:17:15 christos Exp $
-#	@(#)Makefile	8.1 (Berkeley) 6/9/93
-
 PROG =	vfontedpr
 SRCS =	regexp.c vfontedpr.c
 MAN =	vgrind.1 vgrindefs.5
