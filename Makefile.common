@@ -27,6 +27,7 @@ MKC_CHECK_MEMBERS +=	\
 
 MKC_CHECK_HEADERS += sys/extattr.h sys/event.h
 
+MKC_CHECK_FUNCS4 += lchmod:sys/stat.h
 MKC_CHECK_FUNCS2 += fcpxattr:sys/extattr.h funopen:stdio.h
 MKC_CHECK_FUNCS0 += arc4random:stdlib.h
 

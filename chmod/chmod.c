@@ -159,10 +159,16 @@ done:	argv += optind;
 		}
 	} else if (!hflag)
 		fts_options |= FTS_COMFOLLOW;
-	if (hflag)
+	if (hflag) {
+#if HAVE_FUNC4_LCHMOD_SYS_STAT_H
 		change_mode = lchmod;
-	else
+#else
+		fprintf(stderr, "lchmod(2) isnot supported\n");
+		exit(EXIT_FAILURE);
+#endif
+	} else {
 		change_mode = chmod;
+	}
 
 	if (reference == NULL) {
 		mode = *argv++;

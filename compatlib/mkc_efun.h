@@ -36,6 +36,7 @@
 #else
 #  include "mkc_efun.h"
 
+#include <stdarg.h>
 #include <stdint.h>
 #include <stdio.h>
 
@@ -62,7 +63,7 @@ size_t estrlcat(char *dst, const char *src, size_t len);
 
 size_t estrlcpy(char *dst, const char *src, size_t len);
 
-int evasprintf(char ** /*__restrict*/ str, const char * /*__restrict*/ fmt, va_list ap);
+int evasprintf(char **__restrict str, const char *__restrict fmt, va_list ap);
 
 //__END_DECLS
 
