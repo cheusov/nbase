@@ -31,8 +31,8 @@
  *	@(#)vis.h	8.1 (Berkeley) 6/2/93
  */
 
-#ifndef _VIS_H_
-#define	_VIS_H_
+#ifndef _MKC_VIS_H_
+#define _MKC_VIS_H_
 
 #if HAVE_HEADER_VIS_H
 #include <vis.h>
@@ -112,8 +112,8 @@ int	strnunvis(char *, size_t, const char *);
 int	strunvisx(char *, const char *, int);
 int	strnunvisx(char *, size_t, const char *, int);
 
-int unvis(char *, int, int *, int);
+int	unvis(char *, int, int *, int);
 
 #endif /* HAVE_HEADER_VIS_H */
 
-#endif /* !_VIS_H_ */
+#endif /* !_MKC_VIS_H_ */

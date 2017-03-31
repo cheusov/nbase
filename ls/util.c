@@ -55,6 +55,8 @@ __RCSID("$NetBSD: util.c,v 1.34 2011/08/29 14:44:21 joerg Exp $");
 #include <wchar.h>
 #include <wctype.h>
 
+#include "mkc_vis.h"
+
 #include "ls.h"
 #include "extern.h"
 
