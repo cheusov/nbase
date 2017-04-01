@@ -160,10 +160,10 @@ done:	argv += optind;
 	} else if (!hflag)
 		fts_options |= FTS_COMFOLLOW;
 	if (hflag) {
-#if HAVE_FUNC4_LCHMOD_SYS_STAT_H
+#if HAVE_FUNC2_LCHMOD_SYS_STAT_H
 		change_mode = lchmod;
 #else
-		fprintf(stderr, "lchmod(2) isnot supported\n");
+		fprintf(stderr, "lchmod(2) is not supported\n");
 		exit(EXIT_FAILURE);
 #endif
 	} else {
