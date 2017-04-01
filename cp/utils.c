@@ -74,6 +74,13 @@ __RCSID("$NetBSD: utils.c,v 1.42 2013/12/11 06:00:11 dholland Exp $");
 #define	MMAP_MAX_SIZE	(8 * 1048576)
 #define	MMAP_MAX_WRITE	(64 * 1024)
 
+#if !HAVE_FUNC2_LCHMOD_SYS_STAT_H
+static int lchmod(const char *path, mode_t mode)
+{
+    return 0;
+}
+#endif
+
 int
 set_utimes(const char *file, struct stat *fs)
 {
@@ -82,8 +89,8 @@ set_utimes(const char *file, struct stat *fs)
     TIMESPEC_TO_TIMEVAL(&tv[0], &fs->st_atimespec);
     TIMESPEC_TO_TIMEVAL(&tv[1], &fs->st_mtimespec);
 
-    if (lutimes(file, tv)) {
-	warn("lutimes: %s", file);
+    if (utimes(file, tv)) {
+	warn("utimes: %s", file);
 	return (1);
     }
     return (0);
@@ -113,6 +120,7 @@ copy_file(FTSENT *entp, int dne)
 	int ch, checkch, from_fd, rcount, rval, to_fd, tolnk, wcount;
 	char *p;
 	size_t ptotal = 0;
+	int islink;
 	
 	if ((from_fd = open(entp->fts_path, O_RDONLY, 0)) == -1) {
 		warn("%s", entp->fts_path);
@@ -307,7 +315,8 @@ copy_file(FTSENT *entp, int dne)
 		rval = 1;
 	}
 	/* set the mod/access times now after close of the fd */
-	if (pflag && set_utimes(to.p_path, fs)) { 
+	islink = S_ISLNK(fs->st_mode);
+	if (pflag && !islink && set_utimes(to.p_path, fs)) {
 	    rval = 1;
 	}
 	return (rval);
@@ -377,14 +386,10 @@ int
 setfile(struct stat *fs, int fd)
 {
 	int rval;
-#if HAVE_MEMBER_STRUCT_STAT_ST_FLAGS_SYS_STAT_H
 	int islink;
-#endif
 
 	rval = 0;
-#if HAVE_MEMBER_STRUCT_STAT_ST_FLAGS_SYS_STAT_H
 	islink = S_ISLNK(fs->st_mode);
-#endif
 	fs->st_mode &= S_ISUID | S_ISGID | S_IRWXU | S_IRWXG | S_IRWXO;
 
 	/*
@@ -428,7 +433,7 @@ setfile(struct stat *fs, int fd)
 #endif /* HAVE_MEMBER_STRUCT_STAT_ST_FLAGS_SYS_STAT_H */
 
 	/* if fd is non-zero, caller must call set_utimes() after close() */
-	if (fd == 0 && set_utimes(to.p_path, fs))
+	if (fd == 0 && !islink && set_utimes(to.p_path, fs))
 	    rval = 1;
 	return (rval);
 }
