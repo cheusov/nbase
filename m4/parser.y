@@ -26,6 +26,7 @@ __RCSID("$NetBSD: parser.y,v 1.2 2009/10/26 21:11:28 christos Exp $");
 extern int32_t end_result;
 extern int yylex(void);
 extern int yyerror(const char *);
+ int yyparse(void);
 %}
 %token NUMBER
 %token ERROR
