@@ -1,6 +1,3 @@
-#	$NetBSD: Makefile,v 1.100.2.1 2015/06/04 07:35:25 msaitoh Exp $
-#	@(#)Makefile	8.4 (Berkeley) 5/5/95
-
 .include <bsd.own.mk>
 
 YHEADER=1

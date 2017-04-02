@@ -1,7 +1,3 @@
-#	$NetBSD: Makefile,v 1.5 2011/08/17 15:32:20 christos Exp $
-#	$FreeBSD: head/usr.bin/grep/Makefile 210389 2010-07-22 19:11:57Z gabor $
-#	$OpenBSD: Makefile,v 1.6 2003/06/25 15:00:04 millert Exp $
-
 PROG =	grep
 SRCS =	fastgrep.c file.c grep.c queue.c util.c
 

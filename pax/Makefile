@@ -1,6 +1,3 @@
-#	$NetBSD: Makefile,v 1.39 2010/04/23 19:41:02 joerg Exp $
-#       @(#)Makefile	8.1 (Berkeley) 5/31/93
-
 PROG=   pax
 SRCS=	ar_io.c ar_subs.c buf_subs.c file_subs.c ftree.c\
 	gen_subs.c getoldopt.c options.c pat_rep.c pax.c sel_subs.c tables.c\

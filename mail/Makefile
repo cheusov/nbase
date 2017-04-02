@@ -1,6 +1,3 @@
-#	$NetBSD: Makefile,v 1.36 2014/07/05 19:22:04 dholland Exp $
-#	@(#)Makefile	8.3 (Berkeley) 4/20/95
-
 .include <bsd.own.mk>
 
 USE_FORT?= yes	# data-driven bugs?
