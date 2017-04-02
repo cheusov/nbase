@@ -1,5 +1,5 @@
 /*
- * Copyright © 2015 Aleksey Cheusov <vle@gmx.net>
+ * Copyright 2015-2017 Aleksey Cheusov <vle@gmx.net>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -28,7 +28,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-#ifndef HAVE_FUNC2_STRMODE_UNISTD_H
+#if !defined(HAVE_FUNC2_STRMODE_UNISTD_H) && !defined(HAVE_FUNC2_STRMODE_STRING_H)
 void strmode(mode_t mode, char *bp);
 #endif
 
