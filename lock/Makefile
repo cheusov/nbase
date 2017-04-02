@@ -1,6 +1,3 @@
-#	$NetBSD: Makefile,v 1.14 2008/04/06 09:54:37 lukem Exp $
-#	@(#)Makefile	8.1 (Berkeley) 6/6/93
-
 .include <bsd.own.mk>
 
 USE_FORT?= yes	# setuid

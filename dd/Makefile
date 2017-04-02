@@ -1,6 +1,3 @@
-#	$NetBSD: Makefile,v 1.17.12.1 2015/03/26 11:08:43 martin Exp $
-#	@(#)Makefile	8.1 (Berkeley) 5/31/93
-
 #.include <bsd.own.mk>
 
 #RUMPPRG=dd

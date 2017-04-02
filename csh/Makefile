@@ -1,6 +1,3 @@
-#	$NetBSD: Makefile,v 1.41 2014/07/05 23:12:33 dholland Exp $
-#	@(#)Makefile	8.1 (Berkeley) 5/31/93
-#
 # C Shell with process control; VM/UNIX VAX Makefile
 # Bill Joy UC Berkeley; Jim Kulp IIASA, Austria
 #

@@ -1,5 +1,3 @@
-#	$NetBSD: Makefile,v 1.30.22.1 2015/05/14 08:15:47 snj Exp $
-
 WARNS=3
 CWARNFLAGS.clang+=	-Wno-error=cast-qual
 
