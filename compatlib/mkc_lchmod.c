@@ -37,6 +37,8 @@
 #include <errno.h>
 #include <unistd.h>
 
+#include "mkc_lchmod.h"
+
 int
 lchmod(const char *path, mode_t mode)
 {
