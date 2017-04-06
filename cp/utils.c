@@ -67,19 +67,13 @@ __RCSID("$NetBSD: utils.c,v 1.42 2013/12/11 06:00:11 dholland Exp $");
 #include <string.h>
 #include <unistd.h>
 
+#include "mkc_lchmod.h"
 #include "mkc_macro.h"
 
 #include "extern.h"
 
 #define	MMAP_MAX_SIZE	(8 * 1048576)
 #define	MMAP_MAX_WRITE	(64 * 1024)
-
-#if !HAVE_FUNC2_LCHMOD_SYS_STAT_H
-static int lchmod(const char *path, mode_t mode)
-{
-    return 0;
-}
-#endif
 
 int
 set_utimes(const char *file, struct stat *fs)

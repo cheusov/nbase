@@ -62,6 +62,8 @@ __RCSID("$NetBSD: chmod.c,v 1.38 2012/10/22 18:00:46 christos Exp $");
 #include <unistd.h>
 #include <getopt.h>
 
+#include "mkc_lchmod.h"
+
 __dead static void	usage(void);
 
 struct option chmod_longopts[] = {
@@ -160,12 +162,7 @@ done:	argv += optind;
 	} else if (!hflag)
 		fts_options |= FTS_COMFOLLOW;
 	if (hflag) {
-#if HAVE_FUNC2_LCHMOD_SYS_STAT_H
 		change_mode = lchmod;
-#else
-		fprintf(stderr, "lchmod(2) is not supported\n");
-		exit(EXIT_FAILURE);
-#endif
 	} else {
 		change_mode = chmod;
 	}
