@@ -1,2 +1,12 @@
 * Support for all POSIX utils
 * Fix check for b64_{pton,ntop} presense
+* failures on OpenBSD:
+  - find(O_CLOEXEC)
+  - getconf(missing defines?/headers?)
+  - mkdep(dprintf)
+  - mv(asm-like)
+  - pax(lchmod)
+  - rm(FTS_WHITEOUT,FTS_W)
+  - script(pty.h,openpty,logn_tty)
+  - uuencode(bswap64)
+  - vis(strsenvisx)
