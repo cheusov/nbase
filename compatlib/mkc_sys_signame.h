@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2015 by Aleksey Cheusov
+ Copyright (c) 2015-2017 by Aleksey Cheusov
 
  See LICENSE file in the distribution.
 */
@@ -9,8 +9,11 @@
 
 #include <signal.h>
 
-#ifndef HAVE_VAR_SYS_SIGNAME_SIGNAL_H
+#if !HAVE_VAR_SYS_NSIG_SIGNAL_H
 extern const int sys_nsig;
+#endif
+
+#if !HAVE_VAR_SYS_SIGNAME_SIGNAL_H
 extern const char * * sys_signame__ (void);
 #define sys_signame sys_signame__()
 #endif

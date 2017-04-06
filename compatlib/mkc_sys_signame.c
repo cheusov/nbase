@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2015 by Aleksey Cheusov
+ Copyright (c) 2015-2017 by Aleksey Cheusov
 
  See LICENSE file in the distribution.
 */
@@ -8,10 +8,11 @@
 
 #include <string.h>
 
-#ifndef HAVE_VAR_SYS_SIGNAME_SIGNAL_H
-
+#ifndef HAVE_VAR_SYS_NSIG_SIGNAL_H
 const int sys_nsig = NSIG;
+#endif
 
+#ifndef HAVE_VAR_SYS_SIGNAME_SIGNAL_H
 const char ** sys_signame__ (void)
 {
 	static const char *arr [NSIG];
@@ -216,5 +217,4 @@ const char ** sys_signame__ (void)
 
 	return arr;
 }
-
 #endif /* HAVE_VAR_SYS_SIGNAME_SIGNAL_H */

@@ -55,6 +55,7 @@ __RCSID("$NetBSD: expr.y,v 1.38 2012/03/15 02:02:20 joerg Exp $");
 
 static const char * const *av;
 
+int yyparse(void);
 static void yyerror(const char *, ...) __dead;
 static int yylex(void);
 static int is_zero_or_null(const char *);

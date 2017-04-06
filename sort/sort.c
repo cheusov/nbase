@@ -366,7 +366,7 @@ main(int argc, char *argv[])
 		 * st is initialized above, when we create the
 		 * temporary spool file.
 		 */
-		if (lchmod(outfile, st.st_mode & ALLPERMS) != 0) {
+		if (chmod(outfile, st.st_mode & ALLPERMS) != 0) {
 			err(2, "cannot chmod %s: output left in %s",
 			    outpath, outfile);
 		}
