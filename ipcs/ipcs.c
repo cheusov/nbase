@@ -78,6 +78,7 @@
 #include "mkc_strlcpy.h"
 #include "mkc_progname.h"
 #include "mkc_pwdgrp.h"
+#include "mkc_bsd_getopt.h"
 
 #define	SHMINFO		1
 #define	SHMTOTAL	2
@@ -174,7 +175,7 @@ main(int argc, char *argv[])
 	int i;
 	time_t now;
 
-	while ((i = getopt(argc, argv, "MmQqSsabcoptT")) != -1)
+	while ((i = bsd_getopt(argc, argv, "MmQqSsabcoptT")) != -1)
 		switch (i) {
 		case 'M':
 			display |= SHMTOTAL;

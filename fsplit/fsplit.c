@@ -57,6 +57,7 @@ __RCSID("$NetBSD: fsplit.c,v 1.29 2013/01/23 20:39:46 riastradh Exp $");
 #include <unistd.h>
 
 #include "mkc_strlcpy.h"
+#include "mkc_bsd_getopt.h"
 
 /*
  *	usage:		fsplit [-e efile] ... [file]
@@ -121,7 +122,7 @@ main(int argc, char **argv)
 	int retval, i, ch;
 	char name[80];
 
-	while ((ch = getopt(argc, argv, "e:")) != -1) {
+	while ((ch = bsd_getopt(argc, argv, "e:")) != -1) {
 		switch (ch) {
 		    case 'e':
 			if (numextonly >= MAXEXTONLY) {

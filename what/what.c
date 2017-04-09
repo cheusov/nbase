@@ -47,6 +47,8 @@ __RCSID("$NetBSD: what.c,v 1.11 2011/09/06 18:45:49 joerg Exp $");
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "mkc_bsd_getopt.h"
+
 static void search(void);
 __dead static void usage(void);
 
@@ -65,7 +67,7 @@ main(int argc, char **argv)
 	(void)setlocale(LC_ALL, "");
 
 	matches = sflag = 0;
-	while ((c = getopt(argc, argv, "s")) != -1) {
+	while ((c = bsd_getopt(argc, argv, "s")) != -1) {
 		switch (c) {
 		case 's':
 			sflag = 1;

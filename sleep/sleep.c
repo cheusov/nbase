@@ -30,6 +30,7 @@
  */
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -82,7 +83,7 @@ main(int argc, char *argv[])
 
 	(void)signal(SIGALRM, alarmhandle);
 
-	while ((ch = getopt(argc, argv, "")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "")) != -1)
 		switch(ch) {
 		default:
 			usage();

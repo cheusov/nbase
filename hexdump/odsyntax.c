@@ -51,6 +51,7 @@ __RCSID("$NetBSD: odsyntax.c,v 1.28 2010/11/27 20:46:38 christos Exp $");
 #include <unistd.h>
 
 #include "mkc_efun.h"
+#include "mkc_bsd_getopt.h"
 
 #include "hexdump.h"
 
@@ -87,7 +88,7 @@ odsyntax(int argc, char ***argvp)
 
 	odmode = 1;
 	argv = *argvp;
-	while ((ch = getopt(argc, argv,
+	while ((ch = bsd_getopt(argc, argv,
 	    "A:aBbcDdeFfHhIij:LlN:Oot:vXx")) != -1)
 		switch (ch) {
 		case 'A':

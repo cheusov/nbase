@@ -50,6 +50,7 @@
 #include <unistd.h>
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #if defined(__RCSID) && !defined(__lint)
 __RCSID("$NetBSD: mktemp.c,v 1.12 2012/11/03 13:34:08 christos Exp $");
@@ -72,7 +73,7 @@ main(int argc, char **argv)
 	prefix = "mktemp";
 	name = NULL;
 
-	while ((c = getopt(argc, argv, "dp:qt:u")) != -1)
+	while ((c = bsd_getopt(argc, argv, "dp:qt:u")) != -1)
 		switch (c) {
 		case 'd':
 			dflag++;

@@ -66,6 +66,7 @@ __RCSID("$NetBSD: soelim.c,v 1.14 2008/07/21 14:19:26 lukem Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #define	STDIN_NAME	"-"
 
@@ -142,7 +143,7 @@ main(int argc, char *argv[])
 	initpath(&p);
 	addpath(&p, ".");
 
-	while ((c = getopt(argc, argv, "I:")) != -1)
+	while ((c = bsd_getopt(argc, argv, "I:")) != -1)
 		switch (c) {
 		case 'I':
 			addpath(&p, optarg);

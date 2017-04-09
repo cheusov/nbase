@@ -52,6 +52,7 @@ __RCSID("$NetBSD: tail.c,v 1.17 2013/01/31 23:09:06 wiz Exp $");
 #include <string.h>
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #include "extern.h"
 
@@ -108,7 +109,7 @@ main(int argc, char *argv[])
 
 	obsolete(argv);
 	style = NOTSET;
-	while ((ch = getopt(argc, argv, "Fb:c:fn:r")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "Fb:c:fn:r")) != -1)
 		switch(ch) {
 		case 'F':
 			fflag = 2;

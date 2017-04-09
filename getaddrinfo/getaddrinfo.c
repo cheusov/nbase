@@ -48,6 +48,8 @@ __RCSID("$NetBSD: getaddrinfo.c,v 1.4 2014/04/22 02:23:03 ginsbach Exp $");
 #include <unistd.h>
 #include <util.h>
 
+#include "mkc_bsd_getopt.h"
+
 #include "tables.h"
 
 static void	usage(void) __dead;
@@ -75,7 +77,7 @@ main(int argc, char **argv)
 	hints.ai_protocol = 0;
 	hints.ai_flags = 0;
 
-	while ((ch = getopt(argc, argv, "cf:nNp:Ps:t:")) != -1) {
+	while ((ch = bsd_getopt(argc, argv, "cf:nNp:Ps:t:")) != -1) {
 		switch (ch) {
 		case 'c':
 			hints.ai_flags |= AI_CANONNAME;

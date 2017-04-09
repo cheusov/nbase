@@ -50,6 +50,8 @@ __RCSID("$NetBSD: hexsyntax.c,v 1.14 2010/11/27 20:46:38 christos Exp $");
 #include <string.h>
 #include <unistd.h>
 
+#include "mkc_bsd_getopt.h"
+
 #include "hexdump.h"
 
 off_t skip;				/* bytes to skip */
@@ -61,7 +63,7 @@ hexsyntax(int argc, char ***argvp)
 	char *p, **argv;
 
 	argv = *argvp;
-	while ((ch = getopt(argc, argv, "bcCde:f:n:os:vx")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "bcCde:f:n:os:vx")) != -1)
 		switch (ch) {
 		case 'b':
 			add("\"%07.7_Ax\n\"");

@@ -69,7 +69,6 @@ __RCSID("$NetBSD: xinstall.c,v 1.117 2014/07/06 20:54:47 apb Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "mkc_vis.h"
 
 //#include <md5.h>
 //#include <rmd160.h>
@@ -85,6 +84,8 @@ __RCSID("$NetBSD: xinstall.c,v 1.117 2014/07/06 20:54:47 apb Exp $");
 #include "mkc_macro.h"
 #include "mkc_getsetmode.h"
 #include "mkc_pwdgrp.h"
+#include "mkc_bsd_getopt.h"
+#include "mkc_vis.h"
 
 #define STRIP_ARGS_MAX 32
 #define BACKUP_SUFFIX ".old"
@@ -156,7 +157,7 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 
 	iflags = 0;
-	while ((ch = getopt(argc, argv, "a:cbB:dD:f:g:h:l:m:M:N:o:prsS:T:U"))
+	while ((ch = bsd_getopt(argc, argv, "a:cbB:dD:f:g:h:l:m:M:N:o:prsS:T:U"))
 	    != -1)
 		switch((char)ch) {
 		case 'a':

@@ -28,6 +28,7 @@
  */
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -62,7 +63,7 @@ main(int argc, char **argv)
 	setprogname(*argv);
 	(void)setlocale(LC_ALL, "");
 
-	while ((ch = getopt(argc, argv, "-i")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "-i")) != -1)
 		switch((char)ch) {
 		case '-':			/* obsolete */
 		case 'i':

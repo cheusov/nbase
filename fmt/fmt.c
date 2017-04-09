@@ -56,6 +56,7 @@ __RCSID("$NetBSD: fmt.c,v 1.32 2012/06/30 21:31:15 christos Exp $");
 #include "mkc_fgetln.h"
 #include "mkc_progname.h"
 #include "mkc_macro.h"
+#include "mkc_bsd_getopt.h"
 
 /*
  * fmt -- format the concatenation of input files or standard input
@@ -117,7 +118,7 @@ main(int argc, char **argv)
 	setprogname(*argv);
 	(void)setlocale(LC_ALL, "");
 
-	while ((c = getopt(argc, argv, "Cg:m:rw:")) != -1)
+	while ((c = bsd_getopt(argc, argv, "Cg:m:rw:")) != -1)
 		switch (c) {
 		case 'C':
 			center++;

@@ -57,6 +57,8 @@ __RCSID("$NetBSD: chio.c,v 1.31 2011/08/29 14:51:17 joerg Exp $");
 #include <string.h>
 #include <unistd.h>
 
+#include "mkc_bsd_getopt.h"
+
 #include "defs.h"
 #include "pathnames.h"
 
@@ -140,7 +142,7 @@ main(int argc, char *argv[])
 	int ch, i;
 
 	setprogname(argv[0]);
-	while ((ch = getopt(argc, argv, "f:")) != -1) {
+	while ((ch = bsd_getopt(argc, argv, "f:")) != -1) {
 		switch (ch) {
 		case 'f':
 			changer_name = optarg;

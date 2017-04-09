@@ -50,6 +50,8 @@ __RCSID("$NetBSD: basename.c,v 1.15 2011/08/29 14:24:03 joerg Exp $");
 #include <string.h>
 #include <unistd.h>
 
+#include "mkc_bsd_getopt.h"
+
 __dead static void usage(void);
 
 int
@@ -60,7 +62,7 @@ main(int argc, char **argv)
 
 	setlocale(LC_ALL, "");
 
-	while ((ch = getopt(argc, argv, "")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "")) != -1)
 		switch (ch) {
 		case '?':
 		default:

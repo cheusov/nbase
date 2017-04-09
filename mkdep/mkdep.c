@@ -55,6 +55,7 @@ __RCSID("$NetBSD: mkdep.c,v 1.43 2013/03/05 21:57:47 christos Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #include "findcc.h"
 

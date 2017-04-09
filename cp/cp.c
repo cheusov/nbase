@@ -34,6 +34,7 @@
 
 #include "mkc_strlcpy.h"
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -119,7 +120,7 @@ main(int argc, char *argv[])
 	(void)setlocale(LC_ALL, "");
 
 	Hflag = Lflag = Pflag = Rflag = 0;
-	while ((ch = getopt(argc, argv, "HLNPRfailprv")) != -1) 
+	while ((ch = bsd_getopt(argc, argv, "HLNPRfailprv")) != -1) 
 		switch (ch) {
 		case 'H':
 			Hflag = 1;

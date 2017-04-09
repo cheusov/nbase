@@ -57,6 +57,7 @@ __RCSID("$NetBSD: head.c,v 1.23 2010/03/31 21:55:23 joerg Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 /*
  * head - give the first few lines of a stream or of each of a set of files
@@ -86,7 +87,7 @@ main(int argc, char *argv[])
 	obsolete(argv);
 	linecnt = 10;
 	bytecnt = 0;
-	while ((ch = getopt(argc, argv, "c:n:qv")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "c:n:qv")) != -1)
 		switch(ch) {
 		case 'c':
 			errno = 0;

@@ -55,6 +55,8 @@ __RCSID("$NetBSD: chflags.c,v 1.16 2011/08/29 14:05:08 joerg Exp $");
 #include <unistd.h>
 #include <util.h>
 
+#include "mkc_bsd_getopt.h"
+
 __dead static void	usage(void);
 
 int
@@ -69,7 +71,7 @@ main(int argc, char *argv[])
 	int (*change_flags)(const char *, u_long);
 
 	Hflag = Lflag = Rflag = hflag = 0;
-	while ((ch = getopt(argc, argv, "HLPRh")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "HLPRh")) != -1)
 		switch (ch) {
 		case 'H':
 			Hflag = 1;

@@ -113,6 +113,7 @@ __FBSDID("$FreeBSD: src/usr.bin/unifdef/unifdef.c,v 1.18 2003/07/01 15:30:43 fan
 #include <sys/stat.h>
 
 #include "mkc_strlcpy.h"
+#include "mkc_bsd_getopt.h"
 
 #include "stdbool.h"
 
@@ -272,7 +273,7 @@ main(int argc, char *argv[])
 	int opt;
 	struct stat isb, osb;
 
-	while ((opt = getopt(argc, argv, "i:D:U:I:o:cdeklst")) != -1)
+	while ((opt = bsd_getopt(argc, argv, "i:D:U:I:o:cdeklst")) != -1)
 		switch (opt) {
 		case 'i': /* treat stuff controlled by these symbols as text */
 			/*

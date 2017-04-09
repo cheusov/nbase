@@ -45,6 +45,7 @@ __RCSID("$NetBSD: seq.c,v 1.7 2010/05/27 08:40:19 dholland Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #define ZERO	'0'
 #define SPACE	' '
@@ -101,7 +102,7 @@ main(int argc, char *argv[])
          * least they trip up getopt(3).
          */
 	while ((optind < argc) && !numeric(argv[optind]) &&
-	    (c = getopt(argc, argv, "f:hs:t:w")) != -1) {
+	    (c = bsd_getopt(argc, argv, "f:hs:t:w")) != -1) {
 
 		switch (c) {
 		case 'f':	/* format (plan9) */

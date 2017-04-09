@@ -30,6 +30,7 @@
  */
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #include <sys/cdefs.h>
 #ifndef lint

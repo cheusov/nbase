@@ -55,6 +55,8 @@ __RCSID("$NetBSD: cmp.c,v 1.18 2011/08/29 14:14:11 joerg Exp $");
 #include <unistd.h>
 #include <locale.h>
 
+#include "mkc_bsd_getopt.h"
+
 #include "extern.h"
 
 int	lflag, sflag;
@@ -71,7 +73,7 @@ main(int argc, char *argv[])
 
 	setlocale(LC_ALL, "");
 
-	while ((ch = getopt(argc, argv, "ls")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "ls")) != -1)
 		switch (ch) {
 		case 'l':		/* print all differences */
 			lflag = 1;

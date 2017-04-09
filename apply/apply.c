@@ -53,6 +53,7 @@ __RCSID("$NetBSD: apply.c,v 1.17 2008/03/08 03:35:53 christos Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 static void	usage(void) __dead;
 static int	shell_system(const char *);
@@ -69,7 +70,7 @@ main(int argc, char *argv[])
 	debug = 0;
 	magic = '%';		/* Default magic char is `%'. */
 	nargs = -1;
-	while ((ch = getopt(argc, argv, "a:d0123456789")) != -1) {
+	while ((ch = bsd_getopt(argc, argv, "a:d0123456789")) != -1) {
 		switch (ch) {
 		case 'a':
 			if (optarg[1] != '\0')

@@ -50,6 +50,7 @@ __RCSID("$NetBSD: shuffle.c,v 1.21 2011/09/16 15:39:29 joerg Exp $");
 #include "mkc_fgetln.h"
 #include "mkc_progname.h"
 //#include "mkc_arc4random.h"
+#include "mkc_bsd_getopt.h"
 
 static size_t *get_shuffle(size_t);
 __dead static void usage(void);
@@ -169,7 +170,7 @@ main(int argc, char *argv[])
 	size_t nlines = 0, pick = 0, i;
 	char sep = '\n';
 	
-	while ((ch = getopt(argc, argv, "0f:n:p:")) != -1) {
+	while ((ch = bsd_getopt(argc, argv, "0f:n:p:")) != -1) {
 		switch(ch) {
 		case '0':
 			sep = '\0';

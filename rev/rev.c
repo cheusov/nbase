@@ -55,6 +55,7 @@ __RCSID("$NetBSD: rev.c,v 1.12 2011/09/16 15:39:28 joerg Exp $");
 
 #include "mkc_progname.h"
 #include "mkc_fgetwln.h"
+#include "mkc_bsd_getopt.h"
 
 __dead static void usage(void);
 
@@ -70,7 +71,7 @@ main(int argc, char *argv[])
 	setlocale(LC_ALL, "");
 	setprogname(argv[0]);
 
-	while ((ch = getopt(argc, argv, "")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "")) != -1)
 		switch(ch) {
 		case '?':
 		default:

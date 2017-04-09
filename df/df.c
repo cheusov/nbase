@@ -65,6 +65,8 @@ __RCSID("$NetBSD: df.c,v 1.90 2012/01/07 18:45:13 christos Exp $");
 
 #include <sys/statvfs.h>
 
+#include "mkc_bsd_getopt.h"
+
 static char	*getmntpt(const char *);
 static void	 prtstat(struct statvfs *, int);
 static int	 selected(const char *, size_t);
@@ -90,7 +92,7 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 	(void)setlocale(LC_ALL, "");
 
-	while ((ch = getopt(argc, argv, "aGghiklmnPt:")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "aGghiklmnPt:")) != -1)
 		switch (ch) {
 		case 'a':
 			aflag = 1;

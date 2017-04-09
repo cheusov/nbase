@@ -47,6 +47,8 @@ __RCSID("$NetBSD: main2.c,v 1.8 2010/01/14 16:58:27 christos Exp $");
 
 #include "lint2.h"
 
+#include "mkc_bsd_getopt.h"
+
 /* warnings for symbols which are declared but not defined or used */
 int	xflag;
 
@@ -102,7 +104,7 @@ main(int argc, char *argv[])
 	libs = xcalloc(1, sizeof (char *));
 
 	opterr = 0;
-	while ((c = getopt(argc, argv, "hpstxuC:HFl:")) != -1) {
+	while ((c = bsd_getopt(argc, argv, "hpstxuC:HFl:")) != -1) {
 		switch (c) {
 		case 's':
 			sflag = 1;

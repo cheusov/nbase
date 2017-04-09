@@ -68,6 +68,8 @@ __RCSID("$NetBSD: lock.c,v 1.33 2013/10/18 20:47:06 christos Exp $");
 #include <time.h>
 #include <unistd.h>
 
+#include "mkc_bsd_getopt.h"
+
 #ifdef USE_PAM
 #include <security/pam_appl.h>
 #include <security/openpam.h>	/* for openpam_ttyconv() */
@@ -124,7 +126,7 @@ main(int argc, char **argv)
 	sectimeout = TIMEOUT;
 	usemine = 0;
 
-	while ((ch = getopt(argc, argv, "npt:")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "npt:")) != -1)
 		switch ((char)ch) {
 		case 'n':
 			notimeout = 1;

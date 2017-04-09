@@ -69,6 +69,7 @@
 #include "mkc_efun.h"
 #include "mkc_progname.h"
 #include "mkc_macro.h"
+#include "mkc_bsd_getopt.h"
 
 #include "sort.h"
 #include "fsort.h"
@@ -157,7 +158,7 @@ main(int argc, char *argv[])
 	if (!(tmpdir = getenv("TMPDIR")))
 		tmpdir = _PATH_TMP;
 
-	while ((ch = getopt(argc, argv, SORT_OPTS)) != -1) {
+	while ((ch = bsd_getopt(argc, argv, SORT_OPTS)) != -1) {
 		switch (ch) {
 		case 'b':
 			fldtab[0].flags |= BI | BT;

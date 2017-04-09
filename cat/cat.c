@@ -33,6 +33,7 @@
  */
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #if HAVE_NBTOOL_CONFIG_H
 #include "nbtool_config.h"
@@ -82,7 +83,7 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 	(void)setlocale(LC_ALL, "");
 
-	while ((ch = getopt(argc, argv, "B:beflnstuv")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "B:beflnstuv")) != -1)
 		switch (ch) {
 		case 'B':
 			bsize = (size_t)strtol(optarg, NULL, 0);

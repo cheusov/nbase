@@ -68,6 +68,7 @@ __RCSID("$NetBSD: stat.c,v 1.38 2013/01/03 13:28:41 dsl Exp $");
 #include "mkc_strmode.h"
 #include "mkc_progname.h"
 #include "mkc_strlcpy.h"
+#include "mkc_bsd_getopt.h"
 
 #if HAVE_STRUCT_STAT_ST_FLAGS
 #define DEF_F "%#Xf "
@@ -232,7 +233,7 @@ main(int argc, char *argv[])
 		synopsis = "[-FlLnqrsx] [-f format] [-t timefmt] [file ...]";
 	}
 
-	while ((ch = getopt(argc, argv, options)) != -1)
+	while ((ch = bsd_getopt(argc, argv, options)) != -1)
 		switch (ch) {
 		case 'F':
 			lsF = 1;

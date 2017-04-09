@@ -46,6 +46,8 @@ __RCSID("$NetBSD: tty.c,v 1.8 2011/09/06 18:34:57 joerg Exp $");
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "mkc_bsd_getopt.h"
+
 __dead static void usage(void);
 
 int
@@ -55,7 +57,7 @@ main(int argc, char **argv)
 	char *t;
 
 	sflag = 0;
-	while ((ch = getopt(argc, argv, "s")) != -1) {
+	while ((ch = bsd_getopt(argc, argv, "s")) != -1) {
 		switch((char)ch) {
 		case 's':
 			sflag = 1;

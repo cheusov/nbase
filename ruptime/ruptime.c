@@ -55,6 +55,8 @@ __RCSID("$NetBSD: ruptime.c,v 1.15 2011/09/06 18:29:19 joerg Exp $");
 #include <tzfile.h>
 #include <unistd.h>
 
+#include "mkc_bsd_getopt.h"
+
 static struct hs {
 	struct	whod *hs_wd;
 	int	hs_nusers;
@@ -91,7 +93,7 @@ main(int argc, char **argv)
 	hsp = NULL;
 	aflg = 0;
 	cmp = hscmp;
-	while ((ch = getopt(argc, argv, "alrtu")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "alrtu")) != -1)
 		switch (ch) {
 		case 'a':
 			aflg = 1;

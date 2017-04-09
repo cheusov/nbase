@@ -55,6 +55,8 @@ __RCSID("$NetBSD: crunchgen.c,v 1.82 2014/01/04 08:58:51 martin Exp $");
 #include <sys/param.h>
 #include <sys/utsname.h>
 
+#include "mkc_bsd_getopt.h"
+
 #define CRUNCH_VERSION	"20050208"
 
 #define MAXLINELEN	16384
@@ -156,7 +158,7 @@ main(int argc, char **argv)
     if (argc > 0)
 	pname = argv[0];
 
-    while ((optc = getopt(argc, argv, "m:c:d:e:foqD:L:Ov:")) != -1) {
+    while ((optc = bsd_getopt(argc, argv, "m:c:d:e:foqD:L:Ov:")) != -1) {
 	switch(optc) {
 	case 'f':	readcache = 0; break;
 	case 'q':	verbose = 0; break;

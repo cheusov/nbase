@@ -47,6 +47,8 @@ __RCSID("$NetBSD: gcore.c,v 1.11 2008/04/28 20:24:13 martin Exp $");
 #include <unistd.h>
 #include <errno.h>
 
+#include "mkc_bsd_getopt.h"
+
 static void usage(void) __dead;
 
 static void
@@ -65,7 +67,7 @@ main(int argc, char **argv)
 	char *corename = NULL;
 	int corelen = 0;
 
-	while ((c = getopt(argc, argv, "c:")) != -1)
+	while ((c = bsd_getopt(argc, argv, "c:")) != -1)
 		switch (c) {
 		case 'c':
 			corename = optarg;

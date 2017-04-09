@@ -53,6 +53,8 @@ __RCSID("$NetBSD: comm.c,v 1.20 2012/09/05 04:01:23 simonb Exp $");
 #include <string.h>
 #include <unistd.h>
 
+#include "mkc_bsd_getopt.h"
+
 #define	MAXLINELEN	(LINE_MAX + 1)
 
 static const char *tabs[] = { "", "\t", "\t\t" };
@@ -77,7 +79,7 @@ main(int argc, char **argv)
 	file1done = file2done = 0;
 	flag1 = flag2 = flag3 = 1;
 	compare = strcoll;
-	while ((ch = getopt(argc, argv, "123f")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "123f")) != -1)
 		switch(ch) {
 		case '1':
 			flag1 = 0;

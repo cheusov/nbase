@@ -51,8 +51,10 @@ __RCSID("$NetBSD: vis.c,v 1.22 2013/02/20 17:04:45 christos Exp $");
 #include <limits.h>
 #include <unistd.h>
 #include <err.h>
+
 #include "mkc_vis.h"
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #include "extern.h"
 
@@ -71,7 +73,7 @@ main(int argc, char *argv[])
 	int ch;
 	int rval;
 
-	while ((ch = getopt(argc, argv, "bcde:F:fhlmnostw")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "bcde:F:fhlmnostw")) != -1)
 		switch((char)ch) {
 		case 'b':
 			eflags |= VIS_NOSLASH;

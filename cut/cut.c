@@ -61,6 +61,8 @@ __RCSID("$NetBSD: cut.c,v 1.29 2014/02/03 20:22:19 wiz Exp $");
 #include "mkc_efun.h"
 #include "mkc_fgetln.h"
 //#include "mkc_macro.h"
+#include "mkc_bsd_getopt.h"
+
 #define __unused
 
 static int bflag;
@@ -90,7 +92,7 @@ main(int argc, char *argv[])
 
 	/* Since we don't support multi-byte characters, the -c and -b
 	   options are equivalent, and the -n option is meaningless. */
-	while ((ch = getopt(argc, argv, "b:c:d:f:sn")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "b:c:d:f:sn")) != -1)
 		switch(ch) {
 		case 'b':
 			fcn = b_cut;

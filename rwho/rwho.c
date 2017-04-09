@@ -57,6 +57,8 @@ __RCSID("$NetBSD: rwho.c,v 1.19 2009/04/13 07:11:37 lukem Exp $");
 #include <utmp.h>
 #include <sysexits.h>
 
+#include "mkc_bsd_getopt.h"
+
 static void usage(void) __dead;
 static int utmpcmp(const void *, const void *);
 
@@ -93,7 +95,7 @@ main(int argc, char **argv)
 	start = NULL;
 	now = 0;
 
-	while ((ch = getopt(argc, argv, "aHq")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "aHq")) != -1)
 		switch(ch) {
 		case 'a':
 			aflg = 1;

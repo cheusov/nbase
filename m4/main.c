@@ -57,6 +57,7 @@ __RCSID("$NetBSD: main.c,v 1.42 2012/04/25 18:23:58 christos Exp $");
 #include <ohash.h>
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #include "mdef.h"
 #include "stdd.h"
@@ -210,7 +211,7 @@ main(int argc, char *argv[])
 	outfile = NULL;
 	resizedivs(MAXOUT);
 
-	while ((c = getopt(argc, argv, "gst:d:D:U:o:I:P")) != -1)
+	while ((c = bsd_getopt(argc, argv, "gst:d:D:U:o:I:P")) != -1)
 		switch(c) {
 
 		case 'D':               /* define something..*/

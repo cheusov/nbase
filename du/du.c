@@ -64,6 +64,7 @@ __RCSID("$NetBSD: du.c,v 1.36 2012/03/11 11:23:20 shattered Exp $");
 #include "mkc_humanize_number.h"
 #include "mkc_getbsize.h"
 #include "mkc_macro.h"
+#include "mkc_bsd_getopt.h"
 
 /* Count inodes or file size */
 #define	COUNT	(iflag ? 1 : p->fts_statp->st_blocks)
@@ -90,7 +91,7 @@ main(int argc, char *argv[])
 	totalblocks = 0;
 	ftsoptions = FTS_PHYSICAL;
 	depth = INT_MAX;
-	while ((ch = getopt(argc, argv, "HLPacd:ghikmnrsx")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "HLPacd:ghikmnrsx")) != -1)
 		switch (ch) {
 		case 'H':
 			Hflag = 1;

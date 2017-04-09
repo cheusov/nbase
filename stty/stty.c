@@ -56,6 +56,7 @@ __RCSID("$NetBSD: stty.c,v 1.23 2013/09/12 19:47:23 christos Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #include "stty.h"
 #include "extern.h"
@@ -76,7 +77,7 @@ main(int argc, char *argv[])
 	opterr = 0;
 	while (optind < argc &&
 	    strspn(argv[optind], "-aefg") == strlen(argv[optind]) &&
-	    (ch = getopt(argc, argv, "aef:g")) != -1)
+	    (ch = bsd_getopt(argc, argv, "aef:g")) != -1)
 		switch(ch) {
 		case 'a':		/* undocumented: POSIX compatibility */
 			fmt = STTY_POSIX;

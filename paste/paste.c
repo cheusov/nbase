@@ -53,6 +53,7 @@ __RCSID("$NetBSD: paste.c,v 1.16 2011/09/06 18:24:43 joerg Exp $");
 #include <unistd.h>
 
 #include "mkc_fgetln.h"
+#include "mkc_bsd_getopt.h"
 
 static void	parallel(int, char **);
 static void	sequential(char **);
@@ -69,7 +70,7 @@ main(int argc, char **argv)
 	int ch, seq;
 
 	seq = 0;
-	while ((ch = getopt(argc, argv, "d:s")) != -1) {
+	while ((ch = bsd_getopt(argc, argv, "d:s")) != -1) {
 		switch (ch) {
 		case 'd':
 			delim = strdup(optarg);

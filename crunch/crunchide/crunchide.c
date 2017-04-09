@@ -75,6 +75,8 @@ __RCSID("$NetBSD: crunchide.c,v 1.14 2011/08/30 23:15:14 joerg Exp $");
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#include "mkc_bsd_getopt.h"
+
 #include "extern.h"
 
 __dead static void usage(void);
@@ -93,7 +95,7 @@ main(int argc, char *argv[])
 
 	setprogname(argv[0]);
 
-	while ((ch = getopt(argc, argv, "k:f:v")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "k:f:v")) != -1)
 		switch(ch) {
 		case 'k':
 			add_to_keep_list(optarg);

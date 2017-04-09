@@ -32,6 +32,7 @@
 #include "mkc_progname.h"
 #include "mkc_pwdgrp.h"
 #include "mkc_strmode.h"
+#include "mkc_bsd_getopt.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -110,7 +111,7 @@ main(int argc, char *argv[])
 	(void)setlocale(LC_ALL, "");
 
 	Pflag = rflag = xflag = 0;
-	while ((ch = getopt(argc, argv, "dfiPRrvWx")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "dfiPRrvWx")) != -1)
 		switch (ch) {
 		case 'd':
 			dflag = 1;

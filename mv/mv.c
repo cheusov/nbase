@@ -36,6 +36,7 @@
 #include "mkc_strmode.h"
 #include "mkc_strlcpy.h"
 #include "mkc_pwdgrp.h"
+#include "mkc_bsd_getopt.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -93,7 +94,7 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 	(void)setlocale(LC_ALL, "");
 
-	while ((ch = getopt(argc, argv, "ifv")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "ifv")) != -1)
 		switch (ch) {
 		case 'i':
 			fflg = 0;

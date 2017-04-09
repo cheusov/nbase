@@ -53,6 +53,7 @@ __RCSID("$NetBSD: nbperf.c,v 1.5 2013/01/31 16:32:02 joerg Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #include "nbperf.h"
 
@@ -139,7 +140,7 @@ main(int argc, char **argv)
 
 	set_hash(&nbperf, "mi_vector_hash");
 
-	while ((ch = getopt(argc, argv, "a:c:h:i:m:n:o:ps")) != -1) {
+	while ((ch = bsd_getopt(argc, argv, "a:c:h:i:m:n:o:ps")) != -1) {
 		switch (ch) {
 		case 'a':
 			/* Accept bdz as alias for netbsd-6 compat. */

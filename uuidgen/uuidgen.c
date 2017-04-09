@@ -65,6 +65,7 @@ __RCSID("$NetBSD: uuidgen.c,v 1.4 2011/09/16 15:39:30 joerg Exp $");
 #include <uuid.h>
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 __dead static void
 usage(void)
@@ -88,7 +89,7 @@ main(int argc, char *argv[])
 	iterate = 0;	/* not one at a time */
 	c_struct = 0;	/* not as a C structure */
 
-	while ((ch = getopt(argc, argv, "1n:o:s")) != -1) {
+	while ((ch = bsd_getopt(argc, argv, "1n:o:s")) != -1) {
 		switch (ch) {
 		case '1':
 			iterate = 1;

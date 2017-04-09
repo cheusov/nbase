@@ -51,6 +51,8 @@ __RCSID("$NetBSD: rcp.c,v 1.49 2012/05/07 15:22:54 chs Exp $");
 #include <netinet/in_systm.h>
 #include <netinet/ip.h>
 
+#include "mkc_bsd_getopt.h"
+
 #include <ctype.h>
 #include <dirent.h>
 #include <err.h>
@@ -102,7 +104,7 @@ main(int argc, char *argv[])
 	(void)setlocale(LC_ALL, "");
 
 	fflag = tflag = 0;
-	while ((ch = getopt(argc, argv, OPTIONS)) != -1)
+	while ((ch = bsd_getopt(argc, argv, OPTIONS)) != -1)
 		switch(ch) {			/* User-visible flags. */
 		case '4':
 			family = AF_INET;

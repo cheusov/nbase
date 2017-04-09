@@ -70,6 +70,7 @@ __RCSID("$NetBSD: script.c,v 1.21 2011/09/06 18:29:56 joerg Exp $");
 #include "mkc_tzfile.h"
 #include "mkc_progname.h"
 #include "mkc_bswap.h"
+#include "mkc_bsd_getopt.h"
 
 #define	DEF_BUF	65536
 
@@ -117,7 +118,7 @@ main(int argc, char *argv[])
 	quiet = 0;
 	flush = 0;
 	command = NULL;
-	while ((ch = getopt(argc, argv, "ac:dfpqr")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "ac:dfpqr")) != -1)
 		switch(ch) {
 		case 'a':
 			aflg = 1;

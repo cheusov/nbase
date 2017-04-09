@@ -52,6 +52,8 @@ __RCSID("$NetBSD: colrm.c,v 1.9 2011/08/30 21:35:09 joerg Exp $");
 #include <string.h>
 #include <unistd.h>
 
+#include "mkc_bsd_getopt.h"
+
 #define	TAB	8
 
 static void	check(FILE *);
@@ -64,7 +66,7 @@ main(int argc, char *argv[])
 	int ch;
 	char *p;
 
-	while ((ch = getopt(argc, argv, "")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "")) != -1)
 		switch(ch) {
 		case '?':
 		default:

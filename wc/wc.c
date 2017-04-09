@@ -63,6 +63,7 @@ __RCSID("$NetBSD: wc.c,v 1.35 2011/09/16 15:39:30 joerg Exp $");
 #include <wctype.h>
 
 #include "mkc_macro.h"
+#include "mkc_bsd_getopt.h"
 
 #ifdef NO_QUAD
 typedef u_long wc_count_t;
@@ -92,7 +93,7 @@ main(int argc, char *argv[])
 
 	setlocale(LC_ALL, "");
 
-	while ((ch = getopt(argc, argv, "lwcmL")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "lwcmL")) != -1)
 		switch (ch) {
 		case 'l':
 			doline = true;

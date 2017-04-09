@@ -55,6 +55,7 @@ __RCSID("$NetBSD: uniq.c,v 1.18 2012/08/26 14:14:16 wiz Exp $");
 
 #include "mkc_progname.h"
 #include "mkc_fgetln.h"
+#include "mkc_bsd_getopt.h"
 
 static int cflag, dflag, uflag;
 static int numchars, numfields, repeats;
@@ -77,7 +78,7 @@ main (int argc, char *argv[])
 	setprogname(argv[0]);
 	ifp = ofp = NULL;
 	obsolete(argv);
-	while ((ch = getopt(argc, argv, "-cdf:s:u")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "-cdf:s:u")) != -1)
 		switch (ch) {
 		case '-':
 			--optind;

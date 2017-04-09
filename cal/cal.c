@@ -60,6 +60,8 @@ __RCSID("$NetBSD: cal.c,v 1.27 2011/08/29 13:55:22 joerg Exp $");
 #include <tzfile.h>
 #include <unistd.h>
 
+#include "mkc_bsd_getopt.h"
+
 #define	SATURDAY 		6		/* 1 Jan 1 was a Saturday */
 
 #define	FIRST_MISSING_DAY 	reform->first_missing_day
@@ -227,7 +229,7 @@ main(int argc, char **argv)
 	before = after = 0;
 	use_reform = yflag = year = 0;
 	when = NULL;
-	while ((ch = getopt(argc, argv, "A:B:d:hjR:ry3")) != -1) {
+	while ((ch = bsd_getopt(argc, argv, "A:B:d:hjR:ry3")) != -1) {
 		switch (ch) {
 		case 'A':
 			after = getnum(optarg);

@@ -5,7 +5,6 @@
   - getconf(missing defines?/headers?)
   - mkdep(dprintf)
   - mv(asm-like)
-  - pax(lchmod)
   - rm(FTS_WHITEOUT,FTS_W)
   - script(pty.h,openpty,logn_tty)
   - uuencode(bswap64)

@@ -56,6 +56,7 @@ __RCSID("$NetBSD: unexpand.c,v 1.14 2008/12/21 02:33:13 christos Exp $");
 #include "mkc_progname.h"
 #include "mkc_efun.h"
 #include "mkc_fgetln.h"
+#include "mkc_bsd_getopt.h"
 
 #define DSTOP	8
 static int	all;
@@ -85,7 +86,7 @@ main(int argc, char **argv)
 
 	setprogname(argv[0]);
 
-	while ((c = getopt(argc, argv, "at:")) != -1) {
+	while ((c = bsd_getopt(argc, argv, "at:")) != -1) {
 		switch (c) {
 		case 'a':
 			if (nstops)

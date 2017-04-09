@@ -52,6 +52,8 @@ __RCSID("$NetBSD: from.c,v 1.17 2008/07/21 14:19:22 lukem Exp $");
 #include <string.h>
 #include <unistd.h>
 
+#include "mkc_bsd_getopt.h"
+
 int	main (int, char **);
 int	match (const char *, const char *);
 
@@ -68,7 +70,7 @@ main(int argc, char **argv)
 #endif
 
 	file = sender = NULL;
-	while ((ch = getopt(argc, argv, "f:s:")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "f:s:")) != -1)
 		switch((char)ch) {
 		case 'f':
 			file = optarg;

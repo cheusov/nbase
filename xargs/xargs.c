@@ -61,6 +61,7 @@ __RCSID("$NetBSD: xargs.c,v 1.20 2010/12/17 11:32:57 plunky Exp $");
 #include <signal.h>
 #include <unistd.h>
 
+#include "mkc_bsd_getopt.h"
 #include "mkc_progname.h"
 #include "mkc_fgetln.h"
 #include "mkc_macro.h"
@@ -139,7 +140,7 @@ main(int argc, char *argv[])
 		nline -= strlen(*ep++) + 1 + sizeof(*ep);
 	}
 	maxprocs = 1;
-	while ((ch = getopt(argc, argv, "0E:I:J:L:n:oP:pR:S:s:rtx")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "0E:I:J:L:n:oP:pR:S:s:rtx")) != -1)
 		switch (ch) {
 		case 'E':
 			eofstr = optarg;

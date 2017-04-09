@@ -55,6 +55,7 @@ __RCSID("$NetBSD: id.c,v 1.32 2011/09/16 15:39:26 joerg Exp $");
 #include <stdint.h>
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 static void current(void);
 static void pretty(struct passwd *);
@@ -92,7 +93,7 @@ main(int argc, char *argv[])
 	} else
 		opts = "Ggnpru";
 
-	while ((ch = getopt(argc, argv, opts)) != -1)
+	while ((ch = bsd_getopt(argc, argv, opts)) != -1)
 		switch (ch) {
 		case 'G':
 			Gflag = 1;

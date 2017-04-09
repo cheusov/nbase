@@ -49,6 +49,7 @@ __RCSID("$NetBSD: unvis.c,v 1.13 2010/11/27 19:46:25 christos Exp $");
 
 #include "mkc_vis.h"
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 static void process(FILE *, const char *, int);
 
@@ -59,7 +60,7 @@ main(int argc, char *argv[])
 	int ch, eflags = 0;
 
 	setprogname(argv[0]);
-	while ((ch = getopt(argc, argv, "eHhm")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "eHhm")) != -1)
 		switch((char)ch) {
 		case 'e':
 			eflags |= VIS_NOESCAPE;

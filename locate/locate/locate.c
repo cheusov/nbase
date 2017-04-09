@@ -142,7 +142,7 @@ main(int argc, char *argv[])
 	
 	LIST_INIT(&db_list);
 	
-	while ((c = getopt(argc, argv, "d:")) != EOF) {
+	while ((c = bsd_getopt(argc, argv, "d:")) != EOF) {
 		switch (c) {
 		case 'd':
 			locate_path = optarg;

@@ -67,6 +67,8 @@ __RCSID("$NetBSD: look.c,v 1.16 2012/02/23 22:57:53 joerg Exp $");
 #include <unistd.h>
 #include <err.h>
 
+#include "mkc_bsd_getopt.h"
+
 #include "pathnames.h"
 
 /*
@@ -105,7 +107,7 @@ main(int argc, char *argv[])
 	string = NULL;
 	file = _PATH_WORDS;
 	termchar = '\0';
-	while ((ch = getopt(argc, argv, "dft:")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "dft:")) != -1)
 		switch(ch) {
 		case 'd':
 			dflag = 1;

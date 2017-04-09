@@ -30,6 +30,7 @@
  */
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -63,7 +64,7 @@ main(int argc, char *argv[])
 
 	setprogname(argv[0]);
 
-	while ((ch = getopt(argc, argv, "")) != -1) {
+	while ((ch = bsd_getopt(argc, argv, "")) != -1) {
 		switch (ch) {
 		case '?':
 		default:

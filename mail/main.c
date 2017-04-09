@@ -63,6 +63,8 @@ __RCSID("$NetBSD: main.c,v 1.31 2010/01/12 14:45:31 christos Exp $");
 #include "thread.h"
 #endif
 
+#include "mkc_bsd_getopt.h"
+
 /*
  * Mail -- a mail program
  *
@@ -229,9 +231,9 @@ main(int argc, char *argv[])
 #ifdef MIME_SUPPORT
 	attach_optargs = NULL;
 	attach_end = NULL;
-	while ((i = getopt(argc, argv, ":~EH:INT:a:b:c:dfinr:s:u:v")) != -1)
+	while ((i = bsd_getopt(argc, argv, ":~EH:INT:a:b:c:dfinr:s:u:v")) != -1)
 #else
-	while ((i = getopt(argc, argv, ":~EH:INT:b:c:dfinr:s:u:v")) != -1)
+	while ((i = bsd_getopt(argc, argv, ":~EH:INT:b:c:dfinr:s:u:v")) != -1)
 #endif
 	{
 		switch (i) {

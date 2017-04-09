@@ -29,6 +29,7 @@
 #include "mkc_strlcat.h"
 #include "mkc_strlcpy.h"
 #include "mkc_macro.h"
+#include "mkc_bsd_getopt.h"
 
 #include "pathnames.h"
 
@@ -819,7 +820,7 @@ main(int argc, char **argv)
 	int list = 0, listexpand = 0;
 	int quiet = 0;
 
-	while ((optchar = getopt(argc, argv, "lLvqf:")) != -1) {
+	while ((optchar = bsd_getopt(argc, argv, "lLvqf:")) != -1) {
 		switch (optchar) {
 		case 'l':
 			list = 1;

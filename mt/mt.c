@@ -63,6 +63,8 @@ __RCSID("$NetBSD: mt.c,v 1.47 2011/08/29 14:46:01 joerg Exp $");
 #include <string.h>
 #include <unistd.h>
 
+#include "mkc_bsd_getopt.h"
+
 /* pseudo ioctl constants */
 #define MTASF	100
 
@@ -124,7 +126,7 @@ main(int argc, char *argv[])
 	if ((tape = getenv("TAPE")) == NULL)
 		tape = _PATH_DEFTAPE;
 
-	while ((ch = getopt(argc, argv, "f:t:")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "f:t:")) != -1)
 		switch (ch) {
 		case 'f':
 		case 't':

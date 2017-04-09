@@ -87,6 +87,8 @@ __RCSID("$NetBSD: bdes.c,v 1.9 2013/08/15 20:48:56 joerg Exp $");
 #include <stdlib.h>
 #include <string.h>
 
+#include "mkc_bsd_getopt.h"
+
 /*
  * BSD and System V systems offer special library calls that do
  * block moves and fills, so if possible we take advantage of them
@@ -210,7 +212,7 @@ main(int ac, char *av[])
 
 	/* process the argument list */
 	kflag = 0;
-	while ((i = getopt(argc, argv, "abdF:f:k:m:o:pv:")) != -1)
+	while ((i = bsd_getopt(argc, argv, "abdF:f:k:m:o:pv:")) != -1)
 		switch(i) {
 		case 'a':		/* key is ASCII */
 			keybase = KEY_ASCII;

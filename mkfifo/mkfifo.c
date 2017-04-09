@@ -53,6 +53,7 @@ __RCSID("$NetBSD: mkfifo.c,v 1.13 2011/09/04 20:30:34 joerg Exp $");
 #include <err.h>
 
 #include "mkc_getsetmode.h"
+#include "mkc_bsd_getopt.h"
 
 __dead static void usage(void);
 
@@ -70,7 +71,7 @@ main(int argc, char *argv[])
 	   modified by the file creation mask */
 	mode = 0666 & ~umask(0);
 
-	while ((ch = getopt(argc, argv, "m:")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "m:")) != -1)
 		switch(ch) {
 		case 'm':
 			if (!(set = setmode(optarg))) {

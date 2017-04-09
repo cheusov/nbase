@@ -55,6 +55,8 @@ __RCSID("$NetBSD: compress.c,v 1.26 2011/08/30 23:08:05 joerg Exp $");
 #include <string.h>
 #include <unistd.h>
 
+#include "mkc_bsd_getopt.h"
+
 #if HAVE_MEMBER_STRUCT_STAT_ST_ATIM_SYS_STAT_H
 #define st_atimespec st_atim
 #endif
@@ -99,7 +101,7 @@ main(int argc, char **argv)
 		errx(1, "unknown program name");
 
 	bits = cat = 0;
-	while ((ch = getopt(argc, argv, "b:cdfv")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "b:cdfv")) != -1)
 		switch(ch) {
 		case 'b':
 			bits = strtol(optarg, &p, 10);

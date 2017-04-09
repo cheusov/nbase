@@ -54,6 +54,7 @@ __RCSID("$NetBSD: xstr.c,v 1.25 2011/09/16 15:39:31 joerg Exp $");
 #include <err.h>
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #include "pathnames.h"
 
@@ -104,7 +105,7 @@ main(int argc, char *argv[])
 {
 	int c;
 
-	while ((c = getopt(argc, argv, "-cvl:")) != -1)
+	while ((c = bsd_getopt(argc, argv, "-cvl:")) != -1)
 		switch (c) {
 		case '-':
 			readstd++;

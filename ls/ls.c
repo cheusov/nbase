@@ -35,6 +35,8 @@
 #include "mkc_pwdgrp.h"
 #include "mkc_progname.h"
 #include "mkc_getbsize.h"
+#include "mkc_bsd_getopt.h"
+
 #include <stdint.h>
 
 #include <sys/cdefs.h>
@@ -159,7 +161,7 @@ ls_main(int argc, char *argv[])
 		f_listdot = 1;
 
 	fts_options = FTS_PHYSICAL;
-	while ((ch = getopt(argc, argv, "1AaBbCcdFfghikLlMmnOoPpqRrSsTtuWwXx"))
+	while ((ch = bsd_getopt(argc, argv, "1AaBbCcdFfghikLlMmnOoPpqRrSsTtuWwXx"))
 	    != -1) {
 		switch (ch) {
 		/*

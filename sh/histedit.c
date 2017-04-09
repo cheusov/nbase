@@ -46,6 +46,9 @@ __RCSID("$NetBSD: histedit.c,v 1.47 2014/06/18 18:17:30 christos Exp $");
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+#include "mkc_bsd_getopt.h"
+
 /*
  * Editline and history functions (and glue).
  */
@@ -253,7 +256,7 @@ histcmd(int argc, char **argv)
 
 	optreset = 1; optind = 1; /* initialize getopt */
 	while (not_fcnumber(argv[optind]) &&
-	      (ch = getopt(argc, argv, ":e:lnrs")) != -1)
+	      (ch = bsd_getopt(argc, argv, ":e:lnrs")) != -1)
 		switch ((char)ch) {
 		case 'e':
 			editor = optionarg;

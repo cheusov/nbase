@@ -53,9 +53,11 @@ __RCSID("$NetBSD: column.c,v 1.21 2008/07/21 14:19:21 lukem Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
 #include "mkc_progname.h"
 #include "mkc_efun.h"
 #include "mkc_fgetln.h"
+#include "mkc_bsd_getopt.h"
 
 #define	TAB	8
 #define TABROUND(l) 	(((l) + TAB) & ~(TAB - 1))
@@ -92,7 +94,7 @@ main(int argc, char **argv)
 		termwidth = win.ws_col;
 
 	tflag = xflag = 0;
-	while ((ch = getopt(argc, argv, "c:s:tx")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "c:s:tx")) != -1)
 		switch(ch) {
 		case 'c':
 			termwidth = atoi(optarg);

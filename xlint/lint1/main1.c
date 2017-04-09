@@ -51,6 +51,8 @@ __RCSID("$NetBSD: main1.c,v 1.25 2014/04/18 21:53:44 christos Exp $");
 
 #include "lint1.h"
 
+#include "mkc_bsd_getopt.h"
+
 /* set yydebug to 1*/
 int	yflag;
 
@@ -176,7 +178,7 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 
 	ERR_ZERO(&msgset);
-	while ((c = getopt(argc, argv, "abcdeghmprstuvwyzFPSX:")) != -1) {
+	while ((c = bsd_getopt(argc, argv, "abcdeghmprstuvwyzFPSX:")) != -1) {
 		switch (c) {
 		case 'a':	aflag++;	break;
 		case 'b':	bflag = 1;	break;

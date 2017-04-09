@@ -14,6 +14,8 @@ __RCSID("$NetBSD: getopt.c,v 1.8 2006/07/09 21:39:48 wiz Exp $");
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "mkc_bsd_getopt.h"
+
 int
 main(int argc, char *argv[])
 {
@@ -21,7 +23,7 @@ main(int argc, char *argv[])
 	int status = 0;
 
 	optind = 2;	/* Past the program name and the option letters. */
-	while ((c = getopt(argc, argv, argv[1])) != -1)
+	while ((c = bsd_getopt(argc, argv, argv[1])) != -1)
 		switch (c) {
 		case '?':
 			status = 1;	/* getopt routine gave message */

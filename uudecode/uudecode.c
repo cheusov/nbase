@@ -64,6 +64,7 @@ __RCSID("$NetBSD: uudecode.c,v 1.28 2013/01/28 19:50:30 apb Exp $");
 
 #include "mkc_progname.h"
 #include "mkc_macro.h"
+#include "mkc_bsd_getopt.h"
 
 #ifndef NO_BASE64
 #include <netinet/in.h>
@@ -87,7 +88,7 @@ main(int argc, char *argv[])
 	setlocale(LC_ALL, "");
 	setprogname(argv[0]);
 
-	while ((ch = getopt(argc, argv, "mo:p")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "mo:p")) != -1)
 		switch (ch) {
 		case 'm':
 			base64 = 1;

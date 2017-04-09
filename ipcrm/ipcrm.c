@@ -47,6 +47,7 @@
 #include <sys/sysctl.h>
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #define IPC_TO_STR(x) (x == 'Q' ? "msq" : (x == 'M' ? "shm" : "sem"))
 #define IPC_TO_STRING(x) (x == 'Q' ? "message queue" : \
@@ -223,7 +224,7 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 	errflg = 0;
 	(void)signal(SIGSYS, not_configured);
-	while ((c = getopt(argc, argv, "q:m:s:Q:M:S:")) != -1) {
+	while ((c = bsd_getopt(argc, argv, "q:m:s:Q:M:S:")) != -1) {
 		signaled = 0;
 		target_id = 0;
 		target_key = 0;

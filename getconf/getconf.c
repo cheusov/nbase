@@ -44,6 +44,7 @@ __RCSID("$NetBSD: getconf.c,v 1.35 2013/12/19 19:11:50 rmind Exp $");
 #include <string.h>
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 struct conf_variable
 {
@@ -201,7 +202,7 @@ main(int argc, char **argv)
 	setprogname(argv[0]);
 	(void)setlocale(LC_ALL, "");
 
-	while ((ch = getopt(argc, argv, "a")) != -1) {
+	while ((ch = bsd_getopt(argc, argv, "a")) != -1) {
 		switch (ch) {
 		case 'a':
 			a_flag = 1;

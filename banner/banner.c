@@ -69,6 +69,7 @@ __RCSID("$NetBSD: banner.c,v 1.15 2012/02/29 08:55:25 wiz Exp $");
 
 #include "mkc_strlcpy.h"
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #include "banner.h"
 
@@ -179,7 +180,7 @@ main(int argc, char **argv)
 	char word[10+1];		/* strings limited to 10 chars */
 	int c;
 
-	while ((c = getopt(argc, argv, "b:f:l")) != -1) {
+	while ((c = bsd_getopt(argc, argv, "b:f:l")) != -1) {
 	    switch (c) {
 	    case 'f':
 		if (*optarg == '-')

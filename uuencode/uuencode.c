@@ -61,7 +61,7 @@ __RCSID("$NetBSD: uuencode.c,v 1.15.20.1 2014/09/11 12:22:27 martin Exp $");
 #include <unistd.h>
 
 #include "mkc_base64.h"
-
+#include "mkc_bsd_getopt.h"
 #include "mkc_progname.h"
 
 static void encode(void);
@@ -79,7 +79,7 @@ main(int argc, char *argv[])
 	setlocale(LC_ALL, "");
 	setprogname(argv[0]);
 
-	while ((ch = getopt(argc, argv, "m")) != -1) {
+	while ((ch = bsd_getopt(argc, argv, "m")) != -1) {
 		switch(ch) {
 		case 'm':
 			base64 = 1;

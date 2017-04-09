@@ -58,6 +58,7 @@ __RCSID("$NetBSD: tsort.c,v 1.23 2011/09/06 18:34:37 joerg Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 /*
  *  Topological sort.  Input is a list of pairs of strings separated by
@@ -124,7 +125,7 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 
 	fp = NULL;
-	while ((ch = getopt(argc, argv, "dlq")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "dlq")) != -1)
 		switch (ch) {
 		case 'd':
 			debug = 1;

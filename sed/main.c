@@ -57,6 +57,7 @@ static const char sccsid[] = "@(#)main.c	8.2 (Berkeley) 1/3/94";
 #include "mkc_strlcat.h"
 #include "mkc_strlcpy.h"
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #include <sys/types.h>
 #include <sys/mman.h>
@@ -146,7 +147,7 @@ main(int argc, char *argv[])
 	fflag = 0;
 	inplace = NULL;
 
-	while ((c = getopt(argc, argv, "EI::ae:f:i::lnru")) != -1)
+	while ((c = bsd_getopt(argc, argv, "EI::ae:f:i::lnru")) != -1)
 		switch (c) {
 		case 'r':		/* Gnu sed compat */
 		case 'E':

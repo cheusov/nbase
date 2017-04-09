@@ -61,6 +61,8 @@ __RCSID("$NetBSD: date.c,v 1.60 2011/08/27 12:55:09 joerg Exp $");
 #include <unistd.h>
 #include <util.h>
 
+#include "mkc_bsd_getopt.h"
+
 #include "extern.h"
 
 static time_t tval;
@@ -85,7 +87,7 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 	(void)setlocale(LC_ALL, "");
 
-	while ((ch = getopt(argc, argv, "ad:jnr:u")) != -1) {
+	while ((ch = bsd_getopt(argc, argv, "ad:jnr:u")) != -1) {
 		switch (ch) {
 		case 'a':		/* adjust time slowly */
 			aflag = 1;

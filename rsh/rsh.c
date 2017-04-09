@@ -67,6 +67,7 @@ __RCSID("$NetBSD: rsh.c,v 1.36.2.1 2014/12/01 13:43:13 martin Exp $");
 #include "pathnames.h"
 #include "getport.h"
 
+#include "mkc_bsd_getopt.h"
 
 /*
  * rsh - remote shell
@@ -152,7 +153,7 @@ main(int argc, char **argv)
 
 	if ((name = strdup(pw->pw_name)) == NULL)
 		err(1, "malloc");
-	while ((ch = getopt(argc - argoff, argv + argoff, OPTIONS)) != -1)
+	while ((ch = bsd_getopt(argc - argoff, argv + argoff, OPTIONS)) != -1)
 		switch (ch) {
 		case '4':
 			family = AF_INET;

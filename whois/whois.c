@@ -64,6 +64,7 @@ __RCSID("$NetBSD: whois.c,v 1.36 2013/02/20 09:27:52 ws Exp $");
 #include "mkc_strlcat.h"
 #include "mkc_progname.h"
 #include "mkc_fgetln.h"
+#include "mkc_bsd_getopt.h"
 
 #define	ANICHOST	"whois.arin.net"
 #define	BNICHOST	"whois.registro.br"
@@ -106,7 +107,7 @@ main(int argc, char *argv[])
 #endif
 	country = host = NULL;
 	flags = rval = 0;
-	while ((ch = getopt(argc, argv, "6Aac:dfgh:ilmp:qQRr")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "6Aac:dfgh:ilmp:qQRr")) != -1)
 		switch(ch) {
 		case 'a':
 			host = ANICHOST;

@@ -51,6 +51,7 @@ __RCSID("$NetBSD: logger.c,v 1.17 2012/04/27 06:30:48 wiz Exp $");
 #include <err.h>
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #define	SYSLOG_NAMES
 #include <syslog.h>
@@ -77,7 +78,7 @@ main(int argc, char *argv[])
 	tag = NULL;
 	pri = LOG_NOTICE;
 	logflags = 0;
-	while ((ch = getopt(argc, argv, "cd:f:im:np:st:")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "cd:f:im:np:st:")) != -1)
 		switch((char)ch) {
 		case 'c':	/* log to console */
 			logflags |= LOG_CONS;

@@ -48,6 +48,8 @@ __RCSID("$NetBSD: printenv.c,v 1.12 2011/09/06 18:26:55 joerg Exp $");
 #include <unistd.h>
 #include <err.h>
 
+#include "mkc_bsd_getopt.h"
+
 __dead static void usage(void);
 
 /*
@@ -64,7 +66,7 @@ main(int argc, char *argv[])
 	size_t len;
 	int ch;
 
-	while ((ch = getopt(argc, argv, "")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "")) != -1)
 		switch(ch) {
 		case '?':
 		default:

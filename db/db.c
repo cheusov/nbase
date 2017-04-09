@@ -51,6 +51,7 @@ __RCSID("$NetBSD: db.c,v 1.26 2012/02/17 11:37:33 apb Exp $");
 #include <unistd.h>
 
 #include "mkc_vis.h"
+#include "mkc_bsd_getopt.h"
 
 typedef enum {
 	F_WRITE		= 1<<0,
@@ -120,7 +121,7 @@ main(int argc, char *argv[])
 	oi.pagesize = 4096;
 
 				/* parse arguments */
-	while ( (ch = getopt(argc, argv,
+	while ( (ch = bsd_getopt(argc, argv,
 			     "CDdE:F:f:iKm:NO:P:qRS:T:U:VwX:")) != -1) {
 		switch (ch) {
 

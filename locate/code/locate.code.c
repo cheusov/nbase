@@ -91,6 +91,8 @@ __RCSID("$NetBSD: locate.code.c,v 1.11 2011/09/04 20:28:40 joerg Exp $");
 
 #include "locate.h"
 
+#include "mkc_bsd_getopt.h"
+
 #define	BGBUFSIZE	(NBG * 2)	/* size of bigram buffer */
 
 static char buf1[MAXPATHLEN] = " ";
@@ -106,7 +108,7 @@ main(int argc, char *argv[])
 	char *cp, *oldpath, *path;
 	int ch, code, count, diffcount, oldcount;
 
-	while ((ch = getopt(argc, argv, "")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "")) != -1)
 		switch(ch) {
 		case '?':
 		default:

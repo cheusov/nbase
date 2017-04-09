@@ -41,6 +41,8 @@ __RCSID("$NetBSD: infocmp.c,v 1.8 2013/10/01 09:01:49 roy Exp $");
 #include <term.h>
 #include <unistd.h>
 
+#include "mkc_bsd_getopt.h"
+
 #define SW 8
 
 typedef struct tient {
@@ -661,7 +663,7 @@ main(int argc, char **argv)
 
 	uflag = xflag = 0;
 	Barg = NULL;
-	while ((ch = getopt(argc, argv, "1A:B:acnquw:x")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "1A:B:acnquw:x")) != -1)
 		switch (ch) {
 		case '1':
 			cols = 1;

@@ -121,6 +121,8 @@ __RCSID("$NetBSD: main.c,v 1.122 2012/12/22 16:57:10 christos Exp $");
 #include <unistd.h>
 #include <locale.h>
 
+#include "mkc_bsd_getopt.h"
+
 #define	GLOBAL		/* force GLOBAL decls in ftp_var.h to be declared */
 #include "ftp_var.h"
 
@@ -266,7 +268,7 @@ main(int volatile argc, char **volatile argv)
 		}
 	}
 
-	while ((ch = getopt(argc, argv, "46AadefginN:o:pP:q:r:Rs:tT:u:vV")) != -1) {
+	while ((ch = bsd_getopt(argc, argv, "46AadefginN:o:pP:q:r:Rs:tT:u:vV")) != -1) {
 		switch (ch) {
 		case '4':
 			family = AF_INET;

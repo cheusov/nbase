@@ -54,6 +54,8 @@ __RCSID("$NetBSD: tee.c,v 1.11 2013/03/06 11:44:11 yamt Exp $");
 #include <locale.h>
 #include <err.h>
 
+#include "mkc_bsd_getopt.h"
+
 typedef struct _list {
 	struct _list *next;
 	int fd;
@@ -77,7 +79,7 @@ main(int argc, char *argv[])
 	setlocale(LC_ALL, "");
 
 	append = 0;
-	while ((ch = getopt(argc, argv, "ai")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "ai")) != -1)
 		switch((char)ch) {
 		case 'a':
 			append = 1;

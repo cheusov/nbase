@@ -54,6 +54,7 @@ __RCSID("$NetBSD: main.c,v 1.21 2011/08/17 13:11:22 christos Exp $");
 
 #include "mkc_macro.h"
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 FILE *errorfile;     /* where error file comes from */
 FILE *queryfile;     /* input for the query responses from the user */
@@ -139,7 +140,7 @@ main(int argc, char **argv)
 	setprogname(argv[0]);
 
 	errorfile = stdin;
-	while ((c = getopt(argc, argv, "I:np:qSsTt:v")) != -1)
+	while ((c = bsd_getopt(argc, argv, "I:np:qSsTt:v")) != -1)
 		switch (c) {
 		case 'I':	/*ignore file name*/
 			ignorename = optarg;

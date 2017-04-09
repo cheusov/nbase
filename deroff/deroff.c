@@ -67,6 +67,8 @@
 #include <sys/cdefs.h>
 __RCSID("$NetBSD: deroff.c,v 1.11 2013/10/18 20:47:06 christos Exp $");
 
+#include "mkc_bsd_getopt.h"
+
 #include <err.h>
 #include <limits.h>
 #include <stddef.h>
@@ -284,7 +286,7 @@ main(int ac, char **av)
 	rdelim	= NOCHAR;
 	keepblock = YES;
 
-	while ((ch = getopt(ac, av, "ikpwm:")) != -1) {
+	while ((ch = bsd_getopt(ac, av, "ikpwm:")) != -1) {
 		switch (ch) {
 		case 'i':
 			iflag = YES;

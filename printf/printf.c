@@ -60,6 +60,7 @@ __RCSID("$NetBSD: printf.c,v 1.36 2013/07/16 17:48:22 christos Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #ifdef __GNUC__
 #define ESCAPE '\e'
@@ -137,7 +138,7 @@ int main(int argc, char *argv[])
 	(void)setlocale (LC_ALL, "");
 #endif
 
-	while ((o = getopt(argc, argv, "")) != -1) {
+	while ((o = bsd_getopt(argc, argv, "")) != -1) {
 		switch (o) {
 		case '?':
 		default:

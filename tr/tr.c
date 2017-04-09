@@ -50,6 +50,8 @@ __RCSID("$NetBSD: tr.c,v 1.20 2013/08/11 01:54:35 dholland Exp $");
 #include <string.h>
 #include <unistd.h>
 
+#include "mkc_bsd_getopt.h"
+
 #include "extern.h"
 
 static int string1[NCHARS], string2[NCHARS];
@@ -65,7 +67,7 @@ main(int argc, char **argv)
 	STR *s1, *s2;
 
 	cflag = dflag = sflag = 0;
-	while ((ch = getopt(argc, argv, "cds")) != -1)
+	while ((ch = bsd_getopt(argc, argv, "cds")) != -1)
 		switch (ch) {
 		case 'c':
 			cflag = 1;

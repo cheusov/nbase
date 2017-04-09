@@ -62,6 +62,7 @@ __RCSID("$NetBSD: join.c,v 1.31 2011/09/04 20:27:52 joerg Exp $");
 
 #include "mkc_progname.h"
 #include "mkc_fgetln.h"
+#include "mkc_bsd_getopt.h"
 
 /*
  * There's a structure per input file which encapsulates the state of the
@@ -133,7 +134,7 @@ main(int argc, char *argv[])
 
 	aflag = vflag = 0;
 	obsolete(argv);
-	while ((ch = getopt(argc, argv, "\01a:e:j:1:2:o:t:v:")) != -1) {
+	while ((ch = bsd_getopt(argc, argv, "\01a:e:j:1:2:o:t:v:")) != -1) {
 		switch (ch) {
 		case '\01':
 			aflag = 1;

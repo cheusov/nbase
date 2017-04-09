@@ -52,6 +52,8 @@ __RCSID("$NetBSD: col.c,v 1.17 2011/08/31 16:24:57 plunky Exp $");
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "mkc_bsd_getopt.h"
+
 #define	BS	'\b'		/* backspace */
 #define	TAB	'\t'		/* tab */
 #define	SPACE	' '		/* space */
@@ -130,7 +132,7 @@ main(int argc, char **argv)
 	max_bufd_lines = 128;
 	compress_spaces = 1;		/* compress spaces into tabs */
 	pass_unknown_seqs = 0;		/* remove unknown escape sequences */
-	while ((opt = getopt(argc, argv, "bfhl:px")) != -1)
+	while ((opt = bsd_getopt(argc, argv, "bfhl:px")) != -1)
 		switch (opt) {
 		case 'b':		/* do not output backspaces */
 			no_backspaces = 1;
