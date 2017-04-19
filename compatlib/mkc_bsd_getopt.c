@@ -31,8 +31,14 @@ int bsd_getopt(int argc, char * const argv[], const char *optstring)
 {
 	size_t len = strlen(optstring);
 	char *new_optstr = emalloc(len + 2);
+	int ret;
+
 	new_optstr[0] = '+';
 	memcpy(new_optstr + 1, optstring, len + 1);
 
-	return getopt(argc, argv, new_optstr);
+	ret = getopt(argc, argv, new_optstr);
+	if (ret != '?')
+		optopt = ret;
+
+	return ret;
 }
