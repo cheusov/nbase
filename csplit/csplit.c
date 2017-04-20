@@ -410,7 +410,7 @@ do_rexp(const char *expr)
 	/* Read and output lines until we get a match. */
 	first = 1;
 	while ((p = get_line()) != NULL) {
-		if (fputs(p, ofp) != 0)
+		if (fputs(p, ofp) == EOF)
 			break;
 		if (!first && regexec(&cre, p, 0, NULL, 0) == 0)
 			break;
