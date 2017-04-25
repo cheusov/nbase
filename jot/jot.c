@@ -227,10 +227,11 @@ getargs(int argc, char *argv[])
 		errx(EXIT_FAILURE,
 		    "Too many arguments.  What do you mean by %s?", argv[4]);
 	}
-	getformat();
 
 	if (prec == -1)
 		prec = 0;
+
+	getformat();
 
 	if (randomize) {
 		/* 'step' is the seed here, use pseudo-random default */
