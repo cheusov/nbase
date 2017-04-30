@@ -37,6 +37,7 @@ __RCSID("$NetBSD: shuffle.c,v 1.21 2011/09/16 15:39:29 joerg Exp $");
 #endif /* not lint */
 
 #include <sys/time.h>
+#include <time.h>
 
 #include <err.h>
 #include <errno.h>
@@ -169,6 +170,8 @@ main(int argc, char *argv[])
 	char **lines = NULL;
 	size_t nlines = 0, pick = 0, i;
 	char sep = '\n';
+
+	srand((unsigned) (time(NULL) * getpid()));
 	
 	while ((ch = bsd_getopt(argc, argv, "0f:n:p:")) != -1) {
 		switch(ch) {
