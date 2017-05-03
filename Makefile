@@ -9,6 +9,7 @@
 #PROJECTS = bdes csh db ksh sh at checknr chflags	\
   crunch locate
 
+# TBD: units -- /usr/share/misc/units.lib is missing
 PROJECTS = apply asa nawk/bin banner basename cat chmod cleantags cmp	\
   col colcrt colrm column comm compress cp csplit ctags cut deroff dd	\
   dirname domainname du echo ed env error expand expr false fgen find	\
@@ -18,7 +19,7 @@ PROJECTS = apply asa nawk/bin banner basename cat chmod cleantags cmp	\
   paste patch pax pr printenv printf pwd qsubst renice rev rm rmdir	\
   rs script sdiff sed seq shar shlock shuffle sleep soelim sort split	\
   stty sync tabs tail tee testcmd timeout tr true tty ul unexpand	\
-  unifdef units uniq unvis uudecode uuencode vis what whois wc xargs	\
+  unifdef uniq unvis uudecode uuencode vis what whois wc xargs	\
   xstr yes
 
 MKC_CHECK_HEADERS = tzfile.h md2.h db.h
