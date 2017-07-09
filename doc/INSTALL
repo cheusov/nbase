@@ -10,7 +10,9 @@
 
 *) cd nbase-X-Y-Z-N
 
-*) mkcmake
+*)
+   export PREFIX=/usr/local/nbase LPREFIX=/usr/local
+   mkcmake
 
 *) mkcmake test
    If this step fails on your system, please let me now.
