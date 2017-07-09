@@ -4,4 +4,4 @@ MAN  =	fgen.1
 
 CPPFLAGS +=	-I${.CURDIR}
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"

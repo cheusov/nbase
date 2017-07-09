@@ -3,4 +3,4 @@ SRCS =	pr.c egetopt.c
 
 COPTS.pr.c += -Wno-format-nonliteral
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"

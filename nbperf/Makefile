@@ -5,4 +5,4 @@ SRCS +=	graph2.c graph3.c
 
 MKC_CHECK_HEADERS = sys/endian.h endian.h
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"

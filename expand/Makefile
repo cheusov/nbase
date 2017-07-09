@@ -1,4 +1,4 @@
 PROG =		expand
 MLINKS =	expand.1 unexpand.1
 
-.include <mkc.mk>
+.include "../mk/addlinks.mk"

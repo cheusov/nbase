@@ -1,3 +1,3 @@
 PROG =	dirname
 
-.include <mkc.mk>
+.include "../mk/addlinks.mk"

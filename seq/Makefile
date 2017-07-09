@@ -4,4 +4,4 @@ MKC_FEATURES = libm
 
 COPTS.seq.c += -Wno-format-nonliteral
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"

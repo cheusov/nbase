@@ -2,4 +2,4 @@ PROG =	ul
 
 MKC_REQUIRE_FUNCLIBS =	cur_term:curses
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"

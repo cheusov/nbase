@@ -5,4 +5,4 @@ MLINKS =	stat.1 readlink.1
 
 COPTS.stat.c += -Wno-format-nonliteral
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"

@@ -9,4 +9,4 @@ COPTS.xinstall.c += -Wno-format-nonliteral
 
 PROGNAME?=install
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"

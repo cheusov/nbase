@@ -2,4 +2,4 @@ PROG =			getent
 LINKS =  		${BINDIR}/getent ${BINDIR}/getcap
 MLINKS =		getent.1 getcap.1
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"

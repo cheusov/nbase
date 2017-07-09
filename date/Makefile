@@ -6,4 +6,4 @@ CPPFLAGS +=	-I${.CURDIR}
 
 COPTS.date.c = -Wno-format-nonliteral
 
-.include <mkc.mk>
+.include "../mk/addlinks.mk"

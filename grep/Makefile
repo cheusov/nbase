@@ -32,4 +32,4 @@ MKC_REQUIRE_FUNCLIBS= gzread:z BZ2_bzRead:bz2
 COPTS.grep.c += -Wno-format-nonliteral
 COPTS.util.c += -Wno-format-nonliteral
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"

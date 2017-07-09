@@ -9,4 +9,4 @@ FILES =		menu_sys.def
 FILESDIR =	${_PATH_DEFSYSPREFIX}
 .endif
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"

@@ -14,4 +14,4 @@ path_urandom =	"/dev/urandom"
 CFLAGS +=	-D_PATH_URANDOM=${path_urandom:Q}
 .endif
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"

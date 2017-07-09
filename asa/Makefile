@@ -1,3 +1,3 @@
 PROG =	asa
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"

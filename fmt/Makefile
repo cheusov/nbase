@@ -4,4 +4,4 @@ CPPFLAGS +=	-DFMT_PROG
 
 .PATH: ../mail
 
-.include <mkc.mk>
+.include "../mk/addlinks.mk"

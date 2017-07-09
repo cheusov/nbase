@@ -1,3 +1,3 @@
 PROG =   shlock
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"

@@ -16,4 +16,4 @@ tokenizer.o: parser.h
 
 CLEANFILES += parser.c parser.h tokenizer.o
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"

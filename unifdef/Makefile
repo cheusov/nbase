@@ -5,4 +5,4 @@ SCRIPTSNAME_unifdefall.sh = unifdefall
 
 MLINKS  =	unifdef.1 unifdefall.1
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"

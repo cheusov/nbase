@@ -47,4 +47,4 @@ DPADD+=	${LIBRMT}
 
 MKC_FEATURES =	strlcpy fgetln
 
-.include <mkc.mk>
+.include "../mk/addlinks.mk"

@@ -1,4 +1,4 @@
 PROG =	patch
 SRCS =	patch.c pch.c inp.c util.c backupfile.c mkpath.c
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"

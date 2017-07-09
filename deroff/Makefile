@@ -1,3 +1,3 @@
 PROG =	deroff
 
-.include <mkc.mk>
+.include "../mk/addlinks.mk"

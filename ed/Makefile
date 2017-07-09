@@ -10,4 +10,4 @@ SRCS      =	buf.c cbc.c glbl.c io.c main.c re.c sub.c undo.c
 #LDADD    += -lcrypt
 #DPADD    += ${LIBCRYPT}
 
-.include <mkc.mk>
+.include "../mk/addlinks.mk"

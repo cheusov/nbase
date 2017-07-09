@@ -1,3 +1,3 @@
 PROG =	getopt
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"

@@ -3,4 +3,4 @@ PROG         =	sleep
 #MKC_FEATURES =	libm
 LDADD       +=	-lm
 
-.include <mkc.mk>
+.include "../mk/addlinks.mk"

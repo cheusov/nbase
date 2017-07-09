@@ -1,4 +1,4 @@
 PROG=	ln
 MAN=	ln.1
 
-.include <mkc.mk>
+.include "../mk/addlinks.mk"

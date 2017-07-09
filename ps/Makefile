@@ -5,4 +5,4 @@ LDADD=		-lm
 CWARNFLAGS+=	-Wno-format-y2k
 COPTS.print.c = -Wno-format-nonliteral
 
-.include <mkc.mk>
+.include "../mk/addlinks.mk"

@@ -3,4 +3,4 @@ PROG =		df
 #LDADD +=	-lutil
 #DPADD +=	${LIBUTIL}
 
-.include <mkc.mk>
+.include "../mk/addlinks.mk"

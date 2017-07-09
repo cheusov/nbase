@@ -1,4 +1,4 @@
 PROG =	sed
 SRCS =	compile.c main.c misc.c process.c
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"

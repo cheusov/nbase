@@ -1,3 +1,3 @@
 PROG =		comm
 
-.include <mkc.mk>
+.include "../mk/addlinks.mk"

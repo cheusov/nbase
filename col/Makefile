@@ -1,3 +1,3 @@
 PROG =	col
 
-.include <mkc.mk>
+.include "../mk/addlinks.mk"

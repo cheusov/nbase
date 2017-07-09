@@ -1,3 +1,3 @@
 PROG=	hostname
 
-.include <mkc.mk>
+.include "../mk/addlinks.mk"

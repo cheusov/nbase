@@ -1,4 +1,4 @@
 PROG =	sync
 MAN  =	sync.8
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"

@@ -1,3 +1,3 @@
 PROG=	mv
 
-.include <mkc.mk>
+.include "../mk/addlinks.mk"

@@ -35,4 +35,4 @@ vgrindefs.src.db: vgrindefs.src
 vgrindefs.src.db:
 .endif
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"

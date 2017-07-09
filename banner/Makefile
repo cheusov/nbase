@@ -11,5 +11,5 @@ SRCS =	$(PROG).c chset.c
 # output will not be the same as the real thing.
 #CPPFLAGS+= -DLPD_CHSET
 
-.include <mkc.mk>
+.include "../mk/addlinks.mk"
 

@@ -1,3 +1,3 @@
 PROG =	mkfifo
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"

@@ -1,3 +1,3 @@
 PROG=	wc
 
-.include <mkc.mk>
+.include "../mk/addlinks.mk"

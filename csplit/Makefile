@@ -1,6 +1,4 @@
 PROG =	csplit
+MAN  =	csplit.1
 
-# DPADD+=	${LIBUTIL}
-# LDADD+=	-lutil
-
-.include <mkc.mk>
+.include "../mk/addlinks.mk"

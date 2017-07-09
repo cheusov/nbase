@@ -27,7 +27,8 @@
 There is a lot of Makefile variables that can be changed during
 build and installation.
 
-  PREFIX         - where executables are installed to
+  PREFIX         - where programs are installed to
+  LPREFIX        - where nb-NNN symlinks are installed to
   MANDIR         - root directory for manual pages
   DESTDIR        - fake root for installation
   CPPFLAGS
@@ -39,7 +40,8 @@ build and installation.
 ------------------------------
 Examples of build and installation:
 
- 1)  export PREFIX=/usr SYSCONFDIR=/etc MANDIR=/usr/share/man
+ 1)
+     export PREFIX=/usr/nbase LPREFIX=/usr SYSCONFDIR=/etc MANDIR=/usr/nbase/share/man
      mkcmake all
      env DESTDIR=/tmp/fake-root mkcmake install
 
