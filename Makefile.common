@@ -25,7 +25,7 @@ MKC_CHECK_MEMBERS +=	\
    struct-statvfs.f_mntfromname:sys/statvfs.h \
    struct-statvfs.f_fstypename:sys/statvfs.h
 
-MKC_CHECK_HEADERS += sys/extattr.h sys/event.h
+MKC_CHECK_HEADERS += sys/extattr.h sys/event.h pty.h util.h
 
 MKC_CHECK_FUNCS2 += lchmod:sys/stat.h lutimes:sys/time.h
 MKC_CHECK_FUNCS2 += fcpxattr:sys/extattr.h funopen:stdio.h

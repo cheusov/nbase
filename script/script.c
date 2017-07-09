@@ -61,11 +61,16 @@ __RCSID("$NetBSD: script.c,v 1.21 2011/09/06 18:29:56 joerg Exp $");
 #include <termios.h>
 #include <time.h>
 #include <unistd.h>
+#if HAVE_HEADER_UTIL_H
+#include <util.h>
+#endif
 #include <stdint.h>
 #if HAVE_HEADER_UTMP_H
 #include <utmp.h>
 #endif
+#if HAVE_HEADER_PTY_H
 #include <pty.h>
+#endif
 
 #include "mkc_tzfile.h"
 #include "mkc_progname.h"
