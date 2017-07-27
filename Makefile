@@ -15,12 +15,12 @@ PROJECTS = apply asa nawk/bin banner basename cat chmod cleantags cmp	\
   dirname domainname du echo ed env error expand expr false fgen find	\
   fmt fold fpr from fsplit getconf getopt grep head hexdump hostname	\
   id indent join jot kill lam leave ln logname look lorder ls m4	\
-  machine mkdep mkdir mkfifo mkstr mktemp menuc msgc mv nice nl nohup	\
+  machine mkdep mkdir mkfifo mknod mkstr mktemp menuc msgc mv nice nl   \
+  nohup	\
   paste patch pax pr printenv printf pwd qsubst renice rev rm rmdir	\
   rs script sdiff sed seq shar shlock shuffle sleep soelim sort split	\
   stty sync tabs tail tee testcmd timeout tr true tty ul unexpand	\
-  unifdef uniq unvis uudecode uuencode vis what whois wc xargs	\
-  xstr yes
+  unifdef uniq unvis uudecode uuencode vis what whois wc xargs xstr yes
 
 MKC_CHECK_HEADERS = tzfile.h md2.h db.h
 

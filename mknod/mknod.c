@@ -58,6 +58,11 @@ __RCSID("$NetBSD: mknod.c,v 1.41 2013/06/14 16:28:20 tsutsui Exp $");
 #include <string.h>
 #include <ctype.h>
 
+#include "mkc_progname.h"
+#include "mkc_pwdgrp.h"
+#include "mkc_getsetmode.h"
+#include "mkc_bsd_getopt.h"
+
 #include "pack_dev.h"
 
 static int gid_name(const char *, gid_t *);
@@ -102,7 +107,7 @@ main(int argc, char **argv)
 #ifdef KERN_DRIVERS
 	while ((ch = getopt(argc, argv, "lrRF:g:m:u:")) != -1) {
 #else
-	while ((ch = getopt(argc, argv, "rRF:g:m:u:")) != -1) {
+	while ((ch = bsd_getopt(argc, argv, "rRF:g:m:u:")) != -1) {
 #endif
 		switch (ch) {
 
