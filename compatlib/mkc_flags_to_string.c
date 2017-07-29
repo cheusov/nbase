@@ -1,5 +1,5 @@
 /*
- * Copyright © 2015-2017 Aleksey Cheusov <vle@gmx.net>
+ * Copyright 2017 Aleksey Cheusov <vle@gmx.net>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -22,42 +22,18 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _MKC_PWGGRP_H_
-#define _MKC_PWGGRP_H_
+#include "mkc_flags_to_string.h"
 
-#include <pwd.h>
-#include <grp.h>
-
-//__BEGIN_DECLS
-
-#ifndef HAVE_FUNC2_USER_FROM_UID_PWD_H
-const char *user_from_uid(uid_t uid, int nouser);
+#if !defined(HAVE_FUNC2_FLAGS_TO_STRING_UTIL_H)
+char *flags_to_string(u_long flags, const char *def)
+{
+	return "none";
+}
 #endif
 
-#ifndef HAVE_FUNC2_GROUP_FROM_GID_GRP_H
-const char *group_from_gid(gid_t gid, int nogroup);
+#if !defined(HAVE_FUNC3_STRING_TO_FLAGS_UTIL_H)
+int string_to_flags(char **stringp, u_long *setp, u_long *clrp)
+{
+	return 0;
+}
 #endif
-
-#ifndef HAVE_FUNC2_UID_FROM_USER_PWD_H
-int uid_from_user(const char *name, uid_t *uid);
-#endif
-
-#ifndef HAVE_FUNC2_GID_FROM_GROUP_GRP_H
-int gid_from_group(const char *name, gid_t *gid);
-#endif
-
-#ifndef HAVE_FUNC4_PWCACHE_USERDB_PWD_H
-int pwcache_userdb(int (*setpassent)(int), void (*endpwent)(void),
-         struct passwd * (*getpwnam)(const char *),
-         struct passwd * (*getpwuid)(uid_t));
-#endif
-
-#ifndef HAVE_FUNC4_PWCACHE_GROUPDB_GRP_H
-int pwcache_groupdb(int (*setgroupent)(int), void (*endgrent)(void),
-         struct group * (*getgrnam)(const char *),
-         struct group * (*getgrgid)(gid_t));
-#endif
-
-//__END_DECLS
-
-#endif /* _MKC_PWGGRP_H_ */
