@@ -22,6 +22,10 @@ prj2netbsd_dir (){
 	echo "bin/$d"
     elif test -d "$netbsd_dir/usr.bin/$d"; then
 	echo "usr.bin/$d"
+    elif test -d "sbin/$d"; then
+	echo "sbin/$d"
+    elif test -d "$netbsd_dir/usr.sbin/$d"; then
+	echo "usr.sbin/$d"
     else
 	echo ''
     fi
