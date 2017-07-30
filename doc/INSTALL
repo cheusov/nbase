@@ -11,7 +11,7 @@
 *) cd nbase-X-Y-Z-N
 
 *)
-   export PREFIX=/usr/local/nbase LPREFIX=/usr/local
+   export PREFIX=/usr/local/nbase LINKSPREFIX=/usr/local
    mkcmake
 
 *) mkcmake test
@@ -30,7 +30,7 @@ There is a lot of Makefile variables that can be changed during
 build and installation.
 
   PREFIX         - where programs are installed to
-  LPREFIX        - where nb-NNN symlinks are installed to
+  LINKSPREFIX    - where nb-NNN symlinks are installed to
   MANDIR         - root directory for manual pages
   DESTDIR        - fake root for installation
   CPPFLAGS
@@ -43,7 +43,7 @@ build and installation.
 Examples of build and installation:
 
  1)
-     export PREFIX=/usr/nbase LPREFIX=/usr SYSCONFDIR=/etc MANDIR=/usr/nbase/share/man
+     export PREFIX=/usr/nbase LINKSPREFIX=/usr SYSCONFDIR=/etc MANDIR=/usr/nbase/share/man
      mkcmake all
      env DESTDIR=/tmp/fake-root mkcmake install
 
