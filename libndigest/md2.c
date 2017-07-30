@@ -97,18 +97,7 @@ static const unsigned char *pad[] = {
 	"\020\020\020\020\020\020\020\020\020\020\020\020\020\020\020\020"
 };
 
-/*
- * XXX This should not be visible, but due to an accident, it is
- * XXX so it must remain so.
- */
-/*static*/ void MD2Transform __P((MD2_CTX *));
-
-#ifdef __weak_alias
-__weak_alias(MD2Init,_MD2Init)
-__weak_alias(MD2Update,_MD2Update)
-__weak_alias(MD2Final,_MD2Final)
-__weak_alias(MD2Transform,_MD2Transform)
-#endif
+static void MD2Transform __P((MD2_CTX *));
 
 void
 MD2Init(context)
@@ -168,7 +157,7 @@ MD2Final(digest, context)
 	MD2Init(context);
 }
 
-/*static*/ void
+static void
 MD2Transform(context)
 	MD2_CTX *context;
 {

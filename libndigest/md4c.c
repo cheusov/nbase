@@ -76,7 +76,7 @@ typedef uint32_t UINT4;
 #define S33 11
 #define S34 15
 
-static void MD4Transform __P((UINT4 [4], const unsigned char [64]));
+static void MD4Transform (UINT4 state[4], const unsigned char block[64]);
 
 static void Encode __P((unsigned char *, UINT4 *, unsigned int));
 static void Decode __P((UINT4 *, const unsigned char *, unsigned int));
@@ -117,13 +117,6 @@ static const unsigned char PADDING[64] = {
 	(a) += H ((b), (c), (d)) + (x) + (UINT4)0x6ed9eba1; \
 	(a) = ROTATE_LEFT ((a), (s)); \
 }
-
-#if !defined(_KERNEL) && !defined(_STANDALONE) && defined(__weak_alias)
-__weak_alias(MD4Init,_MD4Init)
-__weak_alias(MD4Update,_MD4Update)
-__weak_alias(MD4Final,_MD4Final)
-__weak_alias(MD4Transform,_MD4Transform)
-#endif
 
 /*
  * MD4 initialization. Begins an MD4 operation, writing a new context.

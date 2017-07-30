@@ -101,7 +101,7 @@ static gid_t	gid = -1;
 static char	*group, *owner, *fflags, *tags;
 static FILE	*metafp;
 static char	*metafile;
-#if HAVE_STRUCT_STAT_ST_FLAGS
+#ifdef HAVE_STRUCT_STAT_ST_FLAGS
 static u_long	fileflags;
 #endif
 static char	*stripArgs;
@@ -389,18 +389,16 @@ main(int argc, char *argv[])
 				errx(1, "%s and %s are the same file", *argv,
 				    to_name);
 		}
-#if HAVE_STRUCT_STAT_ST_FLAGS
+#ifdef HAVE_STRUCT_STAT_ST_FLAGS
 		/*
 		 * Unlink now... avoid ETXTBSY errors later.  Try and turn
 		 * off the append/immutable bits -- if we fail, go ahead,
 		 * it might work.
 		 */
-#if ! HAVE_NBTOOL_CONFIG_H
 #define	NOCHANGEBITS	(UF_IMMUTABLE | UF_APPEND | SF_IMMUTABLE | SF_APPEND)
 		if (to_sb.st_flags & NOCHANGEBITS)
 			(void)chflags(to_name,
 			    to_sb.st_flags & ~(NOCHANGEBITS));
-#endif
 #endif
 		if (dobackup)
 			backup(to_name);
@@ -671,7 +669,7 @@ install(char *from_name, char *to_name, u_int flags)
 	} else {
 		devnull = 1;
 		size = 0;
-#if HAVE_STRUCT_STAT_ST_FLAGS
+#ifdef HAVE_STRUCT_STAT_ST_FLAGS
 		from_sb.st_flags = 0;	/* XXX */
 #endif
 	}
@@ -681,7 +679,7 @@ install(char *from_name, char *to_name, u_int flags)
 	 * off the append/immutable bits -- if we fail, go ahead,
 	 * it might work.
 	 */
-#if HAVE_STRUCT_STAT_ST_FLAGS
+#ifdef HAVE_STRUCT_STAT_ST_FLAGS
 	if (stat(to_name, &to_sb) == 0 &&
 	    to_sb.st_flags & (NOCHANGEBITS))
 		(void)chflags(to_name, to_sb.st_flags & ~(NOCHANGEBITS));
@@ -801,7 +799,7 @@ install(char *from_name, char *to_name, u_int flags)
 	 * If provided a set of flags, set them, otherwise, preserve the
 	 * flags, except for the dump flag.
 	 */
-#if HAVE_STRUCT_STAT_ST_FLAGS
+#ifdef HAVE_STRUCT_STAT_ST_FLAGS
 	if (!dounpriv && chflags(to_name,
 	    flags & SETFLAGS ? fileflags : from_sb.st_flags & ~UF_NODUMP) == -1)
 	{

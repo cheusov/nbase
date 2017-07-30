@@ -71,15 +71,6 @@ __RCSID("$NetBSD: sha1.c,v 1.6 2009/11/06 20:31:18 joerg Exp $");
 #define R4(v,w,x,y,z,i) z+=(w^x^y)+blk(i)+0xCA62C1D6+rol(v,5);w=rol(w,30);
 
 
-#if !defined(_KERNEL) && !defined(_STANDALONE)
-#if defined(__weak_alias)
-__weak_alias(SHA1Transform,_SHA1Transform)
-__weak_alias(SHA1Init,_SHA1Init)
-__weak_alias(SHA1Update,_SHA1Update)
-__weak_alias(SHA1Final,_SHA1Final)
-#endif
-#endif
-
 typedef union {
     uint8_t c[64];
     uint32_t l[16];

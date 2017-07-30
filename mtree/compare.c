@@ -89,7 +89,7 @@ do {									\
 } while (0)
 #define	LABEL if (!label++) MARK
 
-#if HAVE_STRUCT_STAT_ST_FLAGS
+#ifdef HAVE_STRUCT_STAT_ST_FLAGS
 
 
 #define CHANGEFLAGS							\
@@ -137,7 +137,7 @@ int
 compare(NODE *s, FTSENT *p)
 {
 	u_int32_t len, val;
-#if HAVE_STRUCT_STAT_ST_FLAGS
+#ifdef HAVE_STRUCT_STAT_ST_FLAGS
 	u_int32_t flags;
 #endif
 	int fd, label;
@@ -187,7 +187,7 @@ typeerr:		LABEL;
 	}
 	if (mtree_Wflag)
 		goto afterpermwhack;
-#if HAVE_STRUCT_STAT_ST_FLAGS
+#ifdef HAVE_STRUCT_STAT_ST_FLAGS
 	if (iflag && !uflag) {
 		if (s->flags & F_FLAGS)
 		    SETFLAGS(p->fts_statp->st_flags, SP_FLGS);
@@ -365,7 +365,7 @@ typeerr:		LABEL;
 			tab = "\t";
 		}
 	}
-#if HAVE_STRUCT_STAT_ST_FLAGS
+#ifdef HAVE_STRUCT_STAT_ST_FLAGS
 	/*
 	 * XXX
 	 * since lchflags(2) will reset file times, the utimes() above
