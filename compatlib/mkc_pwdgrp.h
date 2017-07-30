@@ -22,8 +22,8 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _MKC_PWGGRP_H_
-#define _MKC_PWGGRP_H_
+#ifndef _MKC_PWDGRP_H_
+#define _MKC_PWDGRP_H_
 
 #include <pwd.h>
 #include <grp.h>
@@ -60,4 +60,4 @@ int pwcache_groupdb(int (*setgroupent)(int), void (*endgrent)(void),
 
 //__END_DECLS
 
-#endif /* _MKC_PWGGRP_H_ */
+#endif /* _MKC_PWDGRP_H_ */
