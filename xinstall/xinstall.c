@@ -70,13 +70,13 @@ __RCSID("$NetBSD: xinstall.c,v 1.117 2014/07/06 20:54:47 apb Exp $");
 #include <string.h>
 #include <unistd.h>
 
-//#include <md5.h>
-//#include <rmd160.h>
-//#include <sha1.h>
-//#include <sha2.h>
+#include <md5.h>
+#include <rmd160.h>
+#include <sha1.h>
+#include <sha2.h>
 
 #include "pathnames.h"
-//#include "mtree.h"
+#include "mtree.h"
 
 #include "mkc_progname.h"
 #include "mkc_strlcpy.h"
@@ -86,6 +86,7 @@ __RCSID("$NetBSD: xinstall.c,v 1.117 2014/07/06 20:54:47 apb Exp $");
 #include "mkc_pwdgrp.h"
 #include "mkc_bsd_getopt.h"
 #include "mkc_vis.h"
+#include "mkc_flags_to_string.h"
 
 #define STRIP_ARGS_MAX 32
 #define BACKUP_SUFFIX ".old"
@@ -100,7 +101,9 @@ static gid_t	gid = -1;
 static char	*group, *owner, *fflags, *tags;
 static FILE	*metafp;
 static char	*metafile;
+#if HAVE_STRUCT_STAT_ST_FLAGS
 static u_long	fileflags;
+#endif
 static char	*stripArgs;
 static char	*afterinstallcmd;
 static const char *suffix = BACKUP_SUFFIX;
@@ -386,6 +389,7 @@ main(int argc, char *argv[])
 				errx(1, "%s and %s are the same file", *argv,
 				    to_name);
 		}
+#if HAVE_STRUCT_STAT_ST_FLAGS
 		/*
 		 * Unlink now... avoid ETXTBSY errors later.  Try and turn
 		 * off the append/immutable bits -- if we fail, go ahead,
@@ -396,6 +400,7 @@ main(int argc, char *argv[])
 		if (to_sb.st_flags & NOCHANGEBITS)
 			(void)chflags(to_name,
 			    to_sb.st_flags & ~(NOCHANGEBITS));
+#endif
 #endif
 		if (dobackup)
 			backup(to_name);
@@ -676,7 +681,7 @@ install(char *from_name, char *to_name, u_int flags)
 	 * off the append/immutable bits -- if we fail, go ahead,
 	 * it might work.
 	 */
-#if ! HAVE_NBTOOL_CONFIG_H
+#if HAVE_STRUCT_STAT_ST_FLAGS
 	if (stat(to_name, &to_sb) == 0 &&
 	    to_sb.st_flags & (NOCHANGEBITS))
 		(void)chflags(to_name, to_sb.st_flags & ~(NOCHANGEBITS));
@@ -796,7 +801,7 @@ install(char *from_name, char *to_name, u_int flags)
 	 * If provided a set of flags, set them, otherwise, preserve the
 	 * flags, except for the dump flag.
 	 */
-#if ! HAVE_NBTOOL_CONFIG_H
+#if HAVE_STRUCT_STAT_ST_FLAGS
 	if (!dounpriv && chflags(to_name,
 	    flags & SETFLAGS ? fileflags : from_sb.st_flags & ~UF_NODUMP) == -1)
 	{

@@ -2,7 +2,7 @@
 
 # TBD: cal calendar chio date db flock gcore getaddrinfo getent
 # iconv infocmp ipcs ipcrm lock logger mt nbperf stat time touch tsort
-# uname uuidgen vgrind whereis xinstall xlint
+# uname uuidgen vgrind whereis xlint
 
 # NET: ftp rcmd rcp rdist rup rwho rwall ruptime rusers rlogin rsh
 
@@ -22,7 +22,8 @@ PROJECTS = apply asa nawk/bin banner basename cat chmod cksum cleantags \
   paste patch pax pr printenv printf pwd qsubst renice rev rm rmdir	\
   rs script sdiff sed seq shar shlock shuffle sleep soelim sort split	\
   stty sync tabs tail tee testcmd timeout tr true tty ul unexpand	\
-  unifdef uniq unvis uudecode uuencode vis what whois wc xargs xstr yes
+  unifdef uniq unvis uudecode uuencode vis what whois wc xargs xinstall	\
+  xstr yes
 
 COMPATLIB    =	compatlib
 INTERNALLIBS =	libndigest
@@ -45,7 +46,9 @@ MKC_CHECK_HEADERS = tzfile.h md2.h db.h
 #PROJECTS += df
 #.endif
 
-LIBDEPS   =	${PROJECTS:S/^/compatlib:/} libndigest:mtree libndigest:cksum
+LIBDEPS   =	${PROJECTS:S/^/compatlib:/} libndigest:mtree libndigest:cksum \
+		libndigest:xinstall
+
 SUBPRJ    =	doc nawk/bin:awk
 
 MKC_REQD     =	0.29.1
