@@ -1,5 +1,3 @@
-/*	$NetBSD: setmode.c,v 1.34 2012/06/25 22:32:43 abs Exp $	*/
-
 /*
  * Copyright © 2015 Aleksey Cheusov <vle@gmx.net>
  *
