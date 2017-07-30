@@ -103,6 +103,8 @@ __RCSID("$NetBSD: cksum.c,v 1.46.4.1 2014/08/31 17:23:00 riz Exp $");
 #include <unistd.h>
 
 #include "mkc_bsd_getopt.h"
+#include "mkc_progname.h"
+#include "mkc_strlcpy.h"
 
 #include "extern.h"
 

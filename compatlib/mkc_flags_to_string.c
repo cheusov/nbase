@@ -23,11 +23,12 @@
  */
 
 #include "mkc_flags_to_string.h"
+#include "mkc_macro.h"
 
 #if !defined(HAVE_FUNC2_FLAGS_TO_STRING_UTIL_H)
 char *flags_to_string(u_long flags, const char *def)
 {
-	return "none";
+	return __UNCONST("none");
 }
 #endif
 

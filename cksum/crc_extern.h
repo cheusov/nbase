@@ -32,6 +32,8 @@
  */
 
 __BEGIN_DECLS
+#include <stdint.h>
+
 int	 crc(int, u_int32_t *, off_t *);
 uint32_t crc_buf(uint32_t, const void *, size_t);
 uint32_t crc_byte(uint32_t, unsigned int);
