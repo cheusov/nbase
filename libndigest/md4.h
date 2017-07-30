@@ -37,6 +37,7 @@
 #include <inttypes.h>
 
 #define MD4_DIGEST_LENGTH 16
+#define MD4_DIGEST_STRING_LENGTH 33
 
 /* MD4 context. */
 typedef struct MD4Context {
@@ -47,12 +48,13 @@ typedef struct MD4Context {
 
 __BEGIN_DECLS
 void	MD4Init(MD4_CTX *);
-void	MD4Update(MD4_CTX *, const unsigned char *, unsigned int);
+void	MD4Update(MD4_CTX *, const unsigned char *, size_t);
 void	MD4Final(unsigned char[MD4_DIGEST_LENGTH], MD4_CTX *);
 #ifndef _KERNEL
 char	*MD4End(MD4_CTX *, char *);
+char	*MD4FileChunk(const char *, char *, off_t, off_t);
 char	*MD4File(const char *, char *);
-char	*MD4Data(const unsigned char *, unsigned int, char *);
+char	*MD4Data(const unsigned char *, size_t, char *);
 #endif /* _KERNEL */
 __END_DECLS
 

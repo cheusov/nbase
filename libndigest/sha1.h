@@ -1,4 +1,4 @@
-/*	$NetBSD: sha1.h,v 1.8 2010/01/23 13:25:12 obache Exp $	*/
+/*	$NetBSD: sha1.h,v 1.14 2009/11/06 20:31:19 joerg Exp $	*/
 
 /*
  * SHA-1 in C
@@ -9,32 +9,29 @@
 #ifndef _SYS_SHA1_H_
 #define	_SYS_SHA1_H_
 
-#ifdef HAVE_INTTYPES_H
-#include <inttypes.h>
-#endif
-
-#ifdef HAVE_STDINT_H
+#include <sys/types.h>
 #include <stdint.h>
-#endif
 
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
+#define SHA1_DIGEST_LENGTH		20
+#define SHA1_DIGEST_STRING_LENGTH	41
 
 typedef struct {
 	uint32_t state[5];
-	uint32_t count[2];  
+	uint32_t count[2];
 	uint8_t buffer[64];
 } SHA1_CTX;
-  
-void	SHA1Transform(uint32_t state[5], const uint8_t buffer[64]);
-void	SHA1Init(SHA1_CTX *context);
-void	SHA1Update(SHA1_CTX *context, const uint8_t *data, size_t len);
-void	SHA1Final(uint8_t digest[20], SHA1_CTX *context);
+
+__BEGIN_DECLS
+void	SHA1Transform(uint32_t[5], const uint8_t[64]);
+void	SHA1Init(SHA1_CTX *);
+void	SHA1Update(SHA1_CTX *, const uint8_t *, size_t);
+void	SHA1Final(uint8_t[SHA1_DIGEST_LENGTH], SHA1_CTX *);
 #ifndef _KERNEL
 char	*SHA1End(SHA1_CTX *, char *);
+char	*SHA1FileChunk(const char *, char *, off_t, off_t);
 char	*SHA1File(const char *, char *);
 char	*SHA1Data(const uint8_t *, size_t, char *);
 #endif /* _KERNEL */
+__END_DECLS
 
 #endif /* _SYS_SHA1_H_ */

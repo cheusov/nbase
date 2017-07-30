@@ -20,6 +20,8 @@
 #include "nbtool_config.h"
 #endif
 
+#include "mkc_macro.h"
+
 /*
  * Do all the name mangling before we include "namespace.h"
  */
@@ -54,8 +56,6 @@ WA(FNPREFIX(Data),CONCAT(_,FNPREFIX(Data)))
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-
-#include "mkc_macro.h"
 
 #ifndef MIN
 #define	MIN(x,y)	((x)<(y)?(x):(y))

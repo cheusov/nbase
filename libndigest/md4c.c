@@ -151,7 +151,7 @@ MD4Init(MD4_CTX *context)		/* context */
 void
 MD4Update (MD4_CTX *context,		/* context */
 	const unsigned char *input,	/* input block */
-	unsigned int inputLen)		/* length of input block */
+	size_t inputLen)		/* length of input block */
 {
 	unsigned int i, idx, partLen;
 

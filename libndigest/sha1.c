@@ -1,4 +1,4 @@
-/*	$NetBSD: sha1.c,v 1.9 2007/09/21 18:44:37 joerg Exp $	*/
+/*	$NetBSD: sha1.c,v 1.6 2009/11/06 20:31:18 joerg Exp $	*/
 /*	$OpenBSD: sha1.c,v 1.9 1997/07/23 21:12:32 kstailey Exp $	*/
 
 /*
@@ -15,35 +15,36 @@
  *   34AA973C D4C4DAA4 F61EEB2B DBAD2731 6534016F
  */
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
-
 #define SHA1HANDSOFF		/* Copies data before messing with it. */
 
+#include <sys/cdefs.h>
+
 #if defined(_KERNEL) || defined(_STANDALONE)
-#include <sys/param.h>
-#include <sys/systm.h>
-#define _DIAGASSERT(x)	(void)0
+__KERNEL_RCSID(0, "$NetBSD: sha1.c,v 1.6 2009/11/06 20:31:18 joerg Exp $");
+
+#include <lib/libkern/libkern.h>
+
 #else
-/* #include "namespace.h" */
+
+#if defined(LIBC_SCCS) && !defined(lint)
+__RCSID("$NetBSD: sha1.c,v 1.6 2009/11/06 20:31:18 joerg Exp $");
+#endif /* LIBC_SCCS and not lint */
+
 #include <assert.h>
 #include <string.h>
+
 #endif
 
+#include <sys/types.h>
 #include <sha1.h>
 
-#ifndef _DIAGASSERT
-#define _DIAGASSERT(cond)	assert(cond)
+#include "mkc_macro.h"
+
+#if HAVE_NBTOOL_CONFIG_H
+#include "nbtool_config.h"
 #endif
 
-/*
- * XXX Kludge until there is resolution regarding mem*() functions
- * XXX in the kernel.
- */
-#if defined(_KERNEL) || defined(_STANDALONE)
-#define	memcpy(s, d, l)		bcopy((d), (s), (l))
-#endif
+#if !HAVE_SHA1_H
 
 #define rol(value, bits) (((value) << (bits)) | ((value) >> (32 - (bits))))
 
@@ -51,7 +52,7 @@
  * blk0() and blk() perform the initial expand.
  * I got the idea of expanding during the round function from SSLeay
  */
-#ifndef WORDS_BIGENDIAN
+#if BYTE_ORDER == LITTLE_ENDIAN
 # define blk0(i) (block->l[i] = (rol(block->l[i],24)&0xFF00FF00) \
     |(rol(block->l[i],8)&0x00FF00FF))
 #else
@@ -70,11 +71,13 @@
 #define R4(v,w,x,y,z,i) z+=(w^x^y)+blk(i)+0xCA62C1D6+rol(v,5);w=rol(w,30);
 
 
-#if 0
+#if !defined(_KERNEL) && !defined(_STANDALONE)
+#if defined(__weak_alias)
 __weak_alias(SHA1Transform,_SHA1Transform)
 __weak_alias(SHA1Init,_SHA1Init)
 __weak_alias(SHA1Update,_SHA1Update)
 __weak_alias(SHA1Final,_SHA1Final)
+#endif
 #endif
 
 typedef union {
@@ -82,7 +85,13 @@ typedef union {
     uint32_t l[16];
 } CHAR64LONG16;
 
-#ifdef __sparc_v9__
+/* old sparc64 gcc could not compile this */
+#undef SPARC64_GCC_WORKAROUND
+#if defined(__sparc64__) && defined(__GNUC__) && __GNUC__ < 3
+#define SPARC64_GCC_WORKAROUND
+#endif
+
+#ifdef SPARC64_GCC_WORKAROUND
 void do_R01(uint32_t *a, uint32_t *b, uint32_t *c, uint32_t *d, uint32_t *e, CHAR64LONG16 *);
 void do_R2(uint32_t *a, uint32_t *b, uint32_t *c, uint32_t *d, uint32_t *e, CHAR64LONG16 *);
 void do_R3(uint32_t *a, uint32_t *b, uint32_t *c, uint32_t *d, uint32_t *e, CHAR64LONG16 *);
@@ -138,8 +147,7 @@ do_R4(uint32_t *a, uint32_t *b, uint32_t *c, uint32_t *d, uint32_t *e, CHAR64LON
 /*
  * Hash a single 512-bit block. This is the core of the algorithm.
  */
-void
-SHA1Transform(uint32_t state[5], const uint8_t buffer[64])
+void SHA1Transform(uint32_t state[5], const uint8_t buffer[64])
 {
     uint32_t a, b, c, d, e;
     CHAR64LONG16 *block;
@@ -165,7 +173,7 @@ SHA1Transform(uint32_t state[5], const uint8_t buffer[64])
     d = state[3];
     e = state[4];
 
-#ifdef __sparc_v9__
+#ifdef SPARC64_GCC_WORKAROUND
     do_R01(&a, &b, &c, &d, &e, block);
     do_R2(&a, &b, &c, &d, &e, block);
     do_R3(&a, &b, &c, &d, &e, block);
@@ -209,8 +217,7 @@ SHA1Transform(uint32_t state[5], const uint8_t buffer[64])
 /*
  * SHA1Init - Initialize new context
  */
-void
-SHA1Init(SHA1_CTX *context)
+void SHA1Init(SHA1_CTX *context)
 {
 
     _DIAGASSERT(context != 0);
@@ -228,11 +235,9 @@ SHA1Init(SHA1_CTX *context)
 /*
  * Run your data through this.
  */
-void
-SHA1Update(SHA1_CTX *context, const uint8_t *data, size_t len)
+void SHA1Update(SHA1_CTX *context, const uint8_t *data, size_t len)
 {
-    unsigned int i;
-    uint32_t j;
+    unsigned int i, j;
 
     _DIAGASSERT(context != 0);
     _DIAGASSERT(data != 0);
@@ -242,8 +247,7 @@ SHA1Update(SHA1_CTX *context, const uint8_t *data, size_t len)
 	context->count[1] += (len>>29)+1;
     j = (j >> 3) & 63;
     if ((j + len) > 63) {
-	i = 64 - j;
-	(void)memcpy(&context->buffer[j], data, i);
+	(void)memcpy(&context->buffer[j], data, (i = 64-j));
 	SHA1Transform(context->state, context->buffer);
 	for ( ; i + 63 < len; i += 64)
 	    SHA1Transform(context->state, &data[i]);
@@ -258,8 +262,7 @@ SHA1Update(SHA1_CTX *context, const uint8_t *data, size_t len)
 /*
  * Add padding and return the message digest.
  */
-void
-SHA1Final(uint8_t digest[20], SHA1_CTX* context)
+void SHA1Final(uint8_t digest[20], SHA1_CTX *context)
 {
     unsigned int i;
     uint8_t finalcount[8];
@@ -282,3 +285,5 @@ SHA1Final(uint8_t digest[20], SHA1_CTX* context)
 		((context->state[i>>2] >> ((3-(i & 3)) * 8) ) & 255);
     }
 }
+
+#endif /* HAVE_SHA1_H */
