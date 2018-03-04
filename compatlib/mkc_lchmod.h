@@ -26,6 +26,7 @@
 #define _MKC_LCHMOD_H_
 
 #ifndef HAVE_FUNC2_LCHMOD_SYS_STAT_H
+#include <sys/stat.h>
 int lchmod(const char *path, mode_t mode);
 #endif
 
