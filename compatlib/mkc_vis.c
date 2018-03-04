@@ -64,13 +64,13 @@ __FBSDID("$FreeBSD$");
 #define	_DIAGASSERT(x)	assert(x)
 #endif
 
+#include "mkc_vis.h"
 #include "mkc_macro.h"
 
 #include <sys/types.h>
 #include <sys/param.h>
 
 #include <assert.h>
-#include "mkc_vis.h"
 #include <errno.h>
 #include <stdlib.h>
 #include <wchar.h>

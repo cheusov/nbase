@@ -40,17 +40,14 @@ __RCSID("$NetBSD: unvis.c,v 1.41 2012/12/15 04:29:53 matt Exp $");
 
 #include <sys/types.h>
 
+#include "mkc_vis.h"
+#include "mkc_macro.h"
+
 #include <assert.h>
 #include <ctype.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <errno.h>
-#include "mkc_vis.h"
-#include "mkc_macro.h"
-
-#ifdef __weak_alias
-__weak_alias(strnunvisx,_strnunvisx)
-#endif
 
 #if !HAVE_VIS
 /*
