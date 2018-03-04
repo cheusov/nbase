@@ -26,6 +26,7 @@
 #define _MKC_TIMESPECCMP_H_ 1
 
 #  include <time.h>
+#  include <sys/time.h>
 
 #  ifndef timespeccmp
 #  define timespeccmp(tsp, usp, cmp)                                      \
