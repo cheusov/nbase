@@ -73,15 +73,24 @@
  * Only to be used in other headers that are included from both c or c++
  * NOT to be used in code.
  */
-#ifdef __cplusplus
-#define __CAST(__dt, __st)      static_cast<__dt>(__st)
-#else
-#define __CAST(__dt, __st)      ((__dt)(__st))
+#ifndef __CAST
+# ifdef __cplusplus
+#  define __CAST(__dt, __st)      static_cast<__dt>(__st)
+# else
+#  define __CAST(__dt, __st)      ((__dt)(__st))
+# endif
 #endif
 
+#ifndef __CASTV
 #define __CASTV(__dt, __st)     __CAST(__dt, __CAST(void *, __st))
-#define __CASTCV(__dt, __st)    __CAST(__dt, __CAST(const void *, __st))
+#endif
 
+#ifndef __CASTCV
+#define __CASTCV(__dt, __st)    __CAST(__dt, __CAST(const void *, __st))
+#endif
+
+#ifndef __USE
 #define __USE(a) ((void)(a))
+#endif
 
 #endif // _MKC_MACRO_H_
