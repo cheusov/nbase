@@ -37,6 +37,8 @@ MKC_CHECK_FUNCS0 += arc4random:stdlib.h
 
 MKC_CHECK_DEFINES +=	__UNCONST:sys/cdefs.h
 
+MKC_CHECK_TYPES +=	blksize_t:sys/stat.h
+
 MKC_CHECK_PROTOTYPES += fopencookie
 MKC_PROTOTYPE_FUNC.fopencookie = \
    FILE *fopencookie(void *cookie, const char *mode, \

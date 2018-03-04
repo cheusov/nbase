@@ -38,6 +38,10 @@
 #include "mkc_pwdgrp.h"
 #include "mkc_bsd_getopt.h"
 
+#ifndef HAVE_TYPE_BLKSIZE_T_SYS_STAT_H
+typedef unsigned int blksize_t;
+#endif
+
 #include <sys/cdefs.h>
 #ifndef lint
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993, 1994\
