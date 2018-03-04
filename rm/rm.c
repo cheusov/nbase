@@ -194,8 +194,10 @@ rm_tree(char **argv)
 	flags = FTS_PHYSICAL;
 	if (!needstat)
 		flags |= FTS_NOSTAT;
+#ifdef FTS_WHITEOUT
 	if (Wflag)
 		flags |= FTS_WHITEOUT;
+#endif
 	if (xflag)
 		flags |= FTS_XDEV;
 	if ((fts = fts_open(argv, flags, NULL)) == NULL)
@@ -261,6 +263,7 @@ rm_tree(char **argv)
 				continue;
 			break;
 
+#ifdef FTS_W
 		case FTS_W:
 #ifdef HAVE_FUNC1_UNDELETE_UNISTD_H
 			rval = undelete(p->fts_accpath);
@@ -270,6 +273,7 @@ rm_tree(char **argv)
 			if (rval != 0 && fflag && errno == ENOENT)
 				continue;
 			break;
+#endif
 
 		default:
 			if (Pflag) {
