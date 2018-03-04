@@ -5,6 +5,9 @@
 # define HAVE_STRUCT_STAT_ST_FLAGS
 #endif
 
+#include "mkc_lchmod.h"
+#include "mkc_flags_to_string.h"
+
 #include <sys/stat.h>
 #include <limits.h>
 #include <pwd.h>
@@ -20,6 +23,10 @@
 
 #ifndef GID_MAX
 # define GID_MAX ((gid_t) -1)
+#endif
+
+#if !HAVE_LCHFLAGS_SYS_STAT_H
+#define lchflags chflags
 #endif
 
 #endif // _NBTOOL_CONFIG_H_

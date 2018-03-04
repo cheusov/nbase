@@ -30,10 +30,15 @@ MKC_CHECK_MEMBERS +=	\
    struct-statvfs.f_fstypename:sys/statvfs.h
 
 MKC_CHECK_HEADERS += sys/extattr.h sys/event.h pty.h util.h
+MKC_CHECK_HEADER_FILES +=	sys/endian.h
 
-MKC_CHECK_FUNCS2 += lchmod:sys/stat.h lutimes:sys/time.h
-MKC_CHECK_FUNCS2 += fcpxattr:sys/extattr.h funopen:stdio.h
-MKC_CHECK_FUNCS0 += arc4random:stdlib.h
+MKC_CHECK_FUNCS5 +=	funopen:stdio.h
+MKC_CHECK_FUNCS2 +=	lchmod:sys/stat.h lutimes:sys/time.h \
+			fcpxattr:sys/extattr.h \
+			chflags:sys/stat.h lchflags:sys/stat.h
+MKC_CHECK_FUNCS1 +=	be32toh:sys/endian.h be64toh:sys/endian.h \
+		 	htobe32:sys/endian.h htobe64:sys/endian.h
+MKC_CHECK_FUNCS0 +=	arc4random:stdlib.h
 
 MKC_CHECK_DEFINES +=	__UNCONST:sys/cdefs.h
 

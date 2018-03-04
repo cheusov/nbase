@@ -65,7 +65,8 @@ __RCSID("$NetBSD: sha2.c,v 1.21 2010/01/24 21:11:18 joerg Exp $");
 #include "mkc_endian_encdec.h"
 
 #if HAVE_NBTOOL_CONFIG_H
-#  if HAVE_SYS_ENDIAN_H
+#  if HAVE_FUNC1_BE32TOH_SYS_ENDIAN_H && HAVE_FUNC1_BE64TOH_SYS_ENDIAN_H && 0
+#    include <sys/types.h>
 #    include <sys/endian.h>
 #  else
 #   undef htobe32
@@ -73,7 +74,11 @@ __RCSID("$NetBSD: sha2.c,v 1.21 2010/01/24 21:11:18 joerg Exp $");
 #   undef be32toh
 #   undef be64toh
 
-static uint32_t
+#if HAVE_FUNC1_HTOBE32_SYS_ENDIAN_H || 1
+uint32_t
+htobe32(uint32_t x);
+
+uint32_t
 htobe32(uint32_t x)
 {
 	uint8_t p[4];
@@ -81,8 +86,13 @@ htobe32(uint32_t x)
 
 	return ((p[0] << 24) | (p[1] << 16) | (p[2] << 8) | p[3]);
 }
+#endif
 
-static uint64_t
+#if HAVE_FUNC1_HTOBE64_SYS_ENDIAN_H || 1
+uint64_t
+htobe64(uint64_t x);
+
+uint64_t
 htobe64(uint64_t x)
 {
 	uint8_t p[8];
@@ -94,14 +104,21 @@ htobe64(uint64_t x)
 
 	return ((((uint64_t)u) << 32) | v);
 }
+#endif
 
-static uint32_t
+uint32_t
+be32toh(uint32_t x);
+
+uint32_t
 be32toh(uint32_t x)
 {
 	return htobe32(x);
 }
 
-static uint64_t
+uint64_t
+be64toh(uint64_t x);
+
+uint64_t
 be64toh(uint64_t x)
 {
 	return htobe64(x);
