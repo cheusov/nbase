@@ -34,7 +34,8 @@
 #ifndef _MKC_VIS_H_
 #define _MKC_VIS_H_
 
-#if HAVE_HEADER_VIS_H
+#if HAVE_SVIS && HAVE_VIS
+#include <stdlib.h> /* for OpenBSD-5.3 */
 #include <vis.h>
 #else
 
@@ -114,6 +115,8 @@ int	strnunvisx(char *, size_t, const char *, int);
 
 int	unvis(char *, int, int *, int);
 
-#endif /* HAVE_HEADER_VIS_H */
+__END_DECLS
+
+#endif /* HAVE_HEADER_FILE_VIS_H */
 
 #endif /* !_MKC_VIS_H_ */
