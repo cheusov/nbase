@@ -40,7 +40,6 @@ __RCSID("$NetBSD: errc.c,v 1.3 2014/06/06 11:38:41 joerg Exp $");
 
 #include "mkc_errc.h"
 
-#if !HAVE_FUNC4_ERRC_ERR_H
 __dead void
 errc(int eval, int code, const char *fmt, ...)
 {
@@ -50,4 +49,3 @@ errc(int eval, int code, const char *fmt, ...)
 	verrc(eval, code, fmt, ap);
 	va_end(ap);
 }
-#endif

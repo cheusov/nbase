@@ -48,7 +48,6 @@ __RCSID("$NetBSD: verrc.c,v 1.3 2014/06/06 11:38:41 joerg Exp $");
 #include <stdlib.h>
 #include <string.h>
 
-#if !HAVE_PROTOTYPE_VERRC
 __dead void
 verrc(int eval, int code, const char *fmt, va_list ap)
 {
@@ -60,4 +59,3 @@ verrc(int eval, int code, const char *fmt, va_list ap)
 	(void)fprintf(stderr, "%s\n", strerror(code));
 	exit(eval);
 }
-#endif
