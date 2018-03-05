@@ -2,8 +2,8 @@ PROG =	xinstall
 SRCS =	xinstall.c getid.c
 MAN  =	install.1
 
-.PATH:		../mtree
-CPPFLAGS +=	-I../mtree -I.
+.PATH:		${.CURDIR}/../mtree
+CPPFLAGS +=	-I${.CURDIR}/../mtree -I${.CURDIR}/
 
 CPPFLAGS +=	-D HAVE_NBTOOL_CONFIG_H
 

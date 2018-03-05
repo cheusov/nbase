@@ -6,7 +6,7 @@ SRCS =		awkgram.y b.c lex.c lib.c main.c parse.c proctab.c run.c tran.c
 
 WARNS ?=	4
 
-CPPFLAGS +=	-I${DIST} -I.
+CPPFLAGS +=	-I${DIST} -I${.OBJDIR} -I${.CURDIR}
 YHEADER =	yes
 #COPTS.run.c+=	-Wno-format-nonliteral
 #COPTS.tran.c+=	-Wno-format-nonliteral

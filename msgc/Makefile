@@ -1,6 +1,6 @@
 PROG =		msgc
 SRCS =		msgmain.c msgparse.y msgscan.l msgdb.c util.c avl.c
-.PATH:		../menuc
+.PATH:		${.CURDIR}/../menuc
 CPPFLAGS+=	-I. -I${.CURDIR} -D_PATH_DEFSYSPREFIX='"${_PATH_DEFSYSPREFIX}"'
 YHEADER=
 

@@ -7,6 +7,6 @@ SRCS =	keccak.c \
 	tiger.c whirlpool.c \
 	md2.h md4.h md5.h rmd160.h sha1.h sha2.h sha3.h tiger.h whirlpool.h # sha3.c
 
-CPPFLAGS +=	-I. -DHAVE_NBTOOL_CONFIG_H=1
+CPPFLAGS +=	-I${.CURDIR} -DHAVE_NBTOOL_CONFIG_H=1
 
 .include <mkc.mk>
