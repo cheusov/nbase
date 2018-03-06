@@ -131,7 +131,6 @@ static int startnum = 1;
 /* should be unsigned but required signed by `*' precision conversion */
 static int width = 6;
 
-static char errorbuf[NL_TEXTMAX];
 
 int
 main(int argc, char *argv[])
@@ -361,6 +360,7 @@ static void
 parse_numbering(const char *argstr, int section)
 {
 	int error;
+	char errorbuf[NL_TEXTMAX];
 
 	switch (argstr[0]) {
 	case 'a':
