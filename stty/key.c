@@ -313,7 +313,7 @@ f_size(struct info *ip)
 void
 f_speed(struct info *ip)
 {
-	(void)printf("%d\n", cfgetospeed(&ip->t));
+	(void)printf("%d\n", (int)cfgetospeed(&ip->t));
 }
 
 /* ARGSUSED */

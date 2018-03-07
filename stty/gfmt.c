@@ -64,10 +64,10 @@ gprint(struct termios *tp)
 	const struct cchar *cp;
 
 	(void)printf("gfmt1:cflag=%x:iflag=%x:lflag=%x:oflag=%x:",
-	    tp->c_cflag, tp->c_iflag, tp->c_lflag, tp->c_oflag);
+		(unsigned)tp->c_cflag, (unsigned)tp->c_iflag, (unsigned)tp->c_lflag, (unsigned)tp->c_oflag);
 	for (cp = cchars1; cp->name; ++cp)
 		(void)printf("%s=%x:", cp->name, tp->c_cc[cp->sub]);
-	(void)printf("ispeed=%d:ospeed=%d\n", cfgetispeed(tp), cfgetospeed(tp));
+	(void)printf("ispeed=%u:ospeed=%u\n", (unsigned)cfgetispeed(tp), (unsigned)cfgetospeed(tp));
 }
 
 void
