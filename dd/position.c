@@ -131,9 +131,9 @@ pos_out(void)
 {
 #if HAVE_HEADER_FILE_SYS_MTIO_H
 	struct mtop t_op;
-#endif
 	int n;
 	uint64_t cnt;
+#endif
 
 	/*
 	 * If not a tape, try seeking on the file.  Seeking on a pipe is
