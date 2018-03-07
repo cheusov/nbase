@@ -32,8 +32,6 @@ __RCSID("$NetBSD: getoldopt.c,v 1.23 2012/08/09 11:05:59 christos Exp $");
 #include "pax.h"
 #include "extern.h"
 
-#include "mkc_bsd_getopt.h"
-
 int
 getoldopt(int argc, char **argv, const char *optstring,
 	struct option *longopts, int *idx)

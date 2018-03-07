@@ -30,7 +30,7 @@ MKC_CHECK_MEMBERS +=	\
    struct-statvfs.f_fstypename:sys/statvfs.h
 
 MKC_CHECK_HEADERS += sys/extattr.h sys/event.h pty.h util.h
-MKC_CHECK_HEADER_FILES +=	sys/endian.h
+MKC_CHECK_HEADER_FILES +=	sys/endian.h sys/mtio.h
 
 MKC_CHECK_FUNCS5 +=	funopen:stdio.h
 MKC_CHECK_FUNCS2 +=	lchmod:sys/stat.h lutimes:sys/time.h \
@@ -42,7 +42,7 @@ MKC_CHECK_FUNCS0 +=	arc4random:stdlib.h
 
 MKC_CHECK_DEFINES +=	__UNCONST:sys/cdefs.h
 
-MKC_CHECK_TYPES +=	blkcnt_t:sys/stat.h blksize_t:sys/stat.h
+MKC_CHECK_TYPES +=	blkcnt_t:sys/stat.h blksize_t:sys/stat.h u_long:sys/types.h
 
 MKC_CHECK_PROTOTYPES += fopencookie
 MKC_PROTOTYPE_FUNC.fopencookie = \
