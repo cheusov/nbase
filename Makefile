@@ -51,6 +51,6 @@ LIBDEPS   =	${PROJECTS:S/^/compatlib:/} libndigest:mtree libndigest:cksum \
 
 SUBPRJ    =	doc nawk/bin:awk
 
-MKC_REQD     =	0.29.1
+MKC_REQD     =	0.30.0
 
 .include <mkc.mk>

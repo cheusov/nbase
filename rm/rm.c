@@ -73,6 +73,10 @@ __RCSID("$NetBSD: rm.c,v 1.53 2013/04/26 18:43:22 christos Exp $");
 #define S_IFWHT 0
 #endif
 
+#ifndef O_RSYNC
+#define O_RSYNC 0
+#endif
+
 static int dflag, eval, fflag, iflag, Pflag, stdin_ok, vflag, Wflag;
 static int xflag;
 static sig_atomic_t pinfo;

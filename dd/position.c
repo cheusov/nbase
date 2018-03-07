@@ -45,7 +45,9 @@ __RCSID("$NetBSD: position.c,v 1.18 2010/11/22 21:04:28 pooka Exp $");
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
-#include <sys/mtio.h>
+#if HAVE_HEADER_FILE_SYS_MTIO_H
+# include <sys/mtio.h>
+#endif
 #include <sys/time.h>
 
 #include <err.h>
@@ -127,21 +129,26 @@ pos_in(void)
 void
 pos_out(void)
 {
+#if HAVE_HEADER_FILE_SYS_MTIO_H
 	struct mtop t_op;
 	int n;
 	uint64_t cnt;
+#endif
 
 	/*
 	 * If not a tape, try seeking on the file.  Seeking on a pipe is
 	 * going to fail, but don't protect the user -- they shouldn't
 	 * have specified the seek operand.
 	 */
+#if HAVE_HEADER_FILE_SYS_MTIO_H
 	if (!(out.flags & ISTAPE)) {
+#endif
 		if (ddop_lseek(out, out.fd,
 		    (off_t)out.offset * (off_t)out.dbsz, SEEK_SET) == -1)
 			err(EXIT_FAILURE, "%s", out.name);
 			/* NOTREACHED */
 		return;
+#if HAVE_HEADER_FILE_SYS_MTIO_H
 	}
 
 	/* If no read access, try using mtio. */
@@ -182,4 +189,5 @@ pos_out(void)
 				/* NOTREACHED */
 		break;
 	}
+#endif
 }

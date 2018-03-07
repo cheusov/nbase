@@ -53,7 +53,9 @@ __RCSID("$NetBSD: dd.c,v 1.49.12.1 2015/03/26 11:08:43 martin Exp $");
 #include <sys/param.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
-#include <sys/mtio.h>
+#if HAVE_HEADER_FILE_SYS_MTIO_H
+# include <sys/mtio.h>
+#endif
 #include <sys/time.h>
 
 #include <ctype.h>
@@ -310,7 +312,9 @@ setup(void)
 static void
 getfdtype(IO *io)
 {
+#if HAVE_HEADER_FILE_SYS_MTIO_H
 	struct mtget mt;
+#endif
 	struct stat sb;
 
 	if (io->ops->op_fstat(io->fd, &sb)) {
@@ -318,8 +322,12 @@ getfdtype(IO *io)
 		/* NOTREACHED */
 	}
 	if (S_ISCHR(sb.st_mode))
+#if HAVE_HEADER_FILE_SYS_MTIO_H
 		io->flags |= io->ops->op_ioctl(io->fd, MTIOCGET, &mt)
 		    ? ISCHR : ISTAPE;
+#else
+		io->flags |= ISCHR;
+#endif
 	else if (io->ops->op_lseek(io->fd, (off_t)0, SEEK_CUR) == -1
 	    && errno == ESPIPE)
 		io->flags |= ISPIPE;		/* XXX fixed in 4.4BSD */

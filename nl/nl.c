@@ -49,6 +49,9 @@ __RCSID("$NetBSD: nl.c,v 1.12 2013/09/17 20:00:50 wiz Exp $");
 #include "mkc_progname.h"
 #include "mkc_bsd_getopt.h"
 
+#undef NL_TEXTMAX
+#define NL_TEXTMAX 1024 /* on glibc this constant is INT_MAX, so, we redefine it to lower constant */
+
 typedef enum {
 	number_all,		/* number all lines */
 	number_nonempty,	/* number non-empty lines */

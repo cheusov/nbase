@@ -27,7 +27,7 @@ CPPFLAGS+=	-DHOSTPROG
 .else	# {	! HOSTPROG
 
 # XXX: Interix does not have it; we need a conditional for it.
-CPPFLAGS+=	-DHAVE_SYS_MTIO_H
+CPPFLAGS+=	-DHAVE_NBTOOL_CONFIG_H
 
 .if ${MKBSDTAR:U} == "no"
 LINKS+=	${BINDIR}/pax ${BINDIR}/tar

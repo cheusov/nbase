@@ -13,8 +13,6 @@
 #include <err.h>
 #endif
 
-#ifndef MKC_ERRC_IS_FINE
-
 #  if !HAVE_FUNC4_ERRC_ERR_H
 void errc(int status, int code, const char *fmt, ...);
 #  endif
@@ -22,7 +20,5 @@ void errc(int status, int code, const char *fmt, ...);
 #  if !HAVE_PROTOTYPE_VERRC
 void verrc(int status, int code, const char *fmt, va_list args);
 #  endif
-
-#endif // MKC_ERRC_IS_FINE
 
 #endif // _MKC_ERRC_H_
