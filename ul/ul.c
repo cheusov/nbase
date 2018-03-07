@@ -42,6 +42,8 @@ static char sccsid[] = "@(#)ul.c	8.1 (Berkeley) 6/6/93";
 __RCSID("$NetBSD: ul.c,v 1.16 2012/03/20 20:34:59 matt Exp $");
 #endif /* not lint */
 
+#include "mkc_macro.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -125,7 +127,7 @@ main(int argc, char **argv)
 			exit(1);
 		}
 
-	setupterm(termtype, 0, NULL);
+	setupterm(__UNCONST(termtype), 0, NULL);
 	if ((over_strike && enter_bold_mode == NULL) ||
 	    (transparent_underline && enter_underline_mode == NULL &&
 	     underline_char == NULL))
