@@ -477,10 +477,9 @@ printline(struct str *line, int sep, regmatch_t *matches, int m)
 				    stdout);
 			if (color) 
 				fprintf(stdout, "\33[%sm\33[K", color);
-
-				fwrite(line->dat + matches[i].rm_so, 
-				    matches[i].rm_eo - matches[i].rm_so, 1,
-				    stdout);
+			fwrite(line->dat + matches[i].rm_so, 
+			    matches[i].rm_eo - matches[i].rm_so, 1,
+			    stdout);
 			if (color) 
 				fprintf(stdout, "\33[m\33[K");
 			a = matches[i].rm_eo;
