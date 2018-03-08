@@ -64,9 +64,6 @@ __FBSDID("$FreeBSD$");
 #define	_DIAGASSERT(x)	assert(x)
 #endif
 
-#include "mkc_vis.h"
-#include "mkc_macro.h"
-
 #include <sys/types.h>
 #include <sys/param.h>
 
@@ -82,6 +79,9 @@ __FBSDID("$FreeBSD$");
 #include <limits.h>
 #include <stdio.h>
 #include <string.h>
+
+#include "mkc_vis.h"
+#include "mkc_macro.h"
 
 /*
  * The reason for going through the trouble to deal with character encodings
