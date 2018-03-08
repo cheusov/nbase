@@ -66,14 +66,18 @@ __RCSID("$NetBSD: function.c,v 1.72 2013/05/04 06:29:32 uebayasi Exp $");
 #include <util.h>
 #endif
 
+#ifdef __APPLE__
+# define st_mtim st_mtimespec
+# define st_atim st_atimespec
+# define st_ctim st_ctimespec
+#endif
+
 #include "mkc_timespeccmp.h"
 #include "mkc_efun.h"
 #include "mkc_macro.h"
 #include "mkc_getsetmode.h"
 #include "mkc_strlcpy.h"
 #include "mkc_pwdgrp.h"
-
-#define __unused
 
 #ifndef S_ISTXT
 #  define S_ISTXT 0
