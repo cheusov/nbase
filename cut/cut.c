@@ -63,10 +63,6 @@ __RCSID("$NetBSD: cut.c,v 1.29 2014/02/03 20:22:19 wiz Exp $");
 #include "mkc_macro.h"
 #include "mkc_bsd_getopt.h"
 
-#ifndef __unused
-#define __unused
-#endif
-
 static int bflag;
 static int	cflag;
 static char	dchar;

@@ -93,4 +93,8 @@
 #define __USE(a) ((void)(a))
 #endif
 
+#ifndef __unused
+#define __unused
+#endif
+
 #endif // _MKC_MACRO_H_
