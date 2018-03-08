@@ -32,11 +32,6 @@
  * SUCH DAMAGE.
  */
 
-#include "mkc_humanize_number.h"
-#include "mkc_macro.h"
-#include "mkc_strmode.h"
-#include "mkc_tzfile.h"
-
 #include <sys/cdefs.h>
 #ifndef lint
 #if 0
@@ -65,6 +60,11 @@ __RCSID("$NetBSD: print.c,v 1.55 2014/05/10 09:39:18 martin Exp $");
 
 #include "ls.h"
 #include "extern.h"
+
+#include "mkc_humanize_number.h"
+#include "mkc_macro.h"
+#include "mkc_strmode.h"
+#include "mkc_tzfile.h"
 
 extern int termwidth;
 

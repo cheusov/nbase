@@ -66,11 +66,6 @@
  * a choice of merge sort and radix sort for external sorting.
  */
 
-#include "mkc_efun.h"
-#include "mkc_progname.h"
-#include "mkc_macro.h"
-#include "mkc_bsd_getopt.h"
-
 #include "sort.h"
 #include "fsort.h"
 #include "pathnames.h"
@@ -93,6 +88,11 @@ __RCSID("$NetBSD: sort.c,v 1.61 2011/09/16 15:39:29 joerg Exp $");
 #include <string.h>
 #include <unistd.h>
 #include <locale.h>
+
+#include "mkc_efun.h"
+#include "mkc_progname.h"
+#include "mkc_macro.h"
+#include "mkc_bsd_getopt.h"
 
 int REC_D = '\n';
 u_char d_mask[NBINS];		/* flags for rec_d, field_d, <blank> */

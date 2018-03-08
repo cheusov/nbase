@@ -53,12 +53,6 @@ __COPYRIGHT("@(#) Copyright (c) 1992, 1993\
 static const char sccsid[] = "@(#)main.c	8.2 (Berkeley) 1/3/94";
 #endif
 
-#include "mkc_macro.h"
-#include "mkc_strlcat.h"
-#include "mkc_strlcpy.h"
-#include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
-
 #include <sys/types.h>
 #include <sys/mman.h>
 #include <sys/param.h>
@@ -80,6 +74,12 @@ static const char sccsid[] = "@(#)main.c	8.2 (Berkeley) 1/3/94";
 
 #include "defs.h"
 #include "extern.h"
+
+#include "mkc_macro.h"
+#include "mkc_strlcat.h"
+#include "mkc_strlcpy.h"
+#include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 /*
  * Linked list of units (strings and files) to be compiled
