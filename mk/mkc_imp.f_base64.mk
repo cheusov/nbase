@@ -12,9 +12,12 @@ MKC_CHECK_FUNCS4   =	b64_ntop:resolv.h
 MKC_CHECK_FUNCS3   =	b64_pton:resolv.h
 
 MKC_CHECK_FUNCLIBS +=	main:resolv
-#MKC_CHECK_FUNCLIBS +=	b64_ntop:resolv b64_pton:resolv
 
 .include <mkc_imp.conf-cleanup.mk>
+
+.if ${HAVE_FUNCLIB.main.resolv:U0}
+LDADD +=	-lresolv
+.endif
 
 MKC_COMMON_HEADERS :=   ${old}
 .undef old
