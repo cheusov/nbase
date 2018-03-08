@@ -1,4 +1,26 @@
 ======================================================================
+Version 7.0.0.3, by Aleksey Cheusov, Thu,  8 Mar 2018 14:51:38 +0300
+
+  "install", "cksum", "mknod" and "mtree" were added to the
+  collection.
+
+  All utilities were ported to OpenBSD and Darwin.  They were
+  successfully built on Darwin-15.6.0/amd64, Linux(glibc)/amd64 and
+  ARMv7, NetBSD-5.1/amd64, NetBSD-current/amd64 and OpenBSD-5.3/i386.
+
+  All utilities are successfully build using clang.
+
+  nl: fix for glibc-based systems (Linux).
+
+  Out-of-tree build failures were fixed.
+
+  mk-configure 0.30.0 or above is needed for build.
+
+  Fixes for helper scripts (helpers/*)
+
+  A lot of compilation warnings fixes.
+
+======================================================================
 Version 7.0.0.2, by Aleksey Cheusov, Mon, 10 Jul 2017 00:37:48 +0300
 
   Initial release
