@@ -1,9 +1,3 @@
 * Support for all POSIX utils
-* Fix check for b64_{pton,ntop} presense
-* failures on OpenBSD:
-  - find(O_CLOEXEC)
-  - script(pty.h,openpty,logn_tty)
 * warnings on Darwin:
   - stty
-* failures on Darwin:
-  - uuencode, uudecode
