@@ -95,7 +95,7 @@ main(int argc, char **argv)
 	start = NULL;
 	now = 0;
 
-	while ((ch = bsd_getopt(argc, argv, "aHq")) != -1)
+	while ((ch = getopt(argc, argv, "aHq")) != -1)
 		switch(ch) {
 		case 'a':
 			aflg = 1;

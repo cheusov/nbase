@@ -608,7 +608,7 @@ handlecap(const char *db, int argc, char *argv[])
 
 	argc--;
 	argv++;
-	while ((c = bsd_getopt(argc, argv, "pnr")) != -1)
+	while ((c = getopt(argc, argv, "pnr")) != -1)
 		switch (c) {
 		case 'n':
 			expand = 0;

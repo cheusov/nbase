@@ -87,7 +87,7 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 	(void)setlocale(LC_ALL, "");
 
-	while ((ch = bsd_getopt(argc, argv, "ad:jnr:u")) != -1) {
+	while ((ch = getopt(argc, argv, "ad:jnr:u")) != -1) {
 		switch (ch) {
 		case 'a':		/* adjust time slowly */
 			aflag = 1;

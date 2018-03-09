@@ -93,7 +93,7 @@ main(int argc, char *argv[])
 		err(1, NULL);
 
 	ftsoptions = FTS_NOSTAT | FTS_PHYSICAL;
-	while ((ch = bsd_getopt(argc, argv, "HLPdEf:hsXx")) != -1)
+	while ((ch = getopt(argc, argv, "HLPdEf:hsXx")) != -1)
 		switch (ch) {
 		case 'H':
 			ftsoptions &= ~FTS_LOGICAL;

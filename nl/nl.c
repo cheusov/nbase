@@ -152,7 +152,7 @@ main(int argc, char *argv[])
 	 * XCU specification (Issue 5) but declared an obsolescent feature that
 	 * will be removed from a future issue.  It shouldn't matter, though.
 	 */
-	while ((c = bsd_getopt(argc, argv, "pb:d:f:h:i:l:n:s:v:w:")) != -1) {
+	while ((c = getopt(argc, argv, "pb:d:f:h:i:l:n:s:v:w:")) != -1) {
 		switch (c) {
 		case 'p':
 			restart = 0;

@@ -95,7 +95,7 @@ main(int argc, char *argv[])
 
 	setprogname(argv[0]);
 
-	while ((ch = bsd_getopt(argc, argv, "k:f:v")) != -1)
+	while ((ch = getopt(argc, argv, "k:f:v")) != -1)
 		switch(ch) {
 		case 'k':
 			add_to_keep_list(optarg);

@@ -73,7 +73,7 @@ main(int argc, char *argv[])
 
 	setlocale(LC_ALL, "");
 
-	while ((ch = bsd_getopt(argc, argv, "ls")) != -1)
+	while ((ch = getopt(argc, argv, "ls")) != -1)
 		switch (ch) {
 		case 'l':		/* print all differences */
 			lflag = 1;

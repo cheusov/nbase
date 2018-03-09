@@ -51,7 +51,6 @@ __RCSID("$NetBSD: id.c,v 1.32 2011/09/16 15:39:26 joerg Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <string.h>
 #include <stdint.h>
 
 #include "mkc_progname.h"
@@ -93,7 +92,7 @@ main(int argc, char *argv[])
 	} else
 		opts = "Ggnpru";
 
-	while ((ch = bsd_getopt(argc, argv, opts)) != -1)
+	while ((ch = getopt(argc, argv, opts)) != -1)
 		switch (ch) {
 		case 'G':
 			Gflag = 1;

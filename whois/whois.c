@@ -107,7 +107,7 @@ main(int argc, char *argv[])
 #endif
 	country = host = NULL;
 	flags = rval = 0;
-	while ((ch = bsd_getopt(argc, argv, "6Aac:dfgh:ilmp:qQRr")) != -1)
+	while ((ch = getopt(argc, argv, "6Aac:dfgh:ilmp:qQRr")) != -1)
 		switch(ch) {
 		case 'a':
 			host = ANICHOST;

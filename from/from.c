@@ -70,7 +70,7 @@ main(int argc, char **argv)
 #endif
 
 	file = sender = NULL;
-	while ((ch = bsd_getopt(argc, argv, "f:s:")) != -1)
+	while ((ch = getopt(argc, argv, "f:s:")) != -1)
 		switch((char)ch) {
 		case 'f':
 			file = optarg;

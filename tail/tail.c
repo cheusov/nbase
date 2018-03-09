@@ -109,7 +109,7 @@ main(int argc, char *argv[])
 
 	obsolete(argv);
 	style = NOTSET;
-	while ((ch = bsd_getopt(argc, argv, "Fb:c:fn:r")) != -1)
+	while ((ch = getopt(argc, argv, "Fb:c:fn:r")) != -1)
 		switch(ch) {
 		case 'F':
 			fflag = 2;

@@ -224,7 +224,7 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 	errflg = 0;
 	(void)signal(SIGSYS, not_configured);
-	while ((c = bsd_getopt(argc, argv, "q:m:s:Q:M:S:")) != -1) {
+	while ((c = getopt(argc, argv, "q:m:s:Q:M:S:")) != -1) {
 		signaled = 0;
 		target_id = 0;
 		target_key = 0;

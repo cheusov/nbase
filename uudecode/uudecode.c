@@ -88,7 +88,7 @@ main(int argc, char *argv[])
 	setlocale(LC_ALL, "");
 	setprogname(argv[0]);
 
-	while ((ch = bsd_getopt(argc, argv, "mo:p")) != -1)
+	while ((ch = getopt(argc, argv, "mo:p")) != -1)
 		switch (ch) {
 		case 'm':
 			base64 = 1;

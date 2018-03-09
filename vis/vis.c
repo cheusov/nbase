@@ -73,7 +73,7 @@ main(int argc, char *argv[])
 	int ch;
 	int rval;
 
-	while ((ch = bsd_getopt(argc, argv, "bcde:F:fhlmnostw")) != -1)
+	while ((ch = getopt(argc, argv, "bcde:F:fhlmnostw")) != -1)
 		switch((char)ch) {
 		case 'b':
 			eflags |= VIS_NOSLASH;

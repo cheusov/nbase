@@ -268,7 +268,7 @@ main(int volatile argc, char **volatile argv)
 		}
 	}
 
-	while ((ch = bsd_getopt(argc, argv, "46AadefginN:o:pP:q:r:Rs:tT:u:vV")) != -1) {
+	while ((ch = getopt(argc, argv, "46AadefginN:o:pP:q:r:Rs:tT:u:vV")) != -1) {
 		switch (ch) {
 		case '4':
 			family = AF_INET;

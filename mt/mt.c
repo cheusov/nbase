@@ -126,7 +126,7 @@ main(int argc, char *argv[])
 	if ((tape = getenv("TAPE")) == NULL)
 		tape = _PATH_DEFTAPE;
 
-	while ((ch = bsd_getopt(argc, argv, "f:t:")) != -1)
+	while ((ch = getopt(argc, argv, "f:t:")) != -1)
 		switch (ch) {
 		case 'f':
 		case 't':

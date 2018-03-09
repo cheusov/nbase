@@ -617,7 +617,7 @@ main(int argc, char **argv)
 
 	/* process whatever options we can process */
 	opterr = 1;
-	while ((c = bsd_getopt(argc, argv, options)) != -1) {
+	while ((c = getopt(argc, argv, options)) != -1) {
 		switch (c) {
 		case 'v':	/* verify time settings */
 			atverify = 1;

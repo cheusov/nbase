@@ -78,7 +78,7 @@ main(int argc, char *argv[])
 	tag = NULL;
 	pri = LOG_NOTICE;
 	logflags = 0;
-	while ((ch = bsd_getopt(argc, argv, "cd:f:im:np:st:")) != -1)
+	while ((ch = getopt(argc, argv, "cd:f:im:np:st:")) != -1)
 		switch((char)ch) {
 		case 'c':	/* log to console */
 			logflags |= LOG_CONS;

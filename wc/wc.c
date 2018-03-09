@@ -93,7 +93,7 @@ main(int argc, char *argv[])
 
 	setlocale(LC_ALL, "");
 
-	while ((ch = bsd_getopt(argc, argv, "lwcmL")) != -1)
+	while ((ch = getopt(argc, argv, "lwcmL")) != -1)
 		switch (ch) {
 		case 'l':
 			doline = true;

@@ -88,7 +88,7 @@ odsyntax(int argc, char ***argvp)
 
 	odmode = 1;
 	argv = *argvp;
-	while ((ch = bsd_getopt(argc, argv,
+	while ((ch = getopt(argc, argv,
 	    "A:aBbcDdeFfHhIij:LlN:Oot:vXx")) != -1)
 		switch (ch) {
 		case 'A':

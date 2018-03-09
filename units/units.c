@@ -820,7 +820,7 @@ main(int argc, char **argv)
 	int list = 0, listexpand = 0;
 	int quiet = 0;
 
-	while ((optchar = bsd_getopt(argc, argv, "lLvqf:")) != -1) {
+	while ((optchar = getopt(argc, argv, "lLvqf:")) != -1) {
 		switch (optchar) {
 		case 'l':
 			list = 1;

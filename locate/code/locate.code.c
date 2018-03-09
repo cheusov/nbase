@@ -108,7 +108,7 @@ main(int argc, char *argv[])
 	char *cp, *oldpath, *path;
 	int ch, code, count, diffcount, oldcount;
 
-	while ((ch = bsd_getopt(argc, argv, "")) != -1)
+	while ((ch = getopt(argc, argv, "")) != -1)
 		switch(ch) {
 		case '?':
 		default:

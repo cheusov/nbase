@@ -233,7 +233,7 @@ main(int argc, char *argv[])
 		synopsis = "[-FlLnqrsx] [-f format] [-t timefmt] [file ...]";
 	}
 
-	while ((ch = bsd_getopt(argc, argv, options)) != -1)
+	while ((ch = getopt(argc, argv, options)) != -1)
 		switch (ch) {
 		case 'F':
 			lsF = 1;

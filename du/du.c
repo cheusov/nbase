@@ -91,7 +91,7 @@ main(int argc, char *argv[])
 	totalblocks = 0;
 	ftsoptions = FTS_PHYSICAL;
 	depth = INT_MAX;
-	while ((ch = bsd_getopt(argc, argv, "HLPacd:ghikmnrsx")) != -1)
+	while ((ch = getopt(argc, argv, "HLPacd:ghikmnrsx")) != -1)
 		switch (ch) {
 		case 'H':
 			Hflag = 1;

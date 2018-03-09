@@ -194,7 +194,7 @@ main(int argc, char **argv)
 		}
 	}
 
-	while ((ch = bsd_getopt(argc, argv, "a:cno:pqs:twx")) != -1)
+	while ((ch = getopt(argc, argv, "a:cno:pqs:twx")) != -1)
 		switch(ch) {
 		case 'a':
 			if (hash) {

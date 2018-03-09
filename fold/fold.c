@@ -76,7 +76,7 @@ main(int argc, char **argv)
 	setprogname(argv[0]);
 
 	width = -1;
-	while ((ch = bsd_getopt(argc, argv, "0123456789bsw:")) != -1)
+	while ((ch = getopt(argc, argv, "0123456789bsw:")) != -1)
 		switch (ch) {
 		case 'b':
 			count_bytes = 1;

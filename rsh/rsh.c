@@ -153,7 +153,7 @@ main(int argc, char **argv)
 
 	if ((name = strdup(pw->pw_name)) == NULL)
 		err(1, "malloc");
-	while ((ch = bsd_getopt(argc - argoff, argv + argoff, OPTIONS)) != -1)
+	while ((ch = getopt(argc - argoff, argv + argoff, OPTIONS)) != -1)
 		switch (ch) {
 		case '4':
 			family = AF_INET;

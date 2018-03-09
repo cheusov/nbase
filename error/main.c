@@ -140,7 +140,7 @@ main(int argc, char **argv)
 	setprogname(argv[0]);
 
 	errorfile = stdin;
-	while ((c = bsd_getopt(argc, argv, "I:np:qSsTt:v")) != -1)
+	while ((c = getopt(argc, argv, "I:np:qSsTt:v")) != -1)
 		switch (c) {
 		case 'I':	/*ignore file name*/
 			ignorename = optarg;

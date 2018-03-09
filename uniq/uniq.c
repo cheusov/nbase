@@ -78,7 +78,7 @@ main (int argc, char *argv[])
 	setprogname(argv[0]);
 	ifp = ofp = NULL;
 	obsolete(argv);
-	while ((ch = bsd_getopt(argc, argv, "-cdf:s:u")) != -1)
+	while ((ch = getopt(argc, argv, "-cdf:s:u")) != -1)
 		switch (ch) {
 		case '-':
 			--optind;

@@ -79,7 +79,7 @@ main(int argc, char *argv[])
 	(void)setlocale(LC_ALL, "");
 
 	lFlag = 0;
-	while ((ch = bsd_getopt(argc, argv, "LP")) != -1) {
+	while ((ch = getopt(argc, argv, "LP")) != -1) {
 		switch (ch) {
 		case 'L':
 			lFlag = 1;

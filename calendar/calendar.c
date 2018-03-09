@@ -135,7 +135,7 @@ main(int argc, char **argv)
 
 	(void)setprogname(argv[0]);	/* for portability */
 
-	while ((ch = bsd_getopt(argc, argv, "-ad:f:l:w:x")) != -1) {
+	while ((ch = getopt(argc, argv, "-ad:f:l:w:x")) != -1) {
 		switch (ch) {
 		case '-':		/* backward contemptible */
 		case 'a':

@@ -160,7 +160,7 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 
 	iflags = 0;
-	while ((ch = bsd_getopt(argc, argv, "a:cbB:dD:f:g:h:l:m:M:N:o:prsS:T:U"))
+	while ((ch = getopt(argc, argv, "a:cbB:dD:f:g:h:l:m:M:N:o:prsS:T:U"))
 	    != -1)
 		switch((char)ch) {
 		case 'a':

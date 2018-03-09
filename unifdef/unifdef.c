@@ -273,7 +273,7 @@ main(int argc, char *argv[])
 	int opt;
 	struct stat isb, osb;
 
-	while ((opt = bsd_getopt(argc, argv, "i:D:U:I:o:cdeklst")) != -1)
+	while ((opt = getopt(argc, argv, "i:D:U:I:o:cdeklst")) != -1)
 		switch (opt) {
 		case 'i': /* treat stuff controlled by these symbols as text */
 			/*

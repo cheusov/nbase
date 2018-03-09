@@ -125,7 +125,7 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 
 	fp = NULL;
-	while ((ch = bsd_getopt(argc, argv, "dlq")) != -1)
+	while ((ch = getopt(argc, argv, "dlq")) != -1)
 		switch (ch) {
 		case 'd':
 			debug = 1;

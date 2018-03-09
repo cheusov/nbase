@@ -83,7 +83,7 @@ main(int argc, char ** volatile argv)
 	(void)setlocale(LC_ALL, "");
 
 	cshflag = lflag = portableflag = 0;
-	while ((ch = bsd_getopt(argc, argv, "clp")) != -1) {
+	while ((ch = getopt(argc, argv, "clp")) != -1) {
 		switch (ch) {
 		case 'c':
 			cshflag = 1;

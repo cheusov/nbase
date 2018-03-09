@@ -67,7 +67,7 @@ main(int argc, char **argv)
 	(void)setlocale(LC_ALL, "");
 
 	matches = sflag = 0;
-	while ((c = bsd_getopt(argc, argv, "s")) != -1) {
+	while ((c = getopt(argc, argv, "s")) != -1) {
 		switch (c) {
 		case 's':
 			sflag = 1;

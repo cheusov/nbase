@@ -27,6 +27,10 @@
 
 #include <string.h>
 
+#ifdef getopt
+#undef getopt
+#endif
+
 int bsd_getopt(int argc, char * const argv[], const char *optstring)
 {
 	size_t len = strlen(optstring);

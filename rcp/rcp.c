@@ -104,7 +104,7 @@ main(int argc, char *argv[])
 	(void)setlocale(LC_ALL, "");
 
 	fflag = tflag = 0;
-	while ((ch = bsd_getopt(argc, argv, OPTIONS)) != -1)
+	while ((ch = getopt(argc, argv, OPTIONS)) != -1)
 		switch(ch) {			/* User-visible flags. */
 		case '4':
 			family = AF_INET;

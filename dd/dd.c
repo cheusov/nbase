@@ -125,7 +125,7 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 	(void)setlocale(LC_ALL, "");
 
-	while ((ch = bsd_getopt(argc, argv, "")) != -1) {
+	while ((ch = getopt(argc, argv, "")) != -1) {
 		switch (ch) {
 		default:
 			errx(EXIT_FAILURE, "usage: dd [operand ...]");

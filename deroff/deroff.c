@@ -286,7 +286,7 @@ main(int ac, char **av)
 	rdelim	= NOCHAR;
 	keepblock = YES;
 
-	while ((ch = bsd_getopt(ac, av, "ikpwm:")) != -1) {
+	while ((ch = getopt(ac, av, "ikpwm:")) != -1) {
 		switch (ch) {
 		case 'i':
 			iflag = YES;

@@ -77,7 +77,7 @@ main(int argc, char *argv[])
 	if (setuid(euid) == -1)
 		err(1, "Can't set uid to %lu", (unsigned long)euid);
 
-	while ((ch = bsd_getopt(argc, argv, "ap")) != -1)
+	while ((ch = getopt(argc, argv, "ap")) != -1)
 		switch (ch) {
 		case 'a':
 			which = 0;

@@ -140,7 +140,7 @@ main(int argc, char **argv)
 
 	set_hash(&nbperf, "mi_vector_hash");
 
-	while ((ch = bsd_getopt(argc, argv, "a:c:h:i:m:n:o:ps")) != -1) {
+	while ((ch = getopt(argc, argv, "a:c:h:i:m:n:o:ps")) != -1) {
 		switch (ch) {
 		case 'a':
 			/* Accept bdz as alias for netbsd-6 compat. */

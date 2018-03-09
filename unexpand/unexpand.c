@@ -86,7 +86,7 @@ main(int argc, char **argv)
 
 	setprogname(argv[0]);
 
-	while ((c = bsd_getopt(argc, argv, "at:")) != -1) {
+	while ((c = getopt(argc, argv, "at:")) != -1) {
 		switch (c) {
 		case 'a':
 			if (nstops)

@@ -64,7 +64,7 @@ main(int argc, char **argv)
 	int ch;
 
 	/* Process the arguments. */
-	while ((ch = bsd_getopt(argc, argv, "o:")) != -1 ) {
+	while ((ch = getopt(argc, argv, "o:")) != -1 ) {
 		switch (ch) {
 		case 'o': /* output file name */
 			out_name = optarg;

@@ -123,7 +123,7 @@ main(int argc, char *argv[])
 	quiet = 0;
 	flush = 0;
 	command = NULL;
-	while ((ch = bsd_getopt(argc, argv, "ac:dfpqr")) != -1)
+	while ((ch = getopt(argc, argv, "ac:dfpqr")) != -1)
 		switch(ch) {
 		case 'a':
 			aflg = 1;

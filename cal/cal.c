@@ -229,7 +229,7 @@ main(int argc, char **argv)
 	before = after = 0;
 	use_reform = yflag = year = 0;
 	when = NULL;
-	while ((ch = bsd_getopt(argc, argv, "A:B:d:hjR:ry3")) != -1) {
+	while ((ch = getopt(argc, argv, "A:B:d:hjR:ry3")) != -1) {
 		switch (ch) {
 		case 'A':
 			after = getnum(optarg);

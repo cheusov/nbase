@@ -663,7 +663,7 @@ main(int argc, char **argv)
 
 	uflag = xflag = 0;
 	Barg = NULL;
-	while ((ch = bsd_getopt(argc, argv, "1A:B:acnquw:x")) != -1)
+	while ((ch = getopt(argc, argv, "1A:B:acnquw:x")) != -1)
 		switch (ch) {
 		case '1':
 			cols = 1;

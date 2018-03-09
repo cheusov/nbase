@@ -67,7 +67,7 @@ main(int argc, char **argv)
 	char *corename = NULL;
 	int corelen = 0;
 
-	while ((c = bsd_getopt(argc, argv, "c:")) != -1)
+	while ((c = getopt(argc, argv, "c:")) != -1)
 		switch (c) {
 		case 'c':
 			corename = optarg;

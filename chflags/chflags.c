@@ -71,7 +71,7 @@ main(int argc, char *argv[])
 	int (*change_flags)(const char *, u_long);
 
 	Hflag = Lflag = Rflag = hflag = 0;
-	while ((ch = bsd_getopt(argc, argv, "HLPRh")) != -1)
+	while ((ch = getopt(argc, argv, "HLPRh")) != -1)
 		switch (ch) {
 		case 'H':
 			Hflag = 1;

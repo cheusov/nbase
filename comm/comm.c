@@ -79,7 +79,7 @@ main(int argc, char **argv)
 	file1done = file2done = 0;
 	flag1 = flag2 = flag3 = 1;
 	compare = strcoll;
-	while ((ch = bsd_getopt(argc, argv, "123f")) != -1)
+	while ((ch = getopt(argc, argv, "123f")) != -1)
 		switch(ch) {
 		case '1':
 			flag1 = 0;

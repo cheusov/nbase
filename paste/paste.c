@@ -70,7 +70,7 @@ main(int argc, char **argv)
 	int ch, seq;
 
 	seq = 0;
-	while ((ch = bsd_getopt(argc, argv, "d:s")) != -1) {
+	while ((ch = getopt(argc, argv, "d:s")) != -1) {
 		switch (ch) {
 		case 'd':
 			delim = strdup(optarg);

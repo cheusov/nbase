@@ -65,7 +65,7 @@ getoldopt(int argc, char **argv, const char *optstring,
 			return getopt_long(argc, argv, optstring,
 			    longopts, idx);
 		} else {
-			return bsd_getopt(argc, argv, optstring);
+			return getopt(argc, argv, optstring);
 		}
 	}
 

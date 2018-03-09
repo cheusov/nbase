@@ -107,7 +107,7 @@ main(int argc, char **argv)
 #ifdef KERN_DRIVERS
 	while ((ch = getopt(argc, argv, "lrRF:g:m:u:")) != -1) {
 #else
-	while ((ch = bsd_getopt(argc, argv, "rRF:g:m:u:")) != -1) {
+	while ((ch = getopt(argc, argv, "rRF:g:m:u:")) != -1) {
 #endif
 		switch (ch) {
 

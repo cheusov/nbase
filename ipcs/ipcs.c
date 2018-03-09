@@ -175,7 +175,7 @@ main(int argc, char *argv[])
 	int i;
 	time_t now;
 
-	while ((i = bsd_getopt(argc, argv, "MmQqSsabcoptT")) != -1)
+	while ((i = getopt(argc, argv, "MmQqSsabcoptT")) != -1)
 		switch (i) {
 		case 'M':
 			display |= SHMTOTAL;

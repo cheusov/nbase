@@ -83,7 +83,7 @@ main(int argc, char *argv[])
 
 	(void)signal(SIGALRM, alarmhandle);
 
-	while ((ch = bsd_getopt(argc, argv, "")) != -1)
+	while ((ch = getopt(argc, argv, "")) != -1)
 		switch(ch) {
 		default:
 			usage();

@@ -119,7 +119,7 @@ main(int argc, char *argv[])
 	kflag = sflag = 0;
 	prefix = "xx";
 	sufflen = 2;
-	while ((ch = bsd_getopt(argc, argv, "ksf:n:")) > 0) {
+	while ((ch = getopt(argc, argv, "ksf:n:")) > 0) {
 		switch (ch) {
 		case 'f':
 			prefix = optarg;

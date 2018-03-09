@@ -89,7 +89,7 @@ main(int argc, char *argv[])
 	iterate = 0;	/* not one at a time */
 	c_struct = 0;	/* not as a C structure */
 
-	while ((ch = bsd_getopt(argc, argv, "1n:o:s")) != -1) {
+	while ((ch = getopt(argc, argv, "1n:o:s")) != -1) {
 		switch (ch) {
 		case '1':
 			iterate = 1;

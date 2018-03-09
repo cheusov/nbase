@@ -98,7 +98,7 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 	(void)setlocale(LC_ALL, "");
 
-	while ((ch = bsd_getopt(argc, argv, "ifv")) != -1)
+	while ((ch = getopt(argc, argv, "ifv")) != -1)
 		switch (ch) {
 		case 'i':
 			fflg = 0;

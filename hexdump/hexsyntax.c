@@ -63,7 +63,7 @@ hexsyntax(int argc, char ***argvp)
 	char *p, **argv;
 
 	argv = *argvp;
-	while ((ch = bsd_getopt(argc, argv, "bcCde:f:n:os:vx")) != -1)
+	while ((ch = getopt(argc, argv, "bcCde:f:n:os:vx")) != -1)
 		switch (ch) {
 		case 'b':
 			add("\"%07.7_Ax\n\"");

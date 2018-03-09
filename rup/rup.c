@@ -349,7 +349,7 @@ main(int argc, char *argv[])
 	setprogname(*argv);
 	sort_type = SORT_NONE;
 	retval = 0;
-	while ((ch = bsd_getopt(argc, argv, "dhlt")) != -1)
+	while ((ch = getopt(argc, argv, "dhlt")) != -1)
 		switch (ch) {
 		case 'd':
 			printtime = 1;

@@ -134,7 +134,7 @@ main(int argc, char *argv[])
 
 	aflag = vflag = 0;
 	obsolete(argv);
-	while ((ch = bsd_getopt(argc, argv, "\01a:e:j:1:2:o:t:v:")) != -1) {
+	while ((ch = getopt(argc, argv, "\01a:e:j:1:2:o:t:v:")) != -1) {
 		switch (ch) {
 		case '\01':
 			aflag = 1;

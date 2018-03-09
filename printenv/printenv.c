@@ -66,7 +66,7 @@ main(int argc, char *argv[])
 	size_t len;
 	int ch;
 
-	while ((ch = bsd_getopt(argc, argv, "")) != -1)
+	while ((ch = getopt(argc, argv, "")) != -1)
 		switch(ch) {
 		case '?':
 		default:

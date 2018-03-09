@@ -115,7 +115,7 @@ main(int argc, char *argv[])
 	(void)setlocale(LC_ALL, "");
 
 	Pflag = rflag = xflag = 0;
-	while ((ch = bsd_getopt(argc, argv, "dfiPRrvWx")) != -1)
+	while ((ch = getopt(argc, argv, "dfiPRrvWx")) != -1)
 		switch (ch) {
 		case 'd':
 			dflag = 1;

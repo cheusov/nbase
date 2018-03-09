@@ -70,7 +70,7 @@ main(int argc, char **argv)
 
 	(void)setlocale(LC_ALL, "");
 
-	while ((c = bsd_getopt(argc,argv,"amnprsv")) != -1) {
+	while ((c = getopt(argc,argv,"amnprsv")) != -1) {
 		switch (c) {
 		case 'a':
 			print_mask |= PRINT_ALL;

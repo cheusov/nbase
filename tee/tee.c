@@ -79,7 +79,7 @@ main(int argc, char *argv[])
 	setlocale(LC_ALL, "");
 
 	append = 0;
-	while ((ch = bsd_getopt(argc, argv, "ai")) != -1)
+	while ((ch = getopt(argc, argv, "ai")) != -1)
 		switch((char)ch) {
 		case 'a':
 			append = 1;

@@ -90,7 +90,7 @@ main(int argc, char *argv[])
 
 	/* Since we don't support multi-byte characters, the -c and -b
 	   options are equivalent, and the -n option is meaningless. */
-	while ((ch = bsd_getopt(argc, argv, "b:c:d:f:sn")) != -1)
+	while ((ch = getopt(argc, argv, "b:c:d:f:sn")) != -1)
 		switch(ch) {
 		case 'b':
 			fcn = b_cut;

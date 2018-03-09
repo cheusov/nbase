@@ -118,7 +118,7 @@ main(int argc, char **argv)
 	setprogname(*argv);
 	(void)setlocale(LC_ALL, "");
 
-	while ((c = bsd_getopt(argc, argv, "Cg:m:rw:")) != -1)
+	while ((c = getopt(argc, argv, "Cg:m:rw:")) != -1)
 		switch (c) {
 		case 'C':
 			center++;

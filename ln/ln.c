@@ -80,7 +80,7 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 	(void)setlocale(LC_ALL, "");
 
-	while ((ch = bsd_getopt(argc, argv, "fhinsv")) != -1)
+	while ((ch = getopt(argc, argv, "fhinsv")) != -1)
 		switch (ch) {
 		case 'f':
 			fflag = 1;

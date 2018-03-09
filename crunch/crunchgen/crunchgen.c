@@ -158,7 +158,7 @@ main(int argc, char **argv)
     if (argc > 0)
 	pname = argv[0];
 
-    while ((optc = bsd_getopt(argc, argv, "m:c:d:e:foqD:L:Ov:")) != -1) {
+    while ((optc = getopt(argc, argv, "m:c:d:e:foqD:L:Ov:")) != -1) {
 	switch(optc) {
 	case 'f':	readcache = 0; break;
 	case 'q':	verbose = 0; break;

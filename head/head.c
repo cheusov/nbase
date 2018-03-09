@@ -87,7 +87,7 @@ main(int argc, char *argv[])
 	obsolete(argv);
 	linecnt = 10;
 	bytecnt = 0;
-	while ((ch = bsd_getopt(argc, argv, "c:n:qv")) != -1)
+	while ((ch = getopt(argc, argv, "c:n:qv")) != -1)
 		switch(ch) {
 		case 'c':
 			errno = 0;

@@ -182,7 +182,7 @@ main(int argc, char **argv)
 	setlocale(LC_ALL, "");
 	setprogname(argv[0]);
 
-	while ((ch = bsd_getopt(argc, argv, "cslf:t:")) != EOF) {
+	while ((ch = getopt(argc, argv, "cslf:t:")) != EOF) {
 		switch (ch) {
 		case 'c':
 			opt_c = 1;

@@ -140,7 +140,7 @@ main(int argc, char *argv[])
 		nline -= strlen(*ep++) + 1 + sizeof(*ep);
 	}
 	maxprocs = 1;
-	while ((ch = bsd_getopt(argc, argv, "0E:I:J:L:n:oP:pR:S:s:rtx")) != -1)
+	while ((ch = getopt(argc, argv, "0E:I:J:L:n:oP:pR:S:s:rtx")) != -1)
 		switch (ch) {
 		case 'E':
 			eofstr = optarg;

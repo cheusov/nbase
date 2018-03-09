@@ -82,7 +82,7 @@ main(int argc, char *argv[])
 	off_t numlines = 0;	/* Line count to split on. */
 	off_t chunks = 0;	/* Number of chunks to split into. */
 
-	while ((ch = bsd_getopt(argc, argv, "0123456789b:l:a:n:")) != -1)
+	while ((ch = getopt(argc, argv, "0123456789b:l:a:n:")) != -1)
 		switch (ch) {
 		case '0': case '1': case '2': case '3': case '4':
 		case '5': case '6': case '7': case '8': case '9':

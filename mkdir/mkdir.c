@@ -82,7 +82,7 @@ main(int argc, char *argv[])
 	dir_mode = mode | S_IWUSR | S_IXUSR;
 
 	pflag = 0;
-	while ((ch = bsd_getopt(argc, argv, "m:p")) != -1)
+	while ((ch = getopt(argc, argv, "m:p")) != -1)
 		switch (ch) {
 		case 'p':
 			pflag = 1;

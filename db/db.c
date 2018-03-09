@@ -121,7 +121,7 @@ main(int argc, char *argv[])
 	oi.pagesize = 4096;
 
 				/* parse arguments */
-	while ( (ch = bsd_getopt(argc, argv,
+	while ( (ch = getopt(argc, argv,
 			     "CDdE:F:f:iKm:NO:P:qRS:T:U:VwX:")) != -1) {
 		switch (ch) {
 

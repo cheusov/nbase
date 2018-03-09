@@ -173,7 +173,7 @@ main(int argc, char *argv[])
 
 	srand((unsigned) (time(NULL) * getpid()));
 	
-	while ((ch = bsd_getopt(argc, argv, "0f:n:p:")) != -1) {
+	while ((ch = getopt(argc, argv, "0f:n:p:")) != -1) {
 		switch(ch) {
 		case '0':
 			sep = '\0';

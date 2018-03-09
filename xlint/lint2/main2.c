@@ -104,7 +104,7 @@ main(int argc, char *argv[])
 	libs = xcalloc(1, sizeof (char *));
 
 	opterr = 0;
-	while ((c = bsd_getopt(argc, argv, "hpstxuC:HFl:")) != -1) {
+	while ((c = getopt(argc, argv, "hpstxuC:HFl:")) != -1) {
 		switch (c) {
 		case 's':
 			sflag = 1;

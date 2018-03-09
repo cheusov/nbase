@@ -71,7 +71,7 @@ main(int argc, char *argv[])
 	   modified by the file creation mask */
 	mode = 0666 & ~umask(0);
 
-	while ((ch = bsd_getopt(argc, argv, "m:")) != -1)
+	while ((ch = getopt(argc, argv, "m:")) != -1)
 		switch(ch) {
 		case 'm':
 			if (!(set = setmode(optarg))) {

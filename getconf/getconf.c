@@ -212,7 +212,7 @@ main(int argc, char **argv)
 	setprogname(argv[0]);
 	(void)setlocale(LC_ALL, "");
 
-	while ((ch = bsd_getopt(argc, argv, "a")) != -1) {
+	while ((ch = getopt(argc, argv, "a")) != -1) {
 		switch (ch) {
 		case 'a':
 			a_flag = 1;

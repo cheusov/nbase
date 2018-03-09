@@ -282,7 +282,7 @@ main(int argc, char *argv[])
 {
 	int ch;
 	
-	while ((ch = bsd_getopt(argc, argv, "al")) != -1)
+	while ((ch = getopt(argc, argv, "al")) != -1)
 		switch (ch) {
 		case 'a':
 			allopt++;

@@ -180,7 +180,7 @@ main(int argc, char **argv)
 	char word[10+1];		/* strings limited to 10 chars */
 	int c;
 
-	while ((c = bsd_getopt(argc, argv, "b:f:l")) != -1) {
+	while ((c = getopt(argc, argv, "b:f:l")) != -1) {
 	    switch (c) {
 	    case 'f':
 		if (*optarg == '-')

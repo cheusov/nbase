@@ -73,7 +73,7 @@ main(int argc, char **argv)
 	prefix = "mktemp";
 	name = NULL;
 
-	while ((c = bsd_getopt(argc, argv, "dp:qt:u")) != -1)
+	while ((c = getopt(argc, argv, "dp:qt:u")) != -1)
 		switch (c) {
 		case 'd':
 			dflag++;

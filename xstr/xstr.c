@@ -105,7 +105,7 @@ main(int argc, char *argv[])
 {
 	int c;
 
-	while ((c = bsd_getopt(argc, argv, "-cvl:")) != -1)
+	while ((c = getopt(argc, argv, "-cvl:")) != -1)
 		switch (c) {
 		case '-':
 			readstd++;

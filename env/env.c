@@ -63,7 +63,7 @@ main(int argc, char **argv)
 	setprogname(*argv);
 	(void)setlocale(LC_ALL, "");
 
-	while ((ch = bsd_getopt(argc, argv, "-i")) != -1)
+	while ((ch = getopt(argc, argv, "-i")) != -1)
 		switch((char)ch) {
 		case '-':			/* obsolete */
 		case 'i':

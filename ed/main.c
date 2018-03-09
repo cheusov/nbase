@@ -120,7 +120,7 @@ main(int ac, char *av[])
 
 	red = (n = strlen(argv[0])) > 2 && argv[0][n - 3] == 'r';
 top:
-	while ((c = bsd_getopt(argc, argv, "p:sxE")) != -1)
+	while ((c = getopt(argc, argv, "p:sxE")) != -1)
 		switch(c) {
 		case 'p':				/* set prompt */
 			prompt = optarg;

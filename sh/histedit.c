@@ -256,7 +256,7 @@ histcmd(int argc, char **argv)
 
 	optreset = 1; optind = 1; /* initialize getopt */
 	while (not_fcnumber(argv[optind]) &&
-	      (ch = bsd_getopt(argc, argv, ":e:lnrs")) != -1)
+	      (ch = getopt(argc, argv, ":e:lnrs")) != -1)
 		switch ((char)ch) {
 		case 'e':
 			editor = optionarg;

@@ -26,10 +26,10 @@
 #define _MKC_BSD_GETOPT_H_
 
 #include <unistd.h>
+#include <getopt.h>
 
-#if HAVE_POSIX_GETOPT
-#  define bsd_getopt getopt
-#else
+#if !HAVE_POSIX_GETOPT
+#define getopt bsd_getopt
 int bsd_getopt(int argc, char * const argv[], const char *optstring);
 #endif
 

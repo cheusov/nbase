@@ -163,7 +163,7 @@ main(int argc, char *argv[])
 	}
 
 #define	OPTIONS	"468dEe:l:np:"
-	while ((ch = bsd_getopt(argc - argoff, argv + argoff, OPTIONS)) != -1)
+	while ((ch = getopt(argc - argoff, argv + argoff, OPTIONS)) != -1)
 		switch(ch) {
 		case '4':
 			family = AF_INET;

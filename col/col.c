@@ -132,7 +132,7 @@ main(int argc, char **argv)
 	max_bufd_lines = 128;
 	compress_spaces = 1;		/* compress spaces into tabs */
 	pass_unknown_seqs = 0;		/* remove unknown escape sequences */
-	while ((opt = bsd_getopt(argc, argv, "bfhl:px")) != -1)
+	while ((opt = getopt(argc, argv, "bfhl:px")) != -1)
 		switch (opt) {
 		case 'b':		/* do not output backspaces */
 			no_backspaces = 1;

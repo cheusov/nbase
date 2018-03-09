@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
 	(void)setlocale (LC_ALL, "");
 #endif
 
-	while ((o = bsd_getopt(argc, argv, "")) != -1) {
+	while ((o = getopt(argc, argv, "")) != -1) {
 		switch (o) {
 		case '?':
 		default:

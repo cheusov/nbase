@@ -372,7 +372,7 @@ main(int argc, char *argv[])
 	(void)signal(SIGINT, terminate);
 	(void)signal(SIGQUIT, terminate);
 	(void)signal(SIGTERM, terminate);
-	while ((c = bsd_getopt(argc, argv, "abcd:eghil:no:prstuvwxzB:C:D:FHI:L:M:PSU:VX:")) != -1) {
+	while ((c = getopt(argc, argv, "abcd:eghil:no:prstuvwxzB:C:D:FHI:L:M:PSU:VX:")) != -1) {
 		switch (c) {
 
 		case 'a':

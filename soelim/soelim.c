@@ -143,7 +143,7 @@ main(int argc, char *argv[])
 	initpath(&p);
 	addpath(&p, ".");
 
-	while ((c = bsd_getopt(argc, argv, "I:")) != -1)
+	while ((c = getopt(argc, argv, "I:")) != -1)
 		switch (c) {
 		case 'I':
 			addpath(&p, optarg);

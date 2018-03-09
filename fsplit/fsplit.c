@@ -122,7 +122,7 @@ main(int argc, char **argv)
 	int retval, i, ch;
 	char name[80];
 
-	while ((ch = bsd_getopt(argc, argv, "e:")) != -1) {
+	while ((ch = getopt(argc, argv, "e:")) != -1) {
 		switch (ch) {
 		    case 'e':
 			if (numextonly >= MAXEXTONLY) {

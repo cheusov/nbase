@@ -211,7 +211,7 @@ main(int argc, char *argv[])
 	outfile = NULL;
 	resizedivs(MAXOUT);
 
-	while ((c = bsd_getopt(argc, argv, "gst:d:D:U:o:I:P")) != -1)
+	while ((c = getopt(argc, argv, "gst:d:D:U:o:I:P")) != -1)
 		switch(c) {
 
 		case 'D':               /* define something..*/

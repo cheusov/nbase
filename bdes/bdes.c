@@ -212,7 +212,7 @@ main(int ac, char *av[])
 
 	/* process the argument list */
 	kflag = 0;
-	while ((i = bsd_getopt(argc, argv, "abdF:f:k:m:o:pv:")) != -1)
+	while ((i = getopt(argc, argv, "abdF:f:k:m:o:pv:")) != -1)
 		switch(i) {
 		case 'a':		/* key is ASCII */
 			keybase = KEY_ASCII;

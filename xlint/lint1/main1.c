@@ -178,7 +178,7 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 
 	ERR_ZERO(&msgset);
-	while ((c = bsd_getopt(argc, argv, "abcdeghmprstuvwyzFPSX:")) != -1) {
+	while ((c = getopt(argc, argv, "abcdeghmprstuvwyzFPSX:")) != -1) {
 		switch (c) {
 		case 'a':	aflag++;	break;
 		case 'b':	bflag = 1;	break;

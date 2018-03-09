@@ -77,7 +77,7 @@ main(int argc, char **argv)
 	hints.ai_protocol = 0;
 	hints.ai_flags = 0;
 
-	while ((ch = bsd_getopt(argc, argv, "cf:nNp:Ps:t:")) != -1) {
+	while ((ch = getopt(argc, argv, "cf:nNp:Ps:t:")) != -1) {
 		switch (ch) {
 		case 'c':
 			hints.ai_flags |= AI_CANONNAME;

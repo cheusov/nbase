@@ -93,7 +93,7 @@ main(int argc, char **argv)
 	hsp = NULL;
 	aflg = 0;
 	cmp = hscmp;
-	while ((ch = bsd_getopt(argc, argv, "alrtu")) != -1)
+	while ((ch = getopt(argc, argv, "alrtu")) != -1)
 		switch (ch) {
 		case 'a':
 			aflg = 1;

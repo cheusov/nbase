@@ -228,7 +228,7 @@ main(int argc, char *argv[])
 	flag = myuid = getuid();
 	memf = nlistf = swapf = NULL;
 
-	while ((ch = bsd_getopt(argc, argv, GETOPTSTR)) != -1)
+	while ((ch = getopt(argc, argv, GETOPTSTR)) != -1)
 		switch((char)ch) {
 		case 'A':
 			/* "-A" shows all processes, like "-ax" */

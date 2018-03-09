@@ -102,7 +102,7 @@ main(int argc, char *argv[])
          * least they trip up getopt(3).
          */
 	while ((optind < argc) && !numeric(argv[optind]) &&
-	    (c = bsd_getopt(argc, argv, "f:hs:t:w")) != -1) {
+	    (c = getopt(argc, argv, "f:hs:t:w")) != -1) {
 
 		switch (c) {
 		case 'f':	/* format (plan9) */
