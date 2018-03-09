@@ -25,6 +25,6 @@ SYMLINKS +=	${MANDIR}/man${m:E}/${m} ${LMANDIR}/man${m:E}/nb-${m}
 SYMLINKS +=	${MANDIR}/man${m:E}/${m} ${LMANDIR}/man${m:E}/nb-${mto}
 .endfor
 
-.endif # INKSPREFIX
+.endif # LINKSPREFIX
 
 .include <mkc.mk>
