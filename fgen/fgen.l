@@ -68,7 +68,8 @@ tail	{white}
 #include <unistd.h>
 
 #include "mkc_macro.h"
-	
+#include "mkc_bsd_getopt.h"
+
 #include "fgen.h"
 static TOKEN ltoken;
 

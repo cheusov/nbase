@@ -56,6 +56,7 @@ __RCSID("$NetBSD: nice.c,v 1.15 2008/07/21 14:19:24 lukem Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
 
 #define	DEFNICE	10
 

@@ -60,6 +60,7 @@ __RCSID("$NetBSD: jot.c,v 1.25 2009/04/12 11:19:18 lukem Exp $");
 
 #include "mkc_progname.h"
 #include "mkc_strlcpy.h"
+#include "mkc_bsd_getopt.h"
 
 #define	REPS_DEF	100
 #define	BEGIN_DEF	1
