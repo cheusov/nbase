@@ -29,6 +29,12 @@
 #  endif
 #endif
 
+#if defined(HAVE_MEMBER_STRUCT_STAT_ST_MTIMESPEC_SYS_STAT_H) && !defined(HAVE_MEMBER_STRUCT_STAT_ST_MTIM_SYS_STAT_H)
+#  define st_mtim st_mtimespec
+#  define st_ctim st_ctimespec
+#  define st_atim st_atimespec
+#endif
+
 #ifndef HN_DECIMAL
 #define   HN_DECIMAL              0x01
 #define   HN_NOSPACE              0x02
