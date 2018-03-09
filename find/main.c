@@ -64,10 +64,6 @@ __RCSID("$NetBSD: main.c,v 1.31 2013/01/24 17:50:08 christos Exp $");
 #define REG_BASIC 0
 #endif
 
-#ifndef O_CLOEXEC
-#define O_CLOEXEC 0
-#endif
-
 #include "find.h"
 
 time_t now;			/* time find was run */
@@ -159,7 +155,12 @@ main(int argc, char *argv[])
 
 	*p = NULL;
 
+#ifdef O_CLOEXEC
 	if ((dotfd = open(".", O_RDONLY | O_CLOEXEC, 0)) == -1)
+#else
+	if ((dotfd = open(".", O_RDONLY, 0)) == -1 ||
+	    fcntl(dotfd, F_SETFD, FD_CLOEXEC) == -1)
+#endif
 		err(1, ".");
 
 	exit(find_execute(find_formplan(argv), start));
