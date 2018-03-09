@@ -58,7 +58,7 @@ uint32_t le32dec(const void *stream);
 uint64_t le64dec(const void *stream);
 #endif
 
-/* decode functions */
+/* encode functions */
 #ifndef HAVE_FUNC2_BE16ENC_SYS_ENDIAN_H
 void be16enc(void *stream, uint16_t host16);
 #endif
