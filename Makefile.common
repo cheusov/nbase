@@ -1,5 +1,7 @@
 WARNS     =	4
 
+CURSES_LIBNAME ?=	curses
+
 CPPFLAGS +=	-D_GNU_SOURCE
 CPPFLAGS +=	-D__COPYRIGHT\(x\)=
 CPPFLAGS +=	-D__RCSID\(x\)=

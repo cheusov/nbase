@@ -29,6 +29,12 @@
 There is a lot of Makefile variables that can be changed during
 build and installation.
 
+  Uniq for nbase:
+  CURSES_LIBNAME - name of curses library, e.g., ncurses, curses, pdcurses etc.
+                   The default is "curses".
+
+  Common for mk-configure:
+
   PREFIX         - where programs are installed to
   LINKSPREFIX    - where nb-NNN symlinks are installed to
   MANDIR         - root directory for manual pages
