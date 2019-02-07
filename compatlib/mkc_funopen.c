@@ -141,5 +141,14 @@ funopen(void *cookie,
 	return fopencookie(cookiewrap, mode, funcswrap);
 }
 #else
-#error "Function funopen() needs to be ported."
+FILE *
+funopen(void *cookie,
+        int (*readfn)(void *cookie, char *buf, int size),
+        int (*writefn)(void *cookie, const char *buf, int size),
+        off_t (*seekfn)(void *cookie, off_t offset, int whence),
+        int (*closefn)(void *cookie))
+{
+	fprintf(stderr, "funopen(3) is not implemented, sorry");
+	return NULL;
+}
 #endif
