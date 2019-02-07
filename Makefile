@@ -7,10 +7,15 @@
 # NET: ftp rcmd rcp rdist rup rwho rwall ruptime rusers rlogin rsh
 
 #PROJECTS = bdes csh db ksh sh at checknr chflags	\
-  crunch locate
+#  crunch locate
 
 # TBD: units -- /usr/share/misc/units.lib is missing
-PROJECTS = apply asa nawk/bin banner basename cat chmod cksum cleantags \
+.include <mkc.init.mk>
+.if ${OPSYS} != "SunOS"
+PROJECTS = apply chmod
+.endif
+
+PROJECTS += asa nawk/bin banner basename cat cksum cleantags \
   cmp	\
   col colcrt colrm column comm compress cp csplit ctags cut deroff dd	\
   dirname domainname du echo ed env error expand expr false fgen find	\
