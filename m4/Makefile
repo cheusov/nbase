@@ -16,4 +16,6 @@ tokenizer.o: parser.h
 
 CLEANFILES += parser.c parser.h tokenizer.o
 
+CPPFLAGS +=	-DHAVE_NBTOOL_CONFIG_H=1 -I${.CURDIR}
+
 .include "../mk/addlinks.mk"
