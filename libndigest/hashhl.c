@@ -70,7 +70,7 @@ FNPREFIX(End)(HASH_CTX *ctx, char *buf)
 	FNPREFIX(Final)(digest, ctx);
 
 	for (i = 0; i < HASH_LEN; i++) {
-		buf[i+i] = hex[(u_int32_t)digest[i] >> 4];
+		buf[i+i] = hex[(uint32_t)digest[i] >> 4];
 		buf[i+i+1] = hex[digest[i] & 0x0f];
 	}
 

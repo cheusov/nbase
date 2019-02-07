@@ -103,4 +103,24 @@
 #define __unused
 #endif
 
+#if defined(__cplusplus)
+#  define __BEGIN_DECLS        extern "C" {
+#  define __END_DECLS          }
+#else
+#  define __BEGIN_DECLS
+#  define __END_DECLS
+#endif
+
+#ifndef __P /* function prototypes */
+#  ifdef STDC
+#    define __P(args)  args
+#  else
+#    define __P(args)  ()
+#  endif
+#endif
+
+#ifndef __CONCAT
+# define __CONCAT(x,y)  x ## y
+#endif
+
 #endif // _MKC_MACRO_H_

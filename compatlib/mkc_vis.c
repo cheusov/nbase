@@ -221,8 +221,8 @@ do_mbyte(wchar_t *dst, wint_t c, int flags, wint_t nextc, int iswextra)
 	}
 	if (iswextra || ((c & 0177) == L' ') || (flags & VIS_OCTAL)) {
 		*dst++ = L'\\';
-		*dst++ = (u_char)(((u_int32_t)(u_char)c >> 6) & 03) + L'0';
-		*dst++ = (u_char)(((u_int32_t)(u_char)c >> 3) & 07) + L'0';
+		*dst++ = (u_char)(((uint32_t)(u_char)c >> 6) & 03) + L'0';
+		*dst++ = (u_char)(((uint32_t)(u_char)c >> 3) & 07) + L'0';
 		*dst++ =			     (c	      & 07) + L'0';
 	} else {
 		if ((flags & VIS_NOSLASH) == 0)

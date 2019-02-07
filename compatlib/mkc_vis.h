@@ -34,6 +34,8 @@
 #ifndef _MKC_VIS_H_
 #define _MKC_VIS_H_
 
+#include "mkc_macro.h"
+
 #if HAVE_SVIS && HAVE_VIS
 #include <stdlib.h> /* for OpenBSD-5.3 */
 #include <vis.h>

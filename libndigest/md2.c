@@ -161,7 +161,7 @@ static void
 MD2Transform(context)
 	MD2_CTX *context;
 {
-	u_int32_t l, j, k, t;
+	uint32_t l, j, k, t;
 
 	/* set block "3" and update "checksum" */
 	for (l = context->C[15], j = 0; j < 16; j++) {
