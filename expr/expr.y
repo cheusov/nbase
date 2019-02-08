@@ -283,7 +283,7 @@ static int64_t
 perform_arith_op(const char *left, const char *op, const char *right)
 {
 	int64_t res, sign, l, r;
-	u_int64_t temp;
+	uint64_t temp;
 
 	res = 0;
 
