@@ -48,9 +48,9 @@ __RCSID("$NetBSD: sum2.c,v 1.13 2005/02/05 00:13:34 simonb Exp $");
 #include "extern.h"
 
 int
-csum2(int fd, u_int32_t *cval, off_t *clen)
+csum2(int fd, uint32_t *cval, off_t *clen)
 {
-	u_int32_t thecrc;
+	uint32_t thecrc;
 	off_t total;
 	int nr;
 	u_char *p;

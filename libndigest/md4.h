@@ -32,6 +32,8 @@
 #ifndef _SYS_MD4_H_
 #define _SYS_MD4_H_
 
+#include "mkc_macro.h"
+
 #include <sys/cdefs.h>
 #include <sys/types.h>
 #include <inttypes.h>

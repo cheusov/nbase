@@ -32,6 +32,8 @@
 #ifndef _SYS_MD5_H_
 #define _SYS_MD5_H_
 
+#include "mkc_macro.h"
+
 #ifdef HAVE_INTTYPES_H
 #include <inttypes.h>
 #endif

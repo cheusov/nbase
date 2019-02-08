@@ -31,10 +31,12 @@
  *	@(#)extern.h	8.1 (Berkeley) 6/6/93
  */
 
+#include "mkc_macro.h"
+
 __BEGIN_DECLS
 #include <stdint.h>
 
-int	 crc(int, u_int32_t *, off_t *);
+int	 crc(int, uint32_t *, off_t *);
 uint32_t crc_buf(uint32_t, const void *, size_t);
 uint32_t crc_byte(uint32_t, unsigned int);
 __END_DECLS

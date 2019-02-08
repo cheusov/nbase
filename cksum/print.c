@@ -47,7 +47,7 @@ __RCSID("$NetBSD: print.c,v 1.11 2005/01/12 17:04:35 xtraeme Exp $");
 #include "extern.h"
 
 void
-pcrc(char *fn, u_int32_t val, off_t len)
+pcrc(char *fn, uint32_t val, off_t len)
 {
 	(void)printf("%lu %lld", (unsigned long)val, (long long)len);
 	if (fn)
@@ -56,7 +56,7 @@ pcrc(char *fn, u_int32_t val, off_t len)
 }
 
 void
-psum1(char *fn, u_int32_t val, off_t len)
+psum1(char *fn, uint32_t val, off_t len)
 {
 	(void)printf("%lu %lld", (unsigned long)val,
 	    (long long)(len + 1023) / 1024);
@@ -66,7 +66,7 @@ psum1(char *fn, u_int32_t val, off_t len)
 }
 
 void
-psum2(char *fn, u_int32_t val, off_t len)
+psum2(char *fn, uint32_t val, off_t len)
 {
 	(void)printf("%lu %lld", (unsigned long)val,
 	    (long long)(len + 511) / 512);

@@ -8,6 +8,8 @@
 #include <stdint.h>
 #include <inttypes.h>
 
+#include "mkc_macro.h"
+
 #define	MD2_DIGEST_LENGTH		16
 #define	MD2_DIGEST_STRING_LENGTH	33
 

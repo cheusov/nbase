@@ -157,12 +157,12 @@ int
 main(int argc, char **argv)
 {
 	int ch, fd, rval, pflag, nohashstdin;
-	u_int32_t val;
+	uint32_t val;
 	off_t len;
 	char *fn;
 	const char *progname;
-	int (*cfncn) (int, u_int32_t *, off_t *);
-	void (*pfncn) (char *, u_int32_t, off_t);
+	int (*cfncn) (int, uint32_t *, off_t *);
+	void (*pfncn) (char *, uint32_t, off_t);
 	const struct hash *hash;
 	int i, check_warn, do_check;
 	int print_flags;
@@ -440,7 +440,7 @@ main(int argc, char **argv)
 					if (cfncn(fd, &val, &len)) 
 						ok = 0;
 					else {
-						u_int32_t should_val;
+						uint32_t should_val;
 						
 						should_val =
 						  strtoul(cksum, NULL, 10);

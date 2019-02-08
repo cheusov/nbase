@@ -27,6 +27,8 @@
 #ifndef  _RMD160_H
 #define  _RMD160_H
 
+#include "mkc_macro.h"
+
 #include <sys/types.h>
 #include <stdint.h>
 
