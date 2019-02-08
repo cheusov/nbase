@@ -35,6 +35,8 @@
 #ifndef __EXTERN_H__
 #define __EXTERN_H__
 
+#include "mkc_macro.h"
+
 /*
  * from cmd1.c
  */

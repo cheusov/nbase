@@ -123,4 +123,12 @@
 # define __CONCAT(x,y)  x ## y
 #endif
 
+#ifndef MIN
+# define MIN(a,b)        ((a) < (b) ? (a) : (b))
+#endif
+
+#ifndef MAX
+# define MAX(a,b)        ((a) > (b) ? (a) : (b))
+#endif
+
 #endif // _MKC_MACRO_H_
