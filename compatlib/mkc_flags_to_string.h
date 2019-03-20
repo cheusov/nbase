@@ -33,11 +33,11 @@
 #endif
 
 #if !defined(HAVE_FUNC2_FLAGS_TO_STRING_UTIL_H)
-char *flags_to_string(u_long flags, const char *def);
+char *flags_to_string(unsigned long flags, const char *def);
 #endif
 
 #if !defined(HAVE_FUNC3_STRING_TO_FLAGS_UTIL_H)
-int string_to_flags(char **stringp, u_long *setp, u_long *clrp);
+int string_to_flags(char **stringp, unsigned long *setp, unsigned long *clrp);
 #endif
 
 #endif // _MKC_FLAGS_TO_STRING_H_
