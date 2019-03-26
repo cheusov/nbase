@@ -5,7 +5,7 @@
 .ifndef _MKC_IMP_F_RAISE_DEFAULT_SIGNAL_MK
 _MKC_IMP_F_RAISE_DEFAULT_SIGNAL_MK := 1
 
-MKC_CHECK_FUNCS1   =	raise_default_signal:util.h
+MKC_CHECK_FUNCS1   +=	raise_default_signal:util.h
 MKC_CHECK_FUNCLIBS +=	raise_default_signal:util
 
 .include <mkc_imp.conf-cleanup.mk>

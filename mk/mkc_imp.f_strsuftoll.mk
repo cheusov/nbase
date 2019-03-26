@@ -5,8 +5,8 @@
 .ifndef _MKC_IMP_F_STRSUFTOLL_MK
 _MKC_IMP_F_STRSUFTOLL_MK := 1
 
-MKC_CHECK_FUNCS4   =	strsuftoll:stdlib.h
-MKC_CHECK_FUNCS6   =	strsuftollx:stdlib.h
+MKC_CHECK_FUNCS4   +=	strsuftoll:stdlib.h
+MKC_CHECK_FUNCS6   +=	strsuftollx:stdlib.h
 MKC_CHECK_FUNCLIBS +=	strsuftoll strsuftollx
 
 .include <mkc_imp.conf-cleanup.mk>

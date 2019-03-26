@@ -5,7 +5,7 @@
 .ifndef _MKC_IMP_F_BSD_GETOPT_MK
 _MKC_IMP_F_BSD_GETOPT_MK := 1
 
-MKC_CHECK_DEFINES   =	__GLIBC__:string.h
+MKC_CHECK_DEFINES   +=	__GLIBC__:string.h
 
 .include <mkc_imp.conf-cleanup.mk>
 

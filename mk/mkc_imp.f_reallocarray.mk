@@ -6,7 +6,7 @@
 _MKC_IMP_F_REALLOCARRAY_MK := 1
 
 MKC_CHECK_FUNCLIBS +=	reallocarray
-MKC_CHECK_FUNCS3   =	reallocarray:stdlib.h
+MKC_CHECK_FUNCS3   +=	reallocarray:stdlib.h
 
 .include <mkc_imp.conf-cleanup.mk>
 

@@ -8,7 +8,7 @@ _MKC_IMP_F_FGETWLN_MK := 1
 .include "mkc_imp.f_reallocarray.mk"
 
 MKC_CHECK_FUNCLIBS +=	fgetwln
-MKC_CHECK_FUNCS2   =	fgetwln:stdio.h
+MKC_CHECK_FUNCS2   +=	fgetwln:stdio.h
 
 .include <mkc_imp.conf-cleanup.mk>
 

@@ -9,14 +9,14 @@ old :=			${MKC_COMMON_HEADERS}
 
 MKC_COMMON_HEADERS =	stdlib.h
 
-MKC_CHECK_FUNCS7   =	strsenvisx:vis.h
-MKC_CHECK_FUNCS6   =	strenvisx:vis.h snvis:vis.h strsnvisx:vis.h
-MKC_CHECK_FUNCS5   =	nvis:vis.h strnvisx:vis.h svis:vis.h strsnvis:vis.h \
+MKC_CHECK_FUNCS7   +=	strsenvisx:vis.h
+MKC_CHECK_FUNCS6   +=	strenvisx:vis.h snvis:vis.h strsnvisx:vis.h
+MKC_CHECK_FUNCS5   +=	nvis:vis.h strnvisx:vis.h svis:vis.h strsnvis:vis.h \
 	strsvisx:vis.h
-MKC_CHECK_FUNCS4   =	vis:vis.h strnvis:vis.h strvisx:vis.h strsvis:vis.h
-MKC_CHECK_FUNCS3   =	strvis:vis.h stravis:vis.h
+MKC_CHECK_FUNCS4   +=	vis:vis.h strnvis:vis.h strvisx:vis.h strsvis:vis.h
+MKC_CHECK_FUNCS3   +=	strvis:vis.h stravis:vis.h
 
-MKC_CHECK_HEADER_FILES  =	vis.h
+MKC_CHECK_HEADER_FILES  +=	vis.h
 
 MKC_CHECK_FUNCLIBS +=	vis nvis strvis stravis strnvis strvisx strnvisx strenvis svis snvis strsvis strsnvis strsvisx strsnvisx strsenvisx
 

@@ -4,7 +4,7 @@
 .ifndef _MKC_IMP_F_TZFILE_MK
 _MKC_IMP_F_TZFILE_MK := 1
 
-MKC_CHECK_HEADERS  =	tzfile.h
+MKC_CHECK_HEADERS  +=	tzfile.h
 
 .include <mkc_imp.conf-cleanup.mk>
 

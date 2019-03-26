@@ -6,7 +6,7 @@
 _MKC_IMP_F_FPARSELN_MK := 1
 
 MKC_CHECK_FUNCLIBS +=	fparseln
-MKC_CHECK_FUNCS5   =	fparseln:stdio.h
+MKC_CHECK_FUNCS5   +=	fparseln:stdio.h
 
 .include <mkc_imp.conf-cleanup.mk>
 
