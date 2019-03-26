@@ -47,6 +47,9 @@ DPADD+=	${LIBRMT}
 
 MKC_FEATURES =	strlcpy fgetln
 
+.include <mkc.init.mk>
+
+.include "../mk/mkc_imp.f_strmode.mk"
 .include "../mk/mkc_imp.f_lchmod.mk"
 .include "../mk/mkc_imp.f_vis.mk"
 .include "../mk/mkc_imp.f_getsetmode.mk"

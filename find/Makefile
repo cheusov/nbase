@@ -6,6 +6,8 @@ CPPFLAGS +=	-D_NETBSD_SOURCE
 #LDADD+=-lutil
 #DPADD+=${LIBUTIL}
 
+.include <mkc.init.mk>
+
 .include "../mk/mkc_imp.f_timespeccmp.mk"
 .include "../mk/mkc_imp.f_efun.mk"
 .include "../mk/mkc_imp.f_getsetmode.mk"
