@@ -21,4 +21,6 @@ SRCS +=	mkc_pwdgrp.c
 . endif
 .endif
 
+CPPFLAGS +=	-D_MKC_CHECK_PWDGRP
+
 .endif #_MKC_IMP_F_PWDGRP_MK

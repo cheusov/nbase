@@ -25,6 +25,10 @@
 #ifndef _MKC_FLAGS_TO_STRING_H_
 #define _MKC_FLAGS_TO_STRING_H_
 
+#ifndef _MKC_CHECK_FLAGS_TO_STRING
+# error "Missing MKC_FEATURES += flags_to_string"
+#endif
+
 #include <unistd.h>
 #include <fcntl.h>
 

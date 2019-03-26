@@ -28,4 +28,6 @@ SRCS +=	mkc_endian_encdec.c
 . endif
 .endif
 
+CPPFLAGS +=	-D_MKC_CHECK_ENDIAN_ENCDEC
+
 .endif #_MKC_IMP_F_ENDIAN_ENCDEC_MK

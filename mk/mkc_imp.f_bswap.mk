@@ -19,4 +19,6 @@ MKC_CHECK_DEFINES  =	${MKC_CHECK_FUNCS1}
 #. endif
 #.endif
 
+CPPFLAGS +=	-D_MKC_CHECK_BSWAP
+
 .endif #_MKC_IMP_F_BSWAP_MK

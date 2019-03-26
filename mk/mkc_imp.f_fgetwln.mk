@@ -18,4 +18,6 @@ SRCS +=	mkc_fgetwln.c
 . endif
 .endif
 
+CPPFLAGS +=	-D_MKC_CHECK_FGETWLN
+
 .endif #_MKC_IMP_F_FGETWLN_MK

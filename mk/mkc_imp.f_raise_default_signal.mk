@@ -15,4 +15,6 @@ MKC_CHECK_FUNCLIBS +=	raise_default_signal:util
 SRCS +=	${SRCDIR_compatlib}/mkc_raise_default_signal.c
 . endif
 
+CPPFLAGS +=	-D_MKC_CHECK_RAISE_DEFAULT_SIGNAL
+
 .endif #_MKC_IMP_F_RAISE_DEFAULT_SIGNAL_MK

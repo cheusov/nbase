@@ -25,6 +25,10 @@
 #ifndef _MKC_LCHMOD_H_
 #define _MKC_LCHMOD_H_
 
+#ifndef _MKC_CHECK_LCHMOD
+# error "Missing MKC_FEATURES += lchmod"
+#endif
+
 #ifndef HAVE_FUNC2_LCHMOD_SYS_STAT_H
 #include <sys/stat.h>
 int lchmod(const char *path, mode_t mode);

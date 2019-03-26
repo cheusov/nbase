@@ -17,4 +17,6 @@ SRCS     +=	mkc_bsd_getopt.c
 CPPFLAGS +=	-DHAVE_POSIX_GETOPT=1
 .endif
 
+CPPFLAGS +=	-D_MKC_CHECK_BSD_GETOPT
+
 .endif #_MKC_IMP_F_BSD_GETOPT_MK

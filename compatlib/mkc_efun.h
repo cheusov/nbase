@@ -31,6 +31,10 @@
 #ifndef _MKC_EFUN_H_
 #define _MKC_EFUN_H_
 
+#ifndef _MKC_CHECK_EFUN
+# error "Missing MKC_FEATURES += efun"
+#endif
+
 #if defined(HAVE_FUNC2_ECALLOC_UTIL_H)
 #  include <util.h>
 #else

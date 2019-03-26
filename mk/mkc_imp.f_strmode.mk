@@ -16,4 +16,6 @@ SRCS +=	mkc_strmode.c
 . endif
 .endif
 
+CPPFLAGS +=	-D_MKC_CHECK_STRMODE
+
 .endif #_MKC_IMP_F_STRMODE_MK

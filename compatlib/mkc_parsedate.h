@@ -25,6 +25,10 @@
 #ifndef _MKC_PARSEDATE_H_
 #define _MKC_PARSEDATE_H_
 
+#ifndef _MKC_CHECK_PARSEDATE
+# error "Missing MKC_FEATURES += parsedate"
+#endif
+
 #ifdef HAVE_FUNC3_PARSEDATE_UTIL_H
 #include <util.h>
 #else

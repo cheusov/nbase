@@ -28,4 +28,6 @@ CPPFLAGS += -DHAVE_B64_FUNCS
 SRCS +=	mkc_base64.c
 .endif
 
+CPPFLAGS +=	-D_MKC_CHECK_BASE64
+
 .endif #_MKC_IMP_F_BASE64_MK

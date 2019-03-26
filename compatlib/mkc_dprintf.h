@@ -7,6 +7,10 @@
 #ifndef _MKC_DPRINTF_H_
 #define _MKC_DPRINTF_H_
 
+#ifndef _MKC_CHECK_DPRINTF
+# error "Missing MKC_FEATURES += dprintf"
+#endif
+
 #include <stdio.h>
 #include <stdarg.h>
 

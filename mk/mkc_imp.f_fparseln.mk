@@ -16,4 +16,6 @@ SRCS +=	mkc_fparseln.c
 . endif
 .endif
 
+CPPFLAGS +=	-D_MKC_CHECK_FPARSELN
+
 .endif #_MKC_IMP_F_FPARSELN_MK

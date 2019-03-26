@@ -19,4 +19,6 @@ SRCS     +=	mkc_flags_to_string.c
 . endif
 .endif
 
+CPPFLAGS +=	-D_MKC_CHECK_FLAGS_TO_STRING
+
 .endif #_MKC_IMP_F_FLAGS_TO_STRING_MK

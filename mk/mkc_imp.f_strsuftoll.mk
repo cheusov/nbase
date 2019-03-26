@@ -17,4 +17,6 @@ SRCS +=	mkc_strsuftoll.c
 . endif
 .endif
 
+CPPFLAGS +=	-D_MKC_CHECK_STRSUFTOLL
+
 .endif #_MKC_IMP_F_STRSUFTOLL_MK

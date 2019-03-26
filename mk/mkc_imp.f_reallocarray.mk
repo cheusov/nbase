@@ -16,4 +16,6 @@ SRCS +=	mkc_reallocarray.c
 . endif
 .endif
 
+CPPFLAGS +=	-D_MKC_CHECK_REALLOCARRAY
+
 .endif #_MKC_IMP_F_REALLOCARRAY_MK

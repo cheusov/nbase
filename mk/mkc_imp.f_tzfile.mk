@@ -8,4 +8,6 @@ MKC_CHECK_HEADERS  =	tzfile.h
 
 .include <mkc_imp.conf-cleanup.mk>
 
+CPPFLAGS +=	-D_MKC_CHECK_TZFILE
+
 .endif #_MKC_IMP_F_TZFILE_MK

@@ -17,4 +17,6 @@ SRCS +=	mkc_dprintf.c
 . endif
 .endif
 
+CPPFLAGS +=	-D_MKC_CHECK_DPRINTF
+
 .endif #_MKC_IMP_F_DPRINTF_MK

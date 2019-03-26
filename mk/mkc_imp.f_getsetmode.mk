@@ -17,4 +17,6 @@ SRCS +=	mkc_getsetmode.c
 . endif
 .endif
 
+CPPFLAGS +=	-D_MKC_CHECK_GETSETMODE
+
 .endif #_MKC_IMP_GETSETMODE_MK

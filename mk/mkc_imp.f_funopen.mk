@@ -17,4 +17,6 @@ SRCS +=	mkc_funopen.c
 . endif
 .endif
 
+CPPFLAGS +=	-D_MKC_CHECK_FUNOPEN
+
 .endif #_MKC_IMP_F_FUNOPEN_MK

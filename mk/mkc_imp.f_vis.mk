@@ -41,4 +41,6 @@ CPPFLAGS +=	-DHAVE_SVIS=1 -DHAVE_VIS=1
 . endif
 .endif
 
+CPPFLAGS +=	-D_MKC_CHECK_VIS
+
 .endif #_MKC_IMP_F_VIS_MK

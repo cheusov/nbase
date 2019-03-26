@@ -14,4 +14,6 @@ SRCS +=	mkc_sys_signame.c
 .  endif
 .endif
 
+CPPFLAGS +=	-D_MKC_CHECK_SYS_SIGNAME
+
 .endif #_MKC_IMP_F_SYS_SIGNAME_MK

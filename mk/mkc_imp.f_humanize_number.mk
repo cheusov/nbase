@@ -17,4 +17,6 @@ SRCS +=	mkc_humanize_number.c
 . endif
 .endif
 
+CPPFLAGS +=	-D_MKC_CHECK_HUMANIZE_NUMBER
+
 .endif #_MKC_IMP_F_HUMANIZE_NUMBER_MK

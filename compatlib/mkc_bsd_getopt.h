@@ -25,6 +25,10 @@
 #ifndef _MKC_BSD_GETOPT_H_
 #define _MKC_BSD_GETOPT_H_
 
+#ifndef _MKC_CHECK_BSD_GETOPT
+# error "Missing MKC_FEATURES += bsd_getopt"
+#endif
+
 #include <unistd.h>
 #include <getopt.h>
 

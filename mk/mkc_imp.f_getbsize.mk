@@ -16,4 +16,6 @@ SRCS +=	mkc_getbsize.c
 . endif
 .endif
 
+CPPFLAGS +=	-D_MKC_CHECK_GETBSIZE
+
 .endif #_MKC_IMP_F_GETBSIZE_MK

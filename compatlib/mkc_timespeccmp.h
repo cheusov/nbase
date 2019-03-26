@@ -25,6 +25,10 @@
 #ifndef _MKC_TIMESPECCMP_H_
 #define _MKC_TIMESPECCMP_H_ 1
 
+#ifndef _MKC_CHECK_TIMESPECCMP
+# error "Missing MKC_FEATURES += timespeccmp"
+#endif
+
 #  include <time.h>
 #  include <sys/time.h>
 

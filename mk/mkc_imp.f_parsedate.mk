@@ -15,4 +15,6 @@ MKC_CHECK_FUNCLIBS =	parsedate:util
 SRCS +=	${SRCDIR_compatlib}/mkc_parsedate.y
 . endif
 
+CPPFLAGS +=	-D_MKC_CHECK_PARSEDATE
+
 .endif #_MKC_IMP_F_PARSEDATE_MK

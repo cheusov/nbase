@@ -25,6 +25,10 @@
 #ifndef _MKC_FUNOPEN_H_
 #define _MKC_FUNOPEN_H_
 
+#ifndef _MKC_CHECK_FUNOPEN
+# error "Missing MKC_FEATURES += funopen"
+#endif
+
 #include <stdio.h>
 
 #ifndef HAVE_FUNC5_FUNOPEN_STDIO_H

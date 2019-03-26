@@ -17,4 +17,6 @@ SRCS +=	mkc_lchmod.c
 . endif
 .endif
 
+CPPFLAGS +=	-D_MKC_CHECK_LCHMOD
+
 .endif #_MKC_IMP_F_LCHMOD_MK
