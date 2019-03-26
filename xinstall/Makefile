@@ -11,4 +11,10 @@ COPTS.xinstall.c += -Wno-format-nonliteral
 
 PROGNAME ?=	install
 
+.include "../mk/mkc_imp.f_getsetmode.mk"
+.include "../mk/mkc_imp.f_pwdgrp.mk"
+.include "../mk/mkc_imp.f_vis.mk"
+.include "../mk/mkc_imp.f_flags_to_string.mk"
+.include "../mk/mkc_imp.f_lchmod.mk"
+
 .include "../mk/addlinks.mk"

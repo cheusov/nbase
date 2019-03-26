@@ -9,4 +9,6 @@ SRCS =	keccak.c \
 
 CPPFLAGS +=	-I${.CURDIR} -DHAVE_NBTOOL_CONFIG_H=1
 
+.include "../mk/mkc_imp.f_endian_encdec.mk"
+
 .include <mkc.mk>
