@@ -4,6 +4,8 @@ CPPFLAGS +=	-DFMT_PROG
 
 .PATH: ${.CURDIR}/../mail
 
+MKC_FEATURES +=		fgetln
+
 .include <mkc.init.mk>
 
 .include "../mk/mkc_imp.f_vis.mk"
