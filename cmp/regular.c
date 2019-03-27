@@ -29,6 +29,8 @@
  * SUCH DAMAGE.
  */
 
+#include "mkc_macro.h"
+
 #include <sys/cdefs.h>
 #ifndef lint
 #if 0

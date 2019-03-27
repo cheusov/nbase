@@ -163,7 +163,7 @@ int chk_path(char *, uid_t, gid_t);
 void set_ftime(char *fnm, time_t mtime, time_t atime, int frc, int slk);
 int set_ids(char *, uid_t, gid_t);
 void set_pmode(char *, mode_t);
-void set_chflags(char *fnm, u_int32_t flags);
+void set_chflags(char *fnm, uint32_t flags);
 int file_write(int, char *, int, int *, int *, int, char *);
 void file_flush(int, char *, int);
 void rdfile_close(ARCHD *, int *);
