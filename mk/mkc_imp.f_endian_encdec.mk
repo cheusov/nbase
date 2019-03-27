@@ -7,10 +7,10 @@ _MKC_IMP_F_ENDIAN_ENCDEC_MK := 1
 funcs1 =	be16dec be32dec be64dec le16dec le32dec le64dec
 funcs2 =	be16enc be32enc be64enc le16enc le32enc le64enc
 
-MKC_CHECK_HEADERS   =	sys/endian.h
-MKC_CHECK_FUNCS1   :=	${funcs1:S|$|:sys/endian.h|}
-MKC_CHECK_FUNCS2   :=	${funcs2:S|$|:sys/endian.h|}
-MKC_CHECK_FUNCLIBS :=	${funcs1} ${funcs2}
+MKC_CHECK_HEADERS  +=	sys/endian.h
+MKC_CHECK_FUNCS1   +=	${funcs1:S|$|:sys/endian.h|}
+MKC_CHECK_FUNCS2   +=	${funcs2:S|$|:sys/endian.h|}
+MKC_CHECK_FUNCLIBS +=	${funcs1} ${funcs2}
 
 .undef funcs1
 .undef funcs2
@@ -27,5 +27,7 @@ MKC_CHECK_FUNCLIBS :=	${funcs1} ${funcs2}
 SRCS +=	mkc_endian_encdec.c
 . endif
 .endif
+
+CPPFLAGS +=	-D_MKC_CHECK_ENDIAN_ENCDEC
 
 .endif #_MKC_IMP_F_ENDIAN_ENCDEC_MK

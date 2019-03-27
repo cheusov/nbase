@@ -25,6 +25,10 @@
 #ifndef _MKC_RAISE_DEFAULT_SIGNAL_H_
 #define _MKC_RAISE_DEFAULT_SIGNAL_H_
 
+#ifndef _MKC_CHECK_RAISE_DEFAULT_SIGNAL
+# error "Missing MKC_FEATURES += raise_default_signal"
+#endif
+
 #ifdef HAVE_FUNC1_RAISE_DEFAULT_SIGNAL_UTIL_H
 #include <util.h>
 #else

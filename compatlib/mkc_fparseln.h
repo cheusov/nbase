@@ -7,6 +7,10 @@
 #ifndef _MKC_FPARSELN_H_
 #define _MKC_FPARSELN_H_
 
+#ifndef _MKC_CHECK_FPARSELN
+# error "Missing MKC_FEATURES += fparseln"
+#endif
+
 #include <stdio.h>
 
 #ifndef HAVE_FUNC5_FPARSELN_STDIO_H

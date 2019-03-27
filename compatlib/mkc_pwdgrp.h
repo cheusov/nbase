@@ -25,6 +25,10 @@
 #ifndef _MKC_PWDGRP_H_
 #define _MKC_PWDGRP_H_
 
+#ifndef _MKC_CHECK_PWDGRP
+# error "Missing MKC_FEATURES += pwdgrp"
+#endif
+
 #include <pwd.h>
 #include <grp.h>
 

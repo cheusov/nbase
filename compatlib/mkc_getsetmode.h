@@ -25,6 +25,10 @@
 #ifndef _MKC_SETMODE_H_
 #define _MKC_SETMODE_H_
 
+#ifndef _MKC_CHECK_GETSETMODE
+# error "Missing MKC_FEATURES += getsetmode"
+#endif
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>

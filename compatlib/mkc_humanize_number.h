@@ -25,6 +25,10 @@
 #ifndef _MKC_HUMANIZE_NUMBER_H_
 #define _MKC_HUMANIZE_NUMBER_H_
 
+#ifndef _MKC_CHECK_HUMANIZE_NUMBER
+# error "Missing MKC_FEATURES += humanize_number"
+#endif
+
 #include <unistd.h>
 #include <stdint.h>
 

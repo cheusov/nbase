@@ -7,4 +7,8 @@ LINKS=	${BINDIR}/hexdump ${BINDIR}/od
 COPTS.conv.c += -Wno-format-nonliteral
 COPTS.display.c += -Wno-format-nonliteral
 
+.include <mkc.init.mk>
+
+.include "../mk/mkc_imp.f_efun.mk"
+
 .include "../mk/addlinks.mk"

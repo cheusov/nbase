@@ -7,6 +7,10 @@
 #ifndef _MKC_SYS_SIGNAME_H_
 #define _MKC_SYS_SIGNAME_H_
 
+#ifndef _MKC_CHECK_SYS_SIGNAME
+# error "Missing MKC_FEATURES += sys_signame"
+#endif
+
 #include <signal.h>
 
 #if !HAVE_VAR_SYS_NSIG_SIGNAL_H

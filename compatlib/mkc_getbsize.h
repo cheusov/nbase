@@ -25,6 +25,10 @@
 #ifndef _MKC_GETBSIZE_H_
 #define _MKC_GETBSIZE_H_
 
+#ifndef _MKC_CHECK_GETBSIZE
+# error "Missing MKC_FEATURES += getbsize"
+#endif
+
 #ifndef HAVE_FUNC2_GETBSIZE_STDLIB_H
 char *getbsize(int *headerlenp, long *blocksizep);
 #endif

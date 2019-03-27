@@ -25,6 +25,10 @@
 #ifndef _MKC_ENDIAN_ENCDEC_H_
 #define _MKC_ENDIAN_ENCDEC_H_
 
+#ifndef _MKC_CHECK_ENDIAN_ENCDEC
+# error "Missing MKC_FEATURES += endian_encdec"
+#endif
+
 #ifdef HAVE_HEADER_SYS_ENDIAN_H
 # include <sys/endian.h>
 #endif

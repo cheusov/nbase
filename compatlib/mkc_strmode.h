@@ -25,6 +25,10 @@
 #ifndef _MKC_STRMODE_H_
 #define _MKC_STRMODE_H_
 
+#ifndef _MKC_CHECK_STRMODE
+# error "Missing MKC_FEATURES += strmode"
+#endif
+
 #include <unistd.h>
 #include <fcntl.h>
 

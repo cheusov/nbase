@@ -25,6 +25,10 @@
 #ifndef _MKC_STRSUFTOLL_H_
 #define _MKC_STRSUFTOLL_H_
 
+#ifndef _MKC_CHECK_STRSUFTOLL
+# error "Missing MKC_FEATURES += strsuftoll"
+#endif
+
 #include <stdlib.h>
 
 #ifndef HAVE_FUNC4_STRSUFTOLL_STDLIB_H

@@ -5,8 +5,8 @@
 .ifndef _MKC_IMP_GETSETMODE_MK
 _MKC_IMP_GETSETMODE_MK := 1
 
-MKC_CHECK_FUNCS1   =	setmode:unistd.h
-MKC_CHECK_FUNCS2   =	getmode:unistd.h
+MKC_CHECK_FUNCS1   +=	setmode:unistd.h
+MKC_CHECK_FUNCS2   +=	getmode:unistd.h
 MKC_CHECK_FUNCLIBS +=	setmode getmode
 
 .include <mkc_imp.conf-cleanup.mk>
@@ -16,5 +16,7 @@ MKC_CHECK_FUNCLIBS +=	setmode getmode
 SRCS +=	mkc_getsetmode.c
 . endif
 .endif
+
+CPPFLAGS +=	-D_MKC_CHECK_GETSETMODE
 
 .endif #_MKC_IMP_GETSETMODE_MK

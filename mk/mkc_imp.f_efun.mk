@@ -20,4 +20,6 @@ SRCS +=	${SRCDIR_compatlib}/mkc_efun.c
 . endif
 .endif
 
+CPPFLAGS +=	-D_MKC_CHECK_EFUN
+
 .endif #_MKC_IMP_EFUN_MK

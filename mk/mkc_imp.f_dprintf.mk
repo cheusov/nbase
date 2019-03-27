@@ -6,8 +6,8 @@
 _MKC_IMP_F_DPRINTF_MK := 1
 
 MKC_CHECK_FUNCLIBS +=	dprintf vdprintf
-MKC_CHECK_FUNCS3   =	dprintf:stdio.h
-MKC_CHECK_FUNCS4   =	vdprintf:stdio.h
+MKC_CHECK_FUNCS3   +=	dprintf:stdio.h
+MKC_CHECK_FUNCS4   +=	vdprintf:stdio.h
 
 .include <mkc_imp.conf-cleanup.mk>
 
@@ -16,5 +16,7 @@ MKC_CHECK_FUNCS4   =	vdprintf:stdio.h
 SRCS +=	mkc_dprintf.c
 . endif
 .endif
+
+CPPFLAGS +=	-D_MKC_CHECK_DPRINTF
 
 .endif #_MKC_IMP_F_DPRINTF_MK

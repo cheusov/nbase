@@ -36,6 +36,10 @@
 
 #include "mkc_macro.h"
 
+#ifndef _MKC_CHECK_VIS
+# error "Missing MKC_FEATURES += vis"
+#endif
+
 #if HAVE_SVIS && HAVE_VIS
 #include <stdlib.h> /* for OpenBSD-5.3 */
 #include <vis.h>

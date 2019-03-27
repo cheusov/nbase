@@ -7,6 +7,10 @@
 #ifndef _MKC_BASE64_H_
 #define _MKC_BASE64_H_
 
+#ifndef _MKC_CHECK_BASE64
+# error "Missing MKC_FEATURES += base64"
+#endif
+
 #if HAVE_B64_FUNCS
 #include <resolv.h>
 #else

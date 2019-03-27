@@ -5,7 +5,7 @@
 .ifndef _MKC_IMP_F_GETBSIZE_MK
 _MKC_IMP_F_GETBSIZE_MK := 1
 
-MKC_CHECK_FUNCS2   =	getbsize:stdlib.h
+MKC_CHECK_FUNCS2   +=	getbsize:stdlib.h
 MKC_CHECK_FUNCLIBS +=	getbsize
 
 .include <mkc_imp.conf-cleanup.mk>
@@ -15,5 +15,7 @@ MKC_CHECK_FUNCLIBS +=	getbsize
 SRCS +=	mkc_getbsize.c
 . endif
 .endif
+
+CPPFLAGS +=	-D_MKC_CHECK_GETBSIZE
 
 .endif #_MKC_IMP_F_GETBSIZE_MK

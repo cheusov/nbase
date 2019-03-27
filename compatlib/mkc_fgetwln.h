@@ -7,6 +7,10 @@
 #ifndef _MKC_FGETWLN_H_
 #define _MKC_FGETWLN_H_
 
+#ifndef _MKC_CHECK_FGETWLN
+# error "Missing MKC_FEATURES += fgetwln"
+#endif
+
 #include <wchar.h>
 #include <stdio.h>
 

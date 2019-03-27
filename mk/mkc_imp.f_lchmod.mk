@@ -5,9 +5,9 @@
 .ifndef _MKC_IMP_F_LCHMOD_MK
 _MKC_IMP_F_LCHMOD_MK := 1
 
-MKC_CHECK_FUNCS2    =	lchmod:sys/stat.h
+MKC_CHECK_FUNCS2   +=	lchmod:sys/stat.h
 MKC_CHECK_FUNCLIBS +=	lchmod
-MKC_CHECK_DEFINES   =	__GLIBC__:string.h
+MKC_CHECK_DEFINES  +=	__GLIBC__:string.h
 
 .include <mkc_imp.conf-cleanup.mk>
 
@@ -16,5 +16,7 @@ MKC_CHECK_DEFINES   =	__GLIBC__:string.h
 SRCS +=	mkc_lchmod.c
 . endif
 .endif
+
+CPPFLAGS +=	-D_MKC_CHECK_LCHMOD
 
 .endif #_MKC_IMP_F_LCHMOD_MK

@@ -31,4 +31,6 @@ MKC_SRCS +=	mkc_verrc.c
 
 .include <mkc_imp.conf-final.mk>
 
+CPPFLAGS +=	-D_MKC_CHECK_ERRC
+
 .endif #_MKC_IMP_F_ERR_MK
