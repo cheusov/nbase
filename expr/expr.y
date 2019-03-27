@@ -37,7 +37,7 @@
 __RCSID("$NetBSD: expr.y,v 1.38 2012/03/15 02:02:20 joerg Exp $");
 #endif /* not lint */
 
-#include <sys/types.h>
+#include <stdint.h>
 
 #include <err.h>
 #include <errno.h>
