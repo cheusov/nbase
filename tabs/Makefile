@@ -1,5 +1,7 @@
 PROG =	tabs
 
-MKC_REQUIRE_FUNCLIBS = cur_term:${CURSES_LIBNAME}
+.include <mkc.init.mk>
+
+.include "../mk/mkc_imp.f_curses.mk"
 
 .include "../mk/addlinks.mk"
