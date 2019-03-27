@@ -14,7 +14,7 @@ CPPFLAGS +=	-D__pure=
 CPPFLAGS +=	-DHAVE_ERRNO_H -DHAVE_LOCALE_H -DHAVE_UNISTD_H -DHAVE_STDINT_H \
 		-DHAVE_INTTYPES_H -DHAVE_FCNTL_H -DHAVE_SETLOCALE
 
-#CFLAGS.dflt.gcc +=	-Werror=implicit-function-declaration \
+CFLAGS.dflt.gcc +=	-Werror=implicit-function-declaration \
 #  -Werror=missing-prototypes # -Werror=int-to-pointer-cast
 
 DOCDIR ?=	${DATADIR}/doc/nbase
