@@ -2,8 +2,8 @@
 #
 # See LICENSE file in the distribution.
 ############################################################
-.ifndef _MKC_IMP_F_ERR_MK
-_MKC_IMP_F_ERR_MK := 1
+.ifndef _MKC_IMP_F_ERRC_MK
+_MKC_IMP_F_ERRC_MK := 1
 
 .include <mkc_imp.f_progname.mk>
 
