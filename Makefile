@@ -13,11 +13,13 @@
 .include <mkc.init.mk>
 .if ${OPSYS} != "SunOS"
 PROJECTS = apply chmod
+PROJECTS +=	cmp # strtoq
+PROJECTS +=	compress # TIMESPEC_TO_TIMEVAL
+PROJECTS +=	cp # fts.h
 .endif
 
 PROJECTS += asa nawk/bin banner basename cat cksum cleantags \
-  cmp	\
-  col colcrt colrm column comm compress cp csplit ctags cut deroff dd	\
+  col colcrt colrm column comm csplit ctags cut deroff dd	\
   dirname domainname du echo ed env error expand expr false fgen find	\
   fmt fold fpr from fsplit getconf getopt grep head hexdump hostname	\
   id indent join jot kill lam leave libndigest ln logname look lorder	\
