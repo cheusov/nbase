@@ -5,6 +5,11 @@
 #include <assert.h>
 #include <limits.h>
 #include <regex.h>
+#include <sys/stat.h>
+
+#ifdef __SVR4
+# include <sys/sysmacros.h>
+#endif
 
 /*
  * Return the number of elements in a statically-allocated array,
@@ -123,12 +128,20 @@
 # define __CONCAT(x,y)  x ## y
 #endif
 
-#ifndef MIN
-# define MIN(a,b)        ((a) < (b) ? (a) : (b))
+#ifndef MAP_FILE
+# define MAP_FILE 0
 #endif
 
-#ifndef MAX
-# define MAX(a,b)        ((a) > (b) ? (a) : (b))
+#ifndef DEFFILEMODE
+# define DEFFILEMODE (S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH)
+#endif
+
+#ifndef ALLPERMS
+# define ALLPERMS (S_ISUID|S_ISGID|S_ISVTX|S_IRWXU|S_IRWXG|S_IRWXO)
+#endif
+
+#ifndef ACCESSPERMS
+# define ACCESSPERMS (S_IRWXU|S_IRWXG|S_IRWXO)
 #endif
 
 #endif // _MKC_MACRO_H_

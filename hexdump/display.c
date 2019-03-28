@@ -57,6 +57,7 @@ __RCSID("$NetBSD: display.c,v 1.22 2013/10/18 20:19:03 christos Exp $");
 #include "hexdump.h"
 
 #include "mkc_efun.h"
+#include "mkc_macro.h"
 
 enum _vflag vflag = FIRST;
 

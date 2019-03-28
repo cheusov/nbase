@@ -114,6 +114,7 @@ __FBSDID("$FreeBSD: src/usr.bin/unifdef/unifdef.c,v 1.18 2003/07/01 15:30:43 fan
 
 #include "mkc_strlcpy.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_macro.h"
 
 #include "stdbool.h"
 

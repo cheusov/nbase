@@ -29,9 +29,6 @@
  * SUCH DAMAGE.
  */
 
-#include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
-
 #include <sys/cdefs.h>
 #ifndef lint
 __COPYRIGHT("@(#) Copyright (c) 1988, 1993, 1994\
@@ -55,6 +52,10 @@ __RCSID("$NetBSD: sleep.c,v 1.24 2011/08/29 14:51:19 joerg Exp $");
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+
+#include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
+#include "mkc_macro.h"
 
 __dead static void alarmhandle(int);
 __dead static void usage(void);

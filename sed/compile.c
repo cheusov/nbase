@@ -47,8 +47,6 @@ __FBSDID("$FreeBSD: head/usr.bin/sed/compile.c 259132 2013-12-09 18:57:20Z eadle
 static const char sccsid[] = "@(#)compile.c	8.1 (Berkeley) 6/6/93";
 #endif
 
-#include "mkc_errc.h"
-
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -65,6 +63,9 @@ static const char sccsid[] = "@(#)compile.c	8.1 (Berkeley) 6/6/93";
 
 #include "defs.h"
 #include "extern.h"
+
+#include "mkc_errc.h"
+#include "mkc_macro.h"
 
 #define LHSZ	128
 #define	LHMASK	(LHSZ - 1)
