@@ -29,11 +29,19 @@
 __RCSID("$NetBSD: fparseln.c,v 1.10 2009/10/21 01:07:45 snj Exp $");
 #endif /* LIBC_SCCS and not lint */
 
+#ifdef __SVR4
+# ifndef __EXTENSIONS__
+#  define __EXTENSIONS__
+# endif
+#endif
+
 #include <assert.h>
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
+#include <mkc_getline.h>
 
 #include "mkc_fparseln.h"
 #include "mkc_macro.h"
