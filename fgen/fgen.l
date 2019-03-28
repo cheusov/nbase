@@ -100,7 +100,7 @@ static int parse_stack_ptr = 0;
 
 static void	token_err(int, const char *, const char *, const char *, ...)
     __printflike(4, 5) __dead;
-static YY_DECL;
+YY_DECL;
 
 static int debug = 0;
 #define ASSERT if (debug) assert
