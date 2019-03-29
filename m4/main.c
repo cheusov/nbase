@@ -56,13 +56,14 @@ __RCSID("$NetBSD: main.c,v 1.42 2012/04/25 18:23:58 christos Exp $");
 #include <stdlib.h>
 #include <ohash.h>
 
-#include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
-
 #include "mdef.h"
 #include "stdd.h"
 #include "extern.h"
 #include "pathnames.h"
+
+#include "mkc_progname.h"
+#include "mkc_bsd_getopt.h"
+#include "mkc_macro.h"
 
 ndptr hashtab[HASHSIZE];	/* hash table for macros etc.  */
 stae *mstack;		 	/* stack of m4 machine         */
