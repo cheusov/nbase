@@ -38,52 +38,52 @@
 //__BEGIN_DECLS
 
 /* decode functions */
-#ifndef HAVE_FUNC1_BE16DEC_SYS_ENDIAN_H
+#if !HAVE_FUNC1_BE16DEC_SYS_ENDIAN_H && !HAVE_DEFINE_BE16DEC_SYS_ENDIAN_H
 uint16_t be16dec(const void *stream);
 #endif
 
-#ifndef HAVE_FUNC1_BE32DEC_SYS_ENDIAN_H
+#if !HAVE_FUNC1_BE32DEC_SYS_ENDIAN_H && !HAVE_DEFINE_BE32DEC_SYS_ENDIAN_H
 uint32_t be32dec(const void *stream);
 #endif
 
-#ifndef HAVE_FUNC1_BE64DEC_SYS_ENDIAN_H
+#if !HAVE_FUNC1_BE64DEC_SYS_ENDIAN_H && !HAVE_DEFINE_BE64DEC_SYS_ENDIAN_H
 uint64_t be64dec(const void *stream);
 #endif
 
-#ifndef HAVE_FUNC1_LE16DEC_SYS_ENDIAN_H
+#if !HAVE_FUNC1_LE16DEC_SYS_ENDIAN_H && !HAVE_DEFINE_LE16DEC_SYS_ENDIAN_H
 uint16_t le16dec(const void *stream);
 #endif
 
-#ifndef HAVE_FUNC1_LE32DEC_SYS_ENDIAN_H
+#if !HAVE_FUNC1_LE32DEC_SYS_ENDIAN_H && !HAVE_DEFINE_LE32DEC_SYS_ENDIAN_H
 uint32_t le32dec(const void *stream);
 #endif
 
-#ifndef HAVE_FUNC1_LE64DEC_SYS_ENDIAN_H
+#if !HAVE_FUNC1_LE64DEC_SYS_ENDIAN_H && !HAVE_DEFINE_LE64DEC_SYS_ENDIAN_H
 uint64_t le64dec(const void *stream);
 #endif
 
 /* encode functions */
-#ifndef HAVE_FUNC2_BE16ENC_SYS_ENDIAN_H
+#if !HAVE_FUNC2_BE16ENC_SYS_ENDIAN_H && !HAVE_DEFINE_BE16ENC_SYS_ENDIAN_H
 void be16enc(void *stream, uint16_t host16);
 #endif
 
-#ifndef HAVE_FUNC2_BE32ENC_SYS_ENDIAN_H
+#if !HAVE_FUNC2_BE32ENC_SYS_ENDIAN_H && !HAVE_DEFINE_BE32ENC_SYS_ENDIAN_H
 void be32enc(void *stream, uint32_t host32);
 #endif
 
-#ifndef HAVE_FUNC2_BE64ENC_SYS_ENDIAN_H
+#if !HAVE_FUNC2_BE64ENC_SYS_ENDIAN_H && !HAVE_DEFINE_BE64ENC_SYS_ENDIAN_H
 void be64enc(void *stream, uint64_t host64);
 #endif
 
-#ifndef HAVE_FUNC2_LE16ENC_SYS_ENDIAN_H
+#if !HAVE_FUNC2_LE16ENC_SYS_ENDIAN_H && !HAVE_DEFINE_LE16ENC_SYS_ENDIAN_H
 void le16enc(void *stream, uint16_t host16);
 #endif
 
-#ifndef HAVE_FUNC2_LE32ENC_SYS_ENDIAN_H
+#if !HAVE_FUNC2_LE32ENC_SYS_ENDIAN_H && !HAVE_DEFINE_LE32ENC_SYS_ENDIAN_H
 void le32enc(void *stream, uint32_t host32);
 #endif
 
-#ifndef HAVE_FUNC2_LE64ENC_SYS_ENDIAN_H
+#if !HAVE_FUNC2_LE64ENC_SYS_ENDIAN_H && !HAVE_DEFINE_LE64ENC_SYS_ENDIAN_H
 void le64enc(void *stream, uint64_t host64);
 #endif
 
