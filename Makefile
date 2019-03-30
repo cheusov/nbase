@@ -12,7 +12,8 @@
 # TBD: units -- /usr/share/misc/units.lib is missing
 .include <mkc.init.mk>
 
-MKC_CHECK_HEADERS  =	tzfile.h md2.h db.h fts.h termcap.h
+MKC_CHECK_HEADER_FILES  =	fts.h
+MKC_CHECK_HEADERS  =	tzfile.h md2.h db.h termcap.h
 MKC_CHECK_TYPES    =	sig_t:signal.h
 MKC_CHECK_FUNCLIBS =	setupterm:terminfo
 MKC_CHECK_FUNCS3   =	strtoq:strlib.h
@@ -36,7 +37,7 @@ PROJECTS += apply asa nawk/bin banner basename cal cat chmod            \
   unifdef uniq unvis uudecode uuencode vis what whois wc xargs xinstall	\
   xstr yes
 
-.if ${HAVE_HEADER.fts_h:U} != 1
+.if ${HAVE_HEADER_FILE.fts_h:U} != 1
 .  for t in chmod cp du find ls mtree pax rm xinstall
 .  info "Exclude ${t} due to missing fts.h"
 PROJECTS :=	${PROJECTS:N${t}}
