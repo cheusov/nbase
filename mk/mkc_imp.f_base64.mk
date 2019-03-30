@@ -18,7 +18,7 @@ MKC_CHECK_FUNCLIBS +=	main:resolv
 .include <mkc_imp.conf-cleanup.mk>
 
 .if ${HAVE_FUNCLIB.main.resolv:U0}
-LDADD +=	-lresolv
+_MKC_LDADD +=	-lresolv
 .endif
 
 MKC_COMMON_HEADERS :=   ${old}
