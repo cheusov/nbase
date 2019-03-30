@@ -12,6 +12,7 @@
 
 #include "mkc_macro.h"
 #include "mkc_progname.h"
+#include "mkc_timecmp.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
