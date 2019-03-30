@@ -6,6 +6,6 @@ COPTS.date.c = -Wno-format-nonliteral
 
 MKC_FEATURES +=	strlcpy
 
-MKC_REQUIRE_FUNCLIBS +=	parsedate:util
+.include "../mk/mkc_imp.f_parsedate.mk"
 
 .include "../mk/addlinks.mk"
