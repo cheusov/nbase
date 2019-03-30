@@ -7,8 +7,6 @@ _MKC_IMP_EFUN_MK := 1
 
 MKC_FEATURES +=	strlcpy strlcat fgetln err
 
-.include <mkc.configure.mk>
-
 MKC_CHECK_FUNCS2   +=	ecalloc:util.h
 MKC_CHECK_FUNCLIBS +=	ecalloc:util
 

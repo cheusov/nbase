@@ -7,8 +7,6 @@ _MKC_IMP_F_FPARSELN_MK := 1
 
 MKC_FEATURES       +=	getline
 
-.include <mkc.configure.mk>
-
 MKC_CHECK_FUNCLIBS +=	fparseln
 MKC_CHECK_FUNCS5   +=	fparseln:stdio.h
 
