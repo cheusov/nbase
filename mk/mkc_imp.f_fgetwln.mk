@@ -10,7 +10,7 @@ _MKC_IMP_F_FGETWLN_MK := 1
 MKC_CHECK_FUNCLIBS +=	fgetwln
 MKC_CHECK_FUNCS2   +=	fgetwln:stdio.h
 
-.include <mkc_imp.conf-cleanup.mk>
+.include <mkc.conf.mk>
 
 .if ${.CURDIR:T} == "compatlib"
 . if ${HAVE_FUNCLIB.fgetwln:U} != 1

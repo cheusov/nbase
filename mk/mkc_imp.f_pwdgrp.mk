@@ -11,7 +11,7 @@ MKC_CHECK_FUNCLIBS +=	user_from_uid group_from_gid \
 			uid_from_user gid_from_group \
 			pwcache_userdb pwcache_groupdb
 
-.include <mkc_imp.conf-cleanup.mk>
+.include <mkc.conf.mk>
 
 .if ${.CURDIR:T} == "compatlib"
 . if ${HAVE_FUNCLIB.user_from_uid:U} != 1 || ${HAVE_FUNCLIB.group_from_gid:U} != 1 || \

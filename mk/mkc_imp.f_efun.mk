@@ -10,7 +10,7 @@ MKC_FEATURES +=	strlcpy strlcat fgetln err
 MKC_CHECK_FUNCS2   +=	ecalloc:util.h
 MKC_CHECK_FUNCLIBS +=	ecalloc:util
 
-.include <mkc_imp.conf-cleanup.mk>
+.include <mkc.conf.mk>
 
 .if ${HAVE_FUNCLIB.ecalloc:U} != 1
 . if ${.CURDIR:T} == "compatlib"

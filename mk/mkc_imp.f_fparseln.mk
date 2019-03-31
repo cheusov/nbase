@@ -10,7 +10,7 @@ MKC_FEATURES       +=	getline
 MKC_CHECK_FUNCLIBS +=	fparseln
 MKC_CHECK_FUNCS5   +=	fparseln:stdio.h
 
-.include <mkc_imp.conf-cleanup.mk>
+.include <mkc.conf.mk>
 
 .if ${.CURDIR:T} == "compatlib"
 . if ${HAVE_FUNCLIB.fparseln:U} != 1

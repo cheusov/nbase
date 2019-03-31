@@ -12,7 +12,7 @@ MKC_CHECK_FUNCS1   +=	${funcs1:S|$|:sys/endian.h|}
 MKC_CHECK_FUNCS2   +=	${funcs2:S|$|:sys/endian.h|}
 MKC_CHECK_DEFINES  +=	${MKC_CHECK_FUNCS1} ${MKC_CHECK_FUNCS2}
 
-.include <mkc_imp.conf-cleanup.mk>
+.include <mkc.conf.mk>
 
 .undef funcs1
 .undef funcs2

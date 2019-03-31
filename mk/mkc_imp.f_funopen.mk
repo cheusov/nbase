@@ -9,7 +9,7 @@ MKC_CHECK_FUNCS3   +=	fopencookie:stdio.h
 MKC_CHECK_FUNCS5   +=	funopen:stdio.h
 MKC_CHECK_FUNCLIBS +=	funopen
 
-.include <mkc_imp.conf-cleanup.mk>
+.include <mkc.conf.mk>
 
 .if ${.CURDIR:T} == "compatlib"
 . if ${HAVE_FUNCLIB.funopen:U} != 1

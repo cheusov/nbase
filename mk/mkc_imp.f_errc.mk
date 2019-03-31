@@ -7,7 +7,7 @@ _MKC_IMP_F_ERRC_MK := 1
 
 .include <mkc_imp.f_progname.mk>
 
-.include <mkc_imp.conf-cleanup.mk>
+.include <mkc.conf.mk>
 
 MKC_CHECK_HEADERS       +=	err.h
 MKC_CHECK_FUNCS4        +=	errc:err.h
@@ -18,7 +18,7 @@ MKC_PROTOTYPE_HEADERS.verrc =	err.h
 
 MKC_CHECK_FUNCLIBS      +=	errc verrc
 
-.include <mkc_imp.conf-cleanup.mk>
+.include <mkc.conf.mk>
 
 .if ${.CURDIR:T} == "compatlib"
 . if ${HAVE_FUNCLIB.errc:U0} == 0

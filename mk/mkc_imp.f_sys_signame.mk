@@ -6,7 +6,7 @@ _MKC_IMP_F_SYS_SIGNAME_MK := 1
 
 MKC_CHECK_VARS  +=	sys_signame:signal.h sys_nsig::signal.h
 
-.include <mkc_imp.conf-cleanup.mk>
+.include <mkc.conf.mk>
 
 .if ${.CURDIR:T} == "compatlib"
 .  if ${HAVE_VAR.sys_signame.signal_h:U} != 1 || ${HAVE_VAR.sys_nsig.signal_h:U} != 1

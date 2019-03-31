@@ -15,7 +15,7 @@ MKC_CHECK_DEFINES  +=	b64_ntop:resolv.h b64_pton:resolv.h
 
 MKC_CHECK_FUNCLIBS +=	main:resolv
 
-.include <mkc_imp.conf-cleanup.mk>
+.include <mkc.conf.mk>
 
 .if ${HAVE_FUNCLIB.main.resolv:U0}
 _MKC_LDADD +=	-lresolv

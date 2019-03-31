@@ -20,7 +20,7 @@ MKC_CHECK_HEADER_FILES  +=	vis.h
 
 MKC_CHECK_FUNCLIBS +=	vis nvis strvis stravis strnvis strvisx strnvisx strenvis svis snvis strsvis strsnvis strsvisx strsnvisx strsenvisx
 
-.include <mkc_imp.conf-cleanup.mk>
+.include <mkc.conf.mk>
 
 MKC_COMMON_HEADERS :=	${old}
 .undef old

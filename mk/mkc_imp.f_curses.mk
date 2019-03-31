@@ -7,7 +7,7 @@ _MKC_IMP_CURSES_MK := 1
 
 MKC_REQUIRE_HEADERS +=	curses.h
 
-.include <mkc_imp.conf-cleanup.mk>
+.include <mkc.conf.mk>
 
 .if ${HAVE_HEADER.curses_h:U} == 1
 
@@ -16,7 +16,7 @@ LIB_NCURSES  ?=	ncurses
 
 MKC_CHECK_DEFINES  +=	NCURSES_VERSION:curses.h
 
-.include <mkc_imp.conf-cleanup.mk>
+.include <mkc.conf.mk>
 
 .if ${HAVE_DEFINE.NCURSES_VERSION.curses_h:U} == 1
 libcurses=${LIB_NCURSES}
@@ -26,7 +26,7 @@ libcurses=${LIB_CURSES}
 
 MKC_CHECK_FUNCLIBS +=	main:${libcurses}
 
-.include <mkc_imp.conf-cleanup.mk>
+.include <mkc.conf.mk>
 
 .if ${HAVE_FUNCLIB.main.${libcurses}}
 LDADD +=	-l${libcurses}

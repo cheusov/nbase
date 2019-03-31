@@ -9,7 +9,7 @@ MKC_CHECK_FUNCS4   +=	strsuftoll:stdlib.h
 MKC_CHECK_FUNCS6   +=	strsuftollx:stdlib.h
 MKC_CHECK_FUNCLIBS +=	strsuftoll strsuftollx
 
-.include <mkc_imp.conf-cleanup.mk>
+.include <mkc.conf.mk>
 
 .if ${.CURDIR:T} == "compatlib"
 . if ${HAVE_FUNCLIB.strsuftoll:U} != 1 || ${HAVE_FUNCLIB.strsuftollx:U} != 1

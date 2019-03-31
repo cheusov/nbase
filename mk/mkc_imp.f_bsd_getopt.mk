@@ -7,7 +7,7 @@ _MKC_IMP_F_BSD_GETOPT_MK := 1
 
 MKC_CHECK_DEFINES   +=	__GLIBC__:string.h
 
-.include <mkc_imp.conf-cleanup.mk>
+.include <mkc.conf.mk>
 
 .if ${HAVE_DEFINE.__GLIBC__.string_h:U} == 1
 . if ${.CURDIR:T} == "compatlib"

@@ -8,7 +8,7 @@ _MKC_IMP_F_STRMODE_MK := 1
 MKC_CHECK_FUNCS2   +=	strmode:unistd.h strmode:string.h
 MKC_CHECK_FUNCLIBS +=	strmode
 
-.include <mkc_imp.conf-cleanup.mk>
+.include <mkc.conf.mk>
 
 .if ${.CURDIR:T} == "compatlib"
 . if ${HAVE_FUNCLIB.strmode:U} != 1

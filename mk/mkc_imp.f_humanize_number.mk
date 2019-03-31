@@ -9,7 +9,7 @@ MKC_CHECK_FUNCS2   +=	dehumanize_number:stdlib.h
 MKC_CHECK_FUNCS6   +=	humanize_number:stdlib.h
 MKC_CHECK_FUNCLIBS +=	humanize_number dehumanize_number
 
-.include <mkc_imp.conf-cleanup.mk>
+.include <mkc.conf.mk>
 
 .if ${.CURDIR:T} == "compatlib"
 . if ${HAVE_FUNCLIB.humanize_number:U} != 1 || ${HAVE_FUNCLIB.dehumanize_number:U} != 1

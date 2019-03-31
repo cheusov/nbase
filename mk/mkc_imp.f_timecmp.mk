@@ -9,7 +9,7 @@ MKC_CHECK_MEMBERS += \
    struct-stat.st_mtime:sys/stat.h \
    struct-stat.st_mtim:sys/stat.h
 
-.include <mkc_imp.conf-cleanup.mk>
+.include <mkc.conf.mk>
 
 CPPFLAGS +=	-D_MKC_CHECK_TIMECMP
 

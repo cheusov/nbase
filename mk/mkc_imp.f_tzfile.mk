@@ -6,7 +6,7 @@ _MKC_IMP_F_TZFILE_MK := 1
 
 MKC_CHECK_HEADERS  +=	tzfile.h
 
-.include <mkc_imp.conf-cleanup.mk>
+.include <mkc.conf.mk>
 
 CPPFLAGS +=	-D_MKC_CHECK_TZFILE
 

@@ -11,7 +11,7 @@ MKC_CHECK_FUNCS1   +=	bswap16:machine/bswap.h \
 MKC_CHECK_FUNCLIBS +=	bswap16 bswap32 bswap64
 MKC_CHECK_DEFINES  +=	${MKC_CHECK_FUNCS1}
 
-.include <mkc_imp.conf-cleanup.mk>
+.include <mkc.conf.mk>
 
 #.if ${.CURDIR:T} == "compatlib"
 #. if ${HAVE_FUNCLIB.bswap:U} != 1
