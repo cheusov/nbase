@@ -18,7 +18,7 @@ MKC_CHECK_FUNCLIBS +=	main:resolv
 .include <mkc.conf.mk>
 
 .if ${HAVE_FUNCLIB.main.resolv:U0}
-_MKC_LDADD +=	-lresolv
+MKC_LDADD +=	-lresolv
 .endif
 
 MKC_COMMON_HEADERS :=   ${old}
