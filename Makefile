@@ -10,6 +10,8 @@
 #  crunch locate
 
 # TBD: units -- /usr/share/misc/units.lib is missing
+MKC_REQD     =	0.30.900
+
 .include <mkc.init.mk>
 
 MKC_CHECK_HEADER_FILES  =	fts.h
@@ -39,42 +41,42 @@ PROJECTS += apply asa nawk/bin banner basename cal cat chmod            \
 
 .if ${HAVE_HEADER_FILE.fts_h:U} != 1
 .  for t in chmod cp du find ls mtree pax rm xinstall
-.  info "Exclude ${t} due to missing fts.h"
+   WARN_MSG += "Exclude ${t} due to missing fts.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
 
 .if ${HAVE_HEADER.fts_h:U} != 1
 .  for t in qsubst
-.  info "Exclude ${t} due to missing termcap.h"
+   WARN_MSG += "Exclude ${t} due to missing termcap.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
 
 .if ${HAVE_TYPE.sig_t.signal_h:U} != 1
 .  for t in apply patch
-.  info "Exclude ${t} due to missing sig_t in signal.h"
+   WARN_MSG += "Exclude ${t} due to missing sig_t in signal.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
 
 .if ${HAVE_FUNCLIB.setupterm.terminfo:U} != 1
 .  for t in cal ul tabs
-.  info "Exclude ${t} due to missing setupterm() in libtermcap"
+   WARN_MSG += "Exclude ${t} due to missing setupterm() in libtermcap"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
 
 .if ${HAVE_FUNC3.strtoq.stdlib_h:U} != 1
 .  for t in cmp
-.  info "Exclude ${t} due to missing strtoq in stdlib.h"
+   WARN_MSG += "Exclude ${t} due to missing strtoq in stdlib.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
 
 .if ${HAVE_DEFINE.TIMESPEC_TO_TIMEVAL.sys_time_h:U} != 1
 .  for t in compress
-.  info "Exclude ${t} due to missing TIMESPEC_TO_TIMEVAL in sys/time.h"
+   WARN_MSG += "Exclude ${t} due to missing TIMESPEC_TO_TIMEVAL in sys/time.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
@@ -97,7 +99,7 @@ INTERNALLIBS =	libndigest
 .if ${HAVE_HEADER.tzfile_h:U} != 1
 . for t in date
 PROJECTS :=     ${PROJECTS:N${t}}
-.  info "Exclude ${t} due to missing tzfile.h"
+   WARN_MSG += "Exclude ${t} due to missing tzfile.h"
 . endfor
 .endif
 
@@ -108,6 +110,12 @@ PROJECTS :=     ${PROJECTS:N${t}}
 #.if ${HAVE_MEMBER.struct_statvfs_f_mntfromname.sys_statvfs_h:U} == 1
 #PROJECTS += df
 #.endif
+
+.if empty(MKC_ERR_MSG:U)
+.for w in ${WARN_MSG}
+.info ${w}
+.endfor
+.endif
 
 LIBDEPS   =	${PROJECTS:S/^/compatlib:/}
 .if !empty(PROJECTS:Mmtree)
@@ -121,7 +129,5 @@ LIBDEPS +=	libndigest:cksum
 .endif
 
 SUBPRJ    =	doc nawk/bin:awk
-
-MKC_REQD     =	0.30.0
 
 .include <mkc.mk>
