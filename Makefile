@@ -60,7 +60,7 @@ PROJECTS :=	${PROJECTS:N${t}}
 
 .if ${HAVE_FUNCLIB.setupterm.terminfo:U} != 1
 .  for t in cal ul tabs
-.  info "Exclude ${t} due to missing setupterm() in libtermcaph"
+.  info "Exclude ${t} due to missing setupterm() in libtermcap"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
