@@ -1,8 +1,17 @@
 LIB = compatlib
 
-.include <mkc.init.mk>
+MKC_CHECK_HEADER_FILES +=	sys/cdefs.h
 
-CPPFLAGS += -I.
+.include <mkc.configure.mk>
+
+.if ${HAVE_HEADER_FILE.sys_cdefs_h:U} == 0
+pre_all: ${.OBJDIR}/sys/cdefs.h
+${.OBJDIR}/sys/cdefs.h: ${.CURDIR}/sys/cdefs.h.in
+	cp ${.CURDIR}/sys/cdefs.h.in $@
+.endif
+
+CLEANFILES = ${.OBJDIR}/sys/cdefs.h
+CPPFLAGS += -I. -I${.OBJDIR}
 
 .include "../mk/mkc_imp.f_sys_signame.mk"
 .include "../mk/mkc_imp.f_getsetmode.mk"
