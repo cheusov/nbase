@@ -46,7 +46,7 @@ PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
 
-.if ${HAVE_HEADER.fts_h:U} != 1
+.if ${HAVE_HEADER.termcap_h:U} != 1
 .  for t in qsubst
    WARN_MSG += "Exclude ${t} due to missing termcap.h"
 PROJECTS :=	${PROJECTS:N${t}}
