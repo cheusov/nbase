@@ -18,7 +18,7 @@ MKC_CHECK_HEADER_FILES  =	fts.h
 MKC_CHECK_HEADERS  =	tzfile.h md2.h db.h termcap.h
 MKC_CHECK_TYPES    =	sig_t:signal.h
 MKC_CHECK_FUNCLIBS =	setupterm:terminfo
-MKC_CHECK_FUNCS3   =	strtoq:strlib.h
+MKC_CHECK_FUNCS3   =	strtoq:stdlib.h
 MKC_CHECK_DEFINES  =	TIMESPEC_TO_TIMEVAL:sys/time.h
 
 .include <mkc.configure.mk>
