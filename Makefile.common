@@ -21,10 +21,6 @@ DOCDIR ?=	${DATADIR}/doc/nbase
 
 MKC_FEATURES +=	progname strlcpy strlcat
 
-MKC_CHECK_MEMBERS +=	\
-   struct-statvfs.f_mntfromname:sys/statvfs.h \
-   struct-statvfs.f_fstypename:sys/statvfs.h
-
 MKC_CHECK_HEADERS += sys/extattr.h sys/event.h pty.h util.h
 MKC_CHECK_HEADER_FILES +=	sys/endian.h sys/mtio.h
 

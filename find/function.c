@@ -73,6 +73,7 @@ __RCSID("$NetBSD: function.c,v 1.72 2013/05/04 06:29:32 uebayasi Exp $");
 #include "mkc_strlcpy.h"
 #include "mkc_pwdgrp.h"
 #include "mkc_struct_stat.h"
+#include "mkc_struct_statvfs.h"
 
 #ifndef S_ISTXT
 #  define S_ISTXT 0
