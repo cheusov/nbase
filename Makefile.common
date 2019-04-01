@@ -30,7 +30,6 @@ MKC_CHECK_FUNCS2 +=	lchmod:sys/stat.h lutimes:sys/time.h \
 			chflags:sys/stat.h lchflags:sys/stat.h
 MKC_CHECK_FUNCS1 +=	be32toh:sys/endian.h be64toh:sys/endian.h \
 		 	htobe32:sys/endian.h htobe64:sys/endian.h
-MKC_CHECK_FUNCS0 +=	arc4random:stdlib.h
 
 MKC_CHECK_DEFINES +=	__UNCONST:sys/cdefs.h
 

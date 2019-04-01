@@ -33,6 +33,7 @@
 #include "mkc_pwdgrp.h"
 #include "mkc_strmode.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_arc4random.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -419,7 +420,6 @@ rm_file(char **argv)
 static int
 rm_overwrite(char *file, struct stat *sbp)
 {
-#ifdef HAVE_FUNC0_ARC4RANDOM_STDLIB_H
 	struct stat sb, sb2;
 	int fd, randint;
 	char randchar;
@@ -546,9 +546,6 @@ err:	eval = 1;
 	if (fd != -1)
 		close(fd);
 	return 1;
-#else
-	return 0;
-#endif /* HAVE_FUNC0_ARC4RANDOM_STDLIB_H */
 }
 
 static int
