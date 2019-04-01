@@ -22,7 +22,6 @@ DOCDIR ?=	${DATADIR}/doc/nbase
 MKC_FEATURES +=	progname strlcpy strlcat
 
 MKC_CHECK_HEADERS += sys/extattr.h sys/event.h pty.h util.h
-MKC_CHECK_HEADER_FILES +=	sys/mtio.h
 
 MKC_CHECK_FUNCS2 +=	lutimes:sys/time.h \
 			fcpxattr:sys/extattr.h \

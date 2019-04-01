@@ -46,8 +46,9 @@ DPADD+=	${LIBRMT}
 .endif
 
 MKC_FEATURES =	strlcpy fgetln
+MKC_CHECK_HEADER_FILES +=	sys/mtio.h
 
-.include <mkc.init.mk>
+.include <mkc.configure.mk>
 
 .include "../mk/mkc_imp.f_strmode.mk"
 .include "../mk/mkc_imp.f_lchmod.mk"
