@@ -29,8 +29,6 @@
  * SUCH DAMAGE.
  */
 
-#include "mkc_macro.h"
-
 #include <sys/cdefs.h>
 #ifndef lint
 #if 0
@@ -51,6 +49,7 @@ __RCSID("$NetBSD: regular.c,v 1.24 2013/11/20 17:19:14 kleink Exp $");
 #include <stdio.h>
 
 #include "extern.h"
+#include "mkc_macro.h"
 
 void
 c_regular(int fd1, const char *file1, off_t skip1, off_t len1,
