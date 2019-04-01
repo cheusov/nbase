@@ -39,42 +39,42 @@ PROJECTS += apply asa nawk/bin banner basename cal cat chmod            \
   unifdef uniq unvis uudecode uuencode vis what whois wc xargs xinstall	\
   xstr yes
 
-.if ${HAVE_HEADER_FILE.fts_h:U} != 1
+.if ${HAVE_HEADER_FILE.fts_h:U1} != 1
 .  for t in chmod cp du find ls mtree pax rm xinstall
    WARN_MSG += "Exclude ${t} due to missing fts.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
 
-.if ${HAVE_HEADER.termcap_h:U} != 1
+.if ${HAVE_HEADER.termcap_h:U1} != 1
 .  for t in qsubst
    WARN_MSG += "Exclude ${t} due to missing termcap.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
 
-.if ${HAVE_TYPE.sig_t.signal_h:U} != 1
+.if ${HAVE_TYPE.sig_t.signal_h:U1} != 1
 .  for t in apply patch
    WARN_MSG += "Exclude ${t} due to missing sig_t in signal.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
 
-.if ${HAVE_FUNCLIB.setupterm.terminfo:U} != 1
+.if ${HAVE_FUNCLIB.setupterm.terminfo:U1} != 1
 .  for t in cal ul tabs
    WARN_MSG += "Exclude ${t} due to missing setupterm() in libtermcap"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
 
-.if ${HAVE_FUNC3.strtoq.stdlib_h:U} != 1
+.if ${HAVE_FUNC3.strtoq.stdlib_h:U1} != 1
 .  for t in cmp
    WARN_MSG += "Exclude ${t} due to missing strtoq in stdlib.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
 
-.if ${HAVE_DEFINE.TIMESPEC_TO_TIMEVAL.sys_time_h:U} != 1
+.if ${HAVE_DEFINE.TIMESPEC_TO_TIMEVAL.sys_time_h:U1} != 1
 .  for t in compress
    WARN_MSG += "Exclude ${t} due to missing TIMESPEC_TO_TIMEVAL in sys/time.h"
 PROJECTS :=	${PROJECTS:N${t}}
@@ -96,18 +96,18 @@ PROJECTS :=     ${PROJECTS:Ndate} # TSP_SETDATE from util.h
 COMPATLIB    =	compatlib
 INTERNALLIBS =	libndigest
 
-.if ${HAVE_HEADER.tzfile_h:U} != 1
+.if ${HAVE_HEADER.tzfile_h:U1} != 1
 . for t in date
 PROJECTS :=     ${PROJECTS:N${t}}
    WARN_MSG += "Exclude ${t} due to missing tzfile.h"
 . endfor
 .endif
 
-#.if ${HAVE_HEADER.db_h:U} == 1
+#.if ${HAVE_HEADER.db_h:U1} == 1
 #PROJECTS += db
 #.endif
 
-#.if ${HAVE_MEMBER.struct_statvfs_f_mntfromname.sys_statvfs_h:U} == 1
+#.if ${HAVE_MEMBER.struct_statvfs_f_mntfromname.sys_statvfs_h:U1} == 1
 #PROJECTS += df
 #.endif
 
