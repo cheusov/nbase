@@ -60,12 +60,7 @@ __RCSID("$NetBSD: touch.c,v 1.32 2012/10/22 21:51:58 christos Exp $");
 #include "mkc_progname.h"
 #include "mkc_macro.h"
 #include "mkc_tzfile.h"
-
-#if HAVE_MEMBER_STRUCT_STAT_ST_ATIM_SYS_STAT_H
-#define st_atimespec st_atim
-#define st_ctimespec st_ctim
-#define st_mtimespec st_mtim
-#endif /* HAVE_STRUCT_STAT_ST_ATIM */
+#include "mkc_struct_stat.h"
 
 static void	stime_arg0(char *, struct timeval *);
 static void	stime_arg1(char *, struct timeval *);

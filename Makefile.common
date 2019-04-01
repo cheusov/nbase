@@ -22,10 +22,6 @@ DOCDIR ?=	${DATADIR}/doc/nbase
 MKC_FEATURES +=	progname strlcpy strlcat
 
 MKC_CHECK_MEMBERS +=	\
-   struct-stat.st_atimespec:sys/stat.h \
-   struct-stat.st_atime:sys/stat.h \
-   struct-stat.st_atim:sys/stat.h \
-   struct-stat.st_flags:sys/stat.h \
    struct-statvfs.f_mntfromname:sys/statvfs.h \
    struct-statvfs.f_fstypename:sys/statvfs.h
 

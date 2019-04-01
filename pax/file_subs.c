@@ -64,6 +64,7 @@ __RCSID("$NetBSD: file_subs.c,v 1.63 2013/07/29 17:46:36 christos Exp $");
 
 #include "mkc_lchmod.h"
 #include "mkc_strlcpy.h"
+#include "mkc_struct_stat.h"
 
 char *xtmp_name;
 

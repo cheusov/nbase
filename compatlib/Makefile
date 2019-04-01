@@ -36,5 +36,6 @@ CPPFLAGS += -I. -I${.OBJDIR}
 .include "../mk/mkc_imp.f_flags_to_string.mk"
 .include "../mk/mkc_imp.f_endian_encdec.mk"
 .include "../mk/mkc_imp.f_dprintf.mk"
+.include "../mk/mkc_imp.f_struct_stat.mk"
 
 .include <mkc.mk>

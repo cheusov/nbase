@@ -69,6 +69,7 @@ __RCSID("$NetBSD: stat.c,v 1.38 2013/01/03 13:28:41 dsl Exp $");
 #include "mkc_progname.h"
 #include "mkc_strlcpy.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_struct_stat.h"
 
 #if HAVE_STRUCT_STAT_ST_FLAGS
 #define DEF_F "%#Xf "

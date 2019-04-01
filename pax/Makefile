@@ -55,5 +55,6 @@ MKC_FEATURES =	strlcpy fgetln
 .include "../mk/mkc_imp.f_getsetmode.mk"
 .include "../mk/mkc_imp.f_pwdgrp.mk"
 .include "../mk/mkc_imp.f_raise_default_signal.mk"
+.include "../mk/mkc_imp.f_struct_stat.mk"
 
 .include "../mk/addlinks.mk"

@@ -13,5 +13,6 @@ CPPFLAGS +=	-D_NETBSD_SOURCE
 .include "../mk/mkc_imp.f_getsetmode.mk"
 .include "../mk/mkc_imp.f_pwdgrp.mk"
 .include "../mk/mkc_imp.f_strmode.mk"
+.include "../mk/mkc_imp.f_struct_stat.mk"
 
 .include "../mk/addlinks.mk"

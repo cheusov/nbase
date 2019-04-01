@@ -30,13 +30,7 @@
  */
 
 #include "mkc_progname.h"
-
-#if HAVE_MEMBER_STRUCT_STAT_ST_ATIM_SYS_STAT_H
-#define st_atimespec st_atim
-#endif
-#if HAVE_MEMBER_STRUCT_STAT_ST_MTIM_SYS_STAT_H
-#define st_mtimespec st_mtim
-#endif
+#include "mkc_struct_stat.h"
 
 #include <sys/cdefs.h>
 #ifndef lint

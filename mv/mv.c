@@ -37,6 +37,7 @@
 #include "mkc_strlcpy.h"
 #include "mkc_pwdgrp.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_struct_stat.h"
 
 #ifndef HAVE_TYPE_BLKSIZE_T_SYS_STAT_H
 typedef unsigned int blksize_t;
