@@ -38,5 +38,7 @@ CPPFLAGS += -I. -I${.OBJDIR}
 .include "../mk/mkc_imp.f_dprintf.mk"
 .include "../mk/mkc_imp.f_struct_stat.mk"
 .include "../mk/mkc_imp.f_arc4random.mk"
+.include "../mk/mkc_imp.f_types.mk"
+.include "../mk/mkc_imp.f_lutimes.mk"
 
 .include <mkc.mk>

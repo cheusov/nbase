@@ -36,6 +36,7 @@
 #include "mkc_progname.h"
 #include "mkc_getbsize.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_types.h"
 
 #include <stdint.h>
 
@@ -70,10 +71,6 @@ __RCSID("$NetBSD: ls.c,v 1.74 2014/04/02 10:55:47 wiz Exp $");
 #include <termios.h>
 #include <pwd.h>
 #include <grp.h>
-
-#if !HAVE_TYPE_BLKCNT_T_SYS_STAT_H
-typedef unsigned int blkcnt_t;
-#endif
 
 #include "ls.h"
 #include "extern.h"

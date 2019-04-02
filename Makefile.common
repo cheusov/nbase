@@ -8,7 +8,7 @@ CPPFLAGS +=	-D__RCSID\(x\)=
 CPPFLAGS +=	-D__printflike\(x,y\)=
 CPPFLAGS +=	-D__dead=
 CPPFLAGS +=	-D__pure=
-#CPPFLAGS +=	-D__unused=
+# CPPFLAGS +=	-D__unused= # used by glibc headers :-(
 
 # Normal Unix headers should always exist (used at least by libndigest)
 CPPFLAGS +=	-DHAVE_ERRNO_H -DHAVE_LOCALE_H -DHAVE_UNISTD_H -DHAVE_STDINT_H \
@@ -21,22 +21,6 @@ DOCDIR ?=	${DATADIR}/doc/nbase
 
 MKC_FEATURES +=	progname strlcpy strlcat
 
-MKC_CHECK_HEADERS += sys/extattr.h sys/event.h pty.h util.h
-
-MKC_CHECK_FUNCS2 +=	lutimes:sys/time.h \
-			fcpxattr:sys/extattr.h \
-			chflags:sys/stat.h lchflags:sys/stat.h
-MKC_CHECK_FUNCS1 +=	be32toh:sys/endian.h be64toh:sys/endian.h \
-		 	htobe32:sys/endian.h htobe64:sys/endian.h
-
 MKC_CHECK_DEFINES +=	__UNCONST:sys/cdefs.h
-
-MKC_CHECK_TYPES +=	blkcnt_t:sys/stat.h blksize_t:sys/stat.h u_long:sys/types.h
-
-MKC_CHECK_PROTOTYPES += fopencookie
-MKC_PROTOTYPE_FUNC.fopencookie = \
-   FILE *fopencookie(void *cookie, const char *mode, \
-      cookie_io_functions_t io_funcs)
-MKC_PROTOTYPE_HEADERS.fopencookie = stdio.h
 
 .include "./mk/mkc_imp.f_bsd_getopt.mk"

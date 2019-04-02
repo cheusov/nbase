@@ -1,6 +1,6 @@
 PROG =	script
 
-MKC_CHECK_HEADERS   =	utmp.h
+MKC_CHECK_HEADERS   =	utmp.h pty.h util.h
 MKC_CHECK_FUNCLIBS =	login_tty:util
 
 .include <mkc.init.mk>

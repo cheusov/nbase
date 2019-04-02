@@ -9,6 +9,12 @@ MKC_CHECK_FUNCS3   +=	fopencookie:stdio.h
 MKC_CHECK_FUNCS5   +=	funopen:stdio.h
 MKC_CHECK_FUNCLIBS +=	funopen
 
+MKC_CHECK_PROTOTYPES += fopencookie
+MKC_PROTOTYPE_FUNC.fopencookie = \
+   FILE *fopencookie(void *cookie, const char *mode, \
+      cookie_io_functions_t io_funcs)
+MKC_PROTOTYPE_HEADERS.fopencookie = stdio.h
+
 .include <mkc.conf.mk>
 
 .if ${.CURDIR:T} == "compatlib"

@@ -57,5 +57,7 @@ MKC_CHECK_HEADER_FILES +=	sys/mtio.h
 .include "../mk/mkc_imp.f_pwdgrp.mk"
 .include "../mk/mkc_imp.f_raise_default_signal.mk"
 .include "../mk/mkc_imp.f_struct_stat.mk"
+.include "../mk/mkc_imp.f_types.mk"
+.include "../mk/mkc_imp.f_lutimes.mk"
 
 .include "../mk/addlinks.mk"

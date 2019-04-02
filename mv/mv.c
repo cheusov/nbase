@@ -38,10 +38,7 @@
 #include "mkc_pwdgrp.h"
 #include "mkc_bsd_getopt.h"
 #include "mkc_struct_stat.h"
-
-#ifndef HAVE_TYPE_BLKSIZE_T_SYS_STAT_H
-typedef unsigned int blksize_t;
-#endif
+#include "mkc_types.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -62,7 +59,7 @@ __RCSID("$NetBSD: mv.c,v 1.43 2011/08/29 14:46:54 joerg Exp $");
 #include <sys/wait.h>
 #include <sys/stat.h>
 
-#if HAVE_HEADER_SYS_EXTATTR_H
+#if HAVE_FUNC2_FCPXATTR_SYS_EXTATTR_H
 #include <sys/extattr.h>
 #endif
 

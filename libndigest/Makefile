@@ -9,7 +9,10 @@ SRCS =	keccak.c \
 
 CPPFLAGS +=	-I${.CURDIR} -DHAVE_NBTOOL_CONFIG_H=1
 
-.include <mkc.init.mk>
+MKC_CHECK_FUNCS1 +=	be32toh:sys/endian.h be64toh:sys/endian.h \
+		 	htobe32:sys/endian.h htobe64:sys/endian.h
+
+.include <mkc.configure.mk>
 
 .include "../mk/mkc_imp.f_endian_encdec.mk"
 
