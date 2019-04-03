@@ -18,7 +18,7 @@ MKC_CHECK_FUNCS3   +=	strvis:vis.h stravis:vis.h
 
 MKC_CHECK_HEADER_FILES  +=	vis.h
 
-MKC_CHECK_FUNCLIBS +=	vis nvis strvis stravis strnvis strvisx strnvisx strenvis svis snvis strsvis strsnvis strsvisx strsnvisx strsenvisx
+MKC_CHECK_FUNCLIBS +=	vis nvis strvis stravis strnvis strvisx strnvisx strenvisx svis snvis strsvis strsnvis strsvisx strsnvisx strsenvisx
 
 .include <mkc.conf.mk>
 
