@@ -59,9 +59,13 @@ __RCSID("$NetBSD: date.c,v 1.60 2011/08/27 12:55:09 joerg Exp $");
 #include <time.h>
 #include <tzfile.h>
 #include <unistd.h>
+
+#if HAVE_HEADER_UTIL_H
 #include <util.h>
+#endif
 
 #include "mkc_bsd_getopt.h"
+#include "mkc_parsedate.h"
 
 #include "extern.h"
 

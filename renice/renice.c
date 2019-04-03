@@ -157,17 +157,19 @@ donice(int which, id_t who, int prio, int incr)
 	if (incr)
 		prio = oldprio + prio;
 
+#if defined(PRIO_MAX) && defined(PRIO_MIN)
 	if (prio > PRIO_MAX)
 		prio = PRIO_MAX;
 	if (prio < PRIO_MIN)
 		prio = PRIO_MIN;
+#endif
 
 	if (setpriority(which, who, prio) == -1) {
 		warn("%d: setpriority", who);
 		return 1;
 	}
-	(void)printf("%d: old priority %d, new priority %d\n",
-	    who, oldprio, prio);
+	(void)printf("%ld: old priority %d, new priority %d\n",
+	    (long)who, oldprio, prio);
 	return 0;
 }
 

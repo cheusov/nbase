@@ -10,6 +10,8 @@
 #include <limits.h>
 #include <regex.h>
 #include <sys/stat.h>
+#include <sys/param.h>
+#include <unistd.h>
 
 #ifdef HAVE_HEADER_FILE_SYS_CDEFS_H
 #include <sys/cdefs.h>
@@ -133,6 +135,20 @@
 
 #ifndef ACCESSPERMS
 # define ACCESSPERMS (S_IRWXU|S_IRWXG|S_IRWXO)
+#endif
+
+#if !HAVE_TYPE_U_QUAD_T_SYS_TYPES_H
+typedef unsigned long int u_quad_t;
+#endif
+
+#ifndef MAXHOSTNAMELEN
+# if defined(HOST_NAME_MAX)
+#   define MAXHOSTNAMELEN HOST_NAME_MAX
+# elif defined(_POSIX_HOST_NAME_MAX)
+#   define MAXHOSTNAMELEN _POSIX_HOST_NAME_MAX
+# else
+#   define MAXHOSTNAMELEN 255
+# endif
 #endif
 
 #endif // _MKC_MACRO_H_

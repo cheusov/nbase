@@ -5,6 +5,7 @@
 .ifndef _MKC_IMP_F_MACRO_MK
 _MKC_IMP_F_MACRO_MK := 1
 
+MKC_CHECK_TYPES         +=	u_quad_t:sys/types.h
 MKC_CHECK_HEADERS_FILES +=	sys/sysmacros.h sys/cdefs.h
 
 CPPFLAGS +=	-D_MKC_CHECK_MACRO

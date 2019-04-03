@@ -49,6 +49,8 @@ __RCSID("$NetBSD: pack_dev.c,v 1.12 2013/06/14 16:28:20 tsutsui Exp $");
 
 #include "pack_dev.h"
 
+#include "mkc_makedev.h"
+
 static	pack_t	pack_netbsd;
 static	pack_t	pack_freebsd;
 static	pack_t	pack_8_8;

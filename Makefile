@@ -14,12 +14,16 @@ MKC_REQD     =	0.30.900
 
 .include <mkc.init.mk>
 
-MKC_CHECK_HEADER_FILES  =	fts.h
+MKC_CHECK_HEADER_FILES  = pty.h fts.h sys/sysctl.h
 MKC_CHECK_HEADERS  =	tzfile.h md2.h db.h termcap.h
 MKC_CHECK_TYPES    =	sig_t:signal.h
 MKC_CHECK_FUNCLIBS =	setupterm:terminfo
-MKC_CHECK_FUNCS3   =	strtoq:stdlib.h
+MKC_CHECK_FUNCS4   =	getgrouplist:grp.h
+MKC_CHECK_FUNCS3   =	strtoq:stdlib.h logwtmp:utmp.h
+MKC_CHECK_FUNCS2   =	getdomainname:unistd.h makedev:sys/sysmacros.h
 MKC_CHECK_DEFINES  =	TIMESPEC_TO_TIMEVAL:sys/time.h
+
+MKC_FUNC_OR_DEFINE.makedev =	yes
 
 .include <mkc.configure.mk>
 
@@ -38,6 +42,20 @@ PROJECTS += apply asa nawk/bin banner basename cal cat chmod            \
   sync tabs tail tee testcmd timeout tr true tty ul unexpand	\
   unifdef uniq unvis uudecode uuencode vis what whois wc xargs xinstall	\
   xstr yes
+
+.if ${HAVE_HEADER_FILE.pty_h:U1} != 1
+.  for t in script
+   WARN_MSG += "Exclude ${t} due to missing pty.h"
+PROJECTS :=	${PROJECTS:N${t}}
+.  endfor
+.endif
+
+.if ${HAVE_HEADER_FILE.sys_sysctl_h:U1} != 1
+.  for t in mknod
+   WARN_MSG += "Exclude ${t} due to missing sys/sysctl.h"
+PROJECTS :=	${PROJECTS:N${t}}
+.  endfor
+.endif
 
 .if ${HAVE_HEADER_FILE.fts_h:U1} != 1
 .  for t in chmod cp du find ls mtree pax rm xinstall
@@ -74,23 +92,39 @@ PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
 
+.if ${HAVE_FUNC3.strtoq.stdlib_h:U1} != 1
+.  for t in date
+   WARN_MSG += "Exclude ${t} due to missing logwtmp in utmp.h"
+PROJECTS :=	${PROJECTS:N${t}}
+.  endfor
+.endif
+
+.if ${HAVE_FUNC2.getdomainname.unistd_h:U1} != 1
+.  for t in domainname
+   WARN_MSG += "Exclude ${t} due to missing getdomainname in unistd.h"
+PROJECTS :=	${PROJECTS:N${t}}
+.  endfor
+.endif
+
+.if ${HAVE_FUNC2.makedev.sys_sysmacros_h:U1} != 1
+.  for t in mknod
+   WARN_MSG += "Exclude ${t} due to missing makedev in sys/sysmacros.h"
+PROJECTS :=	${PROJECTS:N${t}}
+.  endfor
+.endif
+
+.if ${HAVE_FUNC4.getgrouplist.grp_h:U1} != 1
+.  for t in id
+   WARN_MSG += "Exclude ${t} due to missing getgrouplist in grp.h"
+PROJECTS :=	${PROJECTS:N${t}}
+.  endfor
+.endif
+
 .if ${HAVE_DEFINE.TIMESPEC_TO_TIMEVAL.sys_time_h:U1} != 1
 .  for t in compress
    WARN_MSG += "Exclude ${t} due to missing TIMESPEC_TO_TIMEVAL in sys/time.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
-.endif
-
-.if ${OPSYS} == "SunOS"
-PROJECTS :=	${PROJECTS:Nwc} # u_quad_t type
-PROJECTS :=     ${PROJECTS:Nscript} # openpty, cfmakeraw, login_tty, MIN
-PROJECTS :=     ${PROJECTS:Nrenice} # PRIO_MAX, PRIO_MIN
-PROJECTS :=     ${PROJECTS:Nmknod} # makedev, major, minor, sys/sysctl.h
-PROJECTS :=     ${PROJECTS:Nid} # getgrouplist
-PROJECTS :=     ${PROJECTS:Nhostname} # MAXHOSTNAMELEN
-PROJECTS :=     ${PROJECTS:Ngetconf} # confstr
-PROJECTS :=     ${PROJECTS:Ndomainname} # MAXHOSTNAMELEN, setdomainname, getdomainname
-PROJECTS :=     ${PROJECTS:Ndate} # TSP_SETDATE from util.h 
 .endif
 
 COMPATLIB    =	compatlib

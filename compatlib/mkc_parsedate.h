@@ -33,7 +33,7 @@
 #include <util.h>
 #else
 #include <sys/time.h>
-parsedate(const char *datestr, const time_t *time, const int *tzoff);
+time_t parsedate(const char *datestr, const time_t *time, const int *tzoff);
 #endif
 
 #endif // _MKC_PARSEDATE_H_
