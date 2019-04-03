@@ -4,7 +4,7 @@
 .ifndef _MKC_IMP_F_SYS_SIGNAME_MK
 _MKC_IMP_F_SYS_SIGNAME_MK := 1
 
-MKC_CHECK_VARS  +=	sys_signame:signal.h sys_nsig::signal.h
+MKC_CHECK_VARS  +=	sys_signame:signal.h sys_nsig:signal.h
 
 .include <mkc.conf.mk>
 
