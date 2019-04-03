@@ -12,7 +12,7 @@ MKC_CHECK_FUNCLIBS +=	ecalloc:util
 
 .include <mkc.conf.mk>
 
-.if ${HAVE_FUNCLIB.ecalloc:U} != 1
+.if ${HAVE_FUNCLIB.ecalloc:U} != 1 && ${HAVE_FUNCLIB.ecalloc.util:U} != 1
 . if ${.CURDIR:T} == "compatlib"
 SRCS +=	${SRCDIR_compatlib}/mkc_efun.c
 . endif
