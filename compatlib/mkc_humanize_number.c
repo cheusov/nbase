@@ -30,9 +30,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "mkc_humanize_number.h"
-#include "mkc_macro.h"
-
 #include <sys/cdefs.h>
 #if defined(LIBC_SCCS) && !defined(lint)
 __RCSID("$NetBSD: humanize_number.c,v 1.14 2008/04/28 20:22:59 martin Exp $");
@@ -45,6 +42,9 @@ __RCSID("$NetBSD: humanize_number.c,v 1.14 2008/04/28 20:22:59 martin Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
+
+#include "mkc_macro.h"
+#include "mkc_humanize_number.h"
 
 int
 humanize_number(char *buf, size_t len, int64_t bytes,

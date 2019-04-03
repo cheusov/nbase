@@ -1,15 +1,23 @@
 #ifndef _MKC_MACRO_H_
 #define _MKC_MACRO_H_
 
+#ifndef _MKC_CHECK_MACRO
+# error "Missing MKC_FEATURES += macro"
+#endif
+
 #include <stdlib.h>
 #include <assert.h>
 #include <limits.h>
 #include <regex.h>
 #include <sys/stat.h>
 
-#ifdef __SVR4
-# include <sys/sysmacros.h>
+#ifdef HAVE_HEADER_FILE_SYS_CDEFS_H
+#include <sys/cdefs.h>
 #endif
+
+#if HAVE_HEADER_FILE_SYS_SYSMACROS_H
+# include <sys/sysmacros.h>
+#endif /* HAVE_HEADER_FILE_SYS_SYSMACROS_H */
 
 /*
  * Return the number of elements in a statically-allocated array,
@@ -31,9 +39,7 @@
 #define _DIAGASSERT(e)
 #endif
 
-#ifdef HAVE_DEFINE___UNCONST_SYS_CDEFS_H
-#  include <sys/cdefs.h>
-#else
+#ifndef __UNCONST
 #  define __UNCONST(a) ((void *)(unsigned long)(const void *)(a))
 #endif
 
