@@ -14,7 +14,8 @@ MKC_CHECK_FUNCLIBS +=	flags_to_string:util string_to_flags:util
 .include <mkc.conf.mk>
 
 .if ${.CURDIR:T} == "compatlib"
-. if ${HAVE_FUNCLIB.flags_to_string:U} != 1 || ${HAVE_FUNCLIB.string_to_flags:U} != 1
+. if ${HAVE_FUNCLIB.flags_to_string.util:U} != 1 || \
+     ${HAVE_FUNCLIB.string_to_flags.util:U} != 1
 SRCS     +=	mkc_flags_to_string.c
 . endif
 .endif
