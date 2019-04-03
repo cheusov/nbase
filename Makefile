@@ -21,7 +21,8 @@ MKC_CHECK_FUNCLIBS =	setupterm:terminfo
 MKC_CHECK_FUNCS5   =	openpty:pty.h openpty:util.h
 MKC_CHECK_FUNCS4   =	getgrouplist:grp.h getgrouplist:unistd.h
 MKC_CHECK_FUNCS3   =	strtoq:stdlib.h logwtmp:utmp.h
-MKC_CHECK_FUNCS2   =	getdomainname:unistd.h makedev:sys/sysmacros.h
+MKC_CHECK_FUNCS2   =	getdomainname:unistd.h makedev:sys/sysmacros.h \
+  makedev:sys/types.h
 MKC_CHECK_DEFINES  =	TIMESPEC_TO_TIMEVAL:sys/time.h
 
 MKC_FUNC_OR_DEFINE.makedev =	yes
@@ -107,7 +108,7 @@ PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
 
-.if ${HAVE_FUNC2.makedev.sys_sysmacros_h:U1} != 1
+.if ${HAVE_FUNC2.makedev.sys_sysmacros_h:U1} != 1 && ${HAVE_FUNC2.makedev.sys_types_h:U1} != 1
 .  for t in mknod
    WARN_MSG += "Exclude ${t} due to missing makedev in sys/sysmacros.h"
 PROJECTS :=	${PROJECTS:N${t}}
