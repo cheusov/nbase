@@ -10,7 +10,7 @@ MKC_CHECK_FUNCLIBS +=	raise_default_signal:util
 
 .include <mkc.conf.mk>
 
-. if ${HAVE_FUNCLIB.raise_default_signal:U} == 0 && \
+. if ${HAVE_FUNCLIB.raise_default_signal.util:U} == 0 && \
     ${.CURDIR:T} == "compatlib"
 SRCS +=	${SRCDIR_compatlib}/mkc_raise_default_signal.c
 . endif
