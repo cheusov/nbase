@@ -19,7 +19,7 @@ MKC_CHECK_HEADERS  =	tzfile.h md2.h db.h termcap.h
 MKC_CHECK_TYPES    =	sig_t:signal.h
 MKC_CHECK_FUNCLIBS =	setupterm:terminfo
 MKC_CHECK_FUNCS5   =	openpty:pty.h openpty:util.h
-MKC_CHECK_FUNCS4   =	getgrouplist:grp.h
+MKC_CHECK_FUNCS4   =	getgrouplist:grp.h getgrouplist:unistd.h
 MKC_CHECK_FUNCS3   =	strtoq:stdlib.h logwtmp:utmp.h
 MKC_CHECK_FUNCS2   =	getdomainname:unistd.h makedev:sys/sysmacros.h
 MKC_CHECK_DEFINES  =	TIMESPEC_TO_TIMEVAL:sys/time.h
@@ -114,7 +114,7 @@ PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
 
-.if ${HAVE_FUNC4.getgrouplist.grp_h:U1} != 1
+.if ${HAVE_FUNC4.getgrouplist.grp_h:U1} != 1 && ${HAVE_FUNC4.getgrouplist.unistd_h:U1} != 1
 .  for t in id
    WARN_MSG += "Exclude ${t} due to missing getgrouplist in grp.h"
 PROJECTS :=	${PROJECTS:N${t}}
