@@ -45,7 +45,7 @@ PROJECTS += apply asa nawk/bin banner basename cal cat chmod            \
   unifdef uniq unvis uudecode uuencode vis what whois wc xargs xinstall	\
   xstr yes
 
-.if ${HAVE_HEADER_FUNC5.openpty.pty_h:U1} != 1 && HAVE_HEADER_FUNC5.openpty.util_h:U1
+.if ${HAVE_FUNC5.openpty.pty_h:U1} != 1 && ${HAVE_FUNC5.openpty.util_h:U1} != 1
 .  for t in script
    WARN_MSG += "Exclude ${t} due to missing openpty"
 PROJECTS :=	${PROJECTS:N${t}}
