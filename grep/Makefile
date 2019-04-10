@@ -13,6 +13,8 @@ MLINKS =grep.1 egrep.1	\
 	grep.1 zegrep.1	\
 	grep.1 zfgrep.1
 
+MKC_FEATURES =	STAILQ
+
 MKC_REQUIRE_FUNCLIBS= gzread:z BZ2_bzRead:bz2
 
 #.PATH: ${.CURDIR}/nls
@@ -31,5 +33,7 @@ MKC_REQUIRE_FUNCLIBS= gzread:z BZ2_bzRead:bz2
 
 COPTS.grep.c += -Wno-format-nonliteral
 COPTS.util.c += -Wno-format-nonliteral
+
+CPPFLAGS +=	-DHAVE_NBTOOL_CONFIG_H
 
 .include "../mk/addlinks.mk"
