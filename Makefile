@@ -60,7 +60,7 @@ PROJECTS :=	${PROJECTS:N${t}}
 .endif
 
 .if ${HAVE_HEADER_FILE.fts_h:U1} != 1
-.  for t in chmod cp du find ls mtree pax rm xinstall
+.  for t in chmod cp du find grep ls mtree pax rm xinstall
    WARN_MSG += "Exclude ${t} due to missing fts.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
