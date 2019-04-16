@@ -7,6 +7,8 @@ MKC_FEATURES =	SIMPLEQ
 
 .include <mkc.init.mk>
 
+.include "../mk/hacks.mk"
+
 .include "../mk/mkc_imp.f_fparseln.mk"
 
 .include "../mk/addlinks.mk"
