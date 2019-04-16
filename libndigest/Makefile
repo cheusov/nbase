@@ -14,6 +14,8 @@ MKC_CHECK_FUNCS1 +=	be32toh:sys/endian.h be64toh:sys/endian.h \
 
 .include <mkc.configure.mk>
 
+.include "../mk/hacks.mk"
+
 .include "../mk/mkc_imp.f_endian_encdec.mk"
 
 .include <mkc.mk>

@@ -7,6 +7,8 @@ COPTS.stat.c += -Wno-format-nonliteral
 
 .include <mkc.init.mk>
 
+.include "../mk/hacks.mk"
+
 .include "mkc_struct_stat.h"
 
 .include "../mk/addlinks.mk"
