@@ -11,6 +11,7 @@ CPPFLAGS+=	-I${.CURDIR}/../mknod
 
 .include "../mk/hacks.mk"
 
+.include "../mk/mkc_imp.f_macro.mk"
 .include "../mk/mkc_imp.f_lchmod.mk"
 .include "../mk/mkc_imp.f_flags_to_string.mk"
 .include "../mk/mkc_imp.f_fparseln.mk"

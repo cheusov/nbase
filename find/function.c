@@ -246,7 +246,7 @@ int
 f_anewer(PLAN *plan, FTSENT *entry)
 {
 
-	return timespeccmp(&entry->fts_statp->st_atim, &plan->ts_data, >);
+	return timespeccmp(&entry->fts_statp->st_atimespec, &plan->ts_data, >);
 }
 
 PLAN *
@@ -262,7 +262,7 @@ c_anewer(char ***argvp, int isok)
 	if (stat(filename, &sb))
 		err(1, "%s", filename);
 	new = palloc(N_ANEWER, f_anewer);
-	new->ts_data = sb.st_atim;
+	new->ts_data = sb.st_atimespec;
 	return (new);
 }
 
@@ -333,7 +333,7 @@ int
 f_cnewer(PLAN *plan, FTSENT *entry)
 {
 
-	return timespeccmp(&entry->fts_statp->st_ctim, &plan->ts_data, >);
+	return timespeccmp(&entry->fts_statp->st_ctimespec, &plan->ts_data, >);
 }
 
 PLAN *
@@ -349,7 +349,7 @@ c_cnewer(char ***argvp, int isok)
 	if (stat(filename, &sb))
 		err(1, "%s", filename);
 	new = palloc(N_CNEWER, f_cnewer);
-	new->ts_data = sb.st_ctim;
+	new->ts_data = sb.st_ctimespec;
 	return (new);
 }
 
@@ -1379,7 +1379,7 @@ int
 f_newer(PLAN *plan, FTSENT *entry)
 {
 
-	return timespeccmp(&entry->fts_statp->st_mtim, &plan->ts_data, >);
+	return timespeccmp(&entry->fts_statp->st_mtimespec, &plan->ts_data, >);
 }
 
 PLAN *
@@ -1395,7 +1395,7 @@ c_newer(char ***argvp, int isok)
 	if (stat(filename, &sb))
 		err(1, "%s", filename);
 	new = palloc(N_NEWER, f_newer);
-	new->ts_data = sb.st_mtim;
+	new->ts_data = sb.st_mtimespec;
 	return (new);
 }
 
