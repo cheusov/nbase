@@ -13,6 +13,8 @@ ${.OBJDIR}/sys/cdefs.h: ${.CURDIR}/sys/cdefs.h.in
 CLEANFILES = ${.OBJDIR}/sys/cdefs.h
 CPPFLAGS += -I. -I${.OBJDIR}
 
+.include "../mk/hacks.mk"
+
 .include "../mk/mkc_imp.f_sys_signame.mk"
 .include "../mk/mkc_imp.f_getsetmode.mk"
 .include "../mk/mkc_imp.f_pwdgrp.mk"
