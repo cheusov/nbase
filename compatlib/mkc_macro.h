@@ -11,6 +11,7 @@
 #include <regex.h>
 #include <sys/stat.h>
 #include <sys/param.h>
+#include <sys/types.h>
 #include <unistd.h>
 
 #ifdef HAVE_HEADER_FILE_SYS_CDEFS_H
