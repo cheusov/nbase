@@ -94,6 +94,12 @@ struct dateinfo {
 		int	yyRelMonth;
 	} yyRel[MAXREL];
 };
+
+static void
+  RelVal(struct dateinfo *param, time_t v, int type);
+static int
+  yyerror(struct dateinfo *param, const char **inp, const char *s);
+
 %}
 
 %union {
@@ -612,7 +618,7 @@ RelVal(struct dateinfo *param, time_t v, int type)
 
 /* ARGSUSED */
 static int
-yyerror(struct dateinfo *param, const char **inp, const char *s _mkc_unused)
+yyerror(struct dateinfo *param, const char **inp, const char *s)
 {
   return 0;
 }
@@ -674,7 +680,7 @@ Convert(
 	    tm.tm_isdst = 0;	/* hence cannot be summer time */
 	    otm = tm;
 	    errno = 0;
-	    result = mktime_z(NULL, &tm);
+	    result = mktime(&tm);
 	    if (result != -1 || errno == 0) {
 		    result += Timezone * 60;
 		    if (DSTmode == DSTon)	/* if specified sumer time */
@@ -899,8 +905,7 @@ LookupWord(YYSTYPE *yylval, char *buff)
     return tID;
 }
 
-
-static int
+int
 yylex(YYSTYPE *yylval, const char **yyInput)
 {
     register char	c;
