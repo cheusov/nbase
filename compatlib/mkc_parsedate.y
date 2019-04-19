@@ -24,6 +24,8 @@ __RCSID("$NetBSD: parsedate.y,v 1.28 2016/05/03 18:14:54 kre Exp $");
 #include <time.h>
 #include <stdlib.h>
 
+#include "mkc_parsedate.h"
+
 /* NOTES on rebuilding parsedate.c (particularly for inclusion in CVS
    releases):
 
@@ -94,6 +96,14 @@ struct dateinfo {
 		int	yyRelMonth;
 	} yyRel[MAXREL];
 };
+
+static void
+	RelVal(struct dateinfo *param, time_t v, int type);
+static int
+	yyerror(struct dateinfo *param, const char **inp, const char *s);
+static int
+	yylex(void *yylval, const char **yyInput);
+
 %}
 
 %union {
@@ -612,7 +622,7 @@ RelVal(struct dateinfo *param, time_t v, int type)
 
 /* ARGSUSED */
 static int
-yyerror(struct dateinfo *param, const char **inp, const char *s _mkc_unused)
+yyerror(struct dateinfo *param, const char **inp, const char *s)
 {
   return 0;
 }
@@ -674,7 +684,7 @@ Convert(
 	    tm.tm_isdst = 0;	/* hence cannot be summer time */
 	    otm = tm;
 	    errno = 0;
-	    result = mktime_z(NULL, &tm);
+	    result = mktime(&tm);
 	    if (result != -1 || errno == 0) {
 		    result += Timezone * 60;
 		    if (DSTmode == DSTon)	/* if specified sumer time */
@@ -899,9 +909,8 @@ LookupWord(YYSTYPE *yylval, char *buff)
     return tID;
 }
 
-
 static int
-yylex(YYSTYPE *yylval, const char **yyInput)
+yylex(void *yylval_, const char **yyInput)
 {
     register char	c;
     register char	*p;
@@ -909,6 +918,7 @@ yylex(YYSTYPE *yylval, const char **yyInput)
     int			Count;
     int			sign;
     const char		*inp = *yyInput;
+	YYSTYPE *yylval = (YYSTYPE *)yylval_;
 
     for ( ; ; ) {
 	while (isspace((unsigned char)*inp))

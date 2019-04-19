@@ -21,6 +21,8 @@ MKC_CHECK_HEADER_FILES +=	sys/mtio.h
 
 .include <mkc.configure.mk>
 
+.include "../mk/hacks.mk"
+
 .include "../mk/mkc_imp.f_raise_default_signal.mk"
 .include "../mk/mkc_imp.f_strsuftoll.mk"
 .include "../mk/mkc_imp.f_humanize_number.mk"
