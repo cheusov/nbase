@@ -1,4 +1,6 @@
-PROG =	qsubst
+PROG      =	qsubst
+
+WARNERR   =	no
 
 .include <mkc.init.mk>
 

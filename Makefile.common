@@ -1,4 +1,4 @@
-WARNS     =	4
+WARNS          ?=	4
 
 CURSES_LIBNAME ?=	curses
 
