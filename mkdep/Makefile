@@ -8,5 +8,6 @@ SRCS =	mkdep.c findcc.c
 .include "../mk/hacks.mk"
 
 .include "../mk/mkc_imp.f_dprintf.mk"
+.include "../mk/mkc_imp.f_macro.mk"
 
 .include "../mk/addlinks.mk"

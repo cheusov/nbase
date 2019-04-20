@@ -53,6 +53,7 @@ __RCSID("$NetBSD: timeout.c,v 1.4 2014/08/05 08:20:02 christos Exp $");
 
 #include "mkc_progname.h"
 #include "mkc_sys_signame.h"
+#include "mkc_macro.h"
 
 #define EXIT_TIMEOUT 124
 
@@ -215,12 +216,12 @@ main(int argc, char **argv)
 	pgid = -1;
 
 	const struct option longopts[] = {
-		{ "preserve-status", no_argument,       &preserve,    1 },
-		{ "foreground",      no_argument,       &foreground,  1 },
-		{ "kill-after",      required_argument, NULL,        'k'},
-		{ "signal",          required_argument, NULL,        's'},
-		{ "help",            no_argument,       NULL,        'h'},
-		{ NULL,              0,                 NULL,         0 }
+		{ __UNCONST("preserve-status"), no_argument,       &preserve,    1 },
+		{ __UNCONST("foreground"),      no_argument,       &foreground,  1 },
+		{ __UNCONST("kill-after"),      required_argument, NULL,        'k'},
+		{ __UNCONST("signal"),          required_argument, NULL,        's'},
+		{ __UNCONST("help"),            no_argument,       NULL,        'h'},
+		{ NULL,              		0,                 NULL,         0 }
 	};
 
 	while ((ch = getopt_long(argc, argv, "+k:s:h", longopts, NULL)) != -1) {
