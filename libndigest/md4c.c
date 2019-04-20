@@ -78,8 +78,8 @@ typedef uint32_t UINT4;
 
 static void MD4Transform (UINT4 state[4], const unsigned char block[64]);
 
-static void Encode __P((unsigned char *, UINT4 *, unsigned int));
-static void Decode __P((UINT4 *, const unsigned char *, unsigned int));
+static void Encode (unsigned char *, UINT4 *, unsigned int);
+static void Decode (UINT4 *, const unsigned char *, unsigned int);
 
 static const unsigned char PADDING[64] = {
 	0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

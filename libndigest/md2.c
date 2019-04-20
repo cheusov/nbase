@@ -97,11 +97,10 @@ static const unsigned char *pad[] = {
 	"\020\020\020\020\020\020\020\020\020\020\020\020\020\020\020\020"
 };
 
-static void MD2Transform __P((MD2_CTX *));
+static void MD2Transform (MD2_CTX *);
 
 void
-MD2Init(context)
-	MD2_CTX *context;
+MD2Init(MD2_CTX *context)
 {
 	_DIAGASSERT(context != 0);
 
@@ -111,10 +110,9 @@ MD2Init(context)
 }
 
 void
-MD2Update(context, input, inputLen)
-	MD2_CTX *context;
-	const unsigned char *input;
-	unsigned int inputLen;
+MD2Update(MD2_CTX *context,
+	  const unsigned char *input,
+	  unsigned int inputLen)
 {
 	unsigned int idx, piece;
 
@@ -132,9 +130,8 @@ MD2Update(context, input, inputLen)
 }
 
 void
-MD2Final(digest, context)
-	unsigned char digest[16];	/* message digest */
-	MD2_CTX *context;		/* context */
+MD2Final(unsigned char digest[16],	/* message digest */
+	 MD2_CTX *context)		/* context */
 {
 	unsigned int padlen;
 
@@ -158,8 +155,7 @@ MD2Final(digest, context)
 }
 
 static void
-MD2Transform(context)
-	MD2_CTX *context;
+MD2Transform(MD2_CTX *context)
 {
 	uint32_t l, j, k, t;
 
