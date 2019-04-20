@@ -17,6 +17,8 @@ CPPFLAGS+=	-DNO_CONV -DNO_MSGFMT -DNO_IOFLAG -DSMALL
 #.endif
 #.endif
 
+WARNERR = 	no # SunOS-5.11
+
 MKC_CHECK_HEADER_FILES +=	sys/mtio.h
 
 .include <mkc.configure.mk>
