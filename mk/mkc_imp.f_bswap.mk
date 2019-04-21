@@ -5,9 +5,9 @@
 .ifndef _MKC_IMP_F_BSWAP_MK
 _MKC_IMP_F_BSWAP_MK := 1
 
-MKC_CHECK_FUNCS1   +=	bswap16:sys/types.h,machine/bswap.h \
-			bswap32:sys/types.h,machine/bswap.h \
-			bswap64:sys/types.h,machine/bswap.h
+MKC_CHECK_FUNCS1   +=	bswap16:sys/endian.h \
+			bswap32:sys/endian.h \
+			bswap64:sys/endian.h
 
 MKC_FUNC_OR_DEFINE.bswap16 =	yes
 MKC_FUNC_OR_DEFINE.bswap32 =	yes
