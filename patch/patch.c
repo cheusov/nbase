@@ -415,6 +415,7 @@ main(int argc, char *argv[])
 	}
 	my_exit(error);
 	/* NOTREACHED */
+	return 0;
 }
 
 /* Prepare to find the next patch to do in the patch file. */
