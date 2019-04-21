@@ -8,7 +8,7 @@ WARNS   =	3
 WARNERR =	no
 
 CPPFLAGS +=	-I${DIST} -I${.OBJDIR} -I${.CURDIR}
-YHEADER =	yes
+YHEADER   =	yes
 #COPTS.run.c+=	-Wno-format-nonliteral
 #COPTS.tran.c+=	-Wno-format-nonliteral
 
