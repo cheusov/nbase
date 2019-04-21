@@ -3,10 +3,11 @@ SRCS =	find.c function.c ls.c main.c misc.c operator.c option.c
 
 CPPFLAGS +=	-D_NETBSD_SOURCE
 
-#LDADD+=-lutil
-#DPADD+=${LIBUTIL}
-
 .include <mkc.init.mk>
+
+.if ${OPSYS:U} == FreeBSD
+WARNERR   =	no # FreeBSD has a bit different fts_open(3)
+.endif
 
 .include "../mk/hacks.mk"
 

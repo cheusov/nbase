@@ -3,6 +3,10 @@ SRCS=	cmp.c ls.c main.c print.c util.c
 
 .include <mkc.init.mk>
 
+.if ${OPSYS:U} == FreeBSD
+WARNERR   =	no # FreeBSD has a bit different fts_open(3)
+.endif
+
 .include "../mk/hacks.mk"
 
 .include "../mk/mkc_imp.f_pwdgrp.mk"
