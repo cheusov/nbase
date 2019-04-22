@@ -14,7 +14,7 @@
 #if HAVE_FUNC1_BSWAP16_SYS_ENDIAN_H && \
 	HAVE_FUNC1_BSWAP32_SYS_ENDIAN_H && \
 	HAVE_FUNC1_BSWAP64_SYS_ENDIAN_H
-#include <machine/bswap.h>
+#include <sys/endian.h>
 #else
 
 #include <stdint.h>
