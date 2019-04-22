@@ -3,6 +3,8 @@ SRCS=	cmp.c ls.c main.c print.c util.c
 
 .include <mkc.init.mk>
 
+MKC_CHECK_HEADERS =	sys/sysmacros.h
+
 .if ${OPSYS:U} == FreeBSD
 WARNERR   =	no # FreeBSD has a bit different fts_open(3)
 .endif

@@ -75,6 +75,10 @@ __RCSID("$NetBSD: ls.c,v 1.74 2014/04/02 10:55:47 wiz Exp $");
 #include "ls.h"
 #include "extern.h"
 
+#if HAVE_HEADER_SYS_SYSMACROS_H
+#  include <sys/sysmacros.h>
+#endif
+
 static void	 display(FTSENT *, FTSENT *);
 static int	 mastercmp(const FTSENT **, const FTSENT **);
 static void	 traverse(int, char **, int);
