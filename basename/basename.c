@@ -80,7 +80,7 @@ main(int argc, char **argv)
 	}
 	if ((p = basename(*argv)) == NULL)
 		err(1, "%s", *argv);
-	if (*++argv != '\0') {
+	if (*++argv != NULL) {
 		int suffixlen, stringlen, off;
 
 		suffixlen = strlen(*argv);
