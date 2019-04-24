@@ -49,6 +49,12 @@ MKC_FEATURES =	strlcpy fgetln
 MKC_CHECK_HEADER_FILES +=	sys/mtio.h
 MKC_CHECK_HEADERS =	sys/sysmacros.h # Linux/glibc-2.26 -- major/minor from sys/types.h are deprecated
 
+# Disable -Werror because of warning with gcc-8
+#   tar.c: In function 'ustar_wr':
+#   tar.c:1210:3: error: 'strncpy' output truncated before terminating nul copying 2 bytes from a string of the same length [-Werror=stringop-truncation]
+#      strncpy(hd->version, TVERSION, TVERSLEN);
+WARNERR =	no
+
 .include <mkc.configure.mk>
 
 .include "../mk/hacks.mk"
