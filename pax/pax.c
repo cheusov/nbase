@@ -484,7 +484,7 @@ gen_init(void)
 	if (sigaction(SIGPIPE, &n_hand, &o_hand) < 0)
 		goto out;
 #ifdef SIGXFSZ
-	if (sigaction(SIGXFSZ, &n_hand, NULL) < 0)
+	if (sigaction(SIGXFSZ, &n_hand, &o_hand) < 0)
 		goto out;
 #endif
 	return 0;
