@@ -150,7 +150,7 @@ donice(int which, id_t who, int prio, int incr)
 
 	errno = 0;
 	if ((oldprio = getpriority(which, who)) == -1 && errno != 0) {
-		warn("%d: getpriority", who);
+	  warn("%ld: getpriority", (long)who);
 		return 1;
 	}
 
@@ -165,7 +165,7 @@ donice(int which, id_t who, int prio, int incr)
 #endif
 
 	if (setpriority(which, who, prio) == -1) {
-		warn("%d: setpriority", who);
+	  warn("%ld: setpriority", (long)who);
 		return 1;
 	}
 	(void)printf("%ld: old priority %d, new priority %d\n",

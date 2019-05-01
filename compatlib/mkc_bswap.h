@@ -11,10 +11,10 @@
 # error "Missing MKC_FEATURES += bswap"
 #endif
 
-#if HAVE_DEFINE_BSWAP16_MACHINE_BSWAP_H && \
-	HAVE_DEFINE_BSWAP32_MACHINE_BSWAP_H && \
-	HAVE_DEFINE_BSWAP64_MACHINE_BSWAP_H
-#include <machine/bswap.h>
+#if HAVE_FUNC1_BSWAP16_SYS_ENDIAN_H && \
+	HAVE_FUNC1_BSWAP32_SYS_ENDIAN_H && \
+	HAVE_FUNC1_BSWAP64_SYS_ENDIAN_H
+#include <sys/endian.h>
 #else
 
 #include <stdint.h>

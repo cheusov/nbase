@@ -68,6 +68,11 @@ __RCSID("$NetBSD: tar.c,v 1.71 2013/01/24 17:43:44 christos Exp $");
 #include "mkc_pwdgrp.h"
 #include "mkc_strlcpy.h"
 
+#if HAVE_HEADER_SYS_SYSMACROS_H
+/* Linux/glibc-2.26 -- major/minor from sys/types.h are deprecated */
+#  include <sys/sysmacros.h>
+#endif
+
 /*
  * Routines for reading, writing and header identify of various versions of tar
  */
