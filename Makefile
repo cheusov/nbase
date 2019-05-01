@@ -10,7 +10,7 @@
 #  crunch locate
 
 # TBD: units -- /usr/share/misc/units.lib is missing
-MKC_REQD     =	0.30.900
+MKC_REQD     =	0.31.0
 
 # Manually set CC_TYPE variable because it is not calculated automatically
 # for !LIB && !PROG projects. As a result we pass to old clang-s (clang-5.0.1)

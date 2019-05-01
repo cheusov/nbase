@@ -1,4 +1,21 @@
 ======================================================================
+Version 7.0.0.4, by Aleksey Cheusov, Wed,  1 May 2019 14:40:14 +0300
+
+  A lot of fixes and improvements from previous release in utilities
+  and portability code.
+  See https://github.com/cheusov/nbase for details.
+
+  Introduce CURSES_LIBNAME build-time variable (see doc/INSTALL)
+
+  Almost all utilities set WARNERR to YES.
+
+  Latest mk-configure is needed for build.
+
+  This release was successfully tested on SunOS-5.11, FreeBSD-12.0.3,
+  NetBSD-8 and 8.99, OpenBSD-6.4, Darwin and diverse glibc-based
+  Linuxes. GCC and CLang compilers were tested.
+
+======================================================================
 Version 7.0.0.3, by Aleksey Cheusov, Thu,  8 Mar 2018 14:51:38 +0300
 
   "install", "cksum", "mknod" and "mtree" were added to the
