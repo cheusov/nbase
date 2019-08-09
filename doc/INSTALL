@@ -15,13 +15,13 @@
    mkcmake
 
 *) mkcmake test
-   If this step fails on your system, please let me now.
+   If this step fails on your system, please let me know.
 
 *) mkcmake install
 
-*) paexec project consists of the following subprojects: cat, cut, etc.
+*) nbase project consists of the following subprojects: cat, cut, etc.
    By default all subprojects are built and installed. You can build and
-   install any subproject you like.
+   install any subprojects you like.
 
    mkcmake all-cut all-cat install-cut install-cut
 
@@ -38,7 +38,7 @@ build and installation.
   PREFIX         - where programs are installed to
   LINKSPREFIX    - where nb-NNN symlinks are installed to
   MANDIR         - root directory for manual pages
-  DESTDIR        - fake root for installation
+  DESTDIR        - fake root for installation (useful for packagers)
   CPPFLAGS
   CFLAGS
   LDFLAGS
