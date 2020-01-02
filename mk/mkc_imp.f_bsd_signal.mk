@@ -15,7 +15,7 @@ MKC_FUNC_OR_DEFINE.sigmask    =	yes
 .include <mkc.conf.mk>
 
 .if ${.CURDIR:T} == "compatlib"
-. if ${HAVE_FUNC1.sigblock.signal_h:U} != 1 || ${HAVE_FUNC1.sigsetmask.signal_h:U} != 1 || ${HAVE_FUNC0.siggetmask.signal_h:U} != 0
+. if ${HAVE_FUNC1.sigblock.signal_h:U} != 1 || ${HAVE_FUNC1.sigsetmask.signal_h:U} != 1 || ${HAVE_FUNC0.siggetmask.signal_h:U} != 1
 SRCS +=	mkc_bsd_signal.c
 . endif
 .endif
