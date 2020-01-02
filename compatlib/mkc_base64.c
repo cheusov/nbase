@@ -69,6 +69,7 @@ __RCSID("$NetBSD: base64.c,v 1.14.10.1 2014/11/25 15:23:36 martin Exp $");
 #include <string.h>
 
 #include "mkc_macro.h"
+#include "mkc_base64.h"
 
 //#include "port_after.h"
 
