@@ -117,6 +117,7 @@ __RCSID("$NetBSD: qsubst.c,v 1.8 2004/11/01 21:36:11 dsl Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
+#include "mkc_bsd_signal.h"
 
 #ifndef TCSASOFT
 #define TCSASOFT 0
