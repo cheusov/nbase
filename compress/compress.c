@@ -57,6 +57,7 @@ __RCSID("$NetBSD: compress.c,v 1.26 2011/08/30 23:08:05 joerg Exp $");
 
 #include "mkc_bsd_getopt.h"
 #include "mkc_struct_stat.h"
+#include "mkc_macro.h"
 
 static void	compress(const char *, const char *, int);
 static void	cwarn(const char *, ...) __printflike(1, 2);
