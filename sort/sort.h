@@ -74,6 +74,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "mkc_macro.h"
+
 #define NBINS		256
 
 /* values for masks, weights, and other flags. */
