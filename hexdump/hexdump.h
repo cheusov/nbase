@@ -31,6 +31,8 @@
  *	from: @(#)hexdump.h	8.1 (Berkeley) 6/6/93
  */
 
+#include "mkc_macro.h"
+
 typedef struct _pr {
 	struct _pr *nextpr;		/* next print unit */
 #define	F_ADDRESS	0x001		/* print offset */
