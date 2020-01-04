@@ -6,7 +6,7 @@
 _MKC_IMP_F_BASE64_MK := 1
 
 old :=			${MKC_COMMON_HEADERS}
-MKC_COMMON_HEADERS +=	netinet/in.h # for OpenBSD 5.3
+MKC_COMMON_HEADERS +=	netinet/in.h # for OpenBSD 5.3 and FreeBSD 12.1
 
 MKC_CHECK_FUNCS4   +=	b64_ntop:resolv.h
 MKC_CHECK_FUNCS3   +=	b64_pton:resolv.h
