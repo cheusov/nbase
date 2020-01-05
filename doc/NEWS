@@ -1,4 +1,18 @@
 ======================================================================
+Version 7.0.0.5, by Aleksey Cheusov, Mon,  6 Jan 2020 01:43:19 +0300
+
+  Fix typos doc/INSTALL
+
+  Fix bugs in the local feature "base64". As a result we fix some
+  compilation issues on musl-based Linuxes (Alpine Linux).
+
+  Fix compilation failures (seen on musl-based Alpine Linux) of the
+  following programs: compress, sort, hexdump, id, leave, uudecode
+
+  Implement new local feature "bsd_signal" that implements
+  BSD functions "sigblock", "sigsetmask", "sigmask" and "siggetmask".
+
+======================================================================
 Version 7.0.0.4, by Aleksey Cheusov, Wed,  1 May 2019 14:40:14 +0300
 
   A lot of fixes and improvements from previous release in utilities
