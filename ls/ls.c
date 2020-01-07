@@ -608,7 +608,7 @@ display(FTSENT *p, FTSENT *list)
 					flags =
 					    flags_to_string((u_long)sp->st_flags, "-");
 #else
-					flags = 0;
+					flags = "";
 #endif
 					if ((flen = strlen(flags)) > maxflags)
 						maxflags = flen;
