@@ -32,6 +32,7 @@
  * SUCH DAMAGE.
  */
 
+#include "mkc_macro.h"
 #include "mkc_pwdgrp.h"
 #include "mkc_progname.h"
 #include "mkc_getbsize.h"
@@ -517,7 +518,7 @@ display(FTSENT *p, FTSENT *list)
 	const char *user, *group;
 	char buf[21];		/* 64 bits == 20 digits, +1 for NUL */
 	char nuser[12], ngroup[12];
-	char *flags = NULL;
+	const char *flags = NULL;
 
 	/*
 	 * If list is NULL there are two possibilities: that the parent
@@ -627,7 +628,8 @@ display(FTSENT *p, FTSENT *list)
 				if (f_flags) {
 					np->flags = &np->data[ulen + glen + 2];
 				  	(void)strcpy(np->flags, flags);
-					free(flags);
+					if (flags[0])
+						free(__UNCONST(flags));
 				}
 				cur->fts_pointer = np;
 			}
