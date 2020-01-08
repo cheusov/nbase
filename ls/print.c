@@ -142,7 +142,7 @@ printlong(DISPLAY *dp)
 			continue;
 		sp = p->fts_statp;
 		if (f_inode)
-			(void)printf("%*"PRIu64" ", dp->s_inode, sp->st_ino);
+			(void)printf("%*"PRIu64" ", dp->s_inode, (uint64_t)sp->st_ino);
 		if (f_size) {
 			if (f_humanize) {
 				if ((humanize_number(szbuf, sizeof(szbuf),
@@ -370,7 +370,7 @@ printaname(FTSENT *p, int inodefield, int sizefield)
 	sp = p->fts_statp;
 	chcnt = 0;
 	if (f_inode)
-		chcnt += printf("%*"PRIu64" ", inodefield, sp->st_ino);
+		chcnt += printf("%*"PRIu64" ", inodefield, (uint64_t)sp->st_ino);
 	if (f_size) {
 		if (f_humanize) {
 			if ((humanize_number(szbuf, sizeof(szbuf), sp->st_size,
