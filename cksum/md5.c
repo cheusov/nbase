@@ -136,7 +136,7 @@ MD5TestSuite(void)
  * Digests the standard input and prints the result.
  */
 void
-MD5Filter(int p)
+MD5Filter(int pipe)
 {
 	MD5_CTX context;
 	size_t len;
@@ -145,7 +145,7 @@ MD5Filter(int p)
 
 	MD5Init(&context);
 	while ((len = fread(buffer, (size_t)1, (size_t)BUFSIZ, stdin)) > 0) {
-		if (p && (len != fwrite(buffer, (size_t)1, len, stdout)))
+		if (pipe && (len != fwrite(buffer, (size_t)1, len, stdout)))
 			err(1, "stdout");
 		MD5Update(&context, buffer, (unsigned int)len);
 	}
