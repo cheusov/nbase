@@ -95,8 +95,8 @@ typedef struct {
 	u_long setalloc;	/* set allocated count */
 } INPUT;
 
-static INPUT input1 = { NULL, 0, 0, 1, NULL, -1, 0, 0, },
-      input2 = { NULL, 0, 0, 2, NULL, -1, 0, 0, };
+static INPUT input1 = { NULL, 0, 0, 1, NULL, (u_long)-1, 0, 0, },
+      input2 = { NULL, 0, 0, 2, NULL, (u_long)-1, 0, 0, };
 
 typedef struct {
 	u_long	fileno;		/* file number */
