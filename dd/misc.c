@@ -78,7 +78,7 @@ summary(void)
 		(void)write(STDERR_FILENO, "\n", 1);
 
 #ifdef NO_MSGFMT
-	return posix_summary();
+	posix_summary();
 #else /* NO_MSGFMT */
 	if (strncmp(msgfmt, "human", sizeof("human")) == 0)
 		return human_summary();
@@ -89,7 +89,7 @@ summary(void)
 	if (strncmp(msgfmt, "quiet", sizeof("quiet")) == 0)
 		return quiet_summary();
 
-	return custom_summary();
+	custom_summary();
 #endif /* NO_MSGFMT */
 }
 
