@@ -29,6 +29,7 @@
 #include "mkc_macro.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
+#include "mkc_progname.h"
 
 #include "common.h"
 #include "extern.h"
@@ -1035,10 +1036,8 @@ int_usage(void)
 static void
 usage(void)
 {
-	extern char *__progname;
-
 	fprintf(stderr,
 	    "usage: %s [-abdilstW] [-I regexp] [-o outfile] [-w width] file1 file2\n",
-	    __progname);
+	    getprogname());
 	exit(2);
 }
