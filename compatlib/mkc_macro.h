@@ -176,4 +176,8 @@ typedef unsigned long int u_quad_t;
 #  define _PATH_MAILDIR "/var/mail"
 #endif
 
+#ifndef _PATH_DEFPATH
+#define	_PATH_DEFPATH	"/usr/bin:/bin"
+#endif
+
 #endif // _MKC_MACRO_H_
