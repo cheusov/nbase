@@ -17,6 +17,8 @@ CPPFLAGS +=	-DHAVE_ERRNO_H -DHAVE_LOCALE_H -DHAVE_UNISTD_H -DHAVE_STDINT_H \
 CFLAGS.dflt.gcc +=	-Werror=implicit-function-declaration \
 #  -Werror=missing-prototypes # -Werror=int-to-pointer-cast
 
+CFLAGS.warns.sunpro.4 += -erroff=E_EMPTY_DECLARATION
+
 DOCDIR ?=	${DATADIR}/doc/nbase
 
 MKC_FEATURES +=	progname strlcpy strlcat err warn
