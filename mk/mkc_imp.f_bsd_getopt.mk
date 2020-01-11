@@ -9,7 +9,7 @@ MKC_CHECK_DEFINES   +=	__GLIBC__:string.h
 
 .include <mkc.conf.mk>
 
-.if ${HAVE_DEFINE.__GLIBC__.string_h:U} == 1
+.if ${HAVE_DEFINE.__GLIBC__.string_h:U1} == 1
 . if ${.CURDIR:T} == "compatlib"
 SRCS     +=	mkc_bsd_getopt.c
 . endif
