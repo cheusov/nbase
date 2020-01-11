@@ -36,6 +36,7 @@
 #include "mkc_strsuftoll.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
+#include "mkc_strsep.h"
 
 #include <sys/cdefs.h>
 #ifndef lint

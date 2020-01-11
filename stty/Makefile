@@ -7,6 +7,8 @@ MKC_CHECK_DEFINES +=	_PATH_URANDOM:paths.h
 
 MKC_CHECK_TYPES +=	linedn_t:termios.h
 
+.include "../mk/mkc_imp.f_strsep.mk"
+
 .include <mkc.configure.mk>
 
 .if ${HAVE_DEFINE._PATH_URANDOM.paths_h:U} == 0

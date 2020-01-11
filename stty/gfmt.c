@@ -30,6 +30,9 @@
  */
 
 #include <sys/cdefs.h>
+
+#include "mkc_strsep.h"
+
 #ifndef lint
 #if 0
 static char sccsid[] = "@(#)gfmt.c	8.6 (Berkeley) 4/2/94";

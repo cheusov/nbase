@@ -64,6 +64,7 @@ __RCSID("$NetBSD: join.c,v 1.31 2011/09/04 20:27:52 joerg Exp $");
 #include "mkc_bsd_getopt.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
+#include "mkc_strsep.h"
 
 /*
  * There's a structure per input file which encapsulates the state of the

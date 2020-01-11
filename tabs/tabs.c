@@ -30,6 +30,9 @@
  */
 
 #include <sys/cdefs.h>
+
+#include "mkc_strsep.h"
+
 #ifndef lint
 __COPYRIGHT("@(#) Copyright (c) 2008 \
 The NetBSD Foundation, inc. All rights reserved.");

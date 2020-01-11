@@ -58,6 +58,7 @@ __RCSID("$NetBSD: unexpand.c,v 1.14 2008/12/21 02:33:13 christos Exp $");
 #include "mkc_bsd_getopt.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
+#include "mkc_strsep.h"
 
 #define DSTOP	8
 static int	all;
