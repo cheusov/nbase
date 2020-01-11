@@ -13,6 +13,7 @@
 #include "mkc_macro.h"
 #include "mkc_progname.h"
 #include "mkc_timecmp.h"
+#include "mkc_err.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -23,7 +24,6 @@ __RCSID("$NetBSD: test.c,v 1.40 2013/05/04 06:26:44 uebayasi Exp $");
 #include <sys/types.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <limits.h>
 #include <locale.h>

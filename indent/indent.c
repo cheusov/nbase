@@ -64,6 +64,9 @@
  */
 
 #include <sys/cdefs.h>
+
+#include "mkc_err.h"
+
 #ifndef lint
 __COPYRIGHT("@(#) Copyright (c) 1985 Sun Microsystems, Inc.\
   Copyright (c) 1976 Board of Trustees of the University of Illinois.\
@@ -81,7 +84,6 @@ __RCSID("$NetBSD: indent.c,v 1.18.24.1 2014/09/21 18:58:56 snj Exp $");
 
 #include <sys/param.h>
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>

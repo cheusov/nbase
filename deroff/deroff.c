@@ -68,8 +68,8 @@
 __RCSID("$NetBSD: deroff.c,v 1.11 2013/10/18 20:47:06 christos Exp $");
 
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
 
-#include <err.h>
 #include <limits.h>
 #include <stddef.h>
 #include <stdio.h>

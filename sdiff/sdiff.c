@@ -14,7 +14,6 @@
 #include <sys/wait.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <getopt.h>
@@ -29,6 +28,8 @@
 #include "mkc_strlcat.h"
 #include "mkc_fparseln.h"
 #include "mkc_macro.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #include "common.h"
 #include "extern.h"

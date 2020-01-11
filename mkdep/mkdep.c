@@ -44,7 +44,6 @@ __RCSID("$NetBSD: mkdep.c,v 1.43 2013/03/05 21:57:47 christos Exp $");
 #include <sys/param.h>
 #include <sys/wait.h>
 #include <ctype.h>
-#include <err.h>
 #include <fcntl.h>
 #include <getopt.h>
 #include <locale.h>
@@ -58,6 +57,8 @@ __RCSID("$NetBSD: mkdep.c,v 1.43 2013/03/05 21:57:47 christos Exp $");
 #include "mkc_bsd_getopt.h"
 #include "mkc_dprintf.h"
 #include "mkc_macro.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #include "findcc.h"
 

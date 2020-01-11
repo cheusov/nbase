@@ -46,10 +46,10 @@ __RCSID("$NetBSD: expand.c,v 1.13 2009/04/12 02:51:36 lukem Exp $");
 #include <stdlib.h>
 #include <ctype.h>
 #include <unistd.h>
-#include <err.h>
 
 #include "mkc_progname.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
 
 /*
  * expand - expand tabs to equivalent spaces

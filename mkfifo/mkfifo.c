@@ -50,10 +50,11 @@ __RCSID("$NetBSD: mkfifo.c,v 1.13 2011/09/04 20:30:34 joerg Exp $");
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include <err.h>
 
 #include "mkc_getsetmode.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 __dead static void usage(void);
 

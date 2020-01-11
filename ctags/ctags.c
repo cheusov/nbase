@@ -35,6 +35,8 @@
 
 #include "mkc_strlcpy.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #include <sys/cdefs.h>
 #if defined(__COPYRIGHT) && !defined(lint)
@@ -49,7 +51,6 @@ static char sccsid[] = "@(#)ctags.c	8.4 (Berkeley) 2/7/95";
 __RCSID("$NetBSD: ctags.c,v 1.12 2008/07/21 14:19:22 lukem Exp $");
 #endif /* not lint */
 
-#include <err.h>
 #include <limits.h>
 #include <stdio.h>
 #include <string.h>

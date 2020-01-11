@@ -44,13 +44,13 @@ __RCSID("$NetBSD: tr.c,v 1.20 2013/08/11 01:54:35 dholland Exp $");
 
 #include <sys/types.h>
 
-#include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
 
 #include "extern.h"
 

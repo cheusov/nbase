@@ -45,7 +45,6 @@ static char sccsid[] = "@(#)comm.c	8.4 (Berkeley) 5/4/95";
 __RCSID("$NetBSD: comm.c,v 1.20 2012/09/05 04:01:23 simonb Exp $");
 #endif /* not lint */
 
-#include <err.h>
 #include <limits.h>
 #include <locale.h>
 #include <stdio.h>
@@ -54,6 +53,7 @@ __RCSID("$NetBSD: comm.c,v 1.20 2012/09/05 04:01:23 simonb Exp $");
 #include <unistd.h>
 
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
 
 #define	MAXLINELEN	(LINE_MAX + 1)
 

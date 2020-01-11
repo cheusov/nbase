@@ -49,7 +49,6 @@ __RCSID("$NetBSD: fsplit.c,v 1.29 2013/01/23 20:39:46 riastradh Exp $");
 
 #include <assert.h>
 #include <ctype.h>
-#include <err.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -58,6 +57,7 @@ __RCSID("$NetBSD: fsplit.c,v 1.29 2013/01/23 20:39:46 riastradh Exp $");
 
 #include "mkc_strlcpy.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
 
 /*
  *	usage:		fsplit [-e efile] ... [file]

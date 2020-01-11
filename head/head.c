@@ -46,7 +46,6 @@ __RCSID("$NetBSD: head.c,v 1.23 2010/03/31 21:55:23 joerg Exp $");
 #include <sys/types.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <inttypes.h>
 #include <limits.h>
@@ -58,6 +57,8 @@ __RCSID("$NetBSD: head.c,v 1.23 2010/03/31 21:55:23 joerg Exp $");
 
 #include "mkc_progname.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 /*
  * head - give the first few lines of a stream or of each of a set of files

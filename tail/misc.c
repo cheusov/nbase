@@ -38,6 +38,8 @@ static char sccsid[] = "@(#)misc.c	8.1 (Berkeley) 6/6/93";
 __RCSID("$NetBSD: misc.c,v 1.7 2011/09/03 09:02:20 christos Exp $");
 #endif /* not lint */
 
+#include "mkc_warn.h"
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <errno.h>
@@ -46,7 +48,6 @@ __RCSID("$NetBSD: misc.c,v 1.7 2011/09/03 09:02:20 christos Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <err.h>
 
 #include "extern.h"
 

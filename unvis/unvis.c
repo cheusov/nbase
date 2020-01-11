@@ -42,7 +42,6 @@ static char sccsid[] = "@(#)unvis.c	8.1 (Berkeley) 6/6/93";
 __RCSID("$NetBSD: unvis.c,v 1.13 2010/11/27 19:46:25 christos Exp $");
 #endif /* not lint */
 
-#include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -50,6 +49,8 @@ __RCSID("$NetBSD: unvis.c,v 1.13 2010/11/27 19:46:25 christos Exp $");
 #include "mkc_vis.h"
 #include "mkc_progname.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 static void process(FILE *, const char *, int);
 

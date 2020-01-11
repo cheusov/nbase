@@ -44,7 +44,6 @@ __RCSID("$NetBSD: sleep.c,v 1.24 2011/08/29 14:51:19 joerg Exp $");
 #endif /* not lint */
 
 #include <ctype.h>
-#include <err.h>
 #include <locale.h>
 #include <math.h>
 #include <signal.h>
@@ -56,6 +55,8 @@ __RCSID("$NetBSD: sleep.c,v 1.24 2011/08/29 14:51:19 joerg Exp $");
 #include "mkc_progname.h"
 #include "mkc_bsd_getopt.h"
 #include "mkc_macro.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 __dead static void alarmhandle(int);
 __dead static void usage(void);

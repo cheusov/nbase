@@ -44,7 +44,6 @@ __RCSID("$NetBSD: paste.c,v 1.16 2011/09/06 18:24:43 joerg Exp $");
 #endif /* not lint */
 
 #include <sys/types.h>
-#include <err.h>
 #include <errno.h>
 #include <limits.h>
 #include <stdio.h>
@@ -54,6 +53,8 @@ __RCSID("$NetBSD: paste.c,v 1.16 2011/09/06 18:24:43 joerg Exp $");
 
 #include "mkc_fgetln.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 static void	parallel(int, char **);
 static void	sequential(char **);

@@ -50,11 +50,12 @@ __RCSID("$NetBSD: vis.c,v 1.22 2013/02/20 17:04:45 christos Exp $");
 #include <wchar.h>
 #include <limits.h>
 #include <unistd.h>
-#include <err.h>
 
 #include "mkc_vis.h"
 #include "mkc_progname.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #include "extern.h"
 

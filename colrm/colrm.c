@@ -44,7 +44,6 @@ __RCSID("$NetBSD: colrm.c,v 1.9 2011/08/30 21:35:09 joerg Exp $");
 
 #include <sys/types.h>
 
-#include <err.h>
 #include <errno.h>
 #include <limits.h>
 #include <stdio.h>
@@ -53,6 +52,8 @@ __RCSID("$NetBSD: colrm.c,v 1.9 2011/08/30 21:35:09 joerg Exp $");
 #include <unistd.h>
 
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #define	TAB	8
 

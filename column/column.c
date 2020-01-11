@@ -46,7 +46,6 @@ __RCSID("$NetBSD: column.c,v 1.21 2008/07/21 14:19:21 lukem Exp $");
 #include <sys/ioctl.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <termios.h>
 #include <limits.h>
 #include <stdio.h>
@@ -58,6 +57,8 @@ __RCSID("$NetBSD: column.c,v 1.21 2008/07/21 14:19:21 lukem Exp $");
 #include "mkc_efun.h"
 #include "mkc_fgetln.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #define	TAB	8
 #define TABROUND(l) 	(((l) + TAB) & ~(TAB - 1))

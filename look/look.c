@@ -65,10 +65,10 @@ __RCSID("$NetBSD: look.c,v 1.16 2012/02/23 22:57:53 joerg Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <err.h>
 
 #include "mkc_bsd_getopt.h"
 #include "mkc_macro.h"
+#include "mkc_err.h"
 
 #include "pathnames.h"
 

@@ -51,7 +51,6 @@ __RCSID("$NetBSD: wc.c,v 1.35 2011/09/16 15:39:30 joerg Exp $");
 
 #include <ctype.h>
 #include <fcntl.h>
-#include <err.h>
 #include <errno.h>
 #include <locale.h>
 #include <stdbool.h>

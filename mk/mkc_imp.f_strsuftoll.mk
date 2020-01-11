@@ -9,6 +9,8 @@ MKC_CHECK_FUNCS4   +=	strsuftoll:stdlib.h
 MKC_CHECK_FUNCS6   +=	strsuftollx:stdlib.h
 MKC_CHECK_FUNCLIBS +=	strsuftoll strsuftollx
 
+MKC_FEATURES       +=	err
+
 .include <mkc.conf.mk>
 
 .if ${.CURDIR:T} == "compatlib"

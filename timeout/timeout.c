@@ -39,7 +39,6 @@ __RCSID("$NetBSD: timeout.c,v 1.4 2014/08/05 08:20:02 christos Exp $");
 #include <sys/time.h>
 #include <sys/wait.h>
 
-#include <err.h>
 #include <errno.h>
 #include <getopt.h>
 #include <limits.h>

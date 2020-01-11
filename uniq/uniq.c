@@ -45,7 +45,6 @@ static char sccsid[] = "@(#)uniq.c	8.3 (Berkeley) 5/4/95";
 __RCSID("$NetBSD: uniq.c,v 1.18 2012/08/26 14:14:16 wiz Exp $");
 #endif /* not lint */
 
-#include <err.h>
 #include <errno.h>
 #include <stdio.h>
 #include <ctype.h>
@@ -56,6 +55,7 @@ __RCSID("$NetBSD: uniq.c,v 1.18 2012/08/26 14:14:16 wiz Exp $");
 #include "mkc_progname.h"
 #include "mkc_fgetln.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
 
 static int cflag, dflag, uflag;
 static int numchars, numfields, repeats;

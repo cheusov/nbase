@@ -34,6 +34,10 @@
 #endif
 
 #include <sys/cdefs.h>
+
+#include "mkc_err.h"
+#include "mkc_warn.h"
+
 #if defined(__RCSID) && !defined(lint)
 #if 0
 static char sccsid[] = "@(#)tree.c	8.3 (Berkeley) 4/2/94";
@@ -42,7 +46,6 @@ __RCSID("$NetBSD: tree.c,v 1.12 2006/04/05 19:38:47 dsl Exp $");
 #endif
 #endif /* not lint */
 
-#include <err.h>
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
