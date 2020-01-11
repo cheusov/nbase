@@ -5,6 +5,8 @@ MKC_FEATURES +=	getline
 
 .include <mkc.init.mk>
 
+CFLAGS.warns.gcc.4 +=	-Wno-error=shadow
+
 .include "../mk/hacks.mk"
 
 .include "../mk/mkc_imp.f_errc.mk"
