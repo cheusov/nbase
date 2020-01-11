@@ -9,6 +9,7 @@ CPPFLAGS +=	-D__printflike\(x,y\)=
 CPPFLAGS +=	-D__dead=
 CPPFLAGS +=	-D__pure=
 CPPFLAGS +=	-D__restrict=
+CPPFLAGS +=	-D__attribute__\(x\)=
 # CPPFLAGS +=	-D__unused= # used by glibc headers :-(
 
 # Normal Unix headers should always exist (used at least by libndigest)
