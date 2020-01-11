@@ -63,7 +63,6 @@ __RCSID("$NetBSD: xinstall.c,v 1.117 2014/07/06 20:54:47 apb Exp $");
 #include <fcntl.h>
 #include <grp.h>
 #include <libgen.h>
-#include <paths.h>
 #include <pwd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -88,6 +87,7 @@ __RCSID("$NetBSD: xinstall.c,v 1.117 2014/07/06 20:54:47 apb Exp $");
 #include "mkc_vis.h"
 #include "mkc_flags_to_string.h"
 #include "mkc_struct_stat.h"
+#include "mkc_macro.h"
 
 #define STRIP_ARGS_MAX 32
 #define BACKUP_SUFFIX ".old"

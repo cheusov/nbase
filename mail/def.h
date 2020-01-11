@@ -42,6 +42,7 @@
 
 #include "mkc_err.h"
 #include "mkc_warn.h"
+#include "mkc_macro.h"
 
 #include <sys/types.h>
 #include <sys/file.h>
@@ -54,7 +55,6 @@
 #include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <paths.h>
 #include <pwd.h>
 #include <setjmp.h>
 #include <signal.h>

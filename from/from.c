@@ -44,7 +44,6 @@ __RCSID("$NetBSD: from.c,v 1.17 2008/07/21 14:19:22 lukem Exp $");
 
 #include <sys/types.h>
 #include <ctype.h>
-#include <paths.h>
 #include <pwd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -53,6 +52,7 @@ __RCSID("$NetBSD: from.c,v 1.17 2008/07/21 14:19:22 lukem Exp $");
 
 #include "mkc_bsd_getopt.h"
 #include "mkc_err.h"
+#include "mkc_macro.h"
 
 int	main (int, char **);
 int	match (const char *, const char *);

@@ -56,7 +56,6 @@ __RCSID("$NetBSD: mt.c,v 1.47 2011/08/29 14:46:01 joerg Exp $");
 #include <ctype.h>
 #include <err.h>
 #include <fcntl.h>
-#include <paths.h>
 #include <rmt.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -64,6 +63,7 @@ __RCSID("$NetBSD: mt.c,v 1.47 2011/08/29 14:46:01 joerg Exp $");
 #include <unistd.h>
 
 #include "mkc_bsd_getopt.h"
+#include "mkc_macro.h"
 
 /* pseudo ioctl constants */
 #define MTASF	100

@@ -32,6 +32,7 @@
 
 #include "mkc_err.h"
 #include "mkc_warn.h"
+#include "mkc_macro.h"
 
 #ifndef lint
 #if 0
@@ -44,7 +45,6 @@ __RCSID("$NetBSD: buf.c,v 1.27 2014/03/23 05:06:42 dholland Exp $");
 #include <sys/file.h>
 #include <sys/stat.h>
 
-#include <paths.h>
 #include <stdio.h>
 
 #include "ed.h"

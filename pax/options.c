@@ -63,7 +63,7 @@ __RCSID("$NetBSD: options.c,v 1.115 2013/11/14 04:00:48 christos Exp $");
 #include <string.h>
 #include <unistd.h>
 #include <inttypes.h>
-#include <paths.h>
+
 #include "pax.h"
 #include "options.h"
 #include "cpio.h"
@@ -74,6 +74,7 @@ __RCSID("$NetBSD: options.c,v 1.115 2013/11/14 04:00:48 christos Exp $");
 #endif	/* SMALL */
 
 #include "mkc_fgetln.h"
+#include "mkc_macro.h"
 
 #ifndef _PATH_DEFTAPE
 #define _PATH_DEFTAPE "/dev/nrst0"

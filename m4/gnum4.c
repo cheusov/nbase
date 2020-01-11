@@ -39,7 +39,6 @@ __RCSID("$NetBSD: gnum4.c,v 1.9 2012/03/20 20:34:58 matt Exp $");
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <ctype.h>
-#include <paths.h>
 #include <regex.h>
 #include <stddef.h>
 #include <stdlib.h>

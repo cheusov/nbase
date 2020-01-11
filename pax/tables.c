@@ -53,7 +53,7 @@ __RCSID("$NetBSD: tables.c,v 1.31 2013/10/18 19:53:34 christos Exp $");
 #include <stdio.h>
 #include <ctype.h>
 #include <fcntl.h>
-#include <paths.h>
+
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
@@ -63,6 +63,7 @@ __RCSID("$NetBSD: tables.c,v 1.31 2013/10/18 19:53:34 christos Exp $");
 #include "extern.h"
 
 #include "mkc_strlcpy.h"
+#include "mkc_macro.h"
 
 /*
  * Routines for controlling the contents of all the different databases pax

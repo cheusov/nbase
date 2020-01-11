@@ -31,7 +31,7 @@
  *	@(#)pathnames.h	8.1 (Berkeley) 6/6/93
  */
 
-#include <paths.h>
+#include "mkc_macro.h"
 
 #define IG_FILE1	"llib-lc"
 #define IG_FILE2	"llib-port"

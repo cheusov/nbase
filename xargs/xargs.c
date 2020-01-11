@@ -52,7 +52,6 @@ __RCSID("$NetBSD: xargs.c,v 1.20 2010/12/17 11:32:57 plunky Exp $");
 #include <fcntl.h>
 #include <langinfo.h>
 #include <locale.h>
-#include <paths.h>
 #include <regex.h>
 #include <stdio.h>
 #include <stdlib.h>

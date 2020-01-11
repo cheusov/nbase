@@ -35,7 +35,7 @@
 #ifndef __PATHNAMES_H__
 #define __PATHNAMES_H__
 
-#include <paths.h>
+#include "mkc_macro.h"
 
 #define	_PATH_EX	"/usr/bin/ex"
 #define	_PATH_HELP	"/usr/share/misc/mail.help"

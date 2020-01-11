@@ -42,7 +42,6 @@
 
 #include <sys/cdefs.h>
 #include <sys/types.h>
-#include <paths.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -52,6 +51,7 @@
 #include "mkc_bsd_getopt.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
+#include "mkc_macro.h"
 
 #if defined(__RCSID) && !defined(__lint)
 __RCSID("$NetBSD: mktemp.c,v 1.12 2012/11/03 13:34:08 christos Exp $");

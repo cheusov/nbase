@@ -18,7 +18,6 @@
 #include <fcntl.h>
 #include <getopt.h>
 #include <limits.h>
-#include <paths.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
