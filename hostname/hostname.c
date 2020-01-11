@@ -82,8 +82,12 @@ main(int argc, char *argv[])
 		usage();
 
 	if (*argv) {
+#if HAVE_FUNC2_SETHOSTNAME_UNISTD_H
 		if (sethostname(*argv, strlen(*argv)))
 			err(1, "sethostname");
+#else
+		err(1, "sethostname(2) is not available");
+#endif
 	} else {
 		if (gethostname(hostname, sizeof(hostname)))
 			err(1, "gethostname");
