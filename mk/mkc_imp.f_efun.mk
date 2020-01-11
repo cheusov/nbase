@@ -5,6 +5,8 @@
 .ifndef _MKC_IMP_EFUN_MK
 _MKC_IMP_EFUN_MK := 1
 
+.include "mkc_imp.f_strndup.mk"
+
 MKC_FEATURES +=	strlcpy strlcat fgetln err
 
 MKC_CHECK_FUNCS2   +=	ecalloc:util.h
