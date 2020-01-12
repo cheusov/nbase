@@ -46,13 +46,14 @@ __RCSID("$NetBSD: col.c,v 1.17 2011/08/31 16:24:57 plunky Exp $");
 #endif /* not lint */
 
 #include <ctype.h>
-#include <err.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #define	BS	'\b'		/* backspace */
 #define	TAB	'\t'		/* tab */

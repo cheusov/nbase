@@ -32,6 +32,7 @@
 #include "mkc_err.h"
 #include "mkc_strlcat.h"
 #include "mkc_strlcpy.h"
+#include "mkc_strndup.h"
 
 #if HAVE_NBTOOL_CONFIG_H
 #include "nbtool_config.h"

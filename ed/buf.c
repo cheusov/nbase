@@ -29,6 +29,11 @@
  */
 
 #include <sys/cdefs.h>
+
+#include "mkc_err.h"
+#include "mkc_warn.h"
+#include "mkc_macro.h"
+
 #ifndef lint
 #if 0
 static char *rcsid = "@(#)buf.c,v 1.4 1994/02/01 00:34:35 alm Exp";
@@ -40,9 +45,7 @@ __RCSID("$NetBSD: buf.c,v 1.27 2014/03/23 05:06:42 dholland Exp $");
 #include <sys/file.h>
 #include <sys/stat.h>
 
-#include <paths.h>
 #include <stdio.h>
-#include <err.h>
 
 #include "ed.h"
 

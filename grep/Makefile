@@ -36,4 +36,6 @@ COPTS.util.c += -Wno-format-nonliteral
 
 CPPFLAGS +=	-DHAVE_NBTOOL_CONFIG_H
 
+.include "../mk/mkc_imp.f_strsep.mk"
+
 .include "../mk/addlinks.mk"

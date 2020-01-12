@@ -30,6 +30,9 @@
  */
 
 #include <sys/cdefs.h>
+
+#include "mkc_err.h"
+
 #ifndef lint
 #if 0
 static char sccsid[] = "@(#)subr.c	8.1 (Berkeley) 6/6/93";
@@ -38,10 +41,10 @@ __RCSID("$NetBSD: subr.c,v 1.19 2009/08/13 06:59:37 dholland Exp $");
 #endif /* not lint */
 
 #include <ctype.h>
-#include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "error.h"
 
 /*

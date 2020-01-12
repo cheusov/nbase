@@ -39,6 +39,8 @@
 #include "mkc_bsd_getopt.h"
 #include "mkc_struct_stat.h"
 #include "mkc_types.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -63,7 +65,6 @@ __RCSID("$NetBSD: mv.c,v 1.43 2011/08/29 14:46:54 joerg Exp $");
 #include <sys/extattr.h>
 #endif
 
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <grp.h>

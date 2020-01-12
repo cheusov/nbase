@@ -42,7 +42,6 @@ __RCSID("$NetBSD: flock.c,v 1.9.4.1 2014/08/30 14:06:55 martin Exp $");
 #include <err.h>
 #include <errno.h>
 #include <getopt.h>
-#include <paths.h>
 #include <limits.h>
 #include <time.h>
 #include <stdarg.h>

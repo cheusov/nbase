@@ -35,6 +35,7 @@
 
 #include "mkc_humanize_number.h"
 #include "mkc_raise_default_signal.h"
+#include "mkc_err.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -49,7 +50,6 @@ __RCSID("$NetBSD: misc.c,v 1.23 2011/11/07 22:24:23 jym Exp $");
 #include <sys/types.h>
 #include <sys/time.h>
 
-#include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -78,7 +78,7 @@ summary(void)
 		(void)write(STDERR_FILENO, "\n", 1);
 
 #ifdef NO_MSGFMT
-	return posix_summary();
+	posix_summary();
 #else /* NO_MSGFMT */
 	if (strncmp(msgfmt, "human", sizeof("human")) == 0)
 		return human_summary();
@@ -89,7 +89,7 @@ summary(void)
 	if (strncmp(msgfmt, "quiet", sizeof("quiet")) == 0)
 		return quiet_summary();
 
-	return custom_summary();
+	custom_summary();
 #endif /* NO_MSGFMT */
 }
 

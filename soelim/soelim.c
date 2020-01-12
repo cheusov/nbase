@@ -59,7 +59,6 @@ __RCSID("$NetBSD: soelim.c,v 1.14 2008/07/21 14:19:26 lukem Exp $");
  * the program tbl doesn't understand ".so" directives.
  */
 #include <sys/param.h>
-#include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -67,6 +66,8 @@ __RCSID("$NetBSD: soelim.c,v 1.14 2008/07/21 14:19:26 lukem Exp $");
 
 #include "mkc_progname.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #define	STDIN_NAME	"-"
 

@@ -31,11 +31,13 @@
 __RCSID("$NetBSD: trace.c,v 1.8 2012/03/20 20:34:58 matt Exp $");
 
 #include <sys/types.h>
-#include <err.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "mkc_err.h"
+
 #include "mdef.h"
 #include "stdd.h"
 #include "extern.h"

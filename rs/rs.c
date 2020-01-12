@@ -49,8 +49,10 @@ __RCSID("$NetBSD: rs.c,v 1.15 2011/09/06 18:28:58 joerg Exp $");
  *		BEWARE: lots of unfinished edges
  */
 
+#include "mkc_err.h"
+#include "mkc_warn.h"
+
 #include <ctype.h>
-#include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

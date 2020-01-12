@@ -5,5 +5,6 @@ PROG =	tabs
 .include "../mk/hacks.mk"
 
 .include "../mk/mkc_imp.f_curses.mk"
+.include "../mk/mkc_imp.f_strsep.mk"
 
 .include "../mk/addlinks.mk"

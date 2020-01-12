@@ -53,7 +53,6 @@ __RCSID("$NetBSD: script.c,v 1.21 2011/09/06 18:29:56 joerg Exp $");
 #include <err.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <paths.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -76,6 +75,7 @@ __RCSID("$NetBSD: script.c,v 1.21 2011/09/06 18:29:56 joerg Exp $");
 #include "mkc_progname.h"
 #include "mkc_bswap.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_macro.h"
 
 #define	DEF_BUF	65536
 

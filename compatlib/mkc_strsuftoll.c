@@ -60,8 +60,9 @@
  * SUCH DAMAGE.
  */
 
-#include "mkc_strsuftoll.h"
 #include "mkc_macro.h"
+#include "mkc_strsuftoll.h"
+#include "mkc_err.h"
 
 #if HAVE_NBTOOL_CONFIG_H
 #include "nbtool_config.h"
@@ -84,7 +85,6 @@ __RCSID("$NetBSD: strsuftoll.c,v 1.9 2011/10/22 22:08:47 christos Exp $");
 
 #include <assert.h>
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <limits.h>
 #include <stdio.h>

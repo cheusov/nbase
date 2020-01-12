@@ -45,13 +45,14 @@ __RCSID("$NetBSD: odsyntax.c,v 1.28 2010/11/27 20:46:38 christos Exp $");
 #include <sys/types.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
 #include "mkc_efun.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #include "hexdump.h"
 

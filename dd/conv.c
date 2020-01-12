@@ -34,6 +34,9 @@
  */
 
 #include <sys/cdefs.h>
+
+#include "mkc_err.h"
+
 #ifndef lint
 #if 0
 static char sccsid[] = "@(#)conv.c	8.3 (Berkeley) 4/2/94";
@@ -45,7 +48,6 @@ __RCSID("$NetBSD: conv.c,v 1.17 2003/08/07 09:05:10 agc Exp $");
 #include <sys/param.h>
 #include <sys/time.h>
 
-#include <err.h>
 #include <string.h>
 #include <stdlib.h>
 

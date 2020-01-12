@@ -59,7 +59,6 @@ tail	{white}
 #include <arpa/inet.h>
 
 #include <assert.h>
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <stdarg.h>
@@ -69,6 +68,7 @@ tail	{white}
 
 #include "mkc_macro.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
 
 #include "fgen.h"
 static TOKEN ltoken;

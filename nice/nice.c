@@ -52,11 +52,12 @@ __RCSID("$NetBSD: nice.c,v 1.15 2008/07/21 14:19:24 lukem Exp $");
 #include <locale.h>
 #include <ctype.h>
 #include <errno.h>
-#include <err.h>
 #include <unistd.h>
 
 #include "mkc_progname.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #define	DEFNICE	10
 

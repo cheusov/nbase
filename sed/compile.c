@@ -51,7 +51,6 @@ static const char sccsid[] = "@(#)compile.c	8.1 (Berkeley) 6/6/93";
 #include <sys/stat.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <limits.h>
@@ -64,6 +63,8 @@ static const char sccsid[] = "@(#)compile.c	8.1 (Berkeley) 6/6/93";
 #include "defs.h"
 #include "extern.h"
 
+#include "mkc_err.h"
+#include "mkc_warn.h"
 #include "mkc_errc.h"
 #include "mkc_macro.h"
 

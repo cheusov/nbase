@@ -31,6 +31,8 @@
 
 #include "mkc_progname.h"
 #include "mkc_sys_signame.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #include <sys/cdefs.h>
 #if !defined(lint) && !defined(SHELL)
@@ -47,7 +49,6 @@ __RCSID("$NetBSD: kill.c,v 1.27 2011/08/29 14:51:18 joerg Exp $");
 #endif /* not lint */
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <signal.h>
 #include <stdio.h>

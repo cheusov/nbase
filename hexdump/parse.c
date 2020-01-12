@@ -46,7 +46,6 @@ __RCSID("$NetBSD: parse.c,v 1.27 2011/09/04 20:27:27 joerg Exp $");
 #include <sys/file.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <inttypes.h>
@@ -55,6 +54,8 @@ __RCSID("$NetBSD: parse.c,v 1.27 2011/09/04 20:27:27 joerg Exp $");
 #include <string.h>
 
 #include "mkc_efun.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #include "hexdump.h"
 

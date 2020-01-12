@@ -64,6 +64,9 @@
  */
 
 #include <sys/cdefs.h>
+
+#include "mkc_err.h"
+
 #ifndef lint
 #if 0
 static char sccsid[] = "@(#)io.c	8.1 (Berkeley) 6/6/93";
@@ -73,7 +76,6 @@ __RCSID("$NetBSD: io.c,v 1.14.24.1 2014/09/21 18:58:56 snj Exp $");
 #endif				/* not lint */
 
 #include <ctype.h>
-#include <err.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>

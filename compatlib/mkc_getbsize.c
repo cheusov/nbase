@@ -32,8 +32,8 @@
  */
 
 #include "mkc_getbsize.h"
+#include "mkc_warn.h"
 
-#include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

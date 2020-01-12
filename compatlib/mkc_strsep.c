@@ -1,8 +1,6 @@
-/*	$NetBSD: pathnames.h,v 1.6 2009/08/13 03:07:49 dholland Exp $	*/
-
-/*
- * Copyright (c) 1989, 1993
- *	The Regents of the University of California.  All rights reserved.
+/*-
+ * Copyright (c) 1990, 1993
+ *    The Regents of the University of California.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -27,14 +25,60 @@
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
- *
- *	@(#)pathnames.h	8.1 (Berkeley) 6/6/93
  */
 
-#include "mkc_macro.h"
+#include <assert.h>
+#include <string.h>
 
-#define IG_FILE1	"llib-lc"
-#define IG_FILE2	"llib-port"
-#define IG_FILE3	"/usr/lib/llib-lc"
-#define IG_FILE4	"/usr/lib/llib-port"
-#define TMPFILE		"ErrorXXXXXX"
+#include "mkc_strsep.h"
+
+/*
+ * Get next token from string *stringp, where tokens are possibly-empty
+ * strings separated by characters from delim. If esc is not NUL, then
+ * the characters followed by esc are ignored and are not taken into account
+ * when splitting the string.
+ *
+ * Writes NULs into the string at *stringp to end tokens.
+ * delim need not remain constant from call to call.
+ * On return, *stringp points past the last NUL written (if there might
+ * be further tokens), or is NULL (if there are definitely no more tokens).
+ *
+ * If *stringp is NULL, stresep returns NULL.
+ */
+char *
+stresep(char **stringp, const char *delim, int esc)
+{
+    char *s;
+    const char *spanp;
+    int c, sc;
+    size_t l;
+    char *tok;
+
+    assert(stringp != NULL);
+    assert(delim != NULL);
+
+    if ((s = *stringp) == NULL)
+        return NULL;
+
+    l = strlen(s) + 1;
+    for (tok = s;;) {
+        c = *s++;
+        l--;
+        while (esc != '\0' && c == esc) {
+            memmove(s - 1, s, l);
+            c = *s++;
+            l--;
+        }
+        spanp = delim;
+        do {
+            if ((sc = *spanp++) == c) {
+                if (c == '\0')
+                    s = NULL;
+                else
+                    s[-1] = '\0';
+                *stringp = s;
+                return tok;
+            }
+        } while (sc != '\0');
+    }
+}

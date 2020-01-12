@@ -1,7 +1,11 @@
 PROG =	sed
 SRCS =	compile.c main.c misc.c process.c
 
+MKC_FEATURES +=	getline
+
 .include <mkc.init.mk>
+
+CFLAGS.warns.gcc.4 +=	-Wno-error=shadow
 
 .include "../mk/hacks.mk"
 

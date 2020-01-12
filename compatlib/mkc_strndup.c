@@ -1,7 +1,5 @@
-/*	$NetBSD: pathnames.h,v 1.6 2009/08/13 03:07:49 dholland Exp $	*/
-
 /*
- * Copyright (c) 1989, 1993
+ * Copyright (c) 1988, 1993
  *	The Regents of the University of California.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,14 +25,31 @@
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
- *
- *	@(#)pathnames.h	8.1 (Berkeley) 6/6/93
  */
 
-#include "mkc_macro.h"
+#include <assert.h>
+#include <errno.h>
+#include <stdlib.h>
+#include <string.h>
 
-#define IG_FILE1	"llib-lc"
-#define IG_FILE2	"llib-port"
-#define IG_FILE3	"/usr/lib/llib-lc"
-#define IG_FILE4	"/usr/lib/llib-port"
-#define TMPFILE		"ErrorXXXXXX"
+#include "mkc_strndup.h"
+
+char *strndup(const char *str, size_t n)
+{
+    size_t len;
+    char *copy;
+
+    assert(str != NULL);
+
+    for (len = 0; len < n && str[len]; len++)
+        continue;
+
+    if (!(copy = malloc(len + 1)))
+        return (NULL);
+
+    memcpy(copy, str, len);
+    copy[len] = '\0';
+
+    return (copy);
+}
+

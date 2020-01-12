@@ -65,7 +65,6 @@
 
 #include <sys/param.h>
 
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <limits.h>
@@ -75,6 +74,8 @@
 #include <string.h>
 
 #include "mkc_macro.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #define NBINS		256
 

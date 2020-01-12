@@ -48,12 +48,13 @@ __RCSID("$NetBSD: lam.c,v 1.8 2011/09/04 20:28:09 joerg Exp $");
  */
 
 #include <ctype.h>
-#include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "mkc_strlcpy.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #define	MAXOFILES	20
 #define	BIGBUFSIZ	5 * BUFSIZ

@@ -33,6 +33,9 @@
  */
 
 #include <sys/cdefs.h>
+
+#include "mkc_strsep.h"
+
 #ifndef lint
 __RCSID("$NetBSD: fetch.c,v 1.205.4.1 2014/10/26 16:47:12 martin Exp $");
 #endif /* not lint */

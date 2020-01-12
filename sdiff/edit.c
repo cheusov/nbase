@@ -10,7 +10,6 @@
 #include <sys/wait.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -18,6 +17,9 @@
 
 #include "common.h"
 #include "extern.h"
+
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 static void edit(const char *);
 

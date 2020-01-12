@@ -42,7 +42,6 @@ __RCSID("$NetBSD: renice.c,v 1.18 2008/07/21 14:19:25 lukem Exp $");
 
 #include <sys/resource.h>
 
-#include <err.h>
 #include <errno.h>
 #include <limits.h>
 #include <pwd.h>
@@ -52,6 +51,7 @@ __RCSID("$NetBSD: renice.c,v 1.18 2008/07/21 14:19:25 lukem Exp $");
 #include <sysexits.h>
 
 #include "mkc_progname.h"
+#include "mkc_warn.h"
 
 static int	getnum(const char *, const char *, int *);
 static int	donice(int, id_t, int, int);

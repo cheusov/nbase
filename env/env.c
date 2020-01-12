@@ -29,6 +29,7 @@
 
 #include "mkc_progname.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -41,7 +42,6 @@ __COPYRIGHT("@(#) Copyright (c) 1988, 1993, 1994\
 __RCSID("$NetBSD: env.c,v 1.20 2010/11/16 02:53:49 christos Exp $");
 #endif /* not lint */
 
-#include <err.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

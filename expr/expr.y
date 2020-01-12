@@ -31,6 +31,7 @@
 
 %{
 #include "mkc_progname.h"
+#include "mkc_err.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -39,7 +40,6 @@ __RCSID("$NetBSD: expr.y,v 1.38 2012/03/15 02:02:20 joerg Exp $");
 
 #include <stdint.h>
 
-#include <err.h>
 #include <errno.h>
 #include <limits.h>
 #include <locale.h>

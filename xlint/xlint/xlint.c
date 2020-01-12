@@ -47,7 +47,6 @@ __RCSID("$NetBSD: xlint.c,v 1.44 2011/09/18 09:07:35 njoly Exp $");
 #include <sys/utsname.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <paths.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -60,6 +59,7 @@ __RCSID("$NetBSD: xlint.c,v 1.44 2011/09/18 09:07:35 njoly Exp $");
 #include "findcc.h"
 
 #include "mkc_bsd_getopt.h"
+#include "mkc_macro.h"
 
 #define DEFAULT_PATH		_PATH_DEFPATH
 

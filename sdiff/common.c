@@ -6,7 +6,8 @@
  * Public domain.
  */
 
-#include <err.h>
+#include "mkc_err.h"
+
 #include <stdlib.h>
 #include <unistd.h>
 

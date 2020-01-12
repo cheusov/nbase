@@ -33,6 +33,9 @@
  */
 
 #include <sys/cdefs.h>
+
+#include "mkc_err.h"
+
 #ifndef lint
 __COPYRIGHT("@(#) Copyright (c) 1989, 1993\
  The Regents of the University of California.  All rights reserved.");
@@ -45,7 +48,6 @@ static char sccsid[] = "@(#)fpr.c	8.1 (Berkeley) 6/6/93";
 __RCSID("$NetBSD: fpr.c,v 1.9 2011/09/04 20:26:17 joerg Exp $");
 #endif				/* not lint */
 
-#include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
 

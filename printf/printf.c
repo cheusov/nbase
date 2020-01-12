@@ -48,7 +48,6 @@ __RCSID("$NetBSD: printf.c,v 1.36 2013/07/16 17:48:22 christos Exp $");
 #include <sys/types.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <inttypes.h>
 #include <limits.h>
@@ -61,6 +60,7 @@ __RCSID("$NetBSD: printf.c,v 1.36 2013/07/16 17:48:22 christos Exp $");
 
 #include "mkc_progname.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_warn.h"
 
 #ifdef __GNUC__
 #define ESCAPE '\e'

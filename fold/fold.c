@@ -47,6 +47,7 @@ __RCSID("$NetBSD: fold.c,v 1.17 2011/09/04 20:24:59 joerg Exp $");
 
 #include "mkc_progname.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
 
 #include <limits.h>
 #include <locale.h>
@@ -54,7 +55,6 @@ __RCSID("$NetBSD: fold.c,v 1.17 2011/09/04 20:24:59 joerg Exp $");
 #include <stdlib.h>
 #include <unistd.h>
 #include <wchar.h>
-#include <err.h>
 
 #define	DEFLINEWIDTH	80
 

@@ -8,6 +8,7 @@
 #include "mkc_lchmod.h"
 #include "mkc_flags_to_string.h"
 #include "mkc_struct_stat.h"
+#include "mkc_strsep.h"
 
 #include <sys/stat.h>
 #include <limits.h>

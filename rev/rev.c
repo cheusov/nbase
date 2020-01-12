@@ -45,7 +45,6 @@ __RCSID("$NetBSD: rev.c,v 1.12 2011/09/16 15:39:28 joerg Exp $");
 
 #include <sys/types.h>
 
-#include <err.h>
 #include <errno.h>
 #include <locale.h>
 #include <stdio.h>
@@ -56,6 +55,7 @@ __RCSID("$NetBSD: rev.c,v 1.12 2011/09/16 15:39:28 joerg Exp $");
 #include "mkc_progname.h"
 #include "mkc_fgetwln.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_warn.h"
 
 __dead static void usage(void);
 

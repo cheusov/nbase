@@ -35,7 +35,6 @@ __RCSID("$NetBSD: seq.c,v 1.7 2010/05/27 08:40:19 dholland Exp $");
 #endif /* not lint */
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <math.h>
 #include <locale.h>
@@ -46,6 +45,7 @@ __RCSID("$NetBSD: seq.c,v 1.7 2010/05/27 08:40:19 dholland Exp $");
 
 #include "mkc_progname.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
 
 #define ZERO	'0'
 #define SPACE	' '
@@ -310,7 +310,7 @@ unescape(char *orig)
 			*orig = '\b';
 			continue;
 		case 'e':	/* escape */
-			*orig = '\e';
+			*orig = '\x1B';
 			continue;
 		case 'f':	/* formfeed */
 			*orig = '\f';

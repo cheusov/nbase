@@ -53,7 +53,6 @@ __RCSID("$NetBSD: join.c,v 1.31 2011/09/04 20:27:52 joerg Exp $");
 
 #include <sys/types.h>
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -63,6 +62,9 @@ __RCSID("$NetBSD: join.c,v 1.31 2011/09/04 20:27:52 joerg Exp $");
 #include "mkc_progname.h"
 #include "mkc_fgetln.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
+#include "mkc_strsep.h"
 
 /*
  * There's a structure per input file which encapsulates the state of the
@@ -93,8 +95,8 @@ typedef struct {
 	u_long setalloc;	/* set allocated count */
 } INPUT;
 
-static INPUT input1 = { NULL, 0, 0, 1, NULL, -1, 0, 0, },
-      input2 = { NULL, 0, 0, 2, NULL, -1, 0, 0, };
+static INPUT input1 = { NULL, 0, 0, 1, NULL, (u_long)-1, 0, 0, },
+      input2 = { NULL, 0, 0, 2, NULL, (u_long)-1, 0, 0, };
 
 typedef struct {
 	u_long	fileno;		/* file number */

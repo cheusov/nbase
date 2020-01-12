@@ -39,7 +39,6 @@ __RCSID("$NetBSD: str.c,v 1.29 2013/08/11 01:54:35 dholland Exp $");
 
 #include <sys/types.h>
 
-#include <err.h>
 #include <errno.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -49,6 +48,7 @@ __RCSID("$NetBSD: str.c,v 1.29 2013/08/11 01:54:35 dholland Exp $");
 #include <assert.h>
 
 #include "mkc_macro.h"
+#include "mkc_err.h"
 
 #include "extern.h"
 

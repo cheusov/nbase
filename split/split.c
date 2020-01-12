@@ -46,7 +46,6 @@ __RCSID("$NetBSD: split.c,v 1.26 2011/09/16 15:39:29 joerg Exp $");
 #include <sys/stat.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
@@ -57,6 +56,8 @@ __RCSID("$NetBSD: split.c,v 1.26 2011/09/16 15:39:29 joerg Exp $");
 #include "mkc_progname.h"
 #include "mkc_macro.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #define DEFLINE	1000		/* Default num lines per file. */
 

@@ -35,6 +35,8 @@
 
 #include "mkc_progname.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -59,7 +61,6 @@ __RCSID("$NetBSD: dd.c,v 1.49.12.1 2015/03/26 11:08:43 martin Exp $");
 #include <sys/time.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <locale.h>
