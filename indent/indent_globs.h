@@ -345,7 +345,11 @@ EXTERN struct parser_state match_state[5];
 int compute_code_target(void);
 int compute_label_target(void);
 int count_spaces(int, char *);
+#if defined(__clang__) || defined(__GNUC__)
 void diag(int, const char *,...) __attribute__((__format__(__printf__, 2, 3)));
+#else
+void diag(int, const char *,...);
+#endif
 void dump_line(void);
 int eqin(const char *, const char *);
 void fill_buffer(void);
