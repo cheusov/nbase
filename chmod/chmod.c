@@ -29,8 +29,11 @@
  * SUCH DAMAGE.
  */
 
+#include "mkc_lchmod.h"
 #include "mkc_progname.h"
 #include "mkc_getsetmode.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -51,7 +54,6 @@ __RCSID("$NetBSD: chmod.c,v 1.38 2012/10/22 18:00:46 christos Exp $");
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#include <err.h>
 #include <errno.h>
 #include <fts.h>
 #include <limits.h>
@@ -61,8 +63,6 @@ __RCSID("$NetBSD: chmod.c,v 1.38 2012/10/22 18:00:46 christos Exp $");
 #include <string.h>
 #include <unistd.h>
 #include <getopt.h>
-
-#include "mkc_lchmod.h"
 
 __dead static void	usage(void);
 
