@@ -152,7 +152,7 @@ efopen(const char *p, const char *m)
 }
 
 int
-easprintf(char ** __restrict ret, const char * __restrict format, ...)
+easprintf(char ** /*__restrict*/ ret, const char * /*__restrict*/ format, ...)
 {
 	int rv;
 	va_list ap;
@@ -164,7 +164,7 @@ easprintf(char ** __restrict ret, const char * __restrict format, ...)
 }
 
 int
-evasprintf(char ** __restrict ret, const char * __restrict format, va_list ap)
+evasprintf(char ** /*__restrict*/ ret, const char * /*__restrict*/ format, va_list ap)
 {
 	int rv;
 	if ((rv = vasprintf(ret, format, ap)) == -1)
