@@ -5,6 +5,9 @@ CPPFLAGS +=	-D_NETBSD_SOURCE
 
 .include <mkc.init.mk>
 
+CFLAGS.warns.gcc.4   +=	-Wno-error=return-type
+CFLAGS.warns.clang.4 +=	-Wno-error=return-type
+
 .if ${OPSYS:U} == FreeBSD
 WARNERR   =	no # FreeBSD has a bit different fts_open(3)
 .endif

@@ -37,6 +37,9 @@
 #include <regex.h>
 #include <time.h>
 
+#include "mkc_warn.h"
+#include "mkc_err.h"
+
 /* node type */
 enum ntype {
 	N_AND = 1, 				/* must start > 0 */
@@ -65,7 +68,7 @@ typedef struct _plandata {
 	int flags;				/* private flags */
 	enum ntype type;			/* plan node type */
 	union {
-		u_int32_t _f_data;		/* flags */
+		uint32_t _f_data;		/* flags */
 		gid_t _g_data;			/* gid */
 		ino_t _i_data;			/* inode */
 		mode_t _m_data;			/* mode mask */

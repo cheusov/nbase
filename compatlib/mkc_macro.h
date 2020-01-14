@@ -17,6 +17,7 @@
 #include <sys/param.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <fnmatch.h>
 
 #if HAVE_HEADER_FILE_SYS_SYSMACROS_H
 # include <sys/sysmacros.h>
@@ -68,6 +69,10 @@
 
 #ifndef REG_BASIC
 #define REG_BASIC 0
+#endif
+
+#ifndef FNM_CASEFOLD
+#define FNM_CASEFOLD 0
 #endif
 
 /*

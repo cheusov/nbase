@@ -95,7 +95,7 @@ PROJECTS :=	${PROJECTS:N${t}}
 .endif
 
 .if ${HAVE_FUNC3.strtoq.stdlib_h:U1} != 1
-.  for t in cmp
+.  for t in cmp find
    WARN_MSG += "Exclude ${t} due to missing strtoq in stdlib.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
