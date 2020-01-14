@@ -51,7 +51,6 @@ __RCSID("$NetBSD: du.c,v 1.36 2012/03/11 11:23:20 shattered Exp $");
 #include <sys/stat.h>
 
 #include <dirent.h>
-#include <err.h>
 #include <errno.h>
 #include <fts.h>
 #include <inttypes.h>
@@ -65,6 +64,8 @@ __RCSID("$NetBSD: du.c,v 1.36 2012/03/11 11:23:20 shattered Exp $");
 #include "mkc_getbsize.h"
 #include "mkc_macro.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 /* Count inodes or file size */
 #define	COUNT	(iflag ? 1 : p->fts_statp->st_blocks)
