@@ -35,6 +35,8 @@
 #include "mkc_strlcpy.h"
 #include "mkc_progname.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -70,7 +72,6 @@ __RCSID("$NetBSD: cp.c,v 1.58 2012/01/04 15:58:37 christos Exp $");
 #include <sys/stat.h>
 
 #include <assert.h>
-#include <err.h>
 #include <errno.h>
 #include <fts.h>
 #include <locale.h>

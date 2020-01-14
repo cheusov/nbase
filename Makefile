@@ -130,7 +130,7 @@ PROJECTS :=	${PROJECTS:N${t}}
 .endif
 
 .if ${HAVE_DEFINE.TIMESPEC_TO_TIMEVAL.sys_time_h:U1} != 1
-.  for t in compress
+.  for t in compress cp
    WARN_MSG += "Exclude ${t} due to missing TIMESPEC_TO_TIMEVAL in sys/time.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
