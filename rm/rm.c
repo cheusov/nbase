@@ -34,6 +34,8 @@
 #include "mkc_strmode.h"
 #include "mkc_bsd_getopt.h"
 #include "mkc_arc4random.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -53,7 +55,6 @@ __RCSID("$NetBSD: rm.c,v 1.53 2013/04/26 18:43:22 christos Exp $");
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <fts.h>
@@ -463,7 +464,7 @@ rm_overwrite(char *file, struct stat *sbp)
 	for (len = sbp->st_size; len > 0; len -= wlen) {		\
 		if (mode == RAND_BYTES) {				\
 			for (i = 0; i < sizeof(buf); 			\
-			    i+= sizeof(u_int32_t))			\
+			    i+= sizeof(uint32_t))			\
 				*(int *)(buf + i) = arc4random();	\
 		}							\
 		wlen = len < (off_t)sizeof(buf) ? (size_t)len : sizeof(buf); \
