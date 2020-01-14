@@ -136,9 +136,9 @@ do {									\
 int
 compare(NODE *s, FTSENT *p)
 {
-	u_int32_t len, val;
+	uint32_t len, val;
 #ifdef HAVE_STRUCT_STAT_ST_FLAGS
-	u_int32_t flags;
+	uint32_t flags;
 #endif
 	int fd, label;
 	const char *cp, *tab;

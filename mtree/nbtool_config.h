@@ -9,6 +9,10 @@
 #include "mkc_flags_to_string.h"
 #include "mkc_struct_stat.h"
 #include "mkc_strsep.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
+#include "mkc_fparseln.h"
+#include "mkc_macro.h"
 
 #include <sys/stat.h>
 #include <limits.h>

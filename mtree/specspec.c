@@ -33,7 +33,6 @@
 #include <sys/cdefs.h>
 __RCSID("$NetBSD: specspec.c,v 1.2 2012/10/05 01:27:29 christos Exp $");
 
-#include <err.h>
 #include <grp.h>
 #include <pwd.h>
 #include <time.h>

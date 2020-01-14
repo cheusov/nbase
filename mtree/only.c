@@ -49,10 +49,6 @@ __RCSID("$NetBSD: only.c,v 1.2 2013/02/05 00:59:03 christos Exp $");
 #include <stdbool.h>
 #include <stdint.h>
 #include <time.h>
-#include <err.h>
-
-#include "mkc_fparseln.h"
-#include "mkc_macro.h"
 
 #include "extern.h"
 
