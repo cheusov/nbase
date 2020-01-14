@@ -273,8 +273,8 @@ pax_options(int argc, char **argv)
 {
 	int c;
 	size_t i;
-	u_int64_t flg = 0;
-	u_int64_t bflg = 0;
+	uint64_t flg = 0;
+	uint64_t bflg = 0;
 	char *pt;
 	FSUB tmp;
 
@@ -1501,8 +1501,8 @@ static void
 cpio_options(int argc, char **argv)
 {
 	FSUB tmp;
-	u_int64_t flg = 0;
-	u_int64_t bflg = 0;
+	uint64_t flg = 0;
+	uint64_t bflg = 0;
 	int c;
 	size_t i;
 	FILE *fp;
