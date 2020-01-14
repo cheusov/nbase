@@ -40,7 +40,6 @@ __RCSID("$NetBSD: util.c,v 1.18 2014/07/14 21:56:03 christos Exp $");
 #include <sys/types.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <fnmatch.h>
 #include <fts.h>
@@ -310,10 +309,14 @@ procline(struct str *l, int nottext)
 				r = (r == 0) ? 0 : REG_NOMATCH;
 				st = pmatch.rm_eo;
 			} else {
+#ifdef REG_STARTEND
 				r = regexec(&r_pattern[i], l->dat, 1,
 				    &pmatch, eflags);
 				r = (r == 0) ? 0 : REG_NOMATCH;
 				st = pmatch.rm_eo;
+#else
+				err(2, "REG_STARTEND is not available on this system.");
+#endif
 			}
 			if (r == REG_NOMATCH)
 				continue;

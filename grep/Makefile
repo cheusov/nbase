@@ -13,7 +13,7 @@ MLINKS =grep.1 egrep.1	\
 	grep.1 zegrep.1	\
 	grep.1 zfgrep.1
 
-MKC_FEATURES =	STAILQ
+MKC_FEATURES =	STAILQ getline
 
 MKC_REQUIRE_FUNCLIBS= gzread:z BZ2_bzRead:bz2
 
