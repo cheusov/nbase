@@ -58,7 +58,6 @@ __RCSID("$NetBSD: xinstall.c,v 1.117 2014/07/06 20:54:47 apb Exp $");
 #include <sys/time.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <grp.h>
