@@ -32,8 +32,6 @@
  * SUCH DAMAGE.
  */
 
-#include "mkc_vis.h"
-
 #include <sys/cdefs.h>
 #ifndef lint
 #if 0
@@ -46,7 +44,6 @@ __RCSID("$NetBSD: util.c,v 1.34 2011/08/29 14:44:21 joerg Exp $");
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <err.h>
 #include <fts.h>
 #include <limits.h>
 #include <stdio.h>
@@ -56,6 +53,8 @@ __RCSID("$NetBSD: util.c,v 1.34 2011/08/29 14:44:21 joerg Exp $");
 #include <wctype.h>
 
 #include "mkc_vis.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #include "ls.h"
 #include "extern.h"

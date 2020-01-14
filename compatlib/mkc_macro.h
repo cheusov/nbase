@@ -94,6 +94,10 @@
 #define __USE(a) ((void)(a))
 #endif
 
+#ifndef S_BLKSIZE
+#define S_BLKSIZE 512
+#endif
+
 #ifndef __unused
 #define __unused
 #endif

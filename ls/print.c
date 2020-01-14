@@ -44,7 +44,6 @@ __RCSID("$NetBSD: print.c,v 1.55 2014/05/10 09:39:18 martin Exp $");
 #include <sys/param.h>
 #include <sys/stat.h>
 
-#include <err.h>
 #include <errno.h>
 #include <inttypes.h>
 #include <fts.h>
@@ -65,6 +64,8 @@ __RCSID("$NetBSD: print.c,v 1.55 2014/05/10 09:39:18 martin Exp $");
 #include "mkc_macro.h"
 #include "mkc_strmode.h"
 #include "mkc_tzfile.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 extern int termwidth;
 
