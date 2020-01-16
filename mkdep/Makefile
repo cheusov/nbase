@@ -5,6 +5,9 @@ SRCS =	mkdep.c findcc.c
 
 .include <mkc.init.mk>
 
+CFLAGS.warns.gcc.4    +=	-Wno-error=deprecated-declarations
+CFLAGS.warns.clang.4  +=	-Wno-error=deprecated-declarations
+
 .include "../mk/hacks.mk"
 
 .include "../mk/mkc_imp.f_dprintf.mk"

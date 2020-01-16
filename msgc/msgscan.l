@@ -54,7 +54,7 @@ static int level; 	/* For nested comments. */
 %x COMMENT
 %x BRACE
 
-%option noinput
+//%option noinput
 
 %%
 
