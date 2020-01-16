@@ -13,6 +13,9 @@ PROGNAME ?=	install
 
 .include <mkc.init.mk>
 
+CFLAGS.warns.gcc.4    +=	-Wno-error=deprecated-declarations
+CFLAGS.warns.clang.4  +=	-Wno-error=deprecated-declarations
+
 .if ${TARGET_OPSYS} == "SunOS"
 CFLAGS.warns.gcc.4     +=	-Wno-error=pointer-sign
 CFLAGS.warns.clang.4   +=	-Wno-error=pointer-sign
