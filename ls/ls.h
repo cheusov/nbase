@@ -34,6 +34,8 @@
  *	@(#)ls.h	8.1 (Berkeley) 5/31/93
  */
 
+#include <stdint.h>
+
 #define NO_PRINT	1
 
 extern long blocksize;		/* block size units */

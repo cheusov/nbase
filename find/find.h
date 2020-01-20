@@ -36,6 +36,7 @@
 
 #include <regex.h>
 #include <time.h>
+#include <stdint.h>
 
 #include "mkc_warn.h"
 #include "mkc_err.h"

@@ -2051,9 +2051,6 @@ tokenize(YY_BUFFER_STATE yinput)
 				emit("drop");
 				emit("execute");
 #else
-				printf("%s:%d: undefined token %s\n",
-					infile, yylineno, yytext);
-				exit(1);
 				token_err(yylineno, infile, yytext,
 					"%s: undefined token `%s'\n",
 					myname, token->text);

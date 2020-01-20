@@ -1,4 +1,20 @@
 ======================================================================
+Version 7.0.0.6, by Aleksey Cheusov, Sun, 19 Jan 2020 01:45:59 +0300
+
+  Add support for Solaris-10 and -11 to a lot of utilities
+  (almost all with the help of musl-fts library!).
+
+  A lot of fixes for SunC compiler (versions 5.11 and 5.15).
+
+  mk/mkc_imp.f_bsd_getopt.mk: fix for target "clean"
+
+  Fix feature "efun" on SunOS-5.10.
+
+  Add new feature "strsep" that provides portable strsep(3) and stresep(3)
+
+  find, ls, mtree and xinstall: fix build failure on eglibc-2.13
+
+======================================================================
 Version 7.0.0.5, by Aleksey Cheusov, Mon,  6 Jan 2020 01:43:19 +0300
 
   Fix typos doc/INSTALL

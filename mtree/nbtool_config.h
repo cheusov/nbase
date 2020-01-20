@@ -16,6 +16,7 @@
 
 #include <sys/stat.h>
 #include <limits.h>
+#include <stdint.h>
 #include <pwd.h>
 #include <grp.h>
 

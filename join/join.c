@@ -595,8 +595,9 @@ obsolete(char **argv)
 			case '\0':
 				break;
 			default:
-jbad:				errx(1, "illegal option -- %s", ap);
+jbad:				warnx("illegal option -- %s", ap);
 				usage();
+				exit(1);
 			}
 			break;
 		case 'o':
