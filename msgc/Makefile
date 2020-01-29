@@ -4,6 +4,8 @@ SRCS =		msgmain.c msgparse.y msgscan.l msgdb.c util.c avl.c
 CPPFLAGS+=	-I. -I${.CURDIR} -D_PATH_DEFSYSPREFIX='"${_PATH_DEFSYSPREFIX}"'
 YHEADER=
 
+LDADD  +=	${LEXLIB}
+
 WARNERR =	no
 
 _PATH_DEFSYSPREFIX =	${DATADIR}/misc
