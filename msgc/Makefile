@@ -4,7 +4,7 @@ SRCS =		msgmain.c msgparse.y msgscan.l msgdb.c util.c avl.c
 CPPFLAGS+=	-I. -I${.CURDIR} -D_PATH_DEFSYSPREFIX='"${_PATH_DEFSYSPREFIX}"'
 YHEADER=
 
-LDADD  +=	${LEXLIB}
+MKC_FEATURES +=	libl
 
 WARNERR =	no
 

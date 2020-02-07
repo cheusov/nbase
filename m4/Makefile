@@ -8,7 +8,7 @@ SRCS +=	ohash_create_entry.c ohash_delete.c ohash_do.c ohash_entries.c \
 	ohash_qlookupi.c strtonum.c
 YHEADER =	1
 
-LDADD  +=	${LEXLIB}
+MKC_FEATURES +=	libl
 
 tokenizer.o: parser.h
 
