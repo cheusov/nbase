@@ -16,5 +16,5 @@ MKC_FEATURES +=	libm
 
 .include "../../mk/addlinks.mk"
 
-CFLAGS.warns.clang.4 +=	-Wno-self-assign
-CFLAGS.warns.gcc.4 +=	-Wno-pointer-sign
+CFLAGS.check +=	-Wno-self-assign
+CFLAGS.check +=	-Wno-pointer-sign

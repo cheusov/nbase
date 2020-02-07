@@ -19,6 +19,6 @@ MLINKS +=	cksum.1 rmd160.1
 
 .include <mkc.init.mk>
 
-CFLAGS.warns.gcc.4 +=	-Wno-error=shadow
+CFLAGS.check +=	-Wno-error=shadow
 
 .include "../mk/addlinks.mk"

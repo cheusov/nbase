@@ -5,7 +5,7 @@ LINKS +=  ${BINDIR}/id ${BINDIR}/whoami
 
 .include <mkc.init.mk>
 
-CFLAGS.warns.sunpro.4 +=	-erroff=E_STATEMENT_NOT_REACHED
+CFLAGS.check +=	-erroff=E_STATEMENT_NOT_REACHED
 
 COPTS.id.c += -Wno-format-nonliteral
 

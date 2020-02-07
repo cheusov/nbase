@@ -4,7 +4,7 @@ MAN  =	mknod.8
 
 .include <mkc.init.mk>
 
-CFLAGS.warns.gcc.4    +=	-Wno-error=cpp
+CFLAGS.check    +=	-Wno-error=cpp
 CFLAGS.warns.clang.4  +=	-Wno-error=cpp
 
 .include "../mk/hacks.mk"

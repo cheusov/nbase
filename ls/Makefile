@@ -3,8 +3,7 @@ SRCS=	cmp.c ls.c main.c print.c util.c
 
 .include <mkc.init.mk>
 
-CFLAGS.warns.gcc.4   +=	-Wno-error=return-type
-CFLAGS.warns.clang.4 +=	-Wno-error=return-type
+CFLAGS.check   +=	-Wno-error=return-type
 
 MKC_CHECK_HEADERS =	sys/sysmacros.h # Linux/glibc-2.26 -- major/minor from sys/types.h are deprecated
 
