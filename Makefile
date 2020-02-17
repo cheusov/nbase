@@ -12,15 +12,6 @@
 # TBD: units -- /usr/share/misc/units.lib is missing
 MKC_REQD     =	0.33.90
 
-# Manually set CC_TYPE variable because it is not calculated automatically
-# for !LIB && !PROG projects. As a result we pass to old clang-s (clang-5.0.1)
-# options '-Qunused-arguments -Werror=implicit-function-declaration'.
-# Thus, it works correctly with MKC_CHECK_FUNCS<n> and MKC_CHECK_PROTOTYPES<n>
-# (for example, it correctly detects the missing strl* functions).
-CC_TYPE != env CC=${CC:Q} mkc_check_compiler
-
-.include <mkc.init.mk>
-
 MKC_CHECK_HEADER_FILES  = pty.h fts.h sys/sysctl.h
 MKC_CHECK_HEADERS  =	tzfile.h md2.h db.h termcap.h
 MKC_CHECK_TYPES    =	sig_t:signal.h
