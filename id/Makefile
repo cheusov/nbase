@@ -6,7 +6,7 @@ LINKS +=  ${BINDIR}/id ${BINDIR}/whoami
 .include <mkc.init.mk>
 
 CFLAGS.check +=	-erroff=E_STATEMENT_NOT_REACHED
-
-COPTS.id.c += -Wno-format-nonliteral
+CFLAGS.check += -Wno-format-nonliteral
+CFLAGS.check +=	-Wno-pointer-sign # for Darwin-15.6.0
 
 .include "../mk/addlinks.mk"

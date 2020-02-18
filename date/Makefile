@@ -2,7 +2,8 @@ PROG   =	date
 SRCS   =	date.c netdate.c
 CPPFLAGS +=	-I${.CURDIR}
 
-COPTS.date.c = -Wno-format-nonliteral
+CFLAGS.check  =	-Wno-format-nonliteral
+CFLAGS.check +=	-Wno-deprecated-declarations # for Darwin-15.6.0
 
 MKC_FEATURES +=	strlcpy
 
