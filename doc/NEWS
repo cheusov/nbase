@@ -1,4 +1,20 @@
 ======================================================================
+Version 7.0.0.7, by Aleksey Cheusov, Thu, 20 Feb 2020 01:10:57 +0300
+
+  Requires mk-configure 0.34.0 or above to build
+
+  Remove broken hack with CC_TYPE, latest mk-configure is able to do
+  everything automatically
+
+  Use new mk-configure's feature libl instead of LEXLIB variable
+
+  Use CFLAGS.check for disabling warnerr
+
+  mknod: fix build failure on latest OpenSuSE tumbleweed
+
+  id, date: fixes for Darwin-15.6.0 (disabling warnings)
+
+======================================================================
 Version 7.0.0.6, by Aleksey Cheusov, Sun, 19 Jan 2020 01:45:59 +0300
 
   Add support for Solaris-10 and -11 to a lot of utilities
