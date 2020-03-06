@@ -25,6 +25,8 @@ MKC_CHECK_DEFINES  =	TIMESPEC_TO_TIMEVAL:sys/time.h
 
 MKC_FUNC_OR_DEFINE.makedev =	yes
 
+.include "help.mk"
+
 .include <mkc.configure.mk>
 
 PROJECTS += apply asa nawk/bin banner basename cal cat chmod            \
