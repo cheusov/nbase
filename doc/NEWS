@@ -1,4 +1,10 @@
 ======================================================================
+Version 7.0.0.8, by Aleksey Cheusov, Mon, 16 Mar 2020 01:38:17 +0300
+
+  Add one line description to projects.
+  So, one can run "mkcmake help"
+
+======================================================================
 Version 7.0.0.7, by Aleksey Cheusov, Thu, 20 Feb 2020 01:10:57 +0300
 
   Requires mk-configure 0.34.0 or above to build
