@@ -3,6 +3,8 @@ SRCS =	compile.c main.c misc.c process.c
 
 MKC_FEATURES +=	getline
 
+CFLAGS.check +=	-Wno-error=unused-result # fchown(...) on glibc/Linux-es
+
 .include <mkc.init.mk>
 
 CFLAGS.check  +=	-Wno-error=shadow

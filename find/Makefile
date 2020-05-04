@@ -6,6 +6,7 @@ CPPFLAGS +=	-D_NETBSD_SOURCE
 .include <mkc.init.mk>
 
 CFLAGS.check +=	-Wno-error=return-type
+CFLAGS.check +=	-Wno-error=unused-result # write(...) on glibc/Linux-es
 
 .if ${OPSYS:U} == FreeBSD
 WARNERR   =	no # FreeBSD has a bit different fts_open(3)

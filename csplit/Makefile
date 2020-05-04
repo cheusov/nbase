@@ -1,6 +1,8 @@
 PROG =	csplit
 MAN  =	csplit.1
 
+CFLAGS.check +=	-Wno-error=unused-result # write(...) on glibc/Linux-es
+
 .include <mkc.init.mk>
 
 .include "../mk/hacks.mk"

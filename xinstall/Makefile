@@ -14,6 +14,7 @@ PROGNAME ?=	install
 .include <mkc.init.mk>
 
 CFLAGS.check   +=	-Wno-error=deprecated-declarations
+CFLAGS.check   +=	-Wno-error=unused-result # write(...) on glibc/Linux-es
 
 .if ${TARGET_OPSYS} == "SunOS"
 CFLAGS.check   +=	-Wno-error=pointer-sign
