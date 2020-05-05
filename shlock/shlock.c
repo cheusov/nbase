@@ -94,6 +94,9 @@ static const char USAGE[] = "%s: USAGE: %s [-du] [-p PID] -f file\n";
 static const char E_unlk[] = "%s: unlink(%s): %s\n";
 static const char E_open[] = "%s: open(%s): %s\n";
 
+#ifdef dprintf /* Linux/glibc + clang: -O2 -D_FORTIFY_SOURCE=2 */
+#undef dprintf
+#endif
 #define	dprintf	if (Debug) printf
 
 /*
