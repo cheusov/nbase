@@ -11,4 +11,6 @@ SRCS =	$(PROG).c chset.c
 # output will not be the same as the real thing.
 #CPPFLAGS+= -DLPD_CHSET
 
+CFLAGS.check   +=	-Wno-error=unused-result # write(...) on glibc/Linux-es
+
 .include "../mk/addlinks.mk"
