@@ -1,4 +1,10 @@
 ======================================================================
+Version 7.0.0.9, by Aleksey Cheusov, Thu, 14 May 2020 20:46:44 +0300
+
+  Fix some build failures on Linux-es caused by __wur
+  and '-O2 -D_FORTIFY_SOURCE=2'
+
+======================================================================
 Version 7.0.0.8, by Aleksey Cheusov, Mon, 16 Mar 2020 01:38:17 +0300
 
   Add one line description to projects.
