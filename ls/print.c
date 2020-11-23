@@ -146,7 +146,7 @@ printlong(DISPLAY *dp)
 		if (f_size) {
 			if (f_humanize) {
 				if ((humanize_number(szbuf, sizeof(szbuf),
-				    sp->st_blocks * S_BLKSIZE,
+				    sp->st_blocks * DEV_BSIZE ,
 				    "", HN_AUTOSCALE,
 				    (HN_DECIMAL | HN_B | HN_NOSPACE))) == -1)
 					err(1, "humanize_number");
