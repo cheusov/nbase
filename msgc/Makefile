@@ -5,6 +5,7 @@ CPPFLAGS+=	-I. -I${.CURDIR} -D_PATH_DEFSYSPREFIX='"${_PATH_DEFSYSPREFIX}"'
 YHEADER=
 
 MKC_REQD =	0.34.0
+MKC_FEATURES +=	libl
 
 WARNERR =	no
 
@@ -13,7 +14,5 @@ _PATH_DEFSYSPREFIX =	${DATADIR}/misc
 FILES =		msg_sys.def
 FILESDIR =	${_PATH_DEFSYSPREFIX}
 .endif
-
-MKC_FEATURES +=	libl
 
 .include "../mk/addlinks.mk"

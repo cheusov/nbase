@@ -48,7 +48,6 @@ __RCSID("$NetBSD: function.c,v 1.72 2013/05/04 06:29:32 uebayasi Exp $");
 #include <sys/mount.h>
 
 #include <dirent.h>
-#include <err.h>
 #include <errno.h>
 #include <fnmatch.h>
 #include <fts.h>
@@ -60,12 +59,12 @@ __RCSID("$NetBSD: function.c,v 1.72 2013/05/04 06:29:32 uebayasi Exp $");
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "mkc_tzfile.h"
 #include <unistd.h>
 #if HAVE_FUNC3_STRING_TO_FLAGS_UTIL_H
 #include <util.h>
 #endif
 
+#include "mkc_tzfile.h"
 #include "mkc_timespeccmp.h"
 #include "mkc_efun.h"
 #include "mkc_macro.h"
@@ -74,6 +73,8 @@ __RCSID("$NetBSD: function.c,v 1.72 2013/05/04 06:29:32 uebayasi Exp $");
 #include "mkc_pwdgrp.h"
 #include "mkc_struct_stat.h"
 #include "mkc_struct_statvfs.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #ifndef S_ISTXT
 #  define S_ISTXT 0
@@ -897,7 +898,7 @@ c_false(char ***argvp, int isok)
 int
 f_flags(PLAN *plan, FTSENT *entry)
 {
-	u_int32_t flags=0;
+	uint32_t flags=0;
 
 #if HAVE_MEMBER_STRUCT_STAT_ST_FLAGS_SYS_STAT_H
 	flags = entry->fts_statp->st_flags;

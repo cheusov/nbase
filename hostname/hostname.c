@@ -31,6 +31,7 @@
 
 #include "mkc_progname.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -48,7 +49,6 @@ __RCSID("$NetBSD: hostname.c,v 1.21 2014/02/13 12:00:29 elric Exp $");
 
 #include <sys/param.h>
 
-#include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -82,8 +82,12 @@ main(int argc, char *argv[])
 		usage();
 
 	if (*argv) {
+#if HAVE_FUNC2_SETHOSTNAME_UNISTD_H
 		if (sethostname(*argv, strlen(*argv)))
 			err(1, "sethostname");
+#else
+		err(1, "sethostname(2) is not available");
+#endif
 	} else {
 		if (gethostname(hostname, sizeof(hostname)))
 			err(1, "gethostname");

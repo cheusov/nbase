@@ -34,6 +34,9 @@
  */
 
 #include "mkc_strsuftoll.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
+#include "mkc_strsep.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -50,7 +53,6 @@ __RCSID("$NetBSD: args.c,v 1.38.6.1 2015/03/26 11:08:43 martin Exp $");
 #ifndef NO_IOFLAG
 #include <fcntl.h>
 #endif /* NO_IOFLAG */
-#include <err.h>
 #include <errno.h>
 #include <limits.h>
 #include <stdio.h>

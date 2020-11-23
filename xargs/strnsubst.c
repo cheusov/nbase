@@ -16,7 +16,6 @@ __FBSDID("$FreeBSD: src/usr.bin/xargs/strnsubst.c,v 1.8 2005/12/30 23:22:50 jmal
 __RCSID("$NetBSD: strnsubst.c,v 1.1 2007/04/18 15:56:07 christos Exp $");
 #endif /* not lint */
 
-#include <err.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -24,6 +23,8 @@ __RCSID("$NetBSD: strnsubst.c,v 1.1 2007/04/18 15:56:07 christos Exp $");
 
 #include "mkc_strlcat.h"
 #include "mkc_strlcpy.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 void	strnsubst(char **, const char *, const char *, size_t);
 

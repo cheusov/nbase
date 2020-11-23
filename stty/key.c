@@ -43,7 +43,6 @@ __RCSID("$NetBSD: key.c,v 1.21 2013/09/12 19:47:23 christos Exp $");
 #include <err.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <paths.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -52,6 +51,8 @@ __RCSID("$NetBSD: key.c,v 1.21 2013/09/12 19:47:23 christos Exp $");
 
 #include "stty.h"
 #include "extern.h"
+
+#include "mkc_macro.h"
 
 #ifndef ALTWERASE
 #define ALTWERASE 0

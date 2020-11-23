@@ -39,8 +39,6 @@ __RCSID("$NetBSD: gnum4.c,v 1.9 2012/03/20 20:34:58 matt Exp $");
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <ctype.h>
-#include <err.h>
-#include <paths.h>
 #include <regex.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -50,6 +48,9 @@ __RCSID("$NetBSD: gnum4.c,v 1.9 2012/03/20 20:34:58 matt Exp $");
 #include <unistd.h>
 
 #include "mkc_macro.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
+#include "mkc_strsep.h"
 
 #include "mdef.h"
 #include "stdd.h"

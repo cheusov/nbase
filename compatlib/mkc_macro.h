@@ -5,6 +5,10 @@
 # error "Missing MKC_FEATURES += macro"
 #endif
 
+#ifdef HAVE_HEADER_FILE_SYS_CDEFS_H
+#include <sys/cdefs.h>
+#endif
+
 #include <stdlib.h>
 #include <assert.h>
 #include <limits.h>
@@ -13,14 +17,15 @@
 #include <sys/param.h>
 #include <sys/types.h>
 #include <unistd.h>
-
-#ifdef HAVE_HEADER_FILE_SYS_CDEFS_H
-#include <sys/cdefs.h>
-#endif
+#include <fnmatch.h>
 
 #if HAVE_HEADER_FILE_SYS_SYSMACROS_H
 # include <sys/sysmacros.h>
 #endif /* HAVE_HEADER_FILE_SYS_SYSMACROS_H */
+
+#if HAVE_HEADER_FILE_PATHS_H
+# include <paths.h>
+#endif /* HAVE_HEADER_FILE_PATHS_H */
 
 /*
  * Return the number of elements in a statically-allocated array,
@@ -66,6 +71,10 @@
 #define REG_BASIC 0
 #endif
 
+#ifndef FNM_CASEFOLD
+#define FNM_CASEFOLD 0
+#endif
+
 /*
  * Only to be used in other headers that are included from both c or c++
  * NOT to be used in code.
@@ -88,6 +97,10 @@
 
 #ifndef __USE
 #define __USE(a) ((void)(a))
+#endif
+
+#ifndef S_BLKSIZE
+#define S_BLKSIZE 512
 #endif
 
 #ifndef __unused
@@ -150,6 +163,30 @@ typedef unsigned long int u_quad_t;
 # else
 #   define MAXHOSTNAMELEN 255
 # endif
+#endif
+
+#ifndef _PATH_TMP
+#  define _PATH_TMP "/tmp/"
+#endif
+
+#ifndef _PATH_TTY
+#  define _PATH_TTY "/dev/tty"
+#endif
+
+#ifndef _PATH_DEVNULL
+#  define _PATH_DEVNULL "/dev/null"
+#endif
+
+#ifndef _PATH_BSHELL
+#  define _PATH_BSHELL "/bin/sh"
+#endif
+
+#ifndef _PATH_MAILDIR
+#  define _PATH_MAILDIR "/var/mail"
+#endif
+
+#ifndef _PATH_DEFPATH
+#define	_PATH_DEFPATH	"/usr/bin:/bin"
 #endif
 
 #endif // _MKC_MACRO_H_

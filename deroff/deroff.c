@@ -68,8 +68,9 @@
 __RCSID("$NetBSD: deroff.c,v 1.11 2013/10/18 20:47:06 christos Exp $");
 
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_progname.h"
 
-#include <err.h>
 #include <limits.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -1574,9 +1575,7 @@ macfill(struct mactab *dst, const struct mactab *src)
 static void
 usage(void)
 {
-	extern char *__progname;
-
-	fprintf(stderr, "usage: %s [-ikpw ] [ -m a | e | l | m | s] [file ...]\n", __progname);
+	fprintf(stderr, "usage: %s [-ikpw ] [ -m a | e | l | m | s] [file ...]\n", getprogname());
 	exit(1);
 }
 

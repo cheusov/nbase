@@ -42,7 +42,6 @@ static char sccsid[] = "@(#)basename.c	8.4 (Berkeley) 5/4/95";
 __RCSID("$NetBSD: basename.c,v 1.15 2011/08/29 14:24:03 joerg Exp $");
 #endif /* not lint */
 
-#include <err.h>
 #include <libgen.h>
 #include <locale.h>
 #include <stdio.h>
@@ -51,6 +50,7 @@ __RCSID("$NetBSD: basename.c,v 1.15 2011/08/29 14:24:03 joerg Exp $");
 #include <unistd.h>
 
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
 
 __dead static void usage(void);
 

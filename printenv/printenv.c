@@ -46,9 +46,9 @@ __RCSID("$NetBSD: printenv.c,v 1.12 2011/09/06 18:26:55 joerg Exp $");
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include <err.h>
 
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
 
 __dead static void usage(void);
 

@@ -42,7 +42,6 @@ __RCSID("$NetBSD: file.c,v 1.7 2011/04/18 22:46:48 joerg Exp $");
 #include <sys/stat.h>
 
 #include <bzlib.h>
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <stddef.h>

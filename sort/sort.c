@@ -82,7 +82,6 @@ __RCSID("$NetBSD: sort.c,v 1.61 2011/09/16 15:39:29 joerg Exp $");
 #include <sys/stat.h>
 #include <sys/resource.h>
 
-#include <paths.h>
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>

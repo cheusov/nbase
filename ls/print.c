@@ -44,7 +44,6 @@ __RCSID("$NetBSD: print.c,v 1.55 2014/05/10 09:39:18 martin Exp $");
 #include <sys/param.h>
 #include <sys/stat.h>
 
-#include <err.h>
 #include <errno.h>
 #include <inttypes.h>
 #include <fts.h>
@@ -65,6 +64,8 @@ __RCSID("$NetBSD: print.c,v 1.55 2014/05/10 09:39:18 martin Exp $");
 #include "mkc_macro.h"
 #include "mkc_strmode.h"
 #include "mkc_tzfile.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 extern int termwidth;
 
@@ -142,7 +143,7 @@ printlong(DISPLAY *dp)
 			continue;
 		sp = p->fts_statp;
 		if (f_inode)
-			(void)printf("%*"PRIu64" ", dp->s_inode, sp->st_ino);
+			(void)printf("%*"PRIu64" ", dp->s_inode, (uint64_t)sp->st_ino);
 		if (f_size) {
 			if (f_humanize) {
 				if ((humanize_number(szbuf, sizeof(szbuf),
@@ -370,7 +371,7 @@ printaname(FTSENT *p, int inodefield, int sizefield)
 	sp = p->fts_statp;
 	chcnt = 0;
 	if (f_inode)
-		chcnt += printf("%*"PRIu64" ", inodefield, sp->st_ino);
+		chcnt += printf("%*"PRIu64" ", inodefield, (uint64_t)sp->st_ino);
 	if (f_size) {
 		if (f_humanize) {
 			if ((humanize_number(szbuf, sizeof(szbuf), sp->st_size,

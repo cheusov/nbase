@@ -13,10 +13,9 @@ MLINKS =grep.1 egrep.1	\
 	grep.1 zegrep.1	\
 	grep.1 zfgrep.1
 
-MKC_FEATURES =	STAILQ
+MKC_FEATURES =	STAILQ getline
 
-MKC_REQUIRE_FUNCLIBS= gzread:z BZ2_bzRead:bz2
-
+MKC_REQUIRE_FUNCLIBS= gzread:z BZ2_bzRead:bz2 fts_open:fts
 #.PATH: ${.CURDIR}/nls
 
 #NLS=	C.msg \
@@ -35,5 +34,7 @@ COPTS.grep.c += -Wno-format-nonliteral
 COPTS.util.c += -Wno-format-nonliteral
 
 CPPFLAGS +=	-DHAVE_NBTOOL_CONFIG_H
+
+.include "../mk/mkc_imp.f_strsep.mk"
 
 .include "../mk/addlinks.mk"

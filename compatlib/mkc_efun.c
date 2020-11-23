@@ -32,6 +32,7 @@
 #include "mkc_err.h"
 #include "mkc_strlcat.h"
 #include "mkc_strlcpy.h"
+#include "mkc_strndup.h"
 
 #if HAVE_NBTOOL_CONFIG_H
 #include "nbtool_config.h"
@@ -151,7 +152,7 @@ efopen(const char *p, const char *m)
 }
 
 int
-easprintf(char ** __restrict ret, const char * __restrict format, ...)
+easprintf(char ** /*__restrict*/ ret, const char * /*__restrict*/ format, ...)
 {
 	int rv;
 	va_list ap;
@@ -163,7 +164,7 @@ easprintf(char ** __restrict ret, const char * __restrict format, ...)
 }
 
 int
-evasprintf(char ** __restrict ret, const char * __restrict format, va_list ap)
+evasprintf(char ** /*__restrict*/ ret, const char * /*__restrict*/ format, va_list ap)
 {
 	int rv;
 	if ((rv = vasprintf(ret, format, ap)) == -1)

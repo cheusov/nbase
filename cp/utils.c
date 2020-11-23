@@ -31,6 +31,8 @@
 
 #include "mkc_progname.h"
 #include "mkc_struct_stat.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -51,7 +53,6 @@ __RCSID("$NetBSD: utils.c,v 1.42 2013/12/11 06:00:11 dholland Exp $");
 #include <sys/extattr.h>
 #endif
 
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <fts.h>

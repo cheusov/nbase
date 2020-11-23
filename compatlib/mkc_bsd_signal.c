@@ -69,6 +69,6 @@ int sigsetmask(int mask)
 #if !defined(HAVE_FUNC0_SIGGETMASK_SIGNAL_H)
 int siggetmask(void)
 {
-	return sigblock(0);
+	return sigupdatemask(SIG_BLOCK, 0);
 }
 #endif

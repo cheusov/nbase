@@ -184,7 +184,7 @@ cwalk(FILE *fp)
 static void
 statf(FILE *fp, int indent, FTSENT *p)
 {
-	u_int32_t len, val;
+	uint32_t len, val;
 	int fd, offset;
 	const char *name = NULL;
 #if !defined(NO_MD5) || !defined(NO_RMD160) || !defined(NO_SHA1) || !defined(NO_SHA2)

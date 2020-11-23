@@ -34,6 +34,8 @@
 
 #include "mkc_progname.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #if HAVE_NBTOOL_CONFIG_H
 #include "nbtool_config.h"
@@ -55,7 +57,6 @@ __RCSID("$NetBSD: cat.c,v 1.54 2013/12/08 08:32:13 spz Exp $");
 #include <sys/stat.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <locale.h>

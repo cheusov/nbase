@@ -285,7 +285,7 @@ void
 fixit(int *argc, char **argv, const char *opts)
 {
 	int i, j, sawplus;
-	char *vpos, *tpos, spec[20];
+	char *vpos, *tpos, spec[100];
 	int col, indent;
 
 	sawplus = 0;

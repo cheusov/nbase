@@ -48,6 +48,7 @@
 #include "mkc_progname.h"
 #include "mkc_raise_default_signal.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -57,7 +58,6 @@ __RCSID("$NetBSD: csplit.c,v 1.6 2011/08/31 13:35:46 joerg Exp $");
 #include <sys/types.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <limits.h>
 #include <locale.h>

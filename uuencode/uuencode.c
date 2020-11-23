@@ -51,7 +51,6 @@ __RCSID("$NetBSD: uuencode.c,v 1.15.20.1 2014/09/11 12:22:27 martin Exp $");
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <netinet/in.h>
-#include <err.h>
 #include <errno.h>
 #include <locale.h>
 #include <resolv.h>
@@ -63,6 +62,7 @@ __RCSID("$NetBSD: uuencode.c,v 1.15.20.1 2014/09/11 12:22:27 martin Exp $");
 #include "mkc_base64.h"
 #include "mkc_bsd_getopt.h"
 #include "mkc_progname.h"
+#include "mkc_err.h"
 
 static void encode(void);
 static void base64_encode(void);

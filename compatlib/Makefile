@@ -15,6 +15,7 @@ CPPFLAGS += -I. -I${.OBJDIR}
 
 .include "../mk/hacks.mk"
 
+.include "../mk/mkc_imp.f_strndup.mk"
 .include "../mk/mkc_imp.f_parsedate.mk"
 .include "../mk/mkc_imp.f_sys_signame.mk"
 .include "../mk/mkc_imp.f_getsetmode.mk"
@@ -44,5 +45,6 @@ CPPFLAGS += -I. -I${.OBJDIR}
 .include "../mk/mkc_imp.f_types.mk"
 .include "../mk/mkc_imp.f_lutimes.mk"
 .include "../mk/mkc_imp.f_bsd_signal.mk"
+.include "../mk/mkc_imp.f_strsep.mk"
 
 .include <mkc.mk>

@@ -34,6 +34,10 @@
  */
 
 #include <sys/cdefs.h>
+
+#include "mkc_err.h"
+#include "mkc_warn.h"
+
 #ifndef lint
 #if 0
 static char sccsid[] = "@(#)position.c	8.3 (Berkeley) 4/2/94";
@@ -50,7 +54,6 @@ __RCSID("$NetBSD: position.c,v 1.18 2010/11/22 21:04:28 pooka Exp $");
 #endif
 #include <sys/time.h>
 
-#include <err.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>

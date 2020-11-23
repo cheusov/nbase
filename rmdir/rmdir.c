@@ -31,6 +31,7 @@
 
 #include "mkc_progname.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_warn.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -48,7 +49,6 @@ __RCSID("$NetBSD: rmdir.c,v 1.26 2011/08/29 14:49:38 joerg Exp $");
 
 #include <sys/param.h>
 
-#include <err.h>
 #include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>

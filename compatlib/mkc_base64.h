@@ -12,6 +12,7 @@
 #endif
 
 #if HAVE_B64_FUNCS
+#include <netinet/in.h>
 #include <resolv.h>
 #else
 #include "mkc_macro.h"

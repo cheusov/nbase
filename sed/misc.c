@@ -49,7 +49,8 @@ static const char sccsid[] = "@(#)misc.c	8.1 (Berkeley) 6/6/93";
 
 #include <sys/types.h>
 
-#include <err.h>
+#include "mkc_err.h"
+
 #include <limits.h>
 #include <regex.h>
 #include <stdio.h>

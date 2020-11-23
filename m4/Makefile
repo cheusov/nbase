@@ -9,11 +9,7 @@ SRCS +=	ohash_create_entry.c ohash_delete.c ohash_do.c ohash_entries.c \
 YHEADER =	1
 
 MKC_REQD =	0.34.0
-
-#.if (${HOSTPROG:U} == "")
-#DPADD+=		${LIBUTIL} ${LIBL}
-#LDADD+=		-lutil -ll
-#.endif
+MKC_FEATURES +=	libl
 
 tokenizer.o: parser.h
 
@@ -23,6 +19,6 @@ CPPFLAGS +=	-DHAVE_NBTOOL_CONFIG_H=1 -I${.CURDIR}
 
 WARNERR   =	no
 
-MKC_FEATURES +=	libl
+.include "../mk/mkc_imp.f_strsep.mk"
 
 .include "../mk/addlinks.mk"

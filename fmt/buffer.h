@@ -32,7 +32,8 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <err.h>
+
+#include "mkc_err.h"
 
 #define BUF_SIZE	BUFSIZ
 struct buffer {

@@ -3,11 +3,11 @@ WARNS          ?=	4
 CURSES_LIBNAME ?=	curses
 
 CPPFLAGS +=	-D_GNU_SOURCE
-CPPFLAGS +=	-D__COPYRIGHT\(x\)=
-CPPFLAGS +=	-D__RCSID\(x\)=
-CPPFLAGS +=	-D__printflike\(x,y\)=
-CPPFLAGS +=	-D__dead=
-CPPFLAGS +=	-D__pure=
+CPPFLAGS0 +=	-D__COPYRIGHT\(x\)=
+CPPFLAGS0 +=	-D__RCSID\(x\)=
+CPPFLAGS0 +=	-D__printflike\(x,y\)=
+CPPFLAGS0 +=	-D__dead=
+CPPFLAGS0 +=	-D__pure=
 # CPPFLAGS +=	-D__unused= # used by glibc headers :-(
 
 # Normal Unix headers should always exist (used at least by libndigest)
@@ -17,9 +17,11 @@ CPPFLAGS +=	-DHAVE_ERRNO_H -DHAVE_LOCALE_H -DHAVE_UNISTD_H -DHAVE_STDINT_H \
 CFLAGS.dflt.gcc +=	-Werror=implicit-function-declaration \
 #  -Werror=missing-prototypes # -Werror=int-to-pointer-cast
 
+CFLAGS.warns.sunpro.4 += -erroff=E_EMPTY_DECLARATION -errtags
+
 DOCDIR ?=	${DATADIR}/doc/nbase
 
-MKC_FEATURES +=	progname strlcpy strlcat
+MKC_FEATURES +=	progname strlcpy strlcat err warn
 
 .include "./mk/mkc_imp.f_bsd_getopt.mk"
 .include "./mk/mkc_imp.f_macro.mk"

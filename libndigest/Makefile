@@ -12,6 +12,8 @@ CPPFLAGS +=	-I${.CURDIR} -DHAVE_NBTOOL_CONFIG_H=1
 MKC_CHECK_FUNCS1 +=	be32toh:sys/endian.h be64toh:sys/endian.h \
 		 	htobe32:sys/endian.h htobe64:sys/endian.h
 
+CFLAGS.check     +=	-Wno-error=strict-aliasing # tiger.c
+
 .include <mkc.configure.mk>
 
 .include "../mk/hacks.mk"

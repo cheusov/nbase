@@ -34,7 +34,6 @@
 __RCSID("$NetBSD: getconf.c,v 1.35 2013/12/19 19:11:50 rmind Exp $");
 #endif /* not lint */
 
-#include <err.h>
 #include <errno.h>
 #include <limits.h>
 #include <locale.h>
@@ -45,6 +44,8 @@ __RCSID("$NetBSD: getconf.c,v 1.35 2013/12/19 19:11:50 rmind Exp $");
 
 #include "mkc_progname.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 struct conf_variable
 {

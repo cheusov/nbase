@@ -32,11 +32,14 @@
  * SUCH DAMAGE.
  */
 
+#include "mkc_macro.h"
 #include "mkc_pwdgrp.h"
 #include "mkc_progname.h"
 #include "mkc_getbsize.h"
 #include "mkc_bsd_getopt.h"
 #include "mkc_types.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #include <stdint.h>
 
@@ -60,7 +63,6 @@ __RCSID("$NetBSD: ls.c,v 1.74 2014/04/02 10:55:47 wiz Exp $");
 #include <sys/ioctl.h>
 
 #include <dirent.h>
-#include <err.h>
 #include <errno.h>
 #include <fts.h>
 #include <locale.h>
@@ -505,7 +507,7 @@ display(FTSENT *p, FTSENT *list)
 	DISPLAY d;
 	FTSENT *cur;
 	NAMES *np;
-	u_int64_t btotal, stotal;
+	uint64_t btotal, stotal;
 	off_t maxsize;
 	blkcnt_t maxblock;
 	ino_t maxinode;
@@ -517,7 +519,7 @@ display(FTSENT *p, FTSENT *list)
 	const char *user, *group;
 	char buf[21];		/* 64 bits == 20 digits, +1 for NUL */
 	char nuser[12], ngroup[12];
-	char *flags = NULL;
+	const char *flags = NULL;
 
 	/*
 	 * If list is NULL there are two possibilities: that the parent
@@ -589,14 +591,14 @@ display(FTSENT *p, FTSENT *list)
 				    (user = user_from_uid(sp->st_uid, 0)) ==
 				    NULL) {
 					(void)snprintf(nuser, sizeof(nuser),
-					    "%u", sp->st_uid);
+					    "%lu", (long unsigned)sp->st_uid);
 					user = nuser;
 				}
 				if (f_numericonly ||
 				    (group = group_from_gid(sp->st_gid, 0)) ==
 				    NULL) {
 					(void)snprintf(ngroup, sizeof(ngroup),
-					    "%u", sp->st_gid);
+					    "%lu", (long unsigned)sp->st_gid);
 					group = ngroup;
 				}
 				if ((ulen = strlen(user)) > maxuser)
@@ -608,7 +610,7 @@ display(FTSENT *p, FTSENT *list)
 					flags =
 					    flags_to_string((u_long)sp->st_flags, "-");
 #else
-					flags = 0;
+					flags = "";
 #endif
 					if ((flen = strlen(flags)) > maxflags)
 						maxflags = flen;
@@ -627,7 +629,8 @@ display(FTSENT *p, FTSENT *list)
 				if (f_flags) {
 					np->flags = &np->data[ulen + glen + 2];
 				  	(void)strcpy(np->flags, flags);
-					free(flags);
+					if (flags[0])
+						free(__UNCONST(flags));
 				}
 				cur->fts_pointer = np;
 			}

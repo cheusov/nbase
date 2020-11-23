@@ -48,7 +48,6 @@ __RCSID("$NetBSD: fmt.c,v 1.32 2012/06/30 21:31:15 christos Exp $");
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
-#include <err.h>
 #include <limits.h>
 #include <string.h>
 #include "buffer.h"
@@ -57,6 +56,8 @@ __RCSID("$NetBSD: fmt.c,v 1.32 2012/06/30 21:31:15 christos Exp $");
 #include "mkc_progname.h"
 #include "mkc_macro.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 /*
  * fmt -- format the concatenation of input files or standard input

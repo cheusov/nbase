@@ -14,12 +14,10 @@
 #include <sys/wait.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <getopt.h>
 #include <limits.h>
-#include <paths.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -29,6 +27,9 @@
 #include "mkc_strlcat.h"
 #include "mkc_fparseln.h"
 #include "mkc_macro.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
+#include "mkc_progname.h"
 
 #include "common.h"
 #include "extern.h"
@@ -1035,10 +1036,8 @@ int_usage(void)
 static void
 usage(void)
 {
-	extern char *__progname;
-
 	fprintf(stderr,
 	    "usage: %s [-abdilstW] [-I regexp] [-o outfile] [-w width] file1 file2\n",
-	    __progname);
+	    getprogname());
 	exit(2);
 }

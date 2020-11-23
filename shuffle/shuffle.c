@@ -39,7 +39,6 @@ __RCSID("$NetBSD: shuffle.c,v 1.21 2011/09/16 15:39:29 joerg Exp $");
 #include <sys/time.h>
 #include <time.h>
 
-#include <err.h>
 #include <errno.h>
 #include <limits.h>
 #include <stdio.h>
@@ -52,6 +51,7 @@ __RCSID("$NetBSD: shuffle.c,v 1.21 2011/09/16 15:39:29 joerg Exp $");
 #include "mkc_progname.h"
 //#include "mkc_arc4random.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
 
 static size_t *get_shuffle(size_t);
 __dead static void usage(void);

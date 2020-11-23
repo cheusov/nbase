@@ -45,7 +45,6 @@
 __RCSID("$NetBSD: eval.c,v 1.22 2011/08/21 23:38:43 dholland Exp $");
 
 #include <sys/types.h>
-#include <err.h>
 #include <errno.h>
 #include <limits.h>
 #include <unistd.h>
@@ -61,6 +60,7 @@ __RCSID("$NetBSD: eval.c,v 1.22 2011/08/21 23:38:43 dholland Exp $");
 #include "pathnames.h"
 
 #include "mkc_strlcpy.h"
+#include "mkc_err.h"
 
 static void	dodefn(const char *);
 static void	dopushdef(const char *, const char *);

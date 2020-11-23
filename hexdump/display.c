@@ -46,7 +46,6 @@ __RCSID("$NetBSD: display.c,v 1.22 2013/10/18 20:19:03 christos Exp $");
 #include <sys/stat.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <inttypes.h>
 #include <stdio.h>
@@ -58,6 +57,8 @@ __RCSID("$NetBSD: display.c,v 1.22 2013/10/18 20:19:03 christos Exp $");
 
 #include "mkc_efun.h"
 #include "mkc_macro.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 enum _vflag vflag = FIRST;
 

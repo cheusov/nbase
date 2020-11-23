@@ -52,10 +52,11 @@ __RCSID("$NetBSD: tee.c,v 1.11 2013/03/06 11:44:11 yamt Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
-#include <err.h>
 
 #include "mkc_bsd_getopt.h"
 #include "mkc_macro.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 typedef struct _list {
 	struct _list *next;

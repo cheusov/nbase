@@ -4,6 +4,9 @@ MKC_CHECK_FUNCS2 +=	fcpxattr:sys/extattr.h
 
 .include <mkc.init.mk>
 
+CFLAGS.check  +=	-Wno-error=deprecated-declarations
+CFLAGS.check  +=	-erroff=E_DEPRECATED_ATT
+
 .include "../mk/hacks.mk"
 
 .include "../mk/mkc_imp.f_pwdgrp.mk"

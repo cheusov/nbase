@@ -51,10 +51,11 @@ __RCSID("$NetBSD: xstr.c,v 1.25 2011/09/16 15:39:31 joerg Exp $");
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
-#include <err.h>
 
 #include "mkc_progname.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
+#include "mkc_warn.h"
 
 #include "pathnames.h"
 

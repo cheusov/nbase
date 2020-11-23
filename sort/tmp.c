@@ -63,11 +63,12 @@
 
 #include <sys/cdefs.h>
 
+#include "mkc_err.h"
+
 __RCSID("$NetBSD: tmp.c,v 1.16 2009/11/06 18:34:22 joerg Exp $");
 
 #include <sys/param.h>
 
-#include <err.h>
 #include <errno.h>
 #include <limits.h>
 #include <signal.h>

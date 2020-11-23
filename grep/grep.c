@@ -40,9 +40,7 @@ __RCSID("$NetBSD: grep.c,v 1.12 2014/07/11 16:30:45 christos Exp $");
 #include <sys/types.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
-#include <getopt.h>
 #include <limits.h>
 #include <libgen.h>
 #include <locale.h>
@@ -78,7 +76,11 @@ const char	*errstr[] = {
 
 /* Flags passed to regcomp() and regexec() */
 int		 cflags = 0;
+#ifdef REG_STARTEND
 int		 eflags = REG_STARTEND;
+#else
+int              eflags = 0;
+#endif
 
 /* Searching patterns */
 unsigned int	 patterns, pattern_sz;
@@ -149,15 +151,13 @@ static inline const char	*init_color(const char *);
 int	 tail;		/* lines left to print */
 bool	 notfound;	/* file not found */
 
-extern char	*__progname;
-
 /*
  * Prints usage information and returns 2.
  */
 __dead static void
 usage(void)
 {
-	fprintf(stderr, getstr(4), __progname);
+	fprintf(stderr, getstr(4), getprogname());
 	fprintf(stderr, "%s", getstr(5));
 	fprintf(stderr, "%s", getstr(6));
 	fprintf(stderr, "%s", getstr(7));
@@ -320,6 +320,7 @@ main(int argc, char *argv[])
 	int c, lastc, needpattern, newarg, prevoptind;
 
 	setlocale(LC_ALL, "");
+	setprogname(argv[0]);
 
 #ifndef WITHOUT_NLS
 	catalog = catopen("grep", NL_CAT_LOCALE);
@@ -328,7 +329,7 @@ main(int argc, char *argv[])
 	/* Check what is the program name of the binary.  In this
 	   way we can have all the funcionalities in one binary
 	   without the need of scripting and using ugly hacks. */
-	switch (__progname[0]) {
+	switch (getprogname()[0]) {
 	case 'e':
 		grepbehave = GREP_EXTENDED;
 		break;
@@ -340,7 +341,7 @@ main(int argc, char *argv[])
 		break;
 	case 'z':
 		filebehave = FILE_GZIP;
-		switch(__progname[1]) {
+		switch(getprogname()[1]) {
 		case 'e':
 			grepbehave = GREP_EXTENDED;
 			break;
@@ -548,7 +549,7 @@ main(int argc, char *argv[])
 			/* noop, compatibility */
 			break;
 		case 'V':
-			printf(getstr(9), __progname, VERSION);
+			printf(getstr(9), getprogname(), VERSION);
 			exit(0);
 		case 'v':
 			vflag = true;

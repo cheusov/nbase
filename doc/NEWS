@@ -1,4 +1,62 @@
 ======================================================================
+Version 7.0.0.9, by Aleksey Cheusov, Thu, 14 May 2020 20:46:44 +0300
+
+  Fix some build failures on Linux-es caused by __wur
+  and '-O2 -D_FORTIFY_SOURCE=2'
+
+======================================================================
+Version 7.0.0.8, by Aleksey Cheusov, Mon, 16 Mar 2020 01:38:17 +0300
+
+  Add one line description to projects.
+  So, one can run "mkcmake help"
+
+======================================================================
+Version 7.0.0.7, by Aleksey Cheusov, Thu, 20 Feb 2020 01:10:57 +0300
+
+  Requires mk-configure 0.34.0 or above to build
+
+  Remove broken hack with CC_TYPE, latest mk-configure is able to do
+  everything automatically
+
+  Use new mk-configure's feature libl instead of LEXLIB variable
+
+  Use CFLAGS.check for disabling warnerr
+
+  mknod: fix build failure on latest OpenSuSE tumbleweed
+
+  id, date: fixes for Darwin-15.6.0 (disabling warnings)
+
+======================================================================
+Version 7.0.0.6, by Aleksey Cheusov, Sun, 19 Jan 2020 01:45:59 +0300
+
+  Add support for Solaris-10 and -11 to a lot of utilities
+  (almost all with the help of musl-fts library!).
+
+  A lot of fixes for SunC compiler (versions 5.11 and 5.15).
+
+  mk/mkc_imp.f_bsd_getopt.mk: fix for target "clean"
+
+  Fix feature "efun" on SunOS-5.10.
+
+  Add new feature "strsep" that provides portable strsep(3) and stresep(3)
+
+  find, ls, mtree and xinstall: fix build failure on eglibc-2.13
+
+======================================================================
+Version 7.0.0.5, by Aleksey Cheusov, Mon,  6 Jan 2020 01:43:19 +0300
+
+  Fix typos doc/INSTALL
+
+  Fix bugs in the local feature "base64". As a result we fix some
+  compilation issues on musl-based Linuxes (Alpine Linux).
+
+  Fix compilation failures (seen on musl-based Alpine Linux) of the
+  following programs: compress, sort, hexdump, id, leave, uudecode
+
+  Implement new local feature "bsd_signal" that implements
+  BSD functions "sigblock", "sigsetmask", "sigmask" and "siggetmask".
+
+======================================================================
 Version 7.0.0.4, by Aleksey Cheusov, Wed,  1 May 2019 14:40:14 +0300
 
   A lot of fixes and improvements from previous release in utilities

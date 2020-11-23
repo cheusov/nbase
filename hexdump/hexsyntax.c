@@ -44,13 +44,13 @@ __RCSID("$NetBSD: hexsyntax.c,v 1.14 2010/11/27 20:46:38 christos Exp $");
 
 #include <sys/types.h>
 
-#include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
 
 #include "hexdump.h"
 

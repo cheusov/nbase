@@ -45,7 +45,6 @@ __RCSID("$NetBSD: apply.c,v 1.17 2008/03/08 03:35:53 christos Exp $");
 
 #include <ctype.h>
 #include <err.h>
-#include <paths.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -55,6 +54,7 @@ __RCSID("$NetBSD: apply.c,v 1.17 2008/03/08 03:35:53 christos Exp $");
 #include "mkc_progname.h"
 #include "mkc_bsd_getopt.h"
 #include "mkc_bsd_signal.h"
+#include "mkc_macro.h"
 
 static void	usage(void) __dead;
 static int	shell_system(const char *);

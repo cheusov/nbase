@@ -53,7 +53,6 @@ static const char sccsid[] = "@(#)process.c	8.6 (Berkeley) 4/20/94";
 #include <sys/uio.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <limits.h>
@@ -69,6 +68,7 @@ static const char sccsid[] = "@(#)process.c	8.6 (Berkeley) 4/20/94";
 #include "extern.h"
 
 #include "mkc_macro.h"
+#include "mkc_err.h"
 
 static SPACE HS, PS, SS, YS;
 #define	pd		PS.deleted

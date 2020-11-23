@@ -3,6 +3,8 @@ PROG               =	rm
 MKC_CHECK_FUNCS1 =	undelete:unistd.h
 MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 
+MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
+
 .include <mkc.init.mk>
 
 .include "../mk/hacks.mk"

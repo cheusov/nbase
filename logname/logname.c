@@ -46,9 +46,9 @@ __RCSID("$NetBSD: logname.c,v 1.10 2011/09/04 20:29:12 joerg Exp $");
 #include <stdlib.h>
 #include <locale.h>
 #include <unistd.h>
-#include <err.h>
 
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
 
 __dead  static void	usage(void);
 

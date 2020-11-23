@@ -45,9 +45,9 @@ __RCSID("$NetBSD: misc.c,v 1.23 2012/03/20 20:34:58 matt Exp $");
 #include <stdlib.h>
 #include <stddef.h>
 #include <string.h>
-#include <err.h>
 
 #include "mkc_progname.h"
+#include "mkc_err.h"
 
 #include "mdef.h"
 #include "stdd.h"

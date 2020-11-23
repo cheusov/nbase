@@ -63,7 +63,7 @@ __RCSID("$NetBSD: options.c,v 1.115 2013/11/14 04:00:48 christos Exp $");
 #include <string.h>
 #include <unistd.h>
 #include <inttypes.h>
-#include <paths.h>
+
 #include "pax.h"
 #include "options.h"
 #include "cpio.h"
@@ -74,6 +74,7 @@ __RCSID("$NetBSD: options.c,v 1.115 2013/11/14 04:00:48 christos Exp $");
 #endif	/* SMALL */
 
 #include "mkc_fgetln.h"
+#include "mkc_macro.h"
 
 #ifndef _PATH_DEFTAPE
 #define _PATH_DEFTAPE "/dev/nrst0"
@@ -272,8 +273,8 @@ pax_options(int argc, char **argv)
 {
 	int c;
 	size_t i;
-	u_int64_t flg = 0;
-	u_int64_t bflg = 0;
+	uint64_t flg = 0;
+	uint64_t bflg = 0;
 	char *pt;
 	FSUB tmp;
 
@@ -1500,8 +1501,8 @@ static void
 cpio_options(int argc, char **argv)
 {
 	FSUB tmp;
-	u_int64_t flg = 0;
-	u_int64_t bflg = 0;
+	uint64_t flg = 0;
+	uint64_t bflg = 0;
 	int c;
 	size_t i;
 	FILE *fp;

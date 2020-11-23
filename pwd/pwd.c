@@ -31,6 +31,7 @@
 
 #include "mkc_progname.h"
 #include "mkc_bsd_getopt.h"
+#include "mkc_err.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -50,7 +51,6 @@ __RCSID("$NetBSD: pwd.c,v 1.22 2011/08/29 14:51:19 joerg Exp $");
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#include <err.h>
 #include <errno.h>
 #include <locale.h>
 #include <stdio.h>

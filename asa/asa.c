@@ -35,11 +35,11 @@
 __RCSID("$NetBSD: asa.c,v 1.16 2007/06/24 23:23:10 christos Exp $");
 #endif
 
-#include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "mkc_fgetln.h"
+#include "mkc_warn.h"
 
 static void asa(FILE *);
 int main(int, char *[]);

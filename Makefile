@@ -10,16 +10,7 @@
 #  crunch locate
 
 # TBD: units -- /usr/share/misc/units.lib is missing
-MKC_REQD     =	0.31.0
-
-# Manually set CC_TYPE variable because it is not calculated automatically
-# for !LIB && !PROG projects. As a result we pass to old clang-s (clang-5.0.1)
-# options '-Qunused-arguments -Werror=implicit-function-declaration'.
-# Thus, it works correctly with MKC_CHECK_FUNCS<n> and MKC_CHECK_PROTOTYPES<n>
-# (for example, it correctly detects the missing strl* functions).
-CC_TYPE != env CC=${CC:Q} mkc_check_compiler
-
-.include <mkc.init.mk>
+MKC_REQD     =	0.33.92
 
 MKC_CHECK_HEADER_FILES  = pty.h fts.h sys/sysctl.h
 MKC_CHECK_HEADERS  =	tzfile.h md2.h db.h termcap.h
@@ -33,6 +24,8 @@ MKC_CHECK_FUNCS2   =	getdomainname:unistd.h makedev:sys/sysmacros.h \
 MKC_CHECK_DEFINES  =	TIMESPEC_TO_TIMEVAL:sys/time.h REG_STARTEND:regex.h
 
 MKC_FUNC_OR_DEFINE.makedev =	yes
+
+.include "help.mk"
 
 .include <mkc.configure.mk>
 
@@ -95,7 +88,7 @@ PROJECTS :=	${PROJECTS:N${t}}
 .endif
 
 .if ${HAVE_FUNC3.strtoq.stdlib_h:U1} != 1
-.  for t in cmp
+.  for t in cmp find
    WARN_MSG += "Exclude ${t} due to missing strtoq in stdlib.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
@@ -130,7 +123,7 @@ PROJECTS :=	${PROJECTS:N${t}}
 .endif
 
 .if ${HAVE_DEFINE.TIMESPEC_TO_TIMEVAL.sys_time_h:U1} != 1
-.  for t in compress
+.  for t in compress cp
    WARN_MSG += "Exclude ${t} due to missing TIMESPEC_TO_TIMEVAL in sys/time.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor

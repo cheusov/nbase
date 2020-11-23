@@ -4,6 +4,8 @@ MAN       =	mtree.8
 SRCS      =	compare.c crc.c create.c excludes.c misc.c mtree.c spec.c \
 		specspec.c verify.c getid.c pack_dev.c only.c
 
+MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
+
 CPPFLAGS+=	-I${.CURDIR}/../mknod
 .PATH:		${.CURDIR}/../mknod
 
@@ -25,5 +27,6 @@ MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 .include "../mk/mkc_imp.f_getsetmode.mk"
 .include "../mk/mkc_imp.f_struct_stat.mk"
 .include "../mk/mkc_imp.f_makedev.mk"
+.include "../mk/mkc_imp.f_strsep.mk"
 
 .include "../mk/addlinks.mk"
