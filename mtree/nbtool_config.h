@@ -8,7 +8,10 @@
 #include "mkc_lchmod.h"
 #include "mkc_flags_to_string.h"
 #include "mkc_struct_stat.h"
+#include "mkc_LIST.h"
+#include "mkc_fparseln.h"
 
+#include <sys/types.h>
 #include <sys/stat.h>
 #include <limits.h>
 #include <pwd.h>
