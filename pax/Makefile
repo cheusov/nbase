@@ -48,6 +48,7 @@ DPADD+=	${LIBRMT}
 MKC_FEATURES =	strlcpy fgetln
 MKC_CHECK_HEADER_FILES +=	sys/mtio.h
 MKC_CHECK_HEADERS =	sys/sysmacros.h # Linux/glibc-2.26 -- major/minor from sys/types.h are deprecated
+MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 
 # Disable -Werror because of warning with gcc-8
 #   tar.c: In function 'ustar_wr':

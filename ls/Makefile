@@ -1,6 +1,8 @@
 PROG=	ls
 SRCS=	cmp.c ls.c main.c print.c util.c
 
+MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
+
 .include <mkc.init.mk>
 
 MKC_CHECK_HEADERS =	sys/sysmacros.h # Linux/glibc-2.26 -- major/minor from sys/types.h are deprecated

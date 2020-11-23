@@ -9,6 +9,9 @@ CPPFLAGS+=	-I${.CURDIR}/../mknod
 
 WARNERR   =	no
 
+MKC_FEATURES         +=	LIST
+MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
+
 .include <mkc.init.mk>
 
 .include "../mk/hacks.mk"

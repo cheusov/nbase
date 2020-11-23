@@ -3,6 +3,8 @@ SRCS =	find.c function.c ls.c main.c misc.c operator.c option.c
 
 CPPFLAGS +=	-D_NETBSD_SOURCE
 
+MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
+
 .include <mkc.init.mk>
 
 .if ${OPSYS:U} == FreeBSD
