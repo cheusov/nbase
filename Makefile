@@ -30,7 +30,7 @@ MKC_CHECK_FUNCS4   =	getgrouplist:grp.h getgrouplist:unistd.h
 MKC_CHECK_FUNCS3   =	strtoq:stdlib.h logwtmp:utmp.h
 MKC_CHECK_FUNCS2   =	getdomainname:unistd.h makedev:sys/sysmacros.h \
   makedev:sys/types.h
-MKC_CHECK_DEFINES  =	TIMESPEC_TO_TIMEVAL:sys/time.h
+MKC_CHECK_DEFINES  =	TIMESPEC_TO_TIMEVAL:sys/time.h REG_STARTEND:regex.h
 
 MKC_FUNC_OR_DEFINE.makedev =	yes
 
@@ -132,6 +132,13 @@ PROJECTS :=	${PROJECTS:N${t}}
 .if ${HAVE_DEFINE.TIMESPEC_TO_TIMEVAL.sys_time_h:U1} != 1
 .  for t in compress
    WARN_MSG += "Exclude ${t} due to missing TIMESPEC_TO_TIMEVAL in sys/time.h"
+PROJECTS :=	${PROJECTS:N${t}}
+.  endfor
+.endif
+
+.if ${HAVE_DEFINE.REG_STARTEND.regex_h:U1} != 1
+.  for t in grep
+   WARN_MSG += "Exclude ${t} due to missing REG_STARTEND in regex.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
