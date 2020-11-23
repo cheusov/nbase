@@ -39,7 +39,6 @@
 __RCSID("$NetBSD: queue.c,v 1.5 2011/08/31 16:24:57 plunky Exp $");
 
 #include <sys/param.h>
-#include <sys/queue.h>
 
 #include <stdlib.h>
 #include <string.h>
