@@ -876,7 +876,7 @@ copy(int from_fd, char *from_name, int to_fd, char *to_name, off_t size)
 				goto mmap_failed;
 			}
 #if defined(MADV_SEQUENTIAL) && !defined(__APPLE__)
-			if (madvise(p, (size_t)size, MADV_SEQUENTIAL) == -1
+			if (madvise((void *)p, (size_t)size, MADV_SEQUENTIAL) == -1
 			    && errno != EOPNOTSUPP)
 				warnx("madvise: %s", strerror(errno));
 #endif
