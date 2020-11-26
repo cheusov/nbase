@@ -870,7 +870,7 @@ copy(int from_fd, char *from_name, int to_fd, char *to_name, off_t size)
 		 */
 
 		if (size <= 8 * 1048576) {
-			if ((p = mmap(NULL, (size_t)size, PROT_READ,
+			if ((p = (u_char *)mmap(NULL, (size_t)size, PROT_READ,
 			    MAP_FILE|MAP_SHARED, from_fd, (off_t)0))
 			    == MAP_FAILED) {
 				goto mmap_failed;
@@ -909,7 +909,7 @@ copy(int from_fd, char *from_name, int to_fd, char *to_name, off_t size)
 			default:
 				break;
 			}
-			(void)munmap(p, size);
+			(void)munmap((void *)p, size);
 		} else {
  mmap_failed:
 			while ((nr = read(from_fd, buf, sizeof(buf))) > 0) {
