@@ -1,4 +1,14 @@
 ======================================================================
+Version 7.0.0.10, by Aleksey Cheusov, Fri, 27 Nov 2020 15:22:51 +0300
+
+  Disable grep(1) if REG_STARTEND is not defined in regex.h.
+
+  chmod, cp, du, find, ls, mtree, pax, rm: improvements on systems
+  without fts_open(3) functions family (e.g., musl libc and Solaris).
+
+  Improve portability of xinstall(1) and mtree(1).
+
+======================================================================
 Version 7.0.0.9, by Aleksey Cheusov, Thu, 14 May 2020 20:46:44 +0300
 
   Fix some build failures on Linux-es caused by __wur
