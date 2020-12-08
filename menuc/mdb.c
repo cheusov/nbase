@@ -167,6 +167,8 @@ write_menu_file(char *initcode)
 	if (do_dynamic || do_msgxlat)
 		(void)fprintf(out_file, "\n");
 
+#define STR(x) #x
+#define MC_OPT(x) "#define " #x " " STR(x) "\n"
 	(void)fprintf(out_file,
 		"typedef struct menudesc menudesc;\n"	
 		"typedef struct menu_ent menu_ent;\n"	
@@ -200,8 +202,6 @@ write_menu_file(char *initcode)
 		"};\n"
 		"\n"
 		"/* defines for mopt field. */\n"
-#define STR(x) #x
-#define MC_OPT(x) "#define " #x " " STR(x) "\n"
 		MC_OPT(MC_NOEXITOPT)
 		MC_OPT(MC_NOBOX)
 		MC_OPT(MC_SCROLL)
@@ -211,9 +211,9 @@ write_menu_file(char *initcode)
 		MC_OPT(MC_ALWAYS_SCROLL)
 		MC_OPT(MC_SUBMENU)
 		MC_OPT(MC_VALID)
+	);
 #undef MC_OPT
 #undef STR
-	);
 
 	(void)fprintf(out_file, "%s",
 		"\n"

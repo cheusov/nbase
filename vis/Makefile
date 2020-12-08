@@ -1,6 +1,8 @@
 PROG =	vis
 SRCS =	vis.c foldit.c
 
+CFLAGS.check +=	-Wno-error=unused-result # wctomb(...) and asprintf(...) on glibc/Linux-es
+
 .include <mkc.init.mk>
 
 .include "../mk/hacks.mk"

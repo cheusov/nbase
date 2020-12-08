@@ -40,15 +40,12 @@ __RCSID("$NetBSD: excludes.c,v 1.13 2004/06/20 22:20:18 jmc Exp $");
 #endif
 
 #include <sys/types.h>
-#include <sys/queue.h>
 
 #include <fnmatch.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-
-#include "mkc_fparseln.h"
 
 #include "extern.h"
 

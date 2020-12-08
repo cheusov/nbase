@@ -4,10 +4,15 @@ MAN       =	mtree.8
 SRCS      =	compare.c crc.c create.c excludes.c misc.c mtree.c spec.c \
 		specspec.c verify.c getid.c pack_dev.c only.c
 
+MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
+
 CPPFLAGS+=	-I${.CURDIR}/../mknod
 .PATH:		${.CURDIR}/../mknod
 
 WARNERR   =	no
+
+MKC_FEATURES         +=	LIST
+MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 
 .include <mkc.init.mk>
 

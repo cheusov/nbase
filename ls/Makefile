@@ -1,6 +1,8 @@
 PROG=	ls
 SRCS=	cmp.c ls.c main.c print.c util.c
 
+MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
+
 .include <mkc.init.mk>
 
 CFLAGS.check   +=	-Wno-error=return-type
@@ -10,6 +12,8 @@ MKC_CHECK_HEADERS =	sys/sysmacros.h # Linux/glibc-2.26 -- major/minor from sys/t
 .if ${OPSYS:U} == FreeBSD
 WARNERR   =	no # FreeBSD has a bit different fts_open(3)
 .endif
+
+MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 
 .include "../mk/hacks.mk"
 

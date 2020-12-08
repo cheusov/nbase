@@ -53,7 +53,6 @@ extern sig_atomic_t pinfo;
 
 #include <sys/cdefs.h>
 
-__BEGIN_DECLS
 int	copy_fifo(struct stat *, int);
 int	copy_file(FTSENT *, int);
 int	copy_link(FTSENT *, int);
@@ -61,6 +60,5 @@ int	copy_special(struct stat *, int);
 int	set_utimes(const char *, struct stat *);
 int	setfile(struct stat *, int);
 void	usage(void) __attribute__((__noreturn__));
-__END_DECLS
 
 #endif /* !_EXTERN_H_ */

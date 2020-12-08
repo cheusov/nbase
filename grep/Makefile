@@ -15,8 +15,7 @@ MLINKS =grep.1 egrep.1	\
 
 MKC_FEATURES =	STAILQ getline
 
-MKC_REQUIRE_FUNCLIBS= gzread:z BZ2_bzRead:bz2
-
+MKC_REQUIRE_FUNCLIBS= gzread:z BZ2_bzRead:bz2 fts_open:fts
 #.PATH: ${.CURDIR}/nls
 
 #NLS=	C.msg \

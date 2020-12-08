@@ -96,8 +96,8 @@ static int	haveopt_f, haveopt_g, haveopt_m, haveopt_o;
 static int	numberedbackup;
 static int	mode = S_IRWXU|S_IRGRP|S_IXGRP|S_IROTH|S_IXOTH;
 static char	pathbuf[MAXPATHLEN];
-static uid_t	uid = -1;
-static gid_t	gid = -1;
+static uid_t	uid = (uid_t)-1;
+static gid_t	gid = (gid_t)-1;
 static char	*group, *owner, *fflags, *tags;
 static FILE	*metafp;
 static char	*metafile;
@@ -870,13 +870,13 @@ copy(int from_fd, char *from_name, int to_fd, char *to_name, off_t size)
 		 */
 
 		if (size <= 8 * 1048576) {
-			if ((p = mmap(NULL, (size_t)size, PROT_READ,
+			if ((p = (u_char *)mmap(NULL, (size_t)size, PROT_READ,
 			    MAP_FILE|MAP_SHARED, from_fd, (off_t)0))
 			    == MAP_FAILED) {
 				goto mmap_failed;
 			}
 #if defined(MADV_SEQUENTIAL) && !defined(__APPLE__)
-			if (madvise(p, (size_t)size, MADV_SEQUENTIAL) == -1
+			if (madvise((void *)p, (size_t)size, MADV_SEQUENTIAL) == -1
 			    && errno != EOPNOTSUPP)
 				warnx("madvise: %s", strerror(errno));
 #endif
@@ -909,7 +909,7 @@ copy(int from_fd, char *from_name, int to_fd, char *to_name, off_t size)
 			default:
 				break;
 			}
-			(void)munmap(p, size);
+			(void)munmap((void *)p, size);
 		} else {
  mmap_failed:
 			while ((nr = read(from_fd, buf, sizeof(buf))) > 0) {

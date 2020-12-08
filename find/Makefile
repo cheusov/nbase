@@ -3,9 +3,12 @@ SRCS =	find.c function.c ls.c main.c misc.c operator.c option.c
 
 CPPFLAGS +=	-D_NETBSD_SOURCE
 
+MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
+
 .include <mkc.init.mk>
 
 CFLAGS.check +=	-Wno-error=return-type
+CFLAGS.check +=	-Wno-error=unused-result # write(...) on glibc/Linux-es
 
 .if ${OPSYS:U} == FreeBSD
 WARNERR   =	no # FreeBSD has a bit different fts_open(3)

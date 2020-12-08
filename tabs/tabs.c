@@ -115,7 +115,7 @@ main(int argc, char **argv)
 		if (arg[0] == '\0') 
 			usage();
 		if (arg[0] == '-' && arg[1] == '\0') {
-			if (argv[i + 1] != '\0')
+			if (argv[i + 1] != NULL)
 				tabs = argv[i + 1];
 			break;
 		}

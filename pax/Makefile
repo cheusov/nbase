@@ -3,6 +3,8 @@ SRCS=	ar_io.c ar_subs.c buf_subs.c file_subs.c ftree.c\
 	gen_subs.c getoldopt.c options.c pat_rep.c pax.c sel_subs.c tables.c\
 	tar.c tty_subs.c
 
+MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
+
 SMALLPROG=1
 
 .if defined(SMALLPROG)
@@ -48,6 +50,7 @@ DPADD+=	${LIBRMT}
 MKC_FEATURES =	strlcpy fgetln
 MKC_CHECK_HEADER_FILES +=	sys/mtio.h
 MKC_CHECK_HEADERS =	sys/sysmacros.h # Linux/glibc-2.26 -- major/minor from sys/types.h are deprecated
+MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 
 # Disable -Werror because of warning with gcc-8
 #   tar.c: In function 'ustar_wr':
