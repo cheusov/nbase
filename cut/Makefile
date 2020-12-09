@@ -1,6 +1,6 @@
 PROG=	cut
 
-MKC_FEATURES +=	efun
+MKC_FEATURES +=	efun fgetln
 
 .include <mkc.init.mk>
 

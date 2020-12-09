@@ -1,6 +1,6 @@
 PROG =	shuffle
 
-MKC_FEATURES +=	efun
+MKC_FEATURES +=	fgetln efun
 
 .include <mkc.init.mk>
 

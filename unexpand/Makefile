@@ -1,6 +1,6 @@
 PROG =	unexpand
 
-MKC_FEATURES +=		efun strsep
+MKC_FEATURES +=		fgetln efun strsep
 
 .include <mkc.init.mk>
 
