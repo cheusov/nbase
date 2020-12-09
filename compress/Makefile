@@ -7,7 +7,7 @@ MLINKS =	compress.1 uncompress.1
 
 .include "../mk/hacks.mk"
 
-.include "../mk/mkc_imp.f_funopen.mk"
-.include "../mk/mkc_imp.f_struct_stat.mk"
+.include "../mk/imp.f_funopen.mk"
+.include "../mk/imp.f_struct_stat.mk"
 
 .include "../mk/addlinks.mk"

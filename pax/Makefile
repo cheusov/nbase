@@ -47,7 +47,7 @@ LDADD+=	-lrmt
 DPADD+=	${LIBRMT}
 .endif
 
-MKC_FEATURES =	strlcpy fgetln
+MKC_FEATURES =	fgetln raise_default_signal strlcpy vis
 MKC_CHECK_HEADER_FILES +=	sys/mtio.h
 MKC_CHECK_HEADERS =	sys/sysmacros.h # Linux/glibc-2.26 -- major/minor from sys/types.h are deprecated
 MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
@@ -62,14 +62,12 @@ WARNERR =	no
 
 .include "../mk/hacks.mk"
 
-.include "../mk/mkc_imp.f_strmode.mk"
-.include "../mk/mkc_imp.f_lchmod.mk"
-.include "../mk/mkc_imp.f_vis.mk"
-.include "../mk/mkc_imp.f_getsetmode.mk"
-.include "../mk/mkc_imp.f_pwdgrp.mk"
-.include "../mk/mkc_imp.f_raise_default_signal.mk"
-.include "../mk/mkc_imp.f_struct_stat.mk"
-.include "../mk/mkc_imp.f_types.mk"
-.include "../mk/mkc_imp.f_lutimes.mk"
+.include "../mk/imp.f_strmode.mk"
+.include "../mk/imp.f_lchmod.mk"
+.include "../mk/imp.f_getsetmode.mk"
+.include "../mk/imp.f_pwdgrp.mk"
+.include "../mk/imp.f_struct_stat.mk"
+.include "../mk/imp.f_types.mk"
+.include "../mk/imp.f_lutimes.mk"
 
 .include "../mk/addlinks.mk"

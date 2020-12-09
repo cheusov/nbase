@@ -8,7 +8,7 @@ MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 
 .include "../mk/hacks.mk"
 
-.include "../mk/mkc_imp.f_lchmod.mk"
-.include "../mk/mkc_imp.f_struct_stat.mk"
+.include "../mk/imp.f_lchmod.mk"
+.include "../mk/imp.f_struct_stat.mk"
 
 .include "../mk/addlinks.mk"

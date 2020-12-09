@@ -82,7 +82,7 @@ __RCSID("$NetBSD: xinstall.c,v 1.117 2014/07/06 20:54:47 apb Exp $");
 #include "mkc_macro.h"
 #include "mkc_getsetmode.h"
 #include "mkc_pwdgrp.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_vis.h"
 #include "mkc_flags_to_string.h"
 #include "mkc_struct_stat.h"

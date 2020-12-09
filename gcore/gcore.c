@@ -47,7 +47,7 @@ __RCSID("$NetBSD: gcore.c,v 1.11 2008/04/28 20:24:13 martin Exp $");
 #include <unistd.h>
 #include <errno.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 static void usage(void) __dead;
 

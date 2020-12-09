@@ -11,6 +11,6 @@ MKC_FEATURES +=	strlcpy
 
 .include "../mk/hacks.mk"
 
-.include "../mk/mkc_imp.f_parsedate.mk"
+.include "../mk/imp.f_parsedate.mk"
 
 .include "../mk/addlinks.mk"

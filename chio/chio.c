@@ -57,7 +57,7 @@ __RCSID("$NetBSD: chio.c,v 1.31 2011/08/29 14:51:17 joerg Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #include "defs.h"
 #include "pathnames.h"

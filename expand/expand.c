@@ -48,7 +48,7 @@ __RCSID("$NetBSD: expand.c,v 1.13 2009/04/12 02:51:36 lukem Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 
 /*

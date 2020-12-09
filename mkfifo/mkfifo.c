@@ -52,7 +52,7 @@ __RCSID("$NetBSD: mkfifo.c,v 1.13 2011/09/04 20:30:34 joerg Exp $");
 #include <unistd.h>
 
 #include "mkc_getsetmode.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 

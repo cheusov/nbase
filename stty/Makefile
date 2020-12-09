@@ -7,7 +7,7 @@ MKC_CHECK_DEFINES +=	_PATH_URANDOM:paths.h
 
 MKC_CHECK_TYPES +=	linedn_t:termios.h
 
-.include "../mk/mkc_imp.f_strsep.mk"
+MKC_FEATURES +=		strsep
 
 .include <mkc.configure.mk>
 

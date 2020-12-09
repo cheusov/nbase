@@ -43,7 +43,7 @@ __RCSID("$NetBSD: getconf.c,v 1.35 2013/12/19 19:11:50 rmind Exp $");
 #include <string.h>
 
 #include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 

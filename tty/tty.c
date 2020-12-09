@@ -46,7 +46,7 @@ __RCSID("$NetBSD: tty.c,v 1.8 2011/09/06 18:34:57 joerg Exp $");
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 __dead static void usage(void);
 

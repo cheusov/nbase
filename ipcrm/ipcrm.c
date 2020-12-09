@@ -47,7 +47,7 @@
 #include <sys/sysctl.h>
 
 #include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #define IPC_TO_STR(x) (x == 'Q' ? "msq" : (x == 'M' ? "shm" : "sem"))
 #define IPC_TO_STRING(x) (x == 'Q' ? "message queue" : \

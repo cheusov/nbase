@@ -48,7 +48,7 @@ __RCSID("$NetBSD: getaddrinfo.c,v 1.4 2014/04/22 02:23:03 ginsbach Exp $");
 #include <unistd.h>
 #include <util.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #include "tables.h"
 

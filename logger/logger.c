@@ -51,7 +51,7 @@ __RCSID("$NetBSD: logger.c,v 1.17 2012/04/27 06:30:48 wiz Exp $");
 #include <err.h>
 
 #include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #define	SYSLOG_NAMES
 #include <syslog.h>

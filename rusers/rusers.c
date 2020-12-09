@@ -48,7 +48,7 @@ __RCSID("$NetBSD: rusers.c,v 1.25 2011/09/06 18:29:35 joerg Exp $");
 #include <unistd.h>
 #include <utmp.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 /*
  * For now we only try version 2 of the protocol. The current

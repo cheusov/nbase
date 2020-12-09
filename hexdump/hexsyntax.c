@@ -49,7 +49,7 @@ __RCSID("$NetBSD: hexsyntax.c,v 1.14 2010/11/27 20:46:38 christos Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 
 #include "hexdump.h"

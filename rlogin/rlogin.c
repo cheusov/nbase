@@ -72,7 +72,7 @@ __RCSID("$NetBSD: rlogin.c,v 1.43 2013/03/02 18:37:19 wiz Exp $");
 #include <termios.h>
 #include <unistd.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #include "getport.h"
 

@@ -56,7 +56,7 @@ __RCSID("$NetBSD: head.c,v 1.23 2010/03/31 21:55:23 joerg Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 

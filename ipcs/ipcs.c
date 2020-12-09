@@ -78,7 +78,7 @@
 #include "mkc_strlcpy.h"
 #include "mkc_progname.h"
 #include "mkc_pwdgrp.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #define	SHMINFO		1
 #define	SHMTOTAL	2

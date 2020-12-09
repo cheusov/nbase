@@ -48,7 +48,7 @@ __RCSID("$NetBSD: unvis.c,v 1.13 2010/11/27 19:46:25 christos Exp $");
 
 #include "mkc_vis.h"
 #include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 

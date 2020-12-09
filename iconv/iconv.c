@@ -44,7 +44,7 @@ __RCSID("$NetBSD: iconv.c,v 1.19 2013/10/07 02:00:46 dholland Exp $");
 
 #include "mkc_efun.h"
 #include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 static void usage(void) __dead;
 static int scmp(const void *, const void *);

@@ -56,7 +56,7 @@ __RCSID("$NetBSD: column.c,v 1.21 2008/07/21 14:19:21 lukem Exp $");
 #include "mkc_progname.h"
 #include "mkc_efun.h"
 #include "mkc_fgetln.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 

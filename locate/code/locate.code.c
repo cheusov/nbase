@@ -91,7 +91,7 @@ __RCSID("$NetBSD: locate.code.c,v 1.11 2011/09/04 20:28:40 joerg Exp $");
 
 #include "locate.h"
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #define	BGBUFSIZE	(NBG * 2)	/* size of bigram buffer */
 

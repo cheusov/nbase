@@ -51,7 +51,7 @@ __RCSID("$NetBSD: db.c,v 1.26 2012/02/17 11:37:33 apb Exp $");
 #include <unistd.h>
 
 #include "mkc_vis.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 typedef enum {
 	F_WRITE		= 1<<0,

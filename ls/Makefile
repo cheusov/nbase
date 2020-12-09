@@ -15,13 +15,14 @@ WARNERR   =	no # FreeBSD has a bit different fts_open(3)
 
 MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 
+MKC_FEATURES += vis
+
 .include "../mk/hacks.mk"
 
-.include "../mk/mkc_imp.f_pwdgrp.mk"
-.include "../mk/mkc_imp.f_getbsize.mk"
-.include "../mk/mkc_imp.f_strmode.mk"
-.include "../mk/mkc_imp.f_humanize_number.mk"
-.include "../mk/mkc_imp.f_vis.mk"
-.include "../mk/mkc_imp.f_types.mk"
+.include "../mk/imp.f_pwdgrp.mk"
+.include "../mk/imp.f_getbsize.mk"
+.include "../mk/imp.f_strmode.mk"
+.include "../mk/imp.f_humanize_number.mk"
+.include "../mk/imp.f_types.mk"
 
 .include "../mk/addlinks.mk"

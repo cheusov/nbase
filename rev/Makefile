@@ -4,6 +4,6 @@ PROG =	rev
 
 .include "../mk/hacks.mk"
 
-.include "../mk/mkc_imp.f_fgetwln.mk"
+.include "../mk/imp.f_fgetwln.mk"
 
 .include "../mk/addlinks.mk"

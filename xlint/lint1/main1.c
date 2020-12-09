@@ -51,7 +51,7 @@ __RCSID("$NetBSD: main1.c,v 1.25 2014/04/18 21:53:44 christos Exp $");
 
 #include "lint1.h"
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 /* set yydebug to 1*/
 int	yflag;

@@ -56,7 +56,7 @@ __RCSID("$NetBSD: time.c,v 1.22 2011/11/09 19:10:10 christos Exp $");
 #include <time.h>
 
 #include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #include "ext.h"
 

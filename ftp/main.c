@@ -121,7 +121,7 @@ __RCSID("$NetBSD: main.c,v 1.122 2012/12/22 16:57:10 christos Exp $");
 #include <unistd.h>
 #include <locale.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_strsep.h"
 
 #define	GLOBAL		/* force GLOBAL decls in ftp_var.h to be declared */

@@ -18,6 +18,6 @@ CFLAGS.check     +=	-Wno-error=strict-aliasing # tiger.c
 
 .include "../mk/hacks.mk"
 
-.include "../mk/mkc_imp.f_endian_encdec.mk"
+.include "../mk/imp.f_endian_encdec.mk"
 
 .include <mkc.mk>

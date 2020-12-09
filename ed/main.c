@@ -66,7 +66,7 @@ __RCSID("$NetBSD: main.c,v 1.27 2014/03/31 12:55:46 christos Exp $");
 #include <setjmp.h>
 #include <pwd.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #include "ed.h"
 

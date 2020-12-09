@@ -67,7 +67,7 @@ __RCSID("$NetBSD: rsh.c,v 1.36.2.1 2014/12/01 13:43:13 martin Exp $");
 #include "pathnames.h"
 #include "getport.h"
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 /*
  * rsh - remote shell

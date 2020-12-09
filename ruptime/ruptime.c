@@ -55,7 +55,7 @@ __RCSID("$NetBSD: ruptime.c,v 1.15 2011/09/06 18:29:19 joerg Exp $");
 #include <tzfile.h>
 #include <unistd.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 static struct hs {
 	struct	whod *hs_wd;

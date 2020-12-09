@@ -68,7 +68,7 @@ __RCSID("$NetBSD: lock.c,v 1.33 2013/10/18 20:47:06 christos Exp $");
 #include <time.h>
 #include <unistd.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #ifdef USE_PAM
 #include <security/pam_appl.h>

@@ -63,7 +63,7 @@ __RCSID("$NetBSD: du.c,v 1.36 2012/03/11 11:23:20 shattered Exp $");
 #include "mkc_humanize_number.h"
 #include "mkc_getbsize.h"
 #include "mkc_macro.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 

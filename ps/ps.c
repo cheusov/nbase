@@ -97,7 +97,7 @@ __RCSID("$NetBSD: ps.c,v 1.82 2014/06/28 17:32:27 dholland Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #include "ps.h"
 

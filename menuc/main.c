@@ -50,7 +50,7 @@ __RCSID("$NetBSD: main.c,v 1.11 2012/03/06 16:55:18 mbalmer Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #define MAIN
 #include "defs.h"

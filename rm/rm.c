@@ -32,7 +32,7 @@
 #include "mkc_progname.h"
 #include "mkc_pwdgrp.h"
 #include "mkc_strmode.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_arc4random.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"

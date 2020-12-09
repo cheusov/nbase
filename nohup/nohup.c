@@ -55,7 +55,7 @@ __RCSID("$NetBSD: nohup.c,v 1.15 2011/09/06 18:24:15 joerg Exp $");
 
 #include "mkc_strlcpy.h"
 #include "mkc_strlcat.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 static void dofile(void);
 __dead static void usage(void);

@@ -56,7 +56,7 @@ __RCSID("$NetBSD: stty.c,v 1.23 2013/09/12 19:47:23 christos Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #include "stty.h"
 #include "extern.h"

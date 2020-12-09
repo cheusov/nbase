@@ -50,7 +50,7 @@ __RCSID("$NetBSD: from.c,v 1.17 2008/07/21 14:19:22 lukem Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 #include "mkc_macro.h"
 

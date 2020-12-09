@@ -87,7 +87,7 @@ __RCSID("$NetBSD: bdes.c,v 1.9 2013/08/15 20:48:56 joerg Exp $");
 #include <stdlib.h>
 #include <string.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 /*
  * BSD and System V systems offer special library calls that do

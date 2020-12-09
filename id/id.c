@@ -54,7 +54,7 @@ __RCSID("$NetBSD: id.c,v 1.32 2011/09/16 15:39:26 joerg Exp $");
 #include <stdint.h>
 
 #include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_macro.h"
 
 static void current(void);

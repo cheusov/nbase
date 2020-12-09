@@ -62,7 +62,7 @@ __RCSID("$NetBSD: mt.c,v 1.47 2011/08/29 14:46:01 joerg Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_macro.h"
 
 /* pseudo ioctl constants */

@@ -41,7 +41,7 @@ __RCSID("$NetBSD: infocmp.c,v 1.8 2013/10/01 09:01:49 roy Exp $");
 #include <term.h>
 #include <unistd.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #define SW 8
 

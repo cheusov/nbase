@@ -74,7 +74,7 @@ __RCSID("$NetBSD: script.c,v 1.21 2011/09/06 18:29:56 joerg Exp $");
 #include "mkc_tzfile.h"
 #include "mkc_progname.h"
 #include "mkc_bswap.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_macro.h"
 
 #define	DEF_BUF	65536

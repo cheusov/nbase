@@ -65,7 +65,7 @@ __RCSID("$NetBSD: df.c,v 1.90 2012/01/07 18:45:13 christos Exp $");
 
 #include <sys/statvfs.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 static char	*getmntpt(const char *);
 static void	 prtstat(struct statvfs *, int);

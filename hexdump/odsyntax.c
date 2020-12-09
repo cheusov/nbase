@@ -50,7 +50,7 @@ __RCSID("$NetBSD: odsyntax.c,v 1.28 2010/11/27 20:46:38 christos Exp $");
 #include <unistd.h>
 
 #include "mkc_efun.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 

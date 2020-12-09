@@ -52,7 +52,7 @@ __RCSID("$NetBSD: comm.c,v 1.20 2012/09/05 04:01:23 simonb Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 
 #define	MAXLINELEN	(LINE_MAX + 1)

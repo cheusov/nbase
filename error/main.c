@@ -54,7 +54,7 @@ __RCSID("$NetBSD: main.c,v 1.21 2011/08/17 13:11:22 christos Exp $");
 
 #include "mkc_macro.h"
 #include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 
 FILE *errorfile;     /* where error file comes from */

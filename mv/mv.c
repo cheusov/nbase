@@ -36,7 +36,7 @@
 #include "mkc_strmode.h"
 #include "mkc_strlcpy.h"
 #include "mkc_pwdgrp.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_struct_stat.h"
 #include "mkc_types.h"
 #include "mkc_err.h"

@@ -1,7 +1,7 @@
 PROG =	sed
 SRCS =	compile.c main.c misc.c process.c
 
-MKC_FEATURES +=	getline
+MKC_FEATURES +=	errc getline
 
 CFLAGS.check +=	-Wno-error=unused-result # fchown(...) on glibc/Linux-es
 
@@ -12,7 +12,5 @@ CFLAGS.check  +=	-Wno-error=return-type
 CFLAGS.check  +=	-erroff=E_STATEMENT_NOT_REACHED
 
 .include "../mk/hacks.mk"
-
-.include "../mk/mkc_imp.f_errc.mk"
 
 .include "../mk/addlinks.mk"

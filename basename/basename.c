@@ -49,7 +49,7 @@ __RCSID("$NetBSD: basename.c,v 1.15 2011/08/29 14:24:03 joerg Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 
 __dead static void usage(void);

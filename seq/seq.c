@@ -44,7 +44,7 @@ __RCSID("$NetBSD: seq.c,v 1.7 2010/05/27 08:40:19 dholland Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 
 #define ZERO	'0'

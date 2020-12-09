@@ -14,7 +14,7 @@ __RCSID("$NetBSD: getopt.c,v 1.8 2006/07/09 21:39:48 wiz Exp $");
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 int
 main(int argc, char *argv[])

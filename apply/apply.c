@@ -52,7 +52,7 @@ __RCSID("$NetBSD: apply.c,v 1.17 2008/03/08 03:35:53 christos Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_bsd_signal.h"
 #include "mkc_macro.h"
 

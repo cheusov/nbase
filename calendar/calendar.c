@@ -63,7 +63,7 @@ __RCSID("$NetBSD: calendar.c,v 1.50.4.2 2015/07/01 07:30:15 bouyer Exp $");
 #include <tzfile.h>
 #include <unistd.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #include "pathnames.h"
 

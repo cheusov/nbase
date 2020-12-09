@@ -51,7 +51,7 @@ __RCSID("$NetBSD: rcp.c,v 1.49 2012/05/07 15:22:54 chs Exp $");
 #include <netinet/in_systm.h>
 #include <netinet/ip.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #include <ctype.h>
 #include <dirent.h>

@@ -10,7 +10,7 @@
 #  crunch locate
 
 # TBD: units -- /usr/share/misc/units.lib is missing
-MKC_REQD     =	0.33.92
+MKC_REQD     =	0.35.0
 
 MKC_CHECK_HEADER_FILES  = pty.h fts.h sys/sysctl.h
 MKC_CHECK_HEADERS  =	tzfile.h md2.h db.h termcap.h

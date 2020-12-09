@@ -47,7 +47,7 @@ __RCSID("$NetBSD: what.c,v 1.11 2011/09/06 18:45:49 joerg Exp $");
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 static void search(void);
 __dead static void usage(void);

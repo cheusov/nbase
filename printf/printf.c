@@ -59,7 +59,7 @@ __RCSID("$NetBSD: printf.c,v 1.36 2013/07/16 17:48:22 christos Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_warn.h"
 
 #ifdef __GNUC__

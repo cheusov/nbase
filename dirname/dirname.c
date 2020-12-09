@@ -48,7 +48,7 @@ __RCSID("$NetBSD: dirname.c,v 1.12 2011/09/16 15:39:25 joerg Exp $");
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 
 __dead static void usage(void);

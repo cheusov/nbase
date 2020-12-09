@@ -29,7 +29,7 @@
 #include "mkc_strlcat.h"
 #include "mkc_strlcpy.h"
 #include "mkc_macro.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #include "pathnames.h"
 

@@ -52,7 +52,7 @@ __RCSID("$NetBSD: rup.c,v 1.28 2011/08/30 17:06:21 plunky Exp $");
 #include <time.h>
 #include <unistd.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #undef FSHIFT			/* Use protocol's shift and scale values */
 #undef FSCALE

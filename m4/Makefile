@@ -19,6 +19,6 @@ CPPFLAGS +=	-DHAVE_NBTOOL_CONFIG_H=1 -I${.CURDIR}
 
 WARNERR   =	no
 
-.include "../mk/mkc_imp.f_strsep.mk"
+MKC_FEATURES +=		strsep
 
 .include "../mk/addlinks.mk"

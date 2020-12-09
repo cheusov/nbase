@@ -52,7 +52,7 @@ __RCSID("$NetBSD: paste.c,v 1.16 2011/09/06 18:24:43 joerg Exp $");
 #include <unistd.h>
 
 #include "mkc_fgetln.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 

@@ -46,7 +46,7 @@ __RCSID("$NetBSD: nl.c,v 1.12 2013/09/17 20:00:50 wiz Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 
 #undef NL_TEXTMAX

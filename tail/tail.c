@@ -52,7 +52,7 @@ __RCSID("$NetBSD: tail.c,v 1.17 2013/01/31 23:09:06 wiz Exp $");
 #include <string.h>
 
 #include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #include "extern.h"
 

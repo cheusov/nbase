@@ -55,7 +55,7 @@ __RCSID("$NetBSD: unexpand.c,v 1.14 2008/12/21 02:33:13 christos Exp $");
 #include "mkc_progname.h"
 #include "mkc_efun.h"
 #include "mkc_fgetln.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 #include "mkc_strsep.h"

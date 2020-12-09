@@ -55,7 +55,7 @@ __RCSID("$NetBSD: crunchgen.c,v 1.82 2014/01/04 08:58:51 martin Exp $");
 #include <sys/param.h>
 #include <sys/utsname.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #define CRUNCH_VERSION	"20050208"
 

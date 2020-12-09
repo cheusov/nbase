@@ -61,7 +61,7 @@ __RCSID("$NetBSD: mknod.c,v 1.41 2013/06/14 16:28:20 tsutsui Exp $");
 #include "mkc_progname.h"
 #include "mkc_pwdgrp.h"
 #include "mkc_getsetmode.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #include "pack_dev.h"
 

@@ -55,7 +55,7 @@ __RCSID("$NetBSD: chflags.c,v 1.16 2011/08/29 14:05:08 joerg Exp $");
 #include <unistd.h>
 #include <util.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 __dead static void	usage(void);
 

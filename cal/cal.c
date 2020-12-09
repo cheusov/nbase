@@ -60,7 +60,7 @@ __RCSID("$NetBSD: cal.c,v 1.27 2011/08/29 13:55:22 joerg Exp $");
 #include <tzfile.h>
 #include <unistd.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #define	SATURDAY 		6		/* 1 Jan 1 was a Saturday */
 

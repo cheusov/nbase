@@ -1,7 +1,5 @@
 PROG =	join
 
-MKC_FEATURES +=		fgetln
-
-.include "../mk/mkc_imp.f_strsep.mk"
+MKC_FEATURES +=		fgetln strsep
 
 .include "../mk/addlinks.mk"

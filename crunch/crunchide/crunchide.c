@@ -75,7 +75,7 @@ __RCSID("$NetBSD: crunchide.c,v 1.14 2011/08/30 23:15:14 joerg Exp $");
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #include "extern.h"
 

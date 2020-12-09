@@ -63,7 +63,7 @@ __RCSID("$NetBSD: main.c,v 1.31 2010/01/12 14:45:31 christos Exp $");
 #include "thread.h"
 #endif
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 /*
  * Mail -- a mail program

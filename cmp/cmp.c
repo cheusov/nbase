@@ -55,7 +55,7 @@ __RCSID("$NetBSD: cmp.c,v 1.18 2011/08/29 14:14:11 joerg Exp $");
 #include <unistd.h>
 #include <locale.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #include "extern.h"
 

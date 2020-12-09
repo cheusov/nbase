@@ -54,7 +54,7 @@ __RCSID("$NetBSD: uniq.c,v 1.18 2012/08/26 14:14:16 wiz Exp $");
 
 #include "mkc_progname.h"
 #include "mkc_fgetln.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 
 static int cflag, dflag, uflag;

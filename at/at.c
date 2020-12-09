@@ -60,7 +60,7 @@
 #define MAIN
 #include "privs.h"
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 /* Macros */
 #define ALARMC 10		/* Number of seconds to wait for timeout */

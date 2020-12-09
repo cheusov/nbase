@@ -53,7 +53,7 @@ __RCSID("$NetBSD: nbperf.c,v 1.5 2013/01/31 16:32:02 joerg Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 #include "nbperf.h"
 

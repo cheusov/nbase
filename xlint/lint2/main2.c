@@ -47,7 +47,7 @@ __RCSID("$NetBSD: main2.c,v 1.8 2010/01/14 16:58:27 christos Exp $");
 
 #include "lint2.h"
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 /* warnings for symbols which are declared but not defined or used */
 int	xflag;

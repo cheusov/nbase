@@ -53,7 +53,7 @@ __RCSID("$NetBSD: vis.c,v 1.22 2013/02/20 17:04:45 christos Exp $");
 
 #include "mkc_vis.h"
 #include "mkc_progname.h"
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 

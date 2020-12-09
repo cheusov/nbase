@@ -47,7 +47,7 @@ __RCSID("$NetBSD: histedit.c,v 1.47 2014/06/18 18:17:30 christos Exp $");
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "mkc_bsd_getopt.h"
+#include "mkc_posix_getopt.h"
 
 /*
  * Editline and history functions (and glue).
