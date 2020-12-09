@@ -216,6 +216,10 @@ int sep = '\n';
 int havechd = 0;
 
 /*
+ */
+char *chdname;
+
+/*
  * options()
  *	figure out if we are pax, tar or cpio. Call the appropriate options
  *	parser
