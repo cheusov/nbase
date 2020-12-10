@@ -15,7 +15,7 @@ ${.OBJDIR}/sys/cdefs.h: ${.CURDIR}/sys/cdefs.h.in
 CLEANFILES = ${.OBJDIR}/sys/cdefs.h
 CPPFLAGS += -I. -I${.OBJDIR}
 
-MKC_FEATURES +=	arc4random bswap dprintf efun errc fparseln \
+MKC_FEATURES +=	arc4random bswap dprintf efun errc fgetln fparseln \
    raise_default_signal reallocarray strndup strsep vis
 
 .include "../mk/hacks.mk"
