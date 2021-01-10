@@ -1,4 +1,5 @@
 PROG =		ctags
+MAN  =		ctags.1
 CPPFLAGS +=	-I${.CURDIR}
 SRCS =		C.c ctags.c fortran.c lisp.c print.c tree.c yacc.c
 

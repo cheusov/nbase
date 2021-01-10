@@ -1,4 +1,5 @@
 PROG =	nbperf
+MAN=	nbperf.1
 SRCS =	nbperf.c
 SRCS +=	nbperf-bdz.c nbperf-chm.c nbperf-chm3.c
 SRCS +=	graph2.c graph3.c

@@ -1,4 +1,5 @@
 PROG =	nl
+MAN  =	nl.1
 
 COPTS.nl.c += -Wno-format-nonliteral
 

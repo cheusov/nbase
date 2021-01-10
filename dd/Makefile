@@ -1,11 +1,6 @@
-#.include <bsd.own.mk>
-
-#RUMPPRG=dd
-PROG=	dd
-SRCS=	args.c conv.c dd.c misc.c position.c    dd_hostops.c
-
-#DPADD +=	${LIBUTIL}
-#LDADD +=	-lutil
+PROG =	dd
+MAN  =	dd.1
+SRCS =	args.c conv.c dd.c misc.c position.c    dd_hostops.c
 
 #.ifdef SMALLPROG
 CPPFLAGS+=	-DNO_CONV -DNO_MSGFMT -DNO_IOFLAG -DSMALL

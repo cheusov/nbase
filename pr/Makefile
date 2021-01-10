@@ -1,4 +1,5 @@
 PROG =	pr
+MAN  =	pr.1
 SRCS =	pr.c egetopt.c
 
 COPTS.pr.c += -Wno-format-nonliteral

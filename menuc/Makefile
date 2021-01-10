@@ -1,4 +1,5 @@
 PROG =		menuc
+MAN  =		menuc.1
 SRCS =		main.c parse.y scan.l avl.c mdb.c util.c
 CPPFLAGS+=	-I. -I${.CURDIR} -D_PATH_DEFSYSPREFIX='"${_PATH_DEFSYSPREFIX}"'
 YHEADER=

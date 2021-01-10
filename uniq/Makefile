@@ -1,4 +1,5 @@
 PROG =	uniq
+MAN  =	uniq.1
 
 MKC_FEATURES +=		fgetln
 

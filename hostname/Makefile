@@ -1,4 +1,5 @@
 PROG =	hostname
+MAN  =	hostname.1
 
 CPPFLAGS +=	-D__EXTENSIONS__ # for SunOS
 

@@ -1,4 +1,5 @@
-PROG=	mv
+PROG =	mv
+MAN  =	mv.1
 
 MKC_CHECK_FUNCS2 +=	fcpxattr:sys/extattr.h
 

@@ -1,4 +1,5 @@
 PROG      =	ed
+MAN       =	ed.1
 CPPFLAGS +=	-DBACKWARDS
 
 CFLAGS.check +=	-Wno-error=unused-result # asprintf(...) and system(...) on glibc/Linux-es

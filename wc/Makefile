@@ -1,4 +1,5 @@
-PROG =		wc
+PROG =	wc
+MAN  =	wc.1
 
 MKC_FEATURES +=	vis
 

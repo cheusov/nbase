@@ -1,6 +1,5 @@
-#CFLAGS+=-g
-MAN  =	mkdep.1
 PROG =	mkdep
+MAN  =	mkdep.1
 SRCS =	mkdep.c findcc.c
 
 .include <mkc.init.mk>

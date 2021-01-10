@@ -1,5 +1,6 @@
-PROG=	ls
-SRCS=	cmp.c ls.c main.c print.c util.c
+PROG =	ls
+MAN  =	ls.1
+SRCS =	cmp.c ls.c main.c print.c util.c
 
 MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 

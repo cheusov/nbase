@@ -1,4 +1,5 @@
-PROG=	cut
+PROG =	cut
+MAN  =	cut.1
 
 MKC_FEATURES +=	efun fgetln
 

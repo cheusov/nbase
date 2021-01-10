@@ -1,5 +1,6 @@
-PROG=	cp
-SRCS=	cp.c utils.c
+PROG =	cp
+MAN  =	cp.1
+SRCS =	cp.c utils.c
 
 MKC_CHECK_FUNCS2 +=	fcpxattr:sys/extattr.h
 MKC_REQUIRE_FUNCLIBS +=	fts_open:fts

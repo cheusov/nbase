@@ -2,6 +2,7 @@ DIST =		${.CURDIR}/../dist
 .PATH:		${DIST}
 
 PROG =		awk
+MAN  =		awk.1
 SRCS =		awkgram.y b.c lex.c lib.c main.c parse.c proctab.c run.c tran.c
 
 WARNS   =	3

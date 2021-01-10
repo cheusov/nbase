@@ -1,4 +1,5 @@
 PROG =	sed
+MAN  =	sed.1
 SRCS =	compile.c main.c misc.c process.c
 
 MKC_FEATURES +=	errc getline

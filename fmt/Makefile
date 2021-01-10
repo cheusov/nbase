@@ -1,4 +1,5 @@
 PROG =	fmt
+MAN  =	fmt.1
 SRCS =	fmt.c head.c
 CPPFLAGS +=	-DFMT_PROG
 

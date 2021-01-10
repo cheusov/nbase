@@ -1,4 +1,5 @@
 PROG =	unexpand
+#MAN  =	unexpand.1
 
 MKC_FEATURES +=		fgetln efun strsep
 

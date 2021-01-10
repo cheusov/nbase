@@ -1,4 +1,5 @@
 PROG         =	kill
+MAN          =	kill.1
 
 .include <mkc.init.mk>
 

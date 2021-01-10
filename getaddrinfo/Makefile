@@ -1,6 +1,7 @@
 .include <bsd.own.mk>
 
 PROG=	getaddrinfo
+MAN=	getaddrinfo.1
 
 DPADD+=	${LIBUTIL}
 LDADD+=	-lutil

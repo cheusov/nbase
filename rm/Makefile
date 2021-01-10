@@ -1,4 +1,5 @@
 PROG                  =	rm
+MAN                   =	rm.1
 
 MKC_CHECK_FUNCS1      =	undelete:unistd.h
 MKC_REQUIRE_FUNCLIBS +=	fts_open:fts

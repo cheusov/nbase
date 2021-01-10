@@ -1,6 +1,7 @@
 USE_FORT?= yes	# network client
 
-PROG=	rwho
+PROG =	rwho
+MAN  =	rwho.1
 
 .include <bsd.prog.mk>
 

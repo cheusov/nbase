@@ -1,5 +1,6 @@
 PROG =	xargs
 SRCS =	xargs.c strnsubst.c
+MAN  =	xargs.1
 
 MKC_FEATURES +=		fgetln
 

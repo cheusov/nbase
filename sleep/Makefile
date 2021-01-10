@@ -1,4 +1,5 @@
 PROG         =	sleep
+MAN          =	sleep.1
 
 #MKC_FEATURES =	libm
 LDADD       +=	-lm

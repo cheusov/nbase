@@ -1,4 +1,5 @@
 PROG =	grep
+MAN  =	grep.1
 SRCS =	fastgrep.c file.c grep.c queue.c util.c
 
 LINKS =	${BINDIR}/grep ${BINDIR}/egrep	\

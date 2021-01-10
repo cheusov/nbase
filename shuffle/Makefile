@@ -1,4 +1,5 @@
 PROG =	shuffle
+MAN  =	shuffle.1
 
 MKC_FEATURES +=	fgetln efun
 

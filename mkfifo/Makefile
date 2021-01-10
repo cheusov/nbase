@@ -1,4 +1,5 @@
 PROG =	mkfifo
+MAN  =	mkfifo.1
 
 .include <mkc.init.mk>
 

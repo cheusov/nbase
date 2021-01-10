@@ -1,4 +1,5 @@
 PROG =		m4
+MAN  =		m4.1
 CPPFLAGS +=	-DEXTENDED -I${.CURDIR}/lib
 SRCS =	parser.y tokenizer.l eval.c expr.c look.c main.c misc.c gnum4.c trace.c
 .PATH: ${.CURDIR}/lib

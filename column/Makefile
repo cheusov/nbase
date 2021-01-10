@@ -1,4 +1,5 @@
-PROG =		column
+PROG =	column
+MAN  =	column.1
 
 .include <mkc.init.mk>
 

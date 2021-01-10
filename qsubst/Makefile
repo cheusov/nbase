@@ -1,4 +1,5 @@
 PROG      =	qsubst
+MAN       =	qsubst.1
 
 WARNERR   =	no
 

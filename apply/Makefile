@@ -1,4 +1,5 @@
 PROG    =	apply
+MAN     =	apply.1
 
 WARNERR =	no
 

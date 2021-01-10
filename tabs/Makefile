@@ -1,4 +1,5 @@
 PROG =	tabs
+MAN  =	tabs.1
 
 MKC_FEATURES +=		strsep
 

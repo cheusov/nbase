@@ -1,5 +1,6 @@
 PROG =	vis
 SRCS =	vis.c foldit.c
+MAN  =	vis.1
 
 CFLAGS.check +=	-Wno-error=unused-result # wctomb(...) and asprintf(...) on glibc/Linux-es
 

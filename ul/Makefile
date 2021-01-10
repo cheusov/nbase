@@ -1,4 +1,5 @@
 PROG =	ul
+MAN  =	ul.1
 
 .include <mkc.init.mk>
 

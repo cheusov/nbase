@@ -1,4 +1,5 @@
 PROG =			jot
+MAN  =			jot.1
 
 MKC_FEATURES =		libm
 

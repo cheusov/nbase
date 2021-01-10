@@ -1,4 +1,5 @@
 PROG =	du
+MAN  =	du.1
 
 MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 

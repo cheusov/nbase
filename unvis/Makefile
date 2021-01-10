@@ -1,4 +1,5 @@
 PROG =	unvis
+MAN  =	unvis.1
 
 MKC_FEATURES +=	vis
 

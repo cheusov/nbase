@@ -1,4 +1,5 @@
 PROG =	rev
+MAN  =	rev.1
 
 .include <mkc.init.mk>
 

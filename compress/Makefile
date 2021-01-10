@@ -1,4 +1,5 @@
 PROG =		compress
+MAN  =		compress.1
 SRCS =		compress.c zopen.c
 LINKS =		${BINDIR}/compress ${BINDIR}/uncompress
 MLINKS =	compress.1 uncompress.1

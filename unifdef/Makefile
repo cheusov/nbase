@@ -1,4 +1,5 @@
-PROG    =	unifdef
+PROG =	unifdef
+MAN  =	unifdef.1
 
 SCRIPTS =	unifdefall.sh
 SCRIPTSNAME_unifdefall.sh = unifdefall

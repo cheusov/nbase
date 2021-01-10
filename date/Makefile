@@ -1,4 +1,5 @@
 PROG   =	date
+MAN    =	date.1
 SRCS   =	date.c netdate.c
 CPPFLAGS +=	-I${.CURDIR}
 

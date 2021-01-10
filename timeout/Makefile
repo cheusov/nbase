@@ -1,4 +1,5 @@
 PROG =	timeout
+MAN  =	timeout.1
 
 .include <mkc.init.mk>
 

@@ -3,6 +3,7 @@
 USE_FORT?= yes	# network client
 
 PROG=	ftp
+MAN=	ftp.1
 SRCS=	cmds.c cmdtab.c complete.c domacro.c fetch.c ftp.c main.c \
 	progressbar.c ruserpass.c util.c
 

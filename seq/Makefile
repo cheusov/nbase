@@ -1,4 +1,5 @@
 PROG =	seq
+MAN  =	seq.1
 
 MKC_FEATURES = libm
 

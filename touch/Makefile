@@ -1,4 +1,5 @@
 PROG =	touch
+MAN  =	touch.1
 
 .include <mkc.init.mk>
 

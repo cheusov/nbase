@@ -1,4 +1,5 @@
-PROG=	chmod
+PROG =	chmod
+MAN  =	chmod.1
 
 MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 

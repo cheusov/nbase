@@ -1,6 +1,7 @@
 USE_FORT?= yes	# network client
 
-PROG=	rup
+PROG =	rup
+MAN  =	rup.1
 
 DPADD=	${LIBRPCSVC}
 LDADD=	-lrpcsvc

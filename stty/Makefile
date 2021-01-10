@@ -1,5 +1,6 @@
-PROG=	stty
-SRCS=	cchar.c gfmt.c key.c modes.c print.c stty.c
+PROG =	stty
+MAN  =	stty.1
+SRCS =	cchar.c gfmt.c key.c modes.c print.c stty.c
 
 #CWARNFLAGS.clang+=	-Wno-string-plus-int
 

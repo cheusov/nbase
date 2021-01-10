@@ -1,4 +1,5 @@
-PROG=	mkdir
+PROG =	mkdir
+MAN  =	mkdir.1
 
 .include <mkc.init.mk>
 

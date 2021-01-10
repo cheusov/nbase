@@ -1,4 +1,5 @@
 PROG =		ps
+MAN  =		ps.1
 SRCS =		fmt.c keyword.c nlist.c print.c ps.c
 LDADD=		-lm
 

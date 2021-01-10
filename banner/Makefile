@@ -1,4 +1,5 @@
 PROG =	banner
+MAN  =	banner.1
 
 SRCS =	$(PROG).c chset.c
 
