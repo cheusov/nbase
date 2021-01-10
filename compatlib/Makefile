@@ -16,14 +16,13 @@ CLEANFILES = ${.OBJDIR}/sys/cdefs.h
 CPPFLAGS += -I. -I${.OBJDIR}
 
 MKC_FEATURES +=	arc4random bswap dprintf efun errc fgetln fparseln \
-   raise_default_signal reallocarray strndup strsep vis
+   pwdgrp raise_default_signal reallocarray strndup strsep vis
 
 .include "../mk/hacks.mk"
 
 .include "../mk/imp.f_parsedate.mk"
 .include "../mk/imp.f_sys_signame.mk"
 .include "../mk/imp.f_getsetmode.mk"
-.include "../mk/imp.f_pwdgrp.mk"
 .include "../mk/imp.f_strmode.mk"
 .include "../mk/imp.f_getbsize.mk"
 .include "../mk/imp.f_humanize_number.mk"

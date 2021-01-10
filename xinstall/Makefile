@@ -1,5 +1,5 @@
 PROG =	xinstall
-SRCS =	xinstall.c getid.c
+SRCS =	xinstall.c
 MAN  =	install.1
 
 .PATH:		${.CURDIR}/../mtree
@@ -24,11 +24,10 @@ CFLAGS.check   +=	-Wno-error=pointer-sign
 .include "../mk/hacks.mk"
 
 .include "../mk/imp.f_getsetmode.mk"
-.include "../mk/imp.f_pwdgrp.mk"
 .include "../mk/imp.f_flags_to_string.mk"
 .include "../mk/imp.f_lchmod.mk"
 .include "../mk/imp.f_struct_stat.mk"
 
-MKC_FEATURES +=	fparseln LIST strsep vis
+MKC_FEATURES +=	fparseln LIST pwdgrp strsep vis
 
 .include "../mk/addlinks.mk"

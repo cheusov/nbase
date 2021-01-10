@@ -250,7 +250,7 @@ main(int argc, char *argv[])
 			metafile = optarg;
 			break;
 		case 'N':
-			if (! setup_getid(optarg))
+			if (1 /*! setup_getid(optarg)*/)
 				errx(1,
 			    "Unable to use user and group databases in `%s'",
 				    optarg);
