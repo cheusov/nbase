@@ -1,3 +1,5 @@
+CCSTD           =	c99
+
 WARNS          ?=	4
 
 CURSES_LIBNAME ?=	curses
