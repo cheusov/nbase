@@ -16,13 +16,12 @@ WARNERR = 	no # SunOS-5.11
 
 MKC_CHECK_HEADER_FILES +=	sys/mtio.h
 
-MKC_FEATURES +=	raise_default_signal strsep
+MKC_FEATURES +=	humanize_number raise_default_signal strsep
 
 .include <mkc.configure.mk>
 
 .include "../mk/hacks.mk"
 
 .include "../mk/imp.f_strsuftoll.mk"
-.include "../mk/imp.f_humanize_number.mk"
 
 .include "../mk/addlinks.mk"

@@ -16,7 +16,8 @@ CLEANFILES = ${.OBJDIR}/sys/cdefs.h
 CPPFLAGS += -I. -I${.OBJDIR}
 
 MKC_FEATURES +=	arc4random bswap dprintf efun errc fgetln fparseln \
-   pwdgrp raise_default_signal reallocarray strndup strsep vis
+   humanize_number pwdgrp raise_default_signal \
+   reallocarray strndup strsep vis
 
 .include "../mk/hacks.mk"
 
@@ -25,7 +26,6 @@ MKC_FEATURES +=	arc4random bswap dprintf efun errc fgetln fparseln \
 .include "../mk/imp.f_getsetmode.mk"
 .include "../mk/imp.f_strmode.mk"
 .include "../mk/imp.f_getbsize.mk"
-.include "../mk/imp.f_humanize_number.mk"
 .include "../mk/imp.f_strsuftoll.mk"
 .include "../mk/imp.f_funopen.mk"
 .include "../mk/imp.f_timespeccmp.mk"
