@@ -76,11 +76,7 @@ const char	*errstr[] = {
 
 /* Flags passed to regcomp() and regexec() */
 int		 cflags = 0;
-#ifdef REG_STARTEND
 int		 eflags = REG_STARTEND;
-#else
-int              eflags = 0;
-#endif
 
 /* Searching patterns */
 unsigned int	 patterns, pattern_sz;

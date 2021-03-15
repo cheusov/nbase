@@ -309,14 +309,10 @@ procline(struct str *l, int nottext)
 				r = (r == 0) ? 0 : REG_NOMATCH;
 				st = pmatch.rm_eo;
 			} else {
-#ifdef REG_STARTEND
 				r = regexec(&r_pattern[i], l->dat, 1,
 				    &pmatch, eflags);
 				r = (r == 0) ? 0 : REG_NOMATCH;
 				st = pmatch.rm_eo;
-#else
-				err(2, "REG_STARTEND is not available on this system.");
-#endif
 			}
 			if (r == REG_NOMATCH)
 				continue;
