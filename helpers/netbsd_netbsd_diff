@@ -38,5 +38,5 @@ prj2netbsd_dir (){
 
 for d in $dirs; do
     dir=`prj2netbsd_dir "$d"`
-    cvs diff -r "$tag1" -r "$tag2" "$dir"
+    cvs diff -r "$tag1" -r "$tag2" "$dir" || true
 done
