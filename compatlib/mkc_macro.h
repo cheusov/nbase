@@ -9,13 +9,14 @@
 #include <sys/cdefs.h>
 #endif
 
+#include <sys/stat.h>
+#include <sys/param.h>
+#include <sys/types.h>
+#include <sys/time.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <limits.h>
 #include <regex.h>
-#include <sys/stat.h>
-#include <sys/param.h>
-#include <sys/types.h>
 #include <unistd.h>
 #include <fnmatch.h>
 
@@ -41,6 +42,10 @@
 
 #define   HN_GETSCALE             0x10
 #define   HN_AUTOSCALE            0x20
+#endif
+
+#ifndef timespecclear
+#define	timespecclear(tsp)	(tsp)->tv_sec = (time_t)((tsp)->tv_nsec = 0L)
 #endif
 
 #ifndef _DIAGASSERT
