@@ -75,7 +75,7 @@ shownode(NODE *n, int f, char const *path)
 	if (f & F_MODE)
 		printf(" mode=%o", n->st_mode);
 	if (f & F_NLINK)
-		printf(" nlink=%ld", (long)n->st_nlink);
+		printf(" nlink=%d", (int)n->st_nlink);
 	if (f & F_SIZE)
 		printf(" size=%jd", (intmax_t)n->st_size);
 	if (f & F_UID)
