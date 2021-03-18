@@ -70,6 +70,7 @@ __RCSID("$NetBSD: deroff.c,v 1.11 2013/10/18 20:47:06 christos Exp $");
 #include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 #include "mkc_progname.h"
+#include "mkc_macro.h"
 
 #include <limits.h>
 #include <stddef.h>
@@ -77,10 +78,6 @@ __RCSID("$NetBSD: deroff.c,v 1.11 2013/10/18 20:47:06 christos Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
-#ifndef __USE
-#define __USE(a) ((void)(a))
-#endif
 
 /*
  *	Deroff command -- strip troff, eqn, and Tbl sequences from
