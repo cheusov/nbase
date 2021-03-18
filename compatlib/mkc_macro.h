@@ -165,6 +165,15 @@ typedef unsigned long int u_quad_t;
 # endif
 #endif
 
+#ifndef _POSIX_LOGIN_NAME_MAX
+#define _POSIX_LOGIN_NAME_MAX 9
+#endif
+
+#ifdef LOGIN_NAME_MAX
+#undef LOGIN_NAME_MAX
+#endif
+#define LOGIN_NAME_MAX _POSIX_LOGIN_NAME_MAX
+
 #ifndef _PATH_TMP
 #  define _PATH_TMP "/tmp/"
 #endif
