@@ -59,10 +59,7 @@ __RCSID("$NetBSD: main.c,v 1.31 2013/01/24 17:50:08 christos Exp $");
 
 #include "mkc_progname.h"
 #include "mkc_posix_getopt.h"
-
-#ifndef REG_BASIC
-#define REG_BASIC 0
-#endif
+#include "mkc_macro.h"
 
 #include "find.h"
 
