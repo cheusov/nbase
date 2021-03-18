@@ -49,6 +49,7 @@ __RCSID("$NetBSD: renice.c,v 1.18 2008/07/21 14:19:25 lukem Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <sysexits.h>
+#include <inttypes.h>
 
 #include "mkc_progname.h"
 #include "mkc_warn.h"
@@ -150,7 +151,7 @@ donice(int which, id_t who, int prio, int incr)
 
 	errno = 0;
 	if ((oldprio = getpriority(which, who)) == -1 && errno != 0) {
-	  warn("%ld: getpriority", (long)who);
+	  warn("%" PRIu64 ": getpriority", (uint64_t)who);
 		return 1;
 	}
 
@@ -168,8 +169,8 @@ donice(int which, id_t who, int prio, int incr)
 	  warn("%ld: setpriority", (long)who);
 		return 1;
 	}
-	(void)printf("%ld: old priority %d, new priority %d\n",
-	    (long)who, oldprio, prio);
+	(void)printf("%" PRIu64 ": old priority %d, new priority %d\n",
+	    (uint64_t)who, oldprio, prio);
 	return 0;
 }
 
