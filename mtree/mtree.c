@@ -199,7 +199,7 @@ main(int argc, char **argv)
 			qflag = 1;
 			break;
 		case 'r':
-			rflag = 1;
+			rflag++;
 			break;
 		case 'R':
 			while ((p = strsep(&optarg, " \t,")) != NULL)
