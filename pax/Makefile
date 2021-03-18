@@ -22,7 +22,7 @@ LDADD+= -lutil
 .endif
 .endif
 
-MAN=	pax.1 tar.1 cpio.1
+MAN=	pax.1
 
 .if defined(HOSTPROG)
 CPPFLAGS+=	-DHOSTPROG
@@ -34,9 +34,11 @@ CPPFLAGS+=	-DHAVE_NBTOOL_CONFIG_H
 .if ${MKBSDTAR:U} == "no"
 LINKS+=	${BINDIR}/pax ${BINDIR}/tar
 SYMLINKS+=${BINDIR}/tar /usr/bin/tar
+MAN+=tar.1
 
 LINKS+=	${BINDIR}/pax ${BINDIR}/cpio
 SYMLINKS+=${BINDIR}/cpio /usr/bin/cpio
+MAN+=cpio.1
 .endif
 .endif	# }	! HOSTPROG
 

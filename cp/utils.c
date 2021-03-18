@@ -1,4 +1,4 @@
-/* $NetBSD: utils.c,v 1.42 2013/12/11 06:00:11 dholland Exp $ */
+/* $NetBSD: utils.c,v 1.45 2016/02/29 04:22:21 mrg Exp $ */
 
 /*-
  * Copyright (c) 1991, 1993, 1994
@@ -39,7 +39,7 @@
 #if 0
 static char sccsid[] = "@(#)utils.c	8.3 (Berkeley) 4/1/94";
 #else
-__RCSID("$NetBSD: utils.c,v 1.42 2013/12/11 06:00:11 dholland Exp $");
+__RCSID("$NetBSD: utils.c,v 1.45 2016/02/29 04:22:21 mrg Exp $");
 #endif
 #endif /* not lint */
 
@@ -73,13 +73,13 @@ __RCSID("$NetBSD: utils.c,v 1.42 2013/12/11 06:00:11 dholland Exp $");
 int
 set_utimes(const char *file, struct stat *fs)
 {
-    static struct timeval tv[2];
+    struct timespec ts[2];
 
-    TIMESPEC_TO_TIMEVAL(&tv[0], &fs->st_atimespec);
-    TIMESPEC_TO_TIMEVAL(&tv[1], &fs->st_mtimespec);
+    ts[0] = fs->st_atimespec;
+    ts[1] = fs->st_mtimespec;
 
-    if (utimes(file, tv)) {
-	warn("utimes: %s", file);
+    if (lutimens(file, ts)) {
+	warn("lutimens: %s", file);
 	return (1);
     }
     return (0);
@@ -88,17 +88,18 @@ set_utimes(const char *file, struct stat *fs)
 struct finfo {
 	const char *from;
 	const char *to;
-	size_t size;
+	off_t size;
 };
 
 static void
-progress(const struct finfo *fi, size_t written)
+progress(const struct finfo *fi, off_t written)
 {
 	int pcent = (int)((100.0 * written) / fi->size);
 
 	pinfo = 0;
-	(void)fprintf(stderr, "%s => %s %zu/%zu bytes %d%% written\n",
-	    fi->from, fi->to, written, fi->size, pcent);
+	(void)fprintf(stderr, "%s => %s %llu/%llu bytes %d%% written\n",
+	    fi->from, fi->to, (unsigned long long)written,
+	    (unsigned long long)fi->size, pcent);
 }
 
 int
@@ -108,8 +109,7 @@ copy_file(FTSENT *entp, int dne)
 	struct stat to_stat, *fs;
 	int ch, checkch, from_fd, rcount, rval, to_fd, tolnk, wcount;
 	char *p;
-	size_t ptotal = 0;
-	int islink;
+	off_t ptotal = 0;
 	
 	if ((from_fd = open(entp->fts_path, O_RDONLY, 0)) == -1) {
 		warn("%s", entp->fts_path);
@@ -196,7 +196,7 @@ copy_file(FTSENT *entp, int dne)
 
 		fi.from = entp->fts_path;
 		fi.to = to.p_path;
-		fi.size = (size_t)fs->st_size;
+		fi.size = fs->st_size;
 
 		/*
 		 * Mmap and write if less than 8M (the limit is so
@@ -304,8 +304,7 @@ copy_file(FTSENT *entp, int dne)
 		rval = 1;
 	}
 	/* set the mod/access times now after close of the fd */
-	islink = S_ISLNK(fs->st_mode);
-	if (pflag && !islink && set_utimes(to.p_path, fs)) {
+	if (pflag && set_utimes(to.p_path, fs)) { 
 	    rval = 1;
 	}
 	return (rval);
@@ -375,10 +374,10 @@ int
 setfile(struct stat *fs, int fd)
 {
 	int rval;
-	int islink;
-
+#if HAVE_MEMBER_STRUCT_STAT_ST_FLAGS_SYS_STAT_H
+	int islink = S_ISLNK(fs->st_mode);
+#endif
 	rval = 0;
-	islink = S_ISLNK(fs->st_mode);
 	fs->st_mode &= S_ISUID | S_ISGID | S_IRWXU | S_IRWXG | S_IRWXO;
 
 	/*
@@ -422,7 +421,7 @@ setfile(struct stat *fs, int fd)
 #endif /* HAVE_MEMBER_STRUCT_STAT_ST_FLAGS_SYS_STAT_H */
 
 	/* if fd is non-zero, caller must call set_utimes() after close() */
-	if (fd == 0 && !islink && set_utimes(to.p_path, fs))
+	if (fd == 0 && set_utimes(to.p_path, fs))
 	    rval = 1;
 	return (rval);
 }

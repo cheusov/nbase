@@ -90,7 +90,7 @@ main(int argc, char **argv)
 
 		errno = 0;
 		lval = strtoul(argv[c], &ep, 0);
-		if (argv[c] == '\0' || *ep)
+		if (argv[c] == NULL || *ep)
 			errx(1, "`%s' is not a number.", argv[c]);
 
 		if (errno == ERANGE && lval == ULONG_MAX)

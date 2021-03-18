@@ -1,4 +1,4 @@
-/* $NetBSD: xlint.c,v 1.44 2011/09/18 09:07:35 njoly Exp $ */
+/* $NetBSD: xlint.c,v 1.46 2016/12/24 17:43:45 christos Exp $ */
 
 /*
  * Copyright (c) 1996 Christopher G. Demetriou.  All Rights Reserved.
@@ -38,7 +38,7 @@
 
 #include <sys/cdefs.h>
 #if defined(__RCSID) && !defined(lint)
-__RCSID("$NetBSD: xlint.c,v 1.44 2011/09/18 09:07:35 njoly Exp $");
+__RCSID("$NetBSD: xlint.c,v 1.46 2016/12/24 17:43:45 christos Exp $");
 #endif
 
 #include <sys/param.h>
@@ -62,8 +62,6 @@ __RCSID("$NetBSD: xlint.c,v 1.44 2011/09/18 09:07:35 njoly Exp $");
 #include "mkc_macro.h"
 
 #define DEFAULT_PATH		_PATH_DEFPATH
-
-int main(int, char *[]);
 
 /* directory for temporary files */
 static	const	char *tmpdir;
@@ -302,8 +300,8 @@ usage(void)
 	(void)fprintf(stderr,
 	    "       %s [-abceghprvwzHFS] [|-s|-t] -Clibrary [-Dname[=def]]\n"
 	    " [-X <id>[,<id>]...\n", getprogname());
-	(void)fprintf(stderr, "\t[-Idirectory] [-Uname] [-Bpath] file"
-	    " ...\n");
+	(void)fprintf(stderr, "\t[-Idirectory] [-Uname] [-Bpath] [-R old=new]"
+	    " file ...\n");
 	terminate(-1);
 }
 
@@ -372,7 +370,7 @@ main(int argc, char *argv[])
 	(void)signal(SIGINT, terminate);
 	(void)signal(SIGQUIT, terminate);
 	(void)signal(SIGTERM, terminate);
-	while ((c = getopt(argc, argv, "abcd:eghil:no:prstuvwxzB:C:D:FHI:L:M:PSU:VX:")) != -1) {
+	while ((c = getopt(argc, argv, "abcd:eghil:no:prstuvwxzB:C:D:FHI:L:M:PR:SU:VX:")) != -1) {
 		switch (c) {
 
 		case 'a':
@@ -425,6 +423,10 @@ main(int argc, char *argv[])
 
 		case 'P':
 			appcstrg(&l1flags, "-P");
+			break;
+
+		case 'R':
+			appcstrg(&l1flags, concat2("-R", optarg));
 			break;
 
 		case 's':

@@ -1,4 +1,4 @@
-/*	$NetBSD: main.c,v 1.30 2014/06/26 02:14:32 christos Exp $	*/
+/*	$NetBSD: main.c,v 1.34 2015/03/12 12:40:41 christos Exp $	*/
 
 /*-
  * Copyright (c) 2013 Johann 'Myrkraverk' Oskarsson.
@@ -39,7 +39,7 @@
 #endif
 
 #include <sys/cdefs.h>
-__RCSID("$NetBSD: main.c,v 1.30 2014/06/26 02:14:32 christos Exp $");
+__RCSID("$NetBSD: main.c,v 1.34 2015/03/12 12:40:41 christos Exp $");
 #ifdef __FBSDID
 __FBSDID("$FreeBSD: head/usr.bin/sed/main.c 252231 2013-06-26 04:14:19Z pfg $");
 #endif

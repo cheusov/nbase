@@ -1,4 +1,4 @@
-/	$NetBSD: units.lib,v 1.17 2012/12/28 17:57:46 apb Exp $
+/	$NetBSD: units.lib,v 1.20 2017/03/21 01:21:59 scole Exp $
 
 / primitive units
 
@@ -230,6 +230,8 @@ newton			kg-m/sec2
 nt			newton
 N			newton
 joule			nt-m
+watt			joule/sec
+W			watt
 cal			4.1868 joule
 
 / Electrical
@@ -238,7 +240,6 @@ coulomb			coul
 C			coul
 ampere			coul/sec
 amp			ampere
-watt			joule/sec
 volt			watt/amp
 ohm			volt/amp
 mho			/ohm
@@ -345,6 +346,8 @@ kbyte			1024 byte
 megabyte		1024 kbyte
 gigabyte		1024 megabyte
 meg			megabyte
+terabyte		1024 gigabyte
+petabyte		1024 terabyte
 
 
 / Trivia
@@ -648,4 +651,10 @@ linenyarncount		900 ft/pound
 worstedyarncount	1680 ft/pound
 metricyarncount		meter/gram
 jewlerspoint		2 milligram
+
+/ thai measurements
+
+wah			2 m
+ngan			400 m2
+rai			1600 m2
 

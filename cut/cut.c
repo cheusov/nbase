@@ -1,7 +1,6 @@
 /*	$NetBSD: cut.c,v 1.29 2014/02/03 20:22:19 wiz Exp $	*/
 
 /*
- * Copyright (c) 2016 Aleksey Cheusov <vle@gmx.net>
  * Copyright (c) 1989, 1993
  *	The Regents of the University of California.  All rights reserved.
  *

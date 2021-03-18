@@ -1,7 +1,7 @@
 /*
  * $OpenBSD: inp.c,v 1.34 2006/03/11 19:41:30 otto Exp $
  * $DragonFly: src/usr.bin/patch/inp.c,v 1.6 2007/09/29 23:11:10 swildner Exp $
- * $NetBSD: inp.c,v 1.23.24.1 2015/08/04 21:03:33 snj Exp $
+ * $NetBSD: inp.c,v 1.24 2015/07/24 18:56:00 christos Exp $
  */
 
 /*
@@ -31,7 +31,7 @@
  */
 
 #include <sys/cdefs.h>
-__RCSID("$NetBSD: inp.c,v 1.23.24.1 2015/08/04 21:03:33 snj Exp $");
+__RCSID("$NetBSD: inp.c,v 1.24 2015/07/24 18:56:00 christos Exp $");
 
 #include <sys/types.h>
 #include <sys/file.h>

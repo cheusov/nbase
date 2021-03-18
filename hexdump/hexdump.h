@@ -1,4 +1,4 @@
-/*	$NetBSD: hexdump.h,v 1.13 2011/09/04 20:27:27 joerg Exp $	*/
+/*	$NetBSD: hexdump.h,v 1.15 2016/03/04 02:54:38 dholland Exp $	*/
 
 /*
  * Copyright (c) 1989, 1993
@@ -89,9 +89,9 @@ void	 conv_u(PR *, u_char *);
 void	 display(void);
 void	 doskip(const char *, int);
 void	 escape(char *);
-u_char	*get(void);
 void	 hexsyntax(int, char ***);
-int	 next(char **);
+void	 stashargv(char **);
+int	 next(void);
 void	 odsyntax(int, char ***);
 void	 rewrite(FS *);
 int	 size(FS *);

@@ -1,4 +1,4 @@
-/*	$NetBSD: uuencode.c,v 1.15.20.1 2014/09/11 12:22:27 martin Exp $	*/
+/*	$NetBSD: uuencode.c,v 1.16 2014/09/06 18:58:35 dholland Exp $	*/
 
 /*-
  * Copyright (c) 1983, 1993
@@ -39,7 +39,7 @@ __COPYRIGHT("@(#) Copyright (c) 1983, 1993\
 #if 0
 static char sccsid[] = "@(#)uuencode.c	8.2 (Berkeley) 4/2/94";
 #else
-__RCSID("$NetBSD: uuencode.c,v 1.15.20.1 2014/09/11 12:22:27 martin Exp $");
+__RCSID("$NetBSD: uuencode.c,v 1.16 2014/09/06 18:58:35 dholland Exp $");
 #endif
 #endif /* not lint */
 

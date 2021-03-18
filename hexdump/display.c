@@ -1,4 +1,4 @@
-/*	$NetBSD: display.c,v 1.22 2013/10/18 20:19:03 christos Exp $	*/
+/*	$NetBSD: display.c,v 1.25 2016/03/04 03:02:52 dholland Exp $	*/
 
 /*
  * Copyright (c) 1989, 1993
@@ -38,7 +38,7 @@
 #if 0
 static char sccsid[] = "@(#)display.c	8.1 (Berkeley) 6/6/93";
 #else
-__RCSID("$NetBSD: display.c,v 1.22 2013/10/18 20:19:03 christos Exp $");
+__RCSID("$NetBSD: display.c,v 1.25 2016/03/04 03:02:52 dholland Exp $");
 #endif
 #endif /* not lint */
 
@@ -65,6 +65,7 @@ enum _vflag vflag = FIRST;
 static off_t address;			/* address/offset in stream */
 static off_t eaddress;			/* end address */
 
+static u_char *get(void);
 static inline void print(PR *, u_char *);
 
 void
@@ -232,7 +233,7 @@ bpad(PR *pr)
 
 static char **_argv;
 
-u_char *
+static u_char *
 get(void)
 {
 	static int ateof = 1;
@@ -256,7 +257,7 @@ get(void)
 		 * and no other files are available, zero-pad the rest of the
 		 * block and set the end flag.
 		 */
-		if (!length || (ateof && !next(NULL))) {
+		if (!length || (ateof && !next())) {
 			if (need == blocksize)
 				return(NULL);
 			if (!need && vflag != ALL &&
@@ -299,25 +300,48 @@ get(void)
 	}
 }
 
+/*
+ * Save argv for later retrieval.
+ */
+void
+stashargv(char **argv)
+{
+	_argv = argv;
+}
+
+/*
+ * Get the next file. The idea with the twisty logic seems to be to
+ * either read N filenames from argv and then exit, or if there aren't
+ * any, to use stdin and then exit. It should probably be simplified.
+ * The "done" flag doesn't mean "we are done", it means "we are done
+ * once we run out of filenames".
+ *
+ * XXX: is there any reason not to remove the logic that inhibits
+ * calling fstat if using stdin and not a filename? It should be safe
+ * to call fstat on any fd.
+ *
+ * Note: I have ruled that if there is one file on the command line
+ * and it doesn't open, we should exit after complaining about it and
+ * not then proceed to read stdin; the latter seems like unexpected
+ * and undesirable behavior. Also, it didn't work anyway, because the
+ * freopen call clobbers stdin while failing. -- dholland 20160303
+ */
 int
-next(char **argv)
+next(void)
 {
 	static int done;
 	int statok;
 
-	if (argv) {
-		_argv = argv;
-		return(1);
-	}
 	for (;;) {
 		if (*_argv) {
+			done = 1;
 			if (!(freopen(*_argv, "r", stdin))) {
 				warn("%s", *_argv);
 				exitval = 1;
 				++_argv;
 				continue;
 			}
-			statok = done = 1;
+			statok = 1;
 		} else {
 			if (done++)
 				return(0);

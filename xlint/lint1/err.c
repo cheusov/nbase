@@ -1,4 +1,4 @@
-/*	$NetBSD: err.c,v 1.47 2014/02/18 22:01:36 christos Exp $	*/
+/*	$NetBSD: err.c,v 1.51 2016/08/19 10:19:45 christos Exp $	*/
 
 /*
  * Copyright (c) 1994, 1995 Jochen Pohl
@@ -37,7 +37,7 @@
 
 #include <sys/cdefs.h>
 #if defined(__RCSID) && !defined(lint)
-__RCSID("$NetBSD: err.c,v 1.47 2014/02/18 22:01:36 christos Exp $");
+__RCSID("$NetBSD: err.c,v 1.51 2016/08/19 10:19:45 christos Exp $");
 #endif
 
 #include <sys/types.h>
@@ -108,7 +108,7 @@ const	char *msgs[] = {
 	"(%s) tag redeclared",					      /* 46 */
 	"zero sized %s is a C9X feature",			      /* 47 */
 	"overflow in enumeration values: %s",			      /* 48 */
-	"struct or union member must be named",			      /* 49 */
+	"anonymous struct/union members is a C9X feature",	      /* 49 */
 	"a function is declared as an argument: %s",		      /* 50 */
 	"parameter mismatch: %d declared, %d defined",		      /* 51 */
 	"cannot initialize parameter: %s",			      /* 52 */
@@ -163,7 +163,7 @@ const	char *msgs[] = {
 	"undefined struct/union member: %s",			      /* 101 */
 	"illegal member use: %s",				      /* 102 */
 	"left operand of '.' must be struct/union object",	      /* 103 */
-	"left operand of '->' must be pointer to struct/union",	      /* 104 */
+	"left operand of '->' must be pointer to struct/union and is %s",	/* 104 */
 	"non-unique member requires struct/union %s",		      /* 105 */
 	"left operand of '->' must be pointer",			      /* 106 */
 	"operands of '%s' have incompatible types (%s != %s)",		      /* 107 */
@@ -182,7 +182,7 @@ const	char *msgs[] = {
 	"bitwise operation on signed value nonportable",	      /* 120 */
 	"negative shift",					      /* 121 */
 	"shift greater than size of object",			      /* 122 */
-	"illegal combination of pointer and integer, op %s",	      /* 123 */
+	"illegal combination of %s (%s) and %s (%s), op %s",	      /* 123 */
 	"illegal pointer combination, op %s",			      /* 124 */
 	"ANSI C forbids ordered comparisons of pointers to functions",/* 125 */
 	"incompatible types in conditional",			      /* 126 */
@@ -213,7 +213,7 @@ const	char *msgs[] = {
 	"void expressions may not be arguments, arg #%d",	      /* 151 */
 	"argument cannot have unknown size, arg #%d",		      /* 152 */
 	"argument has incompatible pointer type, arg #%d (%s != %s)", /* 153 */
-	"illegal combination of pointer and integer, arg #%d",	      /* 154 */
+	"illegal combination of %s (%s) and %s (%s), arg #%d",	      /* 154 */
 	"argument is incompatible with prototype, arg #%d",	      /* 155 */
 	"enum type mismatch, arg #%d",			       	      /* 156 */
 	"ANSI C treats constant as unsigned",			      /* 157 */
@@ -242,7 +242,7 @@ const	char *msgs[] = {
 	"bit-field initializer does not fit",			      /* 180 */
 	"{}-enclosed initializer required",			      /* 181 */
 	"incompatible pointer types (%s != %s)",		      /* 182 */
-	"illegal combination of pointer and integer",		      /* 183 */
+	"illegal combination of %s (%s) and %s (%s)",	      	      /* 183 */
 	"illegal pointer combination",				      /* 184 */
 	"initialisation type mismatch",				      /* 185 */
 	"bit-field initialisation is illegal in traditional C",	      /* 186 */
@@ -387,6 +387,8 @@ const	char *msgs[] = {
 	"variable declaration in for loop", 			      /* 325 */
 	"%s attribute ignored for %s",				      /* 326 */
 	"declarations after statements is a C9X feature",	      /* 327 */
+	"union cast is a C9X feature",				      /* 328 */
+	"type '%s' is not a member of '%s'",			      /* 329 */
 };
 
 /*

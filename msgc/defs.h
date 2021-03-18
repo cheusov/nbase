@@ -60,8 +60,8 @@
 
 EXTERN char *prog_name;
 EXTERN char *src_name;
-EXTERN const char *out_name INIT("msg_defs");
-EXTERN const char *sys_name INIT("msg_sys.def");
+EXTERN char *out_name INIT("msg_defs");
+EXTERN char *sys_name INIT("msg_sys.def");
 
 EXTERN int line_no INIT(1);
 EXTERN int had_errors INIT(FALSE);

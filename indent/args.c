@@ -1,4 +1,4 @@
-/*	$NetBSD: args.c,v 1.10.24.1 2014/09/21 18:58:56 snj Exp $	*/
+/*	$NetBSD: args.c,v 1.13 2016/02/22 21:20:29 ginsbach Exp $	*/
 
 /*
  * Copyright (c) 1980, 1993
@@ -68,7 +68,7 @@
 #if 0
 static char sccsid[] = "@(#)args.c	8.1 (Berkeley) 6/6/93";
 #else
-__RCSID("$NetBSD: args.c,v 1.10.24.1 2014/09/21 18:58:56 snj Exp $");
+__RCSID("$NetBSD: args.c,v 1.13 2016/02/22 21:20:29 ginsbach Exp $");
 #endif
 #endif				/* not lint */
 
@@ -76,6 +76,8 @@ __RCSID("$NetBSD: args.c,v 1.10.24.1 2014/09/21 18:58:56 snj Exp $");
  * Argument scanning and profile reading code.  Default parameters are set
  * here as well.
  */
+
+#include "mkc_err.h"
 
 #include <ctype.h>
 #include <stdio.h>
@@ -396,8 +398,7 @@ set_option(char *arg)
 	for (p = pro; p->p_name; p++)
 		if (*p->p_name == *arg && eqin(p->p_name, arg))
 			goto found;
-	fprintf(stderr, "indent: %s: unknown parameter \"%s\"\n", option_source, arg - 1);
-	exit(1);
+	errx(1, "%s: unknown parameter \"%s\"", option_source, arg - 1);
 found:
 	switch (p->p_type) {
 
@@ -432,9 +433,8 @@ found:
 			break;
 
 		default:
-			fprintf(stderr, "\
-indent: set_option: internal error: p_special %d\n", p->p_special);
-			exit(1);
+			errx(1, "set_option: internal error: p_special %d",
+			     p->p_special);
 		}
 		break;
 
@@ -448,9 +448,8 @@ indent: set_option: internal error: p_special %d\n", p->p_special);
 	case PRO_INT:
 		if (!isdigit((unsigned char)*param_start)) {
 	need_param:
-			fprintf(stderr, "indent: %s: ``%s'' requires a parameter\n",
-			    option_source, arg - 1);
-			exit(1);
+			errx(1, "%s: ``%s'' requires a parameter",
+			     option_source, arg - 1);
 		}
 		*p->p_obj = atoi(param_start);
 		break;
@@ -460,8 +459,6 @@ indent: set_option: internal error: p_special %d\n", p->p_special);
 		break;
 
 	default:
-		fprintf(stderr, "indent: set_option: internal error: p_type %d\n",
-		    p->p_type);
-		exit(1);
+		errx(1, "set_option: internal error: p_type %d", p->p_type);
 	}
 }

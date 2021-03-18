@@ -1,4 +1,4 @@
-/*	$NetBSD: tree.c,v 1.76 2014/04/17 18:23:18 christos Exp $	*/
+/*	$NetBSD: tree.c,v 1.84 2017/03/06 21:01:39 christos Exp $	*/
 
 /*
  * Copyright (c) 1994, 1995 Jochen Pohl
@@ -37,7 +37,7 @@
 
 #include <sys/cdefs.h>
 #if defined(__RCSID) && !defined(lint)
-__RCSID("$NetBSD: tree.c,v 1.76 2014/04/17 18:23:18 christos Exp $");
+__RCSID("$NetBSD: tree.c,v 1.84 2017/03/06 21:01:39 christos Exp $");
 #endif
 
 #include <stdlib.h>
@@ -431,11 +431,14 @@ strmemb(tnode_t *tn, op_t op, sym_t *msym)
 				error(103);
 			}
 		} else {
+			char buf[64];
 			/* left operand of "->" must be pointer to ... */
 			if (tflag && tn->tn_type->t_tspec == PTR) {
-				warning(104);
+				tyname(buf, sizeof(buf), tn->tn_type);
+				warning(104, buf);
 			} else {
-				error(104);
+				tyname(buf, sizeof(buf), tn->tn_type);
+				error(104, buf);
 			}
 		}
 	} else {
@@ -1240,19 +1243,24 @@ asgntypok(op_t op, int arg, tnode_t *ln, tnode_t *rn)
 	}
 
 	if ((lt == PTR && isityp(rt)) || (isityp(lt) && rt == PTR)) {
+		const char *lx = lt == PTR ? "pointer" : "integer";
+		const char *rx = rt == PTR ? "pointer" : "integer";
+		tyname(lbuf, sizeof(lbuf), ltp);
+		tyname(rbuf, sizeof(rbuf), rtp);
+
 		switch (op) {
 		case INIT:
 		case RETURN:
 			/* illegal combination of pointer and integer */
-			warning(183);
+			warning(183, lx, lbuf, rx, rbuf);
 			break;
 		case FARG:
 			/* illegal comb. of ptr. and int., arg #%d */
-			warning(154, arg);
+			warning(154, lx, lbuf, rx, rbuf, arg);
 			break;
 		default:
 			/* illegal comb. of ptr. and int., op %s */
-			warning(123, mp->m_name);
+			warning(123, lx, lbuf, rx, rbuf, mp->m_name);
 			break;
 		}
 		return (1);
@@ -2002,9 +2010,18 @@ cvtcon(op_t op, int arg, type_t *tp, val_t *nv, val_t *v)
 		v->v_ansiu = 0;
 	}
 
-	if (nt != FLOAT && nt != DOUBLE && nt != LDOUBLE) {
+	switch (nt) {
+	case FLOAT:
+	case FCOMPLEX:
+	case DOUBLE:
+	case DCOMPLEX:
+	case LDOUBLE:
+	case LCOMPLEX:
+		break;
+	default:
 		sz = tp->t_isfield ? tp->t_flen : size(nt);
 		nv->v_quad = xsign(nv->v_quad, nt, sz);
+		break;
 	}
 
 	if (rchk && op != CVT) {
@@ -2522,12 +2539,12 @@ bldcol(tnode_t *ln, tnode_t *rn)
 	} else if (lt == PTR && ln->tn_type->t_subt->t_tspec == VOID) {
 		if (rt != PTR)
 			LERROR("bldcol()");
-		rtp = ln->tn_type;
+		rtp = rn->tn_type;
 		mrgqual(&rtp, ln->tn_type, rn->tn_type);
 	} else if (rt == PTR && rn->tn_type->t_subt->t_tspec == VOID) {
 		if (lt != PTR)
 			LERROR("bldcol()");
-		rtp = rn->tn_type;
+		rtp = ln->tn_type;
 		mrgqual(&rtp, ln->tn_type, rn->tn_type);
 	} else {
 		if (lt != PTR || rt != PTR)
@@ -2995,20 +3012,44 @@ bldszof(type_t *tp)
 	return getinode(st, tsize(tp) / CHAR_BIT);
 }
 
+/*
+ * Create a constant node for offsetof.
+ */
+tnode_t *
+bldoffsetof(type_t *tp, sym_t *sym)
+{
+	tspec_t	st;
+#if SIZEOF_IS_ULONG
+	st = ULONG;
+#else
+	st = UINT;
+#endif
+	tspec_t t = tp->t_tspec;
+	if (t != STRUCT && t != UNION)
+		error(111, "offsetof");
+		
+	// XXX: wrong size, no checking for sym fixme
+	return getinode(st, tsize(tp) / CHAR_BIT);
+}
+
 int64_t
 tsize(type_t *tp)
 {
-	int	elem, elsz;
+	int	elem, elsz, flex;
 
 	elem = 1;
+	flex = 0;
 	while (tp->t_tspec == ARRAY) {
+		flex = 1;	/* allow c99 flex arrays [] [0] */
 		elem *= tp->t_dim;
 		tp = tp->t_subt;
 	}
 	if (elem == 0) {
-		/* cannot take size of incomplete type */
-		error(143);
-		elem = 1;
+		if (!flex) {
+			/* cannot take size of incomplete type */
+			error(143);
+			elem = 1;
+		}
 	}
 	switch (tp->t_tspec) {
 	case FUNC:
@@ -3122,7 +3163,28 @@ cast(tnode_t *tn, type_t *tp)
 		 * XXX ANSI C requires scalar types or void (Plauger&Brodie).
 		 * But this seams really questionable.
 		 */
-	} else if (nt == STRUCT || nt == UNION || nt == ARRAY || nt == FUNC) {
+	} else if (nt == UNION) {
+		char buf[256], buf1[256];
+		sym_t *m;
+		str_t *str = tp->t_str;
+		if (!Sflag) {
+			error(328);
+			return NULL;
+		}
+		for (m = str->memb; m != NULL; m = m->s_nxt) {
+			if (sametype(m->s_type, tn->tn_type)) {
+				tn = getnode();
+				tn->tn_op = CVT;
+				tn->tn_type = tp;
+				tn->tn_cast = 1;
+				tn->tn_right = NULL;
+				return tn;
+			}
+		}
+		error(329, tyname(buf, sizeof(buf), tn->tn_type),
+		    tyname(buf1, sizeof(buf1), tp));
+		return NULL;
+	} else if (nt == STRUCT || nt == ARRAY || nt == FUNC) {
 		/* invalid cast expression */
 		error(147);
 		return (NULL);
@@ -3779,14 +3841,14 @@ chkcomp(op_t op, tnode_t *ln, tnode_t *rn)
 
 	if ((hflag || pflag) && lt == CHAR && rn->tn_op == CON &&
 	    (rn->tn_val->v_quad < 0 ||
-	     rn->tn_val->v_quad > ~(~0 << (CHAR_BIT - 1)))) {
+	     rn->tn_val->v_quad > (int)~(~0U << (CHAR_BIT - 1)))) {
 		/* nonportable character comparison, op %s */
 		warning(230, mp->m_name);
 		return;
 	}
 	if ((hflag || pflag) && rt == CHAR && ln->tn_op == CON &&
 	    (ln->tn_val->v_quad < 0 ||
-	     ln->tn_val->v_quad > ~(~0 << (CHAR_BIT - 1)))) {
+	     ln->tn_val->v_quad > (int)~(~0U << (CHAR_BIT - 1)))) {
 		/* nonportable character comparison, op %s */
 		warning(230, mp->m_name);
 		return;

@@ -1,4 +1,4 @@
-/*	$NetBSD: io.c,v 1.14.24.1 2014/09/21 18:58:56 snj Exp $	*/
+/*	$NetBSD: io.c,v 1.17 2016/02/25 13:23:27 ginsbach Exp $	*/
 
 /*
  * Copyright (c) 1980, 1993
@@ -71,7 +71,7 @@
 #if 0
 static char sccsid[] = "@(#)io.c	8.1 (Berkeley) 6/6/93";
 #else
-__RCSID("$NetBSD: io.c,v 1.14.24.1 2014/09/21 18:58:56 snj Exp $");
+__RCSID("$NetBSD: io.c,v 1.17 2016/02/25 13:23:27 ginsbach Exp $");
 #endif
 #endif				/* not lint */
 
@@ -132,7 +132,7 @@ dump_line(void)
 			n_real_blanklines = 0;
 			if (ps.ind_level == 0)
 				ps.ind_stmt = 0;	/* this is a class A
-							 * kludge. dont do
+							 * kludge. don't do
 							 * additional statement
 							 * indentation if we are
 							 * at bracket level 0 */
@@ -267,7 +267,7 @@ dump_line(void)
 								target = ((target - 1) & ~7) + 9, com_st++;
 							else
 								target = 1;
-					if (cur_col > target) {	/* if comment cant fit
+					if (cur_col > target) {	/* if comment can't fit
 								 * on this line, put it
 								 * on next line */
 						putc('\n', output);
@@ -395,7 +395,7 @@ fill_buffer(void)
 	char   *n;
 
 	if (bp_save != 0) {	/* there is a partly filled input buffer left */
-		buf_ptr = bp_save;	/* dont read anything, just switch
+		buf_ptr = bp_save;	/* don't read anything, just switch
 					 * buffers */
 		buf_end = be_save;
 		bp_save = be_save = 0;
@@ -670,8 +670,7 @@ parsefont(struct fstate *f, const char *s0)
 						if (*s == '-')
 							sizedelta--;
 						else {
-							fprintf(stderr, "indent: bad font specification: %s\n", s0);
-							exit(1);
+							errx(1, "bad font specification: %s", s0);
 						}
 		s++;
 	}

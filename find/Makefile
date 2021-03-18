@@ -23,5 +23,6 @@ WARNERR   =	no # FreeBSD has a bit different fts_open(3)
 .include "../mk/imp.f_strmode.mk"
 .include "../mk/imp.f_struct_stat.mk"
 .include "../mk/imp.f_struct_statvfs.mk"
+.include "../mk/imp.f_parsedate.mk"
 
 .include "../mk/addlinks.mk"

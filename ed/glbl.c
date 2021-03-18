@@ -1,4 +1,4 @@
-/*	$NetBSD: glbl.c,v 1.8 2014/03/31 12:55:46 christos Exp $	*/
+/*	$NetBSD: glbl.c,v 1.9 2015/08/28 11:29:48 joerg Exp $	*/
 
 /* glob.c: This file contains the global command routines for the ed line
    editor */
@@ -33,7 +33,7 @@
 #if 0
 static char *rcsid = "@(#)glob.c,v 1.1 1994/02/01 00:34:40 alm Exp";
 #else
-__RCSID("$NetBSD: glbl.c,v 1.8 2014/03/31 12:55:46 christos Exp $");
+__RCSID("$NetBSD: glbl.c,v 1.9 2015/08/28 11:29:48 joerg Exp $");
 #endif
 #endif /* not lint */
 

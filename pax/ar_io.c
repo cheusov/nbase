@@ -1,4 +1,4 @@
-/*	$NetBSD: ar_io.c,v 1.55 2014/08/08 14:48:55 joerg Exp $	*/
+/*	$NetBSD: ar_io.c,v 1.57 2016/05/31 03:32:36 dholland Exp $	*/
 
 /*-
  * Copyright (c) 1992 Keith Muller.
@@ -42,13 +42,13 @@
 #if 0
 static char sccsid[] = "@(#)ar_io.c	8.2 (Berkeley) 4/18/94";
 #else
-__RCSID("$NetBSD: ar_io.c,v 1.55 2014/08/08 14:48:55 joerg Exp $");
+__RCSID("$NetBSD: ar_io.c,v 1.57 2016/05/31 03:32:36 dholland Exp $");
 #endif
 #endif /* not lint */
 
 #include <sys/types.h>
 #include <sys/param.h>
-#include <sys/time.h>
+#include <time.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
 #ifdef HAVE_SYS_MTIO_H
@@ -63,7 +63,6 @@ __RCSID("$NetBSD: ar_io.c,v 1.55 2014/08/08 14:48:55 joerg Exp $");
 #include <ctype.h>
 #include <errno.h>
 #include <stdlib.h>
-#include <time.h>
 #ifdef SUPPORT_RMT
 #define __RMTLIB_PRIVATE
 #include <rmt.h>
@@ -256,7 +255,7 @@ ar_open(const char *name)
 	}
 
 	/*
-	 * make sure we beyond any doubt that we only can unlink regular files
+	 * make sure beyond any doubt that we can unlink only regular files
 	 * we created
 	 */
 	if (artyp != ISREG)
@@ -458,7 +457,7 @@ ar_close(void)
 	/* mimic cpio's block count first */
 	if (frmt && strcmp(NM_CPIO, argv0) == 0) {
 		(void)fprintf(listf, OFFT_F " blocks\n",
-		(OFFT_T)(rdcnt ? rdcnt : wrcnt) / 5120);
+		    (rdcnt ? rdcnt : wrcnt) / 5120);
 	}
 
 	ar_summary(0);
@@ -1632,7 +1631,6 @@ void
 ar_summary(int n)
 {
 	time_t secs;
-	int len;
 	char buf[BUFSIZ];
 	char tbuf[MAXPATHLEN/4];	/* XXX silly size! */
 	char s1buf[MAXPATHLEN/8];	/* XXX very silly size! */
@@ -1658,33 +1656,32 @@ ar_summary(int n)
 	 * could have written anything yet.
 	 */
 	if (frmt == NULL && act != COPY) {
-		len = snprintf(buf, sizeof(buf),
+		snprintf(buf, sizeof(buf),
 		    "unknown format, %s skipped in %s\n",
 		    sizefmt(s1buf, sizeof(s1buf), rdcnt),
 		    timefmt(tbuf, sizeof(tbuf), rdcnt, secs, "bytes"));
 		if (n == 0)
 			(void)fprintf(outf, "%s: %s", argv0, buf);
 		else
-			(void)write(STDERR_FILENO, buf, len);
+			(void)write(STDERR_FILENO, buf, strlen(buf));
 		return;
 	}
 
 
 	if (n != 0 && *archd.name) {
-		len = snprintf(buf, sizeof(buf), "Working on `%s' (%s)\n",
+		snprintf(buf, sizeof(buf), "Working on `%s' (%s)\n",
 		    archd.name, sizefmt(s1buf, sizeof(s1buf), archd.sb.st_size));
-		(void)write(STDERR_FILENO, buf, len);
-		len = 0;
+		(void)write(STDERR_FILENO, buf, strlen(buf));
 	}
 
 
 	if (act == COPY) {
-		len = snprintf(buf, sizeof(buf),
+		snprintf(buf, sizeof(buf),
 		    "%lu files in %s\n",
 		    (unsigned long)flcnt,
 		    timefmt(tbuf, sizeof(tbuf), flcnt, secs, "files"));
 	} else {
-		len = snprintf(buf, sizeof(buf),
+		snprintf(buf, sizeof(buf),
 		    "%s vol %d, %lu files, %s read, %s written in %s\n",
 		    frmt->name, arvol-1, (unsigned long)flcnt,
 		    sizefmt(s1buf, sizeof(s1buf), rdcnt),

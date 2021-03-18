@@ -49,6 +49,7 @@
 #include "mkc_raise_default_signal.h"
 #include "mkc_posix_getopt.h"
 #include "mkc_err.h"
+#include "mkc_macro.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -204,7 +205,7 @@ main(int argc, char *argv[])
 	/* Copy the rest into a new file. */
 	if (!feof(infile)) {
 		ofp = newfile();
-		while ((p = get_line()) != NULL && fputs(p, ofp) == 0)
+		while ((p = get_line()) != NULL && fputs(p, ofp) != EOF)
 			;
 		if (!sflag)
 			(void)printf("%jd\n", (intmax_t)ftello(ofp));
@@ -432,7 +433,7 @@ do_rexp(const char *expr)
 		 * after the match.
 		 */
 		while (--ofs > 0 && (p = get_line()) != NULL)
-			if (fputs(p, ofp) != 0)
+			if (fputs(p, ofp) == EOF)
 				break;
 		toomuch(NULL, 0L);
 		nwritten = (intmax_t)ftello(ofp);
@@ -468,7 +469,7 @@ do_lineno(const char *expr)
 		while (lineno + 1 != lastline) {
 			if ((p = get_line()) == NULL)
 				errx(1, "%ld: out of range", lastline);
-			if (fputs(p, ofp) != 0)
+			if (fputs(p, ofp) == EOF)
 				break;
 		}
 		if (!sflag)

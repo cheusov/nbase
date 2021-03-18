@@ -1,4 +1,4 @@
-/* $NetBSD: mv.c,v 1.43 2011/08/29 14:46:54 joerg Exp $ */
+/* $NetBSD: mv.c,v 1.45 2016/02/28 10:59:29 mrg Exp $ */
 
 /*
  * Copyright (c) 1989, 1993, 1994
@@ -52,7 +52,7 @@ __COPYRIGHT("@(#) Copyright (c) 1989, 1993, 1994\
 #if 0
 static char sccsid[] = "@(#)mv.c	8.2 (Berkeley) 4/2/94";
 #else
-__RCSID("$NetBSD: mv.c,v 1.43 2011/08/29 14:46:54 joerg Exp $");
+__RCSID("$NetBSD: mv.c,v 1.45 2016/02/28 10:59:29 mrg Exp $");
 #endif
 #endif /* not lint */
 
@@ -79,11 +79,21 @@ __RCSID("$NetBSD: mv.c,v 1.43 2011/08/29 14:46:54 joerg Exp $");
 
 static int fflg, iflg, vflg;
 static int stdin_ok;
+static sig_atomic_t pinfo;
 
 static int	copy(char *, char *);
 static int	do_move(char *, char *);
 static int	fastcopy(char *, char *, struct stat *);
 __dead static void	usage(void);
+
+#ifdef SIGINFO
+static void
+progress(int sig)
+{
+
+	pinfo++;
+}
+#endif
 
 int
 main(int argc, char *argv[])
@@ -120,6 +130,10 @@ main(int argc, char *argv[])
 		usage();
 
 	stdin_ok = isatty(STDIN_FILENO);
+
+#ifdef SIGINFO
+	(void)signal(SIGINFO, progress);
+#endif
 
 	/*
 	 * If the stat on the target fails or the target isn't a directory,
@@ -267,10 +281,16 @@ do_move(char *from, char *to)
 static int
 fastcopy(char *from, char *to, struct stat *sbp)
 {
+#if defined(__NetBSD__)
+	struct timespec ts[2];
+#else
 	struct timeval tval[2];
+#endif
 	static blksize_t blen;
 	static char *bp;
-	int nread, from_fd, to_fd;
+	int from_fd, to_fd;
+	ssize_t nread;
+	off_t total = 0;
 
 	if ((from_fd = open(from, O_RDONLY, 0)) < 0) {
 		warn("%s", from);
@@ -289,11 +309,21 @@ fastcopy(char *from, char *to, struct stat *sbp)
 		(void)close(to_fd);
 		return (1);
 	}
-	while ((nread = read(from_fd, bp, blen)) > 0)
+	while ((nread = read(from_fd, bp, blen)) > 0) {
 		if (write(to_fd, bp, nread) != nread) {
 			warn("%s", to);
 			goto err;
 		}
+		total += nread;
+		if (pinfo) {
+			int pcent = (int)((100.0 * total) / sbp->st_size);
+
+			pinfo = 0;
+			(void)fprintf(stderr, "%s => %s %llu/%llu bytes %d%% "
+			    "written\n", from, to, (unsigned long long)total,
+			    (unsigned long long)sbp->st_size, pcent);
+		}
+	}
 	if (nread < 0) {
 		warn("%s", from);
 err:		if (unlink(to))
@@ -310,8 +340,13 @@ err:		if (unlink(to))
 
 	(void)close(from_fd);
 #ifdef BSD4_4
+#if defined(__NetBSD__)
+	ts[0] = sbp->st_atimespec;
+	ts[1] = sbp->st_mtimespec;
+#else
 	TIMESPEC_TO_TIMEVAL(&tval[0], &sbp->st_atimespec);
 	TIMESPEC_TO_TIMEVAL(&tval[1], &sbp->st_mtimespec);
+#endif
 #else
 	tval[0].tv_sec = sbp->st_atime;
 	tval[1].tv_sec = sbp->st_mtime;
@@ -321,7 +356,11 @@ err:		if (unlink(to))
 #ifdef __SVR4
 	if (utimes(to, tval))
 #else
+#if defined(__NetBSD__)
+	if (futimens(to_fd, ts))
+#else
 	if (futimes(to_fd, tval))
+#endif
 #endif
 		warn("%s: set times", to);
 	if (fchown(to_fd, sbp->st_uid, sbp->st_gid)) {

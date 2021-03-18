@@ -31,7 +31,7 @@
 #ifndef lint
 __COPYRIGHT("@(#) Copyright (c) 2005\
  The NetBSD Foundation, Inc.  All rights reserved.");
-__RCSID("$NetBSD: seq.c,v 1.7 2010/05/27 08:40:19 dholland Exp $");
+__RCSID("$NetBSD: seq.c,v 1.8 2016/09/05 00:40:29 sevan Exp $");
 #endif /* not lint */
 
 #include <ctype.h>
@@ -65,7 +65,6 @@ char default_format[] = { "%g" };	/* default */
 double e_atof(const char *);
 
 int decimal_places(const char *);
-int main(int, char *[]);
 int numeric(const char *);
 int valid_format(const char *);
 
@@ -310,7 +309,7 @@ unescape(char *orig)
 			*orig = '\b';
 			continue;
 		case 'e':	/* escape */
-			*orig = '\x1B';
+			*orig = '\e';
 			continue;
 		case 'f':	/* formfeed */
 			*orig = '\f';

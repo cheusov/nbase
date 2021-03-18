@@ -1,4 +1,4 @@
-/* $NetBSD: modes.c,v 1.17 2006/10/16 00:37:55 christos Exp $ */
+/* $NetBSD: modes.c,v 1.18 2015/05/01 17:01:08 christos Exp $ */
 
 /*-
  * Copyright (c) 1991, 1993, 1994
@@ -34,7 +34,7 @@
 #if 0
 static char sccsid[] = "@(#)modes.c	8.3 (Berkeley) 4/2/94";
 #else
-__RCSID("$NetBSD: modes.c,v 1.17 2006/10/16 00:37:55 christos Exp $");
+__RCSID("$NetBSD: modes.c,v 1.18 2015/05/01 17:01:08 christos Exp $");
 #endif
 #endif /* not lint */
 
@@ -42,11 +42,17 @@ __RCSID("$NetBSD: modes.c,v 1.17 2006/10/16 00:37:55 christos Exp $");
 
 #include <stddef.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "stty.h"
 #include "extern.h"
 
 struct modes {
+	const char *name;
+	tcflag_t flag;
+};
+
+struct specialmodes {
 	const char *name;
 	tcflag_t set;
 	tcflag_t unset;
@@ -57,18 +63,24 @@ struct modes {
  * options, i.e. "foo" must immediately precede "-foo".
  */
 const struct modes cmodes[] = {
+	{ "cstopb",	CSTOPB },
+	{ "cread",	CREAD },
+	{ "parenb",	PARENB },
+	{ "parodd",	PARODD },
+	{ "hupcl",	HUPCL },
+	{ "hup",	HUPCL },
+	{ "clocal",	CLOCAL },
+	{ "crtscts",	CRTSCTS },
+	{ "mdmbuf",	MDMBUF },
+	{ "cdtrcts",	CDTRCTS },
+	{ .name = NULL },
+};
+
+const struct specialmodes cspecialmodes[] = {
 	{ "cs5",	CS5, CSIZE },
 	{ "cs6",	CS6, CSIZE },
 	{ "cs7",	CS7, CSIZE },
 	{ "cs8",	CS8, CSIZE },
-	{ "cstopb",	CSTOPB, 0 },
-	{ "-cstopb",	0, CSTOPB },
-	{ "cread",	CREAD, 0 },
-	{ "-cread",	0, CREAD },
-	{ "parenb",	PARENB, 0 },
-	{ "-parenb",	0, PARENB },
-	{ "parodd",	PARODD, 0 },
-	{ "-parodd",	0, PARODD },
 	{ "parity",	PARENB | CS7, PARODD | CSIZE },
 	{ "-parity",	CS8, PARODD | PARENB | CSIZE },
 	{ "evenp",	PARENB | CS7, PARODD | CSIZE },
@@ -77,22 +89,6 @@ const struct modes cmodes[] = {
 	{ "-oddp",	CS8, PARODD | PARENB | CSIZE },
 	{ "pass8",	CS8, PARODD | PARENB | CSIZE },
 	{ "-pass8",	PARENB | CS7, PARODD | CSIZE },
-	{ "hupcl",	HUPCL, 0 },
-	{ "-hupcl",	0, HUPCL },
-	{ "hup",	HUPCL, 0 },
-	{ "-hup",	0, HUPCL },
-	{ "clocal",	CLOCAL, 0 },
-	{ "-clocal",	0, CLOCAL },
-	{ "crtscts",	CRTSCTS, 0 },
-	{ "-crtscts",	0, CRTSCTS },
-#ifdef MDMBUF
-	{ "mdmbuf",	MDMBUF, 0 },
-	{ "-mdmbuf",	0, MDMBUF },
-#endif
-#ifdef CDTRCTS
-	{ "cdtrcts",	CDTRCTS, 0 },
-	{ "-cdtrcts",	0, CDTRCTS },
-#endif
 	{ .name = NULL },
 };
 
@@ -180,8 +176,6 @@ const struct modes lmodes[] = {
 	{ "newcrt",	ECHOE|ECHOKE|ECHOCTL, ECHOK|ECHOPRT },
 	{ "-newcrt",	ECHOK, ECHOE|ECHOKE|ECHOCTL },
 #ifdef NOKERNINFO
-	{ "nokerninfo",	NOKERNINFO, 0 },
-	{ "-nokerninfo",0, NOKERNINFO },
 	{ "kerninfo",	0, NOKERNINFO },
 	{ "-kerninfo",	NOKERNINFO, 0 },
 #endif

@@ -52,7 +52,6 @@ __RCSID("$NetBSD: regexp.c,v 1.13 2014/07/15 13:17:15 christos Exp $");
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include <stddef.h>
 
 #include "extern.h"
 

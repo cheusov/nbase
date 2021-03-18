@@ -1,4 +1,4 @@
-/* $NetBSD: decl.c,v 1.59 2014/04/18 00:20:37 christos Exp $ */
+/* $NetBSD: decl.c,v 1.68 2017/03/06 23:04:52 christos Exp $ */
 
 /*
  * Copyright (c) 1996 Christopher G. Demetriou.  All Rights Reserved.
@@ -38,7 +38,7 @@
 
 #include <sys/cdefs.h>
 #if defined(__RCSID) && !defined(lint)
-__RCSID("$NetBSD: decl.c,v 1.59 2014/04/18 00:20:37 christos Exp $");
+__RCSID("$NetBSD: decl.c,v 1.68 2017/03/06 23:04:52 christos Exp $");
 #endif
 
 #include <sys/param.h>
@@ -256,7 +256,7 @@ addtype(type_t *tp)
 	tspec_t	t;
 #ifdef DEBUG
 	char buf[1024];
-	printf("addtype %s\n", tyname(buf, sizeof(buf), tp));
+	printf("%s: %s\n", __func__, tyname(buf, sizeof(buf), tp));
 #endif
 	if (tp->t_typedef) {
 		if (dcs->d_type != NULL || dcs->d_atyp != NOTSPEC ||
@@ -355,6 +355,8 @@ addtype(type_t *tp)
 				dcs->d_terr = 1;
 			dcs->d_atyp = t;
 		}
+	} else if (t == PTR) {
+		dcs->d_type = tp;
 	} else {
 		/*
 		 * remember specifiers "void", "char", "int",
@@ -486,6 +488,17 @@ settdsym(type_t *tp, sym_t *sym)
 	}
 }
 
+static size_t
+bitfieldsize(sym_t **mem)
+{
+	size_t len = (*mem)->s_type->t_flen;
+	while (*mem && (*mem)->s_type->t_isfield) {
+		len += (*mem)->s_type->t_flen;
+		*mem = (*mem)->s_nxt;
+	}
+	return ((len + INT_SIZE - 1) / INT_SIZE) * INT_SIZE;
+}
+
 static void
 setpackedsize(type_t *tp)
 {
@@ -500,14 +513,7 @@ setpackedsize(type_t *tp)
 		sp->size = 0;
 		for (mem = sp->memb; mem != NULL; mem = mem->s_nxt) {
 			if (mem->s_type->t_isfield) {
-				size_t len = mem->s_type->t_flen;
-				while (mem && mem->s_type->t_isfield) {
-					len += mem->s_type->t_flen;
-					mem = mem->s_nxt;
-				}
-				len = ((len + INT_SIZE - 1) /
-				    INT_SIZE) * INT_SIZE;
-				sp->size += len;
+				sp->size += bitfieldsize(&mem);
 				if (mem == NULL)
 					break;
 			}
@@ -531,6 +537,12 @@ addpacked(void)
 		dcs->d_ispacked = 1;
 	else
 		setpackedsize(dcs->d_type);
+}
+
+void
+addused(void)
+{
+	dcs->d_used = 1;
 }
 
 /*
@@ -664,7 +676,7 @@ popdecl(void)
  *
  * There is no need to clear d_asm in dinfo structs with context AUTO,
  * because these structs are freed at the end of the compound statement.
- * But it must be cleard in the outermost dinfo struct, which has
+ * But it must be cleared in the outermost dinfo struct, which has
  * context EXTERN. This could be done in clrtyp() and would work for
  * C, but not for C++ (due to mixed statements and declarations). Thus
  * we clear it in glclup(), which is used to do some cleanup after
@@ -717,6 +729,10 @@ deftyp(void)
 	tp = dcs->d_type;
 	scl = dcs->d_scl;
 
+#ifdef DEBUG
+	char buf[1024];
+	printf("%s: %s\n", __func__, tyname(buf, sizeof(buf), tp));
+#endif
 	if (t == NOTSPEC && s == NOTSPEC && l == NOTSPEC && c == NOTSPEC &&
 	    tp == NULL)
 		dcs->d_notyp = 1;
@@ -901,7 +917,7 @@ length(type_t *tp, const char *name)
 	default:
 		elsz = size(tp->t_tspec);
 		if (elsz <= 0)
-			LERROR("length()");
+			LERROR("length(%d)", elsz);
 		break;
 	}
 	return (elem * elsz);
@@ -1772,20 +1788,31 @@ compltag(type_t *tp, sym_t *fmem)
 			setpackedsize(tp);
 		else
 			sp->size = dcs->d_offset;
+
 		if (sp->size == 0) {
 			/* zero sized %s */
 			(void)c99ism(47, ttab[t].tt_name);
-		} else {
-			n = 0;
-			for (mem = fmem; mem != NULL; mem = mem->s_nxt) {
-				if (mem->s_name != unnamed)
-					n++;
+		}
+
+		n = 0;
+		for (mem = fmem; mem != NULL; mem = mem->s_nxt) {
+			/* bind anonymous members to the structure */
+			if (mem->s_styp == NULL) {
+				mem->s_styp = sp;
+				if (mem->s_type->t_isfield) {
+					sp->size += bitfieldsize(&mem);
+					if (mem == NULL)
+						break;
+				}
+				sp->size += tsize(mem->s_type);
 			}
-			if (n == 0) {
-				/* %s has no named members */
-				warning(65,
-					t == STRUCT ? "structure" : "union");
-			}
+			if (mem->s_name != unnamed)
+				n++;
+		}
+
+		if (n == 0 && sp->size != 0) {
+			/* %s has no named members */
+			warning(65, t == STRUCT ? "structure" : "union");
 		}
 	} else {
 		tp->t_enum->elem = fmem;
@@ -2020,7 +2047,7 @@ isredec(sym_t *dsym, int *dowarn)
 		return(0);
 	if (rsym->s_scl == EXTERN && rsym->s_def == DEF) {
 		/*
-		 * All cases except "int a = 1; static int a;" are catched
+		 * All cases except "int a = 1; static int a;" are caught
 		 * above with or without a warning
 		 */
 		/* redeclaration of %s */
@@ -2350,6 +2377,7 @@ decl1arg(sym_t *sym, int initflg)
 	if (sym->s_type->t_tspec != VOID)
 		(void)length(sym->s_type, sym->s_name);
 
+	sym->s_used = dcs->d_used;
 	setsflg(sym);
 
 	return (sym);

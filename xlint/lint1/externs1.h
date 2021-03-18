@@ -1,4 +1,4 @@
-/*	$NetBSD: externs1.h,v 1.32 2014/04/18 00:23:46 christos Exp $	*/
+/*	$NetBSD: externs1.h,v 1.35 2017/03/06 21:01:39 christos Exp $	*/
 
 /*
  * Copyright (c) 1994, 1995 Jochen Pohl
@@ -96,6 +96,8 @@ extern	int	yylex(void);
 extern	const	char *fnalloc(const char *);
 extern	const	char *fnnalloc(const char *, size_t);
 extern	int	getfnid(const char *);
+extern	void	fnaddreplsrcdir(char *);
+extern	const char *fnxform(const char *, size_t);
 
 extern	void	initmem(void);
 
@@ -143,6 +145,7 @@ extern	void	addscl(scl_t);
 extern	void	addtype(type_t *);
 extern	void	addqual(tqual_t);
 extern	void	addpacked(void);
+extern	void	addused(void);
 extern	void	pushdecl(scl_t);
 extern	void	popdecl(void);
 extern	void	setasm(void);
@@ -201,6 +204,7 @@ extern	tnode_t	*promote(op_t, int, tnode_t *);
 extern	tnode_t	*convert(op_t, int, type_t *, tnode_t *);
 extern	void	cvtcon(op_t, int, type_t *, val_t *, val_t *);
 extern	tnode_t	*bldszof(type_t *);
+extern	tnode_t	*bldoffsetof(type_t *, sym_t *);
 extern	tnode_t	*bldalof(type_t *);
 extern	tnode_t	*cast(tnode_t *, type_t *);
 extern	tnode_t	*funcarg(tnode_t *, tnode_t *);

@@ -1,4 +1,4 @@
-.\"	$NetBSD: sort.1,v 1.34 2013/05/29 15:00:35 wiz Exp $
+.\"	$NetBSD: sort.1,v 1.37 2016/12/21 09:06:24 abhinav Exp $
 .\"
 .\" Copyright (c) 2000-2003 The NetBSD Foundation, Inc.
 .\" All rights reserved.
@@ -59,7 +59,7 @@
 .\"
 .\"     @(#)sort.1	8.1 (Berkeley) 6/6/93
 .\"
-.Dd May 29, 2013
+.Dd June 1, 2016
 .Dt SORT 1
 .Os
 .Sh NAME
@@ -67,16 +67,26 @@
 .Nd sort or merge text files
 .Sh SYNOPSIS
 .Nm
-.Op Fl bcdfHilmnrSsu
+.Op Fl bdfHilmnrSsu
 .Oo
 .Fl k
-.Ar field1 Ns Op Li \&, Ns Ar field2
+.Ar kstart Ns Op Li \&, Ns Ar kend
 .Oc
 .Op Fl o Ar output
 .Op Fl R Ar char
 .Op Fl T Ar dir
 .Op Fl t Ar char
 .Op Ar
+.Nm
+.Fl C Ns | Ns Fl c
+.Op Fl bdfilnru
+.Oo
+.Fl k
+.Ar kstart Ns Op Li \&, Ns Ar kend
+.Op Fl t Ar char
+.Oc
+.Op Fl R Ar char
+.Op Ar file
 .Sh DESCRIPTION
 The
 .Nm
@@ -89,6 +99,10 @@ regards each input line as a single field.
 .Pp
 The following options are available:
 .Bl -tag -width Fl
+.It Fl C
+Identical to
+.Fl c
+without the error messages in the case of unsorted input.
 .It Fl c
 Check that the single input file is sorted.
 If the file is not sorted,
@@ -137,9 +151,13 @@ If used with the
 option, check that there are no lines with duplicate keys.
 .El
 .Pp
-The following options override the default ordering rules.
-When ordering options appear independent of key field
-specifications, the requested field ordering rules are
+The following options,
+which should be given before any
+.Fl k
+options, override the default ordering rules.
+When ordering options appear independent of,
+and before, key field specifications,
+the requested field ordering rules are
 applied globally to all sort keys.
 When attached to a specific key (see
 .Fl k ) ,
@@ -198,6 +216,34 @@ option (see below).
 Note that the
 .Fl b
 option has no effect unless key fields are specified.
+.It Fl k Ar kstart Ns Op Li \&, Ns Ar kend
+Designates the starting position,
+.Ar kstart ,
+and optional ending position,
+.Ar kend ,
+of a key field.
+The
+.Fl k
+option replaces the obsolescent options
+.Cm \(pl Ns Ar pos1
+and
+.Fl Ns Ar pos2 .
+.It Fl R Ar char
+.Ar char
+is used as the record separator character.
+This should be used with discretion;
+.Fl R Aq Ar alphanumeric
+usually produces undesirable results.
+If char is not a single character, then it
+specifies the value of the desired record
+separator as an integer specified in any
+of the normal NNN, 0ooo, or 0xXXX ways,
+or as an octal value preceded by \e.
+Caution: do not attempt to specify Ctl-A
+as
+.Dq -R 1
+which will not do what was intended at all!
+The default record separator is newline.
 .It Fl t Ar char
 .Ar char
 is used as the field separator character.
@@ -218,25 +264,6 @@ blank-space characters, and consecutive blank spaces do
 delimit an empty field; further, the initial blank space
 .Em is
 considered part of a field when determining key offsets.
-.It Fl R Ar char
-.Ar char
-is used as the record separator character.
-This should be used with discretion;
-.Fl R Aq Ar alphanumeric
-usually produces undesirable results.
-The default record separator is newline.
-.It Fl k Ar field1 Ns Op Li \&, Ns Ar field2
-Designates the starting position,
-.Ar field1 ,
-and optional ending position,
-.Ar field2 ,
-of a key field.
-The
-.Fl k
-option replaces the obsolescent options
-.Cm \(pl Ns Ar pos1
-and
-.Fl Ns Ar pos2 .
 .El
 .Pp
 The following operands are available:
@@ -265,16 +292,16 @@ first field.
 Fields are specified
 by the
 .Fl k
-.Ar field1 Ns Op \&, Ns Ar field2
+.Ar kstart Ns Op \&, Ns Ar kend
 argument.
 A missing
-.Ar field2
+.Ar kend
 argument defaults to the end of a line.
 .Pp
 The arguments
-.Ar field1
+.Ar kstart
 and
-.Ar field2
+.Ar kend
 have the form
 .Ar m Ns Li \&. Ns Ar n
 and can be followed by one or more of the letters
@@ -284,7 +311,7 @@ and
 .Cm r ,
 which correspond to the options discussed above.
 A
-.Ar field1
+.Ar kstart
 position specified by
 .Ar m Ns Li \&. Ns Ar n
 .Pq Ar m , n No \*[Gt] 0
@@ -296,7 +323,7 @@ field.
 A missing
 .Li \&. Ns Ar n
 in
-.Ar field1
+.Ar kstart
 means
 .Ql \&.1 ,
 indicating the first character of the
@@ -314,7 +341,7 @@ refers to the first non-blank character in the
 field.
 .Pp
 A
-.Ar field2
+.Ar kend
 position specified by
 .Ar m Ns Li \&. Ns Ar n
 is interpreted as
@@ -364,6 +391,38 @@ option is still supported, except for
 which has no
 .Fl k
 equivalent.
+.Pp
+.Nm
+compares records by comparing the key fields selected by
+.Fl k
+arguments,
+from first given to last,
+until discovering a difference.
+If there are no
+.Fl k
+arguments, the whole record is treated as a single key.
+After exhausting the
+.Fl k
+arguments, if no difference has been found,
+then the result depends upon the
+.Fl u
+and
+.Fl S
+option settings.
+With
+.Fl u
+the records are considered identical, and one is supressed.
+Otherwise with
+.Fl s
+set (default) the records are left in their original order,
+or with
+.Fl S
+(posix mode) the whole record is considered as a tie breaker.
+.\"
+.\" If you fail to understand why it doesn't matter which order
+.\" the records are output when they are wholly identical, there
+.\" is nothing that this man page can say that wll help!
+.\"
 .Sh ENVIRONMENT
 If the following environment variable exists, it is used by
 .Nm .
@@ -398,7 +457,9 @@ Normal behavior.
 .It 1
 On disorder (or non-uniqueness) with the
 .Fl c
-option
+(or
+.Fl C )
+option.
 .It 2
 An error occurred.
 .El
@@ -451,7 +512,7 @@ and merge sorts and did not.)
 Thus performance depends highly on efficient choice of sort keys, and the
 .Fl b
 option and the
-.Ar field2
+.Ar kend
 argument of the
 .Fl k
 option should be used whenever possible.

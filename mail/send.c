@@ -1,4 +1,4 @@
-/*	$NetBSD: send.c,v 1.37.10.1 2015/04/23 19:46:40 snj Exp $	*/
+/*	$NetBSD: send.c,v 1.38 2014/12/16 19:30:24 christos Exp $	*/
 
 /*
  * Copyright (c) 1980, 1993
@@ -34,7 +34,7 @@
 #if 0
 static char sccsid[] = "@(#)send.c	8.1 (Berkeley) 6/6/93";
 #else
-__RCSID("$NetBSD: send.c,v 1.37.10.1 2015/04/23 19:46:40 snj Exp $");
+__RCSID("$NetBSD: send.c,v 1.38 2014/12/16 19:30:24 christos Exp $");
 #endif
 #endif /* not lint */
 

@@ -1,4 +1,4 @@
-.\"	$NetBSD: cp.1,v 1.43 2013/12/17 09:54:08 apb Exp $
+.\"	$NetBSD: cp.1,v 1.45 2016/08/11 00:17:23 sevan Exp $
 .\"
 .\" Copyright (c) 1989, 1990, 1993, 1994
 .\"	The Regents of the University of California.  All rights reserved.
@@ -32,7 +32,7 @@
 .\"
 .\"	@(#)cp.1	8.3 (Berkeley) 4/18/94
 .\"
-.Dd March 25, 2012
+.Dd August 11, 2016
 .Dt CP 1
 .Os
 .Sh NAME
@@ -225,8 +225,8 @@ utility had a
 .Fl r
 option.
 This implementation supports that option, however, its use is strongly
-discouraged, as it does not correctly copy special files, symbolic links
-or fifo's.
+discouraged, as it does not correctly copy special files, symbolic links,
+or FIFOs.
 .Sh SEE ALSO
 .Xr mv 1 ,
 .Xr pax 1 ,
@@ -255,3 +255,8 @@ The
 .Fl v
 option is an extension to
 .St -p1003.2 .
+.Sh HISTORY
+A
+.Nm
+utility appeared in
+.At v1 .

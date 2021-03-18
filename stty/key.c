@@ -1,4 +1,4 @@
-/* $NetBSD: key.c,v 1.21 2013/09/12 19:47:23 christos Exp $ */
+/* $NetBSD: key.c,v 1.22 2017/01/10 20:44:05 christos Exp $ */
 
 /*-
  * Copyright (c) 1991, 1993, 1994
@@ -34,7 +34,7 @@
 #if 0
 static char sccsid[] = "@(#)key.c	8.4 (Berkeley) 2/20/95";
 #else
-__RCSID("$NetBSD: key.c,v 1.21 2013/09/12 19:47:23 christos Exp $");
+__RCSID("$NetBSD: key.c,v 1.22 2017/01/10 20:44:05 christos Exp $");
 #endif
 #endif /* not lint */
 
@@ -47,7 +47,6 @@ __RCSID("$NetBSD: key.c,v 1.21 2013/09/12 19:47:23 christos Exp $");
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include <time.h>
 
 #include "stty.h"
 #include "extern.h"

@@ -1,4 +1,4 @@
-#	$NetBSD: Makefile,v 1.50 2013/05/10 15:41:44 christos Exp $
+#	$NetBSD: Makefile,v 1.52 2015/04/04 19:32:06 christos Exp $
 
 .include <bsd.own.mk>
 
@@ -11,6 +11,7 @@ YHEADER=
 #DBG=-g
 #CPPFLAGS+=-DYYDEBUG=1
 #YFLAGS+=-v
+#LFLAGS+=-d
 
 CPPFLAGS+=	-I${.CURDIR} -I. -DPASS=\"${PROG}.h\"
 
@@ -40,3 +41,5 @@ DPADD+=		${LIBL}
 .include "Makefile.ops-c"
 
 .include <bsd.prog.mk>
+
+${SRCS}: ops.h

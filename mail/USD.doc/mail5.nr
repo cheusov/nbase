@@ -1,4 +1,4 @@
-.\"	$NetBSD: mail5.nr,v 1.5 2003/08/07 11:14:45 agc Exp $
+.\"	$NetBSD: mail5.nr,v 1.7 2014/10/01 23:41:41 christos Exp $
 .\"
 .\" Copyright (c) 1980, 1993
 .\"	The Regents of the University of California.  All rights reserved.

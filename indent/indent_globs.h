@@ -1,4 +1,4 @@
-/*	$NetBSD: indent_globs.h,v 1.9.24.1 2014/09/21 18:58:56 snj Exp $	*/
+/*	$NetBSD: indent_globs.h,v 1.10 2014/09/04 04:06:07 mrg Exp $	*/
 
 /*
  * Copyright (c) 1980, 1993

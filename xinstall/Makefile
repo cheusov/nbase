@@ -1,9 +1,9 @@
 PROG =	xinstall
-SRCS =	xinstall.c
+SRCS =	xinstall.c metachar.c
 MAN  =	install.1
 
-.PATH:		${.CURDIR}/../mtree
-CPPFLAGS +=	-I${.CURDIR}/../mtree -I${.CURDIR}/
+.PATH:		${.CURDIR}/../mtree ${.CURDIR}/../make
+CPPFLAGS +=	-I${.CURDIR}/../mtree -I${.CURDIR}/../make -I${.CURDIR}
 
 CPPFLAGS +=	-DHAVE_NBTOOL_CONFIG_H
 
@@ -28,6 +28,6 @@ CFLAGS.check   +=	-Wno-error=pointer-sign
 .include "../mk/imp.f_lchmod.mk"
 .include "../mk/imp.f_struct_stat.mk"
 
-MKC_FEATURES +=	fparseln LIST pwdgrp strsep vis
+MKC_FEATURES +=	fparseln LIST pwdgrp strsep vis errc
 
 .include "../mk/addlinks.mk"

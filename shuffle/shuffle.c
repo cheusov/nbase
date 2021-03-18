@@ -1,4 +1,4 @@
-/*	$NetBSD: shuffle.c,v 1.21 2011/09/16 15:39:29 joerg Exp $	*/
+/*	$NetBSD: shuffle.c,v 1.22 2017/02/06 02:26:44 dholland Exp $	*/
 
 /*
  * Copyright (c) 1998
@@ -33,7 +33,7 @@
 
 #include <sys/cdefs.h>
 #ifndef lint
-__RCSID("$NetBSD: shuffle.c,v 1.21 2011/09/16 15:39:29 joerg Exp $");
+__RCSID("$NetBSD: shuffle.c,v 1.22 2017/02/06 02:26:44 dholland Exp $");
 #endif /* not lint */
 
 #include <sys/time.h>

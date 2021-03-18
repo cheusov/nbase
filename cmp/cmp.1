@@ -1,4 +1,4 @@
-.\"	$NetBSD: cmp.1,v 1.9 2003/08/07 11:13:21 agc Exp $
+.\"	$NetBSD: cmp.1,v 1.12 2016/12/14 15:24:06 abhinav Exp $
 .\"
 .\" Copyright (c) 1987, 1990, 1993
 .\"	The Regents of the University of California.  All rights reserved.
@@ -32,7 +32,7 @@
 .\"
 .\"     @(#)cmp.1	8.1 (Berkeley) 6/6/93
 .\"
-.Dd June 6, 1993
+.Dd December 13, 2016
 .Dt CMP 1
 .Os
 .Sh NAME
@@ -40,6 +40,7 @@
 .Nd compare two files
 .Sh SYNOPSIS
 .Nm
+.Op Fl c
 .Op Fl l | Fl s
 .Ar file1 file2
 .Op Ar skip1 Op Ar skip2
@@ -55,6 +56,15 @@ Bytes and lines are numbered beginning with one.
 .Pp
 The following options are available:
 .Bl -tag -width flag
+.It Fl c
+Do the compare using
+.Xr getc 3
+rather than
+.Xr mmap 2 .
+Combined with the
+.Fl l
+flag, this can be helpful in locating an I/O error in the underlying
+device.
 .It Fl l
 Print the byte number (decimal) and the differing
 byte values (octal) for each difference.
@@ -74,7 +84,7 @@ and
 respectively, where the comparison will begin.
 The offset is decimal by default, but may be expressed as an hexadecimal
 or octal value by preceding it with a leading ``0x'' or ``0''.
-.Pp
+.Sh EXIT STATUS
 The
 .Nm
 utility exits with one of the following values:
@@ -95,11 +105,18 @@ file (before any differences were found).
 An error occurred.
 .El
 .Sh SEE ALSO
+.Xr comm 1 ,
 .Xr diff 1 ,
-.Xr diff3 1
+.Xr diff3 1 ,
+.Xr sdiff 1
 .Sh STANDARDS
 The
 .Nm
 utility is expected to be
 .St -p1003.2
 compatible.
+.Sh HISTORY
+The
+.Nm
+utility first appeared in
+.At v1 .

@@ -1,5 +1,5 @@
 /*	$OpenBSD: eval.c,v 1.66 2008/08/21 21:01:47 espie Exp $	*/
-/*	$NetBSD: eval.c,v 1.22 2011/08/21 23:38:43 dholland Exp $	*/
+/*	$NetBSD: eval.c,v 1.24.8.1 2018/04/11 14:27:51 martin Exp $	*/
 
 /*
  * Copyright (c) 1989, 1993
@@ -42,9 +42,10 @@
 #include "nbtool_config.h"
 #endif
 #include <sys/cdefs.h>
-__RCSID("$NetBSD: eval.c,v 1.22 2011/08/21 23:38:43 dholland Exp $");
+__RCSID("$NetBSD: eval.c,v 1.24.8.1 2018/04/11 14:27:51 martin Exp $");
 
 #include <sys/types.h>
+#include <ctype.h>
 #include <errno.h>
 #include <limits.h>
 #include <unistd.h>
@@ -53,6 +54,7 @@ __RCSID("$NetBSD: eval.c,v 1.22 2011/08/21 23:38:43 dholland Exp $");
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
+#include <inttypes.h>
 #include <fcntl.h>
 #include "mdef.h"
 #include "stdd.h"
@@ -182,17 +184,17 @@ expand_builtin(const char *argv[], int argc, int td)
 	{
 		int base = 10;
 		int maxdigits = 0;
-		const char *errstr;
+		int e;
 
 		if (argc > 3) {
-			base = strtonum(argv[3], 2, 36, &errstr);
-			if (errstr) {
+			base = strtoi(argv[3], NULL, 0, 2, 36, &e);
+			if (e) {
 				m4errx(1, "expr: base %s invalid.", argv[3]);
 			}
 		}
 		if (argc > 4) {
-			maxdigits = strtonum(argv[4], 0, INT_MAX, &errstr);
-			if (errstr) {
+			maxdigits = strtoi(argv[4], NULL, 0, 0, INT_MAX, &e);
+			if (e) {
 				m4errx(1, "expr: maxdigits %s invalid.", argv[4]);
 			}
 		}
@@ -542,7 +544,16 @@ expand_macro(const char *argv[], int argc)
 			case '7':
 			case '8':
 			case '9':
-				if ((argno = *p - '0') < argc - 1)
+				argno = *p - '0';
+				if (mimic_gnu) {
+					const unsigned char *q =
+					    (const unsigned char *)p;
+					while (isdigit(*++q)) {
+						bp--;
+						argno = argno * 10 + *q - '0';
+					}
+				}
+				if (argno < argc - 1)
 					pbstr(argv[argno + 1]);
 				break;
 			case '*':
@@ -689,6 +700,8 @@ static void
 doifelse(const char *argv[], int argc)
 {
 	cycle {
+		if (argc < 5)
+			m4errx(1, "wrong number of args for ifelse");
 		if (STREQ(argv[2], argv[3]))
 			pbstr(argv[4]);
 		else if (argc == 6)
@@ -708,6 +721,10 @@ doifelse(const char *argv[], int argc)
 static int
 doincl(const char *ifile)
 {
+#ifndef REAL_FREEZE
+	if (thawing)
+		return 1;
+#endif
 	if (ilevel + 1 == MAXINP)
 		m4errx(1, "too many include files.");
 	if (fopen_trypath(infile+ilevel+1, ifile) != NULL) {
@@ -842,9 +859,9 @@ doundiv(const char *argv[], int argc)
 
 	if (argc > 2) {
 		for (ind = 2; ind < argc; ind++) {
-			const char *errstr;
-			n = strtonum(argv[ind], 1, INT_MAX, &errstr);
-			if (errstr) {
+			int e;
+			n = strtoi(argv[ind], NULL, 0, 1, INT_MAX, &e);
+			if (e) {
 				if (errno == EINVAL && mimic_gnu)
 					getdivfile(argv[ind]);
 			} else {
@@ -916,6 +933,7 @@ map(char *dest, const char *src, const char *from, const char *to)
 {
 	const char *tmp;
 	unsigned char sch, dch;
+	unsigned char found[256];
 	static char frombis[257];
 	static char tobis[257];
 	static unsigned char mapvec[256] = {
@@ -952,19 +970,34 @@ map(char *dest, const char *src, const char *from, const char *to)
 	 * create a mapping between "from" and
 	 * "to"
 	 */
-		while (*from)
-			mapvec[(unsigned char)(*from++)] = (*to) ? 
-				(unsigned char)(*to++) : 0;
-
-		while (*src) {
-			sch = (unsigned char)(*src++);
-			dch = mapvec[sch];
-			while (dch != sch) {
-				sch = dch;
-				dch = mapvec[sch];
+		memset(found, 0, sizeof(found));
+		for (; (sch = (unsigned char)*from) != '\0'; from++) {
+			if (!mimic_gnu || !found[sch]) {
+				found[sch] = 1;
+				mapvec[sch] = *to;
 			}
-			if ((*dest = (char)dch))
-				dest++;
+			if (*to)
+				to++;
+		}
+
+		if (mimic_gnu) {
+			for (; (sch = (unsigned char)*src) != '\0'; src++) {
+				if (!found[sch])
+					*dest++ = sch;
+				else if ((dch = mapvec[sch]) != '\0')
+					*dest++ = dch;
+			}
+		} else {
+			while (*src) {
+//				sch = (unsigned char)(*src++);
+				dch = mapvec[sch];
+				while (dch != sch) {
+					sch = dch;
+					dch = mapvec[sch];
+				}
+				if ((*dest = (char)dch))
+					dest++;
+			}
 		}
 	/*
 	 * restore all the changed characters

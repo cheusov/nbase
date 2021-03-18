@@ -7,6 +7,8 @@ MKC_FEATURES +=	raise_default_signal
 
 .include <mkc.init.mk>
 
+.include "../mk/imp.f_macro.mk"
+
 .include "../mk/hacks.mk"
 
 .include "../mk/addlinks.mk"

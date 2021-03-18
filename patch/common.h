@@ -1,7 +1,7 @@
 /*
  * $OpenBSD: common.h,v 1.26 2006/03/11 19:41:30 otto Exp $
  * $DragonFly: src/usr.bin/patch/common.h,v 1.5 2008/08/10 23:50:12 joerg Exp $
- * $NetBSD: common.h,v 1.19.38.2 2015/08/04 21:03:33 snj Exp $
+ * $NetBSD: common.h,v 1.21 2015/07/24 18:56:44 christos Exp $
  */
 
 /*

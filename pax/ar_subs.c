@@ -37,10 +37,6 @@
 #include "nbtool_config.h"
 #endif
 
-#ifndef HAVE_NBTOOL_CONFIG_H
-#define HAVE_NBTOOL_CONFIG_H 1
-#endif
-
 #include <sys/cdefs.h>
 #if !defined(lint)
 #if 0

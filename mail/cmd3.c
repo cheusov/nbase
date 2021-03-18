@@ -1,4 +1,4 @@
-/*	$NetBSD: cmd3.c,v 1.42.10.1 2015/04/23 19:46:40 snj Exp $	*/
+/*	$NetBSD: cmd3.c,v 1.43 2014/12/16 19:30:24 christos Exp $	*/
 
 /*
  * Copyright (c) 1980, 1993
@@ -34,7 +34,7 @@
 #if 0
 static char sccsid[] = "@(#)cmd3.c	8.2 (Berkeley) 4/20/95";
 #else
-__RCSID("$NetBSD: cmd3.c,v 1.42.10.1 2015/04/23 19:46:40 snj Exp $");
+__RCSID("$NetBSD: cmd3.c,v 1.43 2014/12/16 19:30:24 christos Exp $");
 #endif
 #endif /* not lint */
 

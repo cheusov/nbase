@@ -1,4 +1,4 @@
-/*	$NetBSD: options.c,v 1.115 2013/11/14 04:00:48 christos Exp $	*/
+/*	$NetBSD: options.c,v 1.118 2015/12/19 18:45:52 christos Exp $	*/
 
 /*-
  * Copyright (c) 1992 Keith Muller.
@@ -42,7 +42,7 @@
 #if 0
 static char sccsid[] = "@(#)options.c	8.2 (Berkeley) 4/18/94";
 #else
-__RCSID("$NetBSD: options.c,v 1.115 2013/11/14 04:00:48 christos Exp $");
+__RCSID("$NetBSD: options.c,v 1.118 2015/12/19 18:45:52 christos Exp $");
 #endif
 #endif /* not lint */
 
@@ -83,6 +83,7 @@ __RCSID("$NetBSD: options.c,v 1.115 2013/11/14 04:00:48 christos Exp $");
 /*
  * Routines which handle command line options
  */
+struct stat tst;		/* Timestamp to set if non-0 */
 
 static int nopids;		/* tar mode: suppress "pids" for -p option */
 static char flgch[] = FLGCH;	/* list of all possible flags (pax) */
@@ -95,6 +96,9 @@ static void printflg(unsigned int);
 static int c_frmt(const void *, const void *);
 static off_t str_offt(char *);
 static char *get_line(FILE *fp);
+#ifndef SMALL
+static int set_tstamp(const char *, struct stat *);
+#endif
 static void pax_options(int, char **);
 __dead static void pax_usage(void);
 static void tar_options(int, char **);
@@ -136,8 +140,9 @@ static int get_line_error;
 #define	OPT_SPARSE			16
 #define OPT_XZ				17
 #define OPT_GNU				18
+#define	OPT_TIMESTAMP			19
 #if !HAVE_NBTOOL_CONFIG_H
-#define	OPT_CHROOT			19
+#define	OPT_CHROOT			20
 #endif
 
 /*
@@ -216,10 +221,6 @@ int sep = '\n';
 int havechd = 0;
 
 /*
- */
-char *chdname;
-
-/*
  * options()
  *	figure out if we are pax, tar or cpio. Call the appropriate options
  *	parser
@@ -262,6 +263,8 @@ struct option pax_longopts[] = {
 						OPT_XZ },
 	{ "gnu",		no_argument,		0,
 						OPT_GNU },
+	{ "timestamp",		required_argument,	0,
+						OPT_TIMESTAMP },
 	{ 0,			0,			0,
 						0 },
 };
@@ -672,6 +675,14 @@ pax_options(int argc, char **argv)
 		case OPT_GNU:
 			is_gnutar = 1;
 			break;
+#ifndef SMALL
+		case OPT_TIMESTAMP:
+			if (set_tstamp(optarg, &tst) == -1) {
+				tty_warn(1, "Invalid timestamp `%s'", optarg);
+				tar_usage();
+			}
+			break;
+#endif
 		case '?':
 		default:
 			pax_usage();
@@ -784,6 +795,7 @@ struct option tar_longopts[] = {
 	{ "gunzip",		no_argument,		0,	'z' },
 	{ "read-full-blocks",	no_argument,		0,	'B' },
 	{ "directory",		required_argument,	0,	'C' },
+	{ "xz",			no_argument,		0,	'J' },
 	{ "to-stdout",		no_argument,		0,	'O' },
 	{ "absolute-paths",	no_argument,		0,	'P' },
 	{ "sparse",		no_argument,		0,	'S' },
@@ -809,12 +821,12 @@ struct option tar_longopts[] = {
 						OPT_EXCLUDE },
 	{ "no-recursion",	no_argument,		0,
 						OPT_NORECURSE },
-	{ "xz",			no_argument,		0,
-						OPT_XZ },
 #if !HAVE_NBTOOL_CONFIG_H
 	{ "chroot",		no_argument,		0,
 						OPT_CHROOT },
 #endif
+	{ "timestamp",		required_argument,	0,
+						OPT_TIMESTAMP },
 #if 0 /* Not implemented */
 	{ "catenate",		no_argument,		0,	'A' },	/* F */
 	{ "concatenate",	no_argument,		0,	'A' },	/* F */
@@ -888,7 +900,7 @@ tar_options(int argc, char **argv)
 	 * process option flags
 	 */
 	while ((c = getoldopt(argc, argv,
-	    "+b:cef:hjklmopqrs:tuvwxzBC:HI:OPST:X:Z014578",
+	    "+b:cef:hjklmopqrs:tuvwxzBC:HI:JOPST:X:Z014578",
 	    tar_longopts, NULL))
 	    != -1)  {
 		switch(c) {
@@ -976,9 +988,6 @@ tar_options(int argc, char **argv)
 				pids = 0;
 				nopids = 1;
 			}
-			break;
-		case 'O':
-			Oflag = 1;
 			break;
 		case 'p':
 			/*
@@ -1075,6 +1084,12 @@ tar_options(int argc, char **argv)
 			incfiles[nincfiles - 1].file = optarg;
 			incfiles[nincfiles - 1].dir = chdname;
 			break;
+		case 'J':
+			gzip_program = XZ_CMD;
+			break;
+		case 'O':
+			Oflag = 1;
+			break;
 		case 'P':
 			/*
 			 * do not remove leading '/' from pathnames
@@ -1153,9 +1168,14 @@ tar_options(int argc, char **argv)
 			do_chroot = 1;
 			break;
 #endif
-		case OPT_XZ:
-			gzip_program = XZ_CMD;
+#ifndef SMALL
+		case OPT_TIMESTAMP:
+			if (set_tstamp(optarg, &tst) == -1) {
+				tty_warn(1, "Invalid timestamp `%s'", optarg);
+				tar_usage();
+			}
 			break;
+#endif
 		default:
 			tar_usage();
 			break;
@@ -2095,6 +2115,43 @@ get_line(FILE *f)
 	return temp;
 }
 
+#ifndef SMALL
+/*
+ * set_tstamp()
+ *	Use a specific timestamp for all individual files created in the
+ *	archive
+ */
+static int
+set_tstamp(const char *b, struct stat *st)
+{
+	time_t when;
+	char *eb;
+	long long l;
+
+	if (stat(b, st) != -1)
+		return 0;
+
+#ifndef HAVE_NBTOOL_CONFIG_H
+	errno = 0;
+	if ((when = parsedate(b, NULL, NULL)) == -1 && errno != 0)
+#endif
+	{
+		errno = 0;
+		l = strtoll(b, &eb, 0);
+		if (b == eb || *eb || errno)
+			return -1;
+		when = (time_t)l;
+	}
+
+	st->st_ino = 1;
+#if HAVE_STRUCT_STAT_BIRTHTIME 
+	st->st_birthtime =
+#endif
+	st->st_mtime = st->st_ctime = st->st_atime = when;
+	return 0;
+}
+#endif
+
 /*
  * no_op()
  *	for those option functions where the archive format has nothing to do.
@@ -2145,8 +2202,8 @@ pax_usage(void)
 static void
 tar_usage(void)
 {
-	(void)fputs("usage: tar [-]{crtux}[-befhjklmopqvwzHOPSXZ014578] [archive] "
-		    "[blocksize]\n"
+	(void)fputs("usage: tar [-]{crtux}[-befhjklmopqvwzHJOPSXZ014578] "
+		    "[archive] [blocksize]\n"
 		    "           [-C directory] [-T file] [-s replstr] "
 		    "[file ...]\n", stderr);
 	exit(1);
