@@ -24,6 +24,7 @@ THIS SOFTWARE.
 
 #include "mkc_macro.h"
 #include "mkc_strlcat.h"
+#include "mkc_fpurge.h"
 
 #if HAVE_NBTOOL_CONFIG_H
 #include "nbtool_config.h"
@@ -1873,7 +1874,7 @@ void closeall(void)
 			if (ferror(files[i].fp))
 				WARNING( "i/o error occurred on %s", files[i].fname );
 			if (i == 0)
-				stat = fclose(files[i].fp) == EOF;
+				stat = fpurge(files[i].fp) == EOF;
 			else if (i <= 2)
 				stat = fflush(files[i].fp) == EOF;
 			else if (files[i].mode == '|' || files[i].mode == LE)
