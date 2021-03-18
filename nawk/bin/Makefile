@@ -15,6 +15,7 @@ YHEADER   =	yes
 
 MKC_FEATURES +=	libm
 
+.include "../../mk/imp.f_fpurge.mk"
 .include "../../mk/addlinks.mk"
 
 CFLAGS.check +=	-Wno-self-assign
