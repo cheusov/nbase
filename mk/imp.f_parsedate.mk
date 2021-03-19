@@ -11,10 +11,11 @@ MKC_CHECK_FUNCLIBS +=	parsedate:util
 
 .include <mkc.conf.mk>
 
-. if ${HAVE_FUNCLIB.parsedate:U} == 0 && \
-    ${.CURDIR:T} == "compatlib"
-SRCS +=	${SRCDIR_compatlib}/mkc_parsedate.y
+.if ${HAVE_FUNCLIB.parsedate:U} != 1 && ${HAVE_FUNCLIB.parsedate.util:U} != 1
+. if ${.CURDIR:T} == "compatlib"
+SRCS +=	mkc_parsedate.y
 . endif
+.endif
 
 CPPFLAGS +=	-D_MKC_CHECK_PARSEDATE
 
