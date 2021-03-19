@@ -21,6 +21,7 @@ MKC_CHECK_FUNCS4   =	getgrouplist:grp.h getgrouplist:unistd.h
 MKC_CHECK_FUNCS3   =	strtoq:stdlib.h logwtmp:utmp.h
 MKC_CHECK_FUNCS2   =	getdomainname:unistd.h makedev:sys/sysmacros.h \
   makedev:sys/types.h
+MKC_CHECK_FUNCS1   =	signalname:signal.h
 MKC_CHECK_DEFINES  =	TIMESPEC_TO_TIMEVAL:sys/time.h REG_STARTEND:regex.h
 
 MKC_FUNC_OR_DEFINE.makedev =	yes
@@ -104,6 +105,13 @@ PROJECTS :=	${PROJECTS:N${t}}
 .if ${HAVE_FUNC2.getdomainname.unistd_h:U1} != 1
 .  for t in domainname
    WARN_MSG += "Exclude ${t} due to missing getdomainname in unistd.h"
+PROJECTS :=	${PROJECTS:N${t}}
+.  endfor
+.endif
+
+.if ${HAVE_FUNC1.signalname.signal_h:U1} != 1
+.  for t in kill
+   WARN_MSG += "Exclude ${t} due to missing signalname in signal.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
