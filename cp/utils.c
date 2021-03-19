@@ -33,6 +33,7 @@
 #include "mkc_struct_stat.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
+#include "mkc_utimens.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
