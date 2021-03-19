@@ -11,9 +11,7 @@ MKC_CHECK_FUNCLIBS +=	strtoi
 .include <mkc.conf.mk>
 
 .if ${HAVE_FUNCLIB.strtoi:U} != 1
-. if ${.CURDIR:T} == "compatlib"
-SRCS +=	mkc_strtoi.c
-. endif
+MKC_SRCS +=	mkc_strtoi.c
 .endif
 
 CPPFLAGS +=	-D_MKC_CHECK_STRTOI

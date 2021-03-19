@@ -11,10 +11,8 @@ MKC_FEATURES       +=	warn
 
 .include <mkc.conf.mk>
 
-.if ${.CURDIR:T} == "compatlib"
-. if ${HAVE_FUNCLIB.getbsize:U} != 1
-SRCS +=	mkc_getbsize.c
-. endif
+.if ${HAVE_FUNCLIB.getbsize:U} != 1
+MKC_SRCS +=	mkc_getbsize.c
 .endif
 
 CPPFLAGS +=	-D_MKC_CHECK_GETBSIZE

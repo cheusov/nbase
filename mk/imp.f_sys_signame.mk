@@ -8,10 +8,8 @@ MKC_CHECK_VARS  +=	sys_signame:signal.h sys_nsig:signal.h
 
 .include <mkc.conf.mk>
 
-.if ${.CURDIR:T} == "compatlib"
-.  if ${HAVE_VAR.sys_signame.signal_h:U} != 1 || ${HAVE_VAR.sys_nsig.signal_h:U} != 1
-SRCS +=	mkc_sys_signame.c
-.  endif
+.if ${HAVE_VAR.sys_signame.signal_h:U} != 1 || ${HAVE_VAR.sys_nsig.signal_h:U} != 1
+MKC_SRCS +=	mkc_sys_signame.c
 .endif
 
 CPPFLAGS +=	-D_MKC_CHECK_SYS_SIGNAME

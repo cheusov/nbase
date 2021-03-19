@@ -12,9 +12,7 @@ MKC_CHECK_FUNCLIBS +=	setmode getmode
 .include <mkc.conf.mk>
 
 .if ${HAVE_FUNCLIB.setmode:U} != 1 || ${HAVE_FUNCLIB.getmode:U} != 1
-. if ${.CURDIR:T} == "compatlib"
-SRCS +=	mkc_getsetmode.c
-. endif
+MKC_SRCS +=	mkc_getsetmode.c
 .endif
 
 CPPFLAGS +=	-D_MKC_CHECK_GETSETMODE

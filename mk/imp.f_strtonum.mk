@@ -13,9 +13,7 @@ MKC_CHECK_FUNCLIBS +=	strtonum
 .include <mkc.conf.mk>
 
 .if ${HAVE_FUNCLIB.strtonum:U} != 1
-. if ${.CURDIR:T} == "compatlib"
-SRCS +=	mkc_strtonum.c
-. endif
+MKC_SRCS +=	mkc_strtonum.c
 .endif
 
 CPPFLAGS +=	-D_MKC_CHECK_STRTONUM

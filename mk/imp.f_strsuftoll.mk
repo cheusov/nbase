@@ -13,10 +13,8 @@ MKC_FEATURES       +=	err
 
 .include <mkc.conf.mk>
 
-.if ${.CURDIR:T} == "compatlib"
-. if ${HAVE_FUNCLIB.strsuftoll:U} != 1 || ${HAVE_FUNCLIB.strsuftollx:U} != 1
-SRCS +=	mkc_strsuftoll.c
-. endif
+.if ${HAVE_FUNCLIB.strsuftoll:U} != 1 || ${HAVE_FUNCLIB.strsuftollx:U} != 1
+MKC_SRCS +=	mkc_strsuftoll.c
 .endif
 
 CPPFLAGS +=	-D_MKC_CHECK_STRSUFTOLL

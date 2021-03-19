@@ -10,10 +10,8 @@ MKC_CHECK_FUNCLIBS +=	strmode
 
 .include <mkc.conf.mk>
 
-.if ${.CURDIR:T} == "compatlib"
-. if ${HAVE_FUNCLIB.strmode:U} != 1
-SRCS +=	mkc_strmode.c
-. endif
+.if ${HAVE_FUNCLIB.strmode:U} != 1
+MKC_SRCS +=	mkc_strmode.c
 .endif
 
 CPPFLAGS +=	-D_MKC_CHECK_STRMODE

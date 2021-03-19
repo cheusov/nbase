@@ -17,10 +17,8 @@ MKC_PROTOTYPE_HEADERS.fopencookie = stdio.h
 
 .include <mkc.conf.mk>
 
-.if ${.CURDIR:T} == "compatlib"
-. if ${HAVE_FUNCLIB.funopen:U} != 1
-SRCS +=	mkc_funopen.c
-. endif
+.if ${HAVE_FUNCLIB.funopen:U} != 1
+MKC_SRCS +=	mkc_funopen.c
 .endif
 
 CPPFLAGS +=	-D_MKC_CHECK_FUNOPEN
