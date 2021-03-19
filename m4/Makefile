@@ -22,4 +22,6 @@ WARNERR   =	no
 
 MKC_FEATURES +=		strsep
 
+.include "../mk/imp.f_strtoi.mk"
+
 .include "../mk/addlinks.mk"
