@@ -6,15 +6,16 @@
 _MKC_IMP_F_UTIMENS_MK := 1
 
 MKC_CHECK_FUNCS2   +=	utimens:fcntl.h,sys/stat.h lutimens:fcntl.h,sys/stat.h
+MKC_CHECK_FUNCLIBS +=	utimens lutimens
 
 .include <mkc.conf.mk>
 
-.if ${.CURDIR:T} == "compatlib"
-. if ${HAVE_FUNC1.utimens.sys_stat_h:U} != 1 || ${HAVE_FUNC1.lutimens.sys_stat_h:U} == 1
+.if ${HAVE_FUNCLIB.utimens:U} != 1 || ${HAVE_FUNCLIB.lutimens:U} != 1
+. if ${.CURDIR:T} == "compatlib"
 SRCS +=	mkc_utimens.c
 . endif
 .endif
 
 CPPFLAGS +=	-D_MKC_CHECK_UTIMENS
 
-.endif #_MKC_IMP_F_UTIMENS_MK
+.endif # _MKC_IMP_F_UTIMENS_MK

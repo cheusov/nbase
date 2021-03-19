@@ -29,11 +29,14 @@
 # error "Missing MKC_FEATURES += utimens"
 #endif
 
-#ifndef HAVE_FUNC1_UTIMENS_SYS_STAT_H
+#include <fcntl.h>
+#include <sys/stat.h>
+
+#ifndef HAVE_FUNC2_UTIMENS_SYS_STAT_H
 int utimens(const char *path, const struct timespec *times);
 #endif
 
-#ifndef HAVE_FUNC1_LUTIMENS_SYS_STAT_H
+#ifndef HAVE_FUNC2_LUTIMENS_SYS_STAT_H
 int lutimens(const char *path, const struct timespec *times);
 #endif
 
