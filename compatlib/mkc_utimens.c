@@ -40,7 +40,7 @@ __RCSID("$NetBSD: utimens.c,v 1.2 2019/09/16 01:25:16 kamil Exp $");
 
 #include "mkc_utimens.h"
 
-#ifndef HAVE_FUNC1_UTIMENS_SYS_STAT_H
+#ifndef HAVE_FUNC2_UTIMENS_SYS_STAT_H
 int
 utimens(const char *path, const struct timespec *times)
 {
@@ -48,7 +48,7 @@ utimens(const char *path, const struct timespec *times)
 }
 #endif
 
-#ifndef HAVE_FUNC1_LUTIMENS_SYS_STAT_H
+#ifndef HAVE_FUNC2_LUTIMENS_SYS_STAT_H
 int
 lutimens(const char *path, const struct timespec *times)
 {
