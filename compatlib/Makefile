@@ -38,6 +38,8 @@ MKC_FEATURES +=	arc4random bswap dprintf efun errc fgetln fparseln \
 .include "../mk/imp.f_types.mk"
 .include "../mk/imp.f_lutimes.mk"
 .include "../mk/imp.f_bsd_signal.mk"
+.include "../mk/imp.f_fpurge.mk"
 .include "../mk/imp.f_utimens.mk"
+.include "../mk/imp.f_strtoi.mk"
 
 .include <mkc.mk>
