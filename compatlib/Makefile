@@ -42,5 +42,6 @@ MKC_FEATURES +=	arc4random bswap dprintf efun errc fgetln fparseln \
 .include "../mk/imp.f_utimens.mk"
 .include "../mk/imp.f_strtoi.mk"
 .include "../mk/imp.f_strtonum.mk"
+.include "../mk/imp.f_reallocarr.mk"
 
 .include <mkc.mk>
