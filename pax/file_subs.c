@@ -879,7 +879,7 @@ set_pmode(char *fnm, mode_t mode)
  *	Set 4.4BSD file flags
  */
 void
-set_chflags(char *fnm, u_int32_t flags)
+set_chflags(char *fnm, uint32_t flags)
 {
 	
 #if 0

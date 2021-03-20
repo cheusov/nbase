@@ -18,7 +18,7 @@ MKC_CHECK_TYPES    =	sig_t:signal.h
 MKC_CHECK_FUNCLIBS =	setupterm:terminfo
 MKC_CHECK_FUNCS5   =	openpty:pty.h openpty:util.h
 MKC_CHECK_FUNCS4   =	getgrouplist:grp.h getgrouplist:unistd.h
-MKC_CHECK_FUNCS3   =	logwtmp:utmp.h
+MKC_CHECK_FUNCS3   =	logwtmp:util.h
 MKC_CHECK_FUNCS2   =	getdomainname:unistd.h makedev:sys/sysmacros.h \
   makedev:sys/types.h
 MKC_CHECK_FUNCS1   =	signalname:signal.h
@@ -83,7 +83,7 @@ PROJECTS :=	${PROJECTS:N${t}}
 
 .if ${HAVE_HEADER.term_h:U1} != 1
 .  for t in cal ul tabs
-   WARN_MSG += "Exclude ${t} due to missing setupterm() in libtermcap"
+   WARN_MSG += "Exclude ${t} due to missing setupterm() in term.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
@@ -112,6 +112,13 @@ PROJECTS :=	${PROJECTS:N${t}}
 .if ${HAVE_FUNC4.getgrouplist.grp_h:U1} != 1 && ${HAVE_FUNC4.getgrouplist.unistd_h:U1} != 1
 .  for t in id
    WARN_MSG += "Exclude ${t} due to missing getgrouplist in grp.h"
+PROJECTS :=	${PROJECTS:N${t}}
+.  endfor
+.endif
+
+.if ${HAVE_FUNC3.logwtmp.util_h:U1} != 1
+.  for t in date
+   WARN_MSG += "Exclude ${t} due to missing logwtmp util.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
