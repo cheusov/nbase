@@ -51,7 +51,7 @@
 #if defined(_KERNEL) || defined(_STANDALONE) || \
     defined(HAVE_NBTOOL_CONFIG_H) || defined(BCS_ONLY)
 __TYPE
-_FUNCNAME(const char * __restrict nptr, char ** __restrict endptr, int base,
+_FUNCNAME(const char * restrict nptr, char ** restrict endptr, int base,
           __TYPE lo, __TYPE hi, int * rstatus)
 #else
 #include <locale.h>
@@ -60,8 +60,8 @@ _FUNCNAME(const char * __restrict nptr, char ** __restrict endptr, int base,
 #define INT_FUNCNAME(pre, name, post)	INT_FUNCNAME_(pre, name, post)
 
 static __TYPE
-INT_FUNCNAME(_int_, _FUNCNAME, _l)(const char * __restrict nptr,
-    char ** __restrict endptr, int base,
+INT_FUNCNAME(_int_, _FUNCNAME, _l)(const char * restrict nptr,
+    char ** restrict endptr, int base,
     __TYPE lo, __TYPE hi, int * rstatus, locale_t loc)
 #endif
 {
