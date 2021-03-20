@@ -203,4 +203,8 @@ typedef unsigned long int u_quad_t;
 #define	_PATH_DEFPATH	"/usr/bin:/bin"
 #endif
 
+#ifndef __predict_false
+#define __predict_false(exp) (exp)
+#endif
+
 #endif // _MKC_MACRO_H_

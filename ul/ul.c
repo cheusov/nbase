@@ -48,10 +48,22 @@ __RCSID("$NetBSD: ul.c,v 1.19 2016/06/23 03:58:13 abhinav Exp $");
 #include <string.h>
 #include <term.h>
 #include <unistd.h>
-#include <util.h>
 
 #include "mkc_posix_getopt.h"
+#include "mkc_reallocarr.h"
 #include "mkc_macro.h"
+
+#include <errno.h>
+static void _ereallocarr(void *p, size_t n, size_t s)
+{
+	int rv = reallocarr(p, n, s);
+	if (rv != 0) {
+		errno = rv;
+		errx(1, "Cannot re-allocate %zu * %zu bytes", n, s);
+	}
+}
+
+#define ereallocarr _ereallocarr
 
 #define	IESC	'\033'
 #define	SO	'\016'
