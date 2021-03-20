@@ -116,6 +116,13 @@ PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
 
+.if ${HAVE_FUNC3.logwtmp.utmp_h:U1} != 1
+.  for t in date
+   WARN_MSG += "Exclude ${t} due to missing logwtmp utmp.h"
+PROJECTS :=	${PROJECTS:N${t}}
+.  endfor
+.endif
+
 .if ${HAVE_DEFINE.TIMESPEC_TO_TIMEVAL.sys_time_h:U1} != 1
 .  for t in compress cp
    WARN_MSG += "Exclude ${t} due to missing TIMESPEC_TO_TIMEVAL in sys/time.h"
