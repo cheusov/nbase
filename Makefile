@@ -13,7 +13,7 @@
 MKC_REQD     =	0.36.0
 
 MKC_CHECK_HEADER_FILES  = pty.h fts.h sys/sysctl.h
-MKC_CHECK_HEADERS  =	tzfile.h md2.h db.h termcap.h
+MKC_CHECK_HEADERS  =	tzfile.h md2.h db.h termcap.h term.h
 MKC_CHECK_TYPES    =	sig_t:signal.h
 MKC_CHECK_FUNCLIBS =	setupterm:terminfo
 MKC_CHECK_FUNCS5   =	openpty:pty.h openpty:util.h
@@ -80,7 +80,7 @@ PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
 
-.if ${HAVE_FUNCLIB.setupterm.terminfo:U1} != 1
+.if ${HAVE_HEADER.term_h:U1} != 1
 .  for t in cal ul tabs
    WARN_MSG += "Exclude ${t} due to missing setupterm() in libtermcap"
 PROJECTS :=	${PROJECTS:N${t}}
@@ -140,7 +140,7 @@ COMPATLIB    =	compatlib
 INTERNALLIBS =	libndigest
 
 .if ${HAVE_HEADER.tzfile_h:U1} != 1
-. for t in date
+. for t in cal date
 PROJECTS :=     ${PROJECTS:N${t}}
    WARN_MSG += "Exclude ${t} due to missing tzfile.h"
 . endfor
