@@ -1,8 +1,7 @@
 // public domain
 
-#include <sys/types.h>
-#include <stdio.h>
-#include "mtree.h"
+int
+setup_getid(const char *dir);
 
 int
 setup_getid(const char *dir)

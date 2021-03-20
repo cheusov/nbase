@@ -2,9 +2,18 @@ PROG      =	mtree
 CPPFLAGS +=	-DMTREE -DHAVE_NBTOOL_CONFIG_H -I.
 MAN       =	mtree.8
 SRCS      =	compare.c crc.c create.c excludes.c misc.c mtree.c spec.c \
-		specspec.c verify.c pack_dev.c only.c fake_getid.c
+		specspec.c verify.c pack_dev.c only.c
 
+MKC_CHECK_FUNCS4     +=	pwcache_groupdb:grp.h
 MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
+
+.include <mkc.configure.mk>
+
+.if ${HAVE_FUNC4.pwcache_groupdb.grp_h:U1}
+SRCS +=		getid.c
+.else
+SRCS +=		fake_getid.c
+.endif
 
 CPPFLAGS+=	-I${.CURDIR}/../mknod
 .PATH:		${.CURDIR}/../mknod
@@ -12,9 +21,6 @@ CPPFLAGS+=	-I${.CURDIR}/../mknod
 WARNERR   =	no
 
 MKC_FEATURES         +=	fparseln LIST pwdgrp strsep vis
-MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
-
-.include <mkc.init.mk>
 
 .include "../mk/hacks.mk"
 
