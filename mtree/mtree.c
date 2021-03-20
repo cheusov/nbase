@@ -180,7 +180,7 @@ main(int argc, char **argv)
 			nflag = 1;
 			break;
 		case 'N':
-			if (setup_getid(optarg))
+			if (! setup_getid(optarg))
 				mtree_err(
 			    "Unable to use user and group databases in `%s'",
 				    optarg);
