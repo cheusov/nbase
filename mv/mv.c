@@ -74,6 +74,7 @@ __RCSID("$NetBSD: mv.c,v 1.45 2016/02/28 10:59:29 mrg Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <signal.h>
 
 #include "pathnames.h"
 
