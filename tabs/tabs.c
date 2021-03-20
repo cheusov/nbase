@@ -51,6 +51,8 @@ __RCSID("$NetBSD: tabs.c,v 1.4 2011/09/16 15:39:29 joerg Exp $");
 #include <term.h>
 #include <unistd.h>
 
+#include "mkc_macro.h"
+
 #define NSTOPS 20
 
 struct tabspec {
@@ -214,7 +216,7 @@ main(int argc, char **argv)
 			if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == 0)
 				cols = ws.ws_col;
 			else {
-				cols = tigetnum("cols");
+				cols = tigetnum(__UNCONST("cols"));
 				if (cols == 0) {
 					cols = 80;
 					warnx("terminal does not specify number"
