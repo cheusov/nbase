@@ -11,6 +11,7 @@ MKC_FEATURES         +=	efun pwdgrp
 
 CFLAGS.check +=	-Wno-error=return-type
 CFLAGS.check +=	-Wno-error=unused-result # write(...) on glibc/Linux-es
+CFLAGS.check +=	-erroff=E_STATEMENT_NOT_REACHED
 
 .if ${OPSYS:U} == FreeBSD
 WARNERR   =	no # FreeBSD has a bit different fts_open(3)
