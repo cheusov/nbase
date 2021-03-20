@@ -124,12 +124,12 @@ main(int argc, char *argv[])
 		char *ep;
 
 		errno = 0;
-		skip1 = strtoq(argv[2], &ep, 0);
+		skip1 = strtoll(argv[2], &ep, 0);
 		if (errno || ep == argv[2])
 			usage();
 
 		if (argc == 4) {
-			skip2 = strtoq(argv[3], &ep, 0);
+			skip2 = strtoll(argv[3], &ep, 0);
 			if (errno || ep == argv[3])
 				usage();
 		}
