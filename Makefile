@@ -83,7 +83,7 @@ PROJECTS :=	${PROJECTS:N${t}}
 
 .if ${HAVE_HEADER.term_h:U1} != 1
 .  for t in cal ul tabs
-   WARN_MSG += "Exclude ${t} due to missing setupterm() in libtermcap"
+   WARN_MSG += "Exclude ${t} due to missing setupterm() in term.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
