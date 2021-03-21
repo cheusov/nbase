@@ -86,7 +86,7 @@ int	upln;
 int	iflag;
 
 int	main(int, char **);
-void	filter(FILE *);
+void	filter_stream(FILE *);
 void	flushln(void);
 void	fwd(void);
 void	iattr(void);
@@ -135,7 +135,7 @@ main(int argc, char **argv)
 	     underline_char == NULL))
 	initbuf();
 	if (optind == argc)
-		filter(stdin);
+		filter_stream(stdin);
 	else for (; optind<argc; optind++) {
 		f = fopen(argv[optind],"r");
 		if (f == NULL) {
@@ -143,14 +143,14 @@ main(int argc, char **argv)
 			exit(1);
 		}
 
-		filter(f);
+		filter_stream(f);
 		fclose(f);
 	}
 	exit(0);
 }
 
 void
-filter(FILE *f)
+filter_stream(FILE *f)
 {
 	int c;
 
