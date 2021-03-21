@@ -24,13 +24,9 @@ libcurses=${LIB_NCURSES}
 libcurses=${LIB_CURSES}
 .endif
 
-MKC_CHECK_FUNCLIBS +=	main:${libcurses}
+MKC_REQUIRE_FUNCLIBS +=	cur_term:${libcurses}
 
 .include <mkc.conf.mk>
-
-.if ${HAVE_FUNCLIB.main.${libcurses}}
-LDADD +=	-l${libcurses}
-.endif
 
 #CPPFLAGS +=	-D_MKC_CHECK_CURSES
 
