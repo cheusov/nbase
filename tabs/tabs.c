@@ -48,6 +48,7 @@ __RCSID("$NetBSD: tabs.c,v 1.4 2011/09/16 15:39:29 joerg Exp $");
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <curses.h>
 #include <term.h>
 #include <unistd.h>
 

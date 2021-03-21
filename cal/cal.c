@@ -55,6 +55,7 @@ __RCSID("$NetBSD: cal.c,v 1.27 2011/08/29 13:55:22 joerg Exp $");
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <curses.h>
 #include <term.h>
 #include <time.h>
 #include <tzfile.h>

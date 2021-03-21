@@ -45,6 +45,7 @@ __RCSID("$NetBSD: ul.c,v 1.16 2012/03/20 20:34:59 matt Exp $");
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <curses.h>
 #include <term.h>
 #include <unistd.h>
 
