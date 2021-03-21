@@ -4,6 +4,11 @@
 # iconv infocmp ipcs ipcrm lock logger mt nbperf stat stty time touch tsort
 # uname uuidgen vgrind whereis xlint
 
+# TBD: chown disklabel dump apropos biff cvslatest dc finger gencat
+# gettext ipcrm ipcs ldd? locale (whatis man) (mesg talk write) mkesdb
+# mklocale mkubootimage nbperf nbsvtool newsyslog pagesize pathchk
+# progress sortinfo spell tic (tip, cu) vacation
+
 # NET: ftp rcmd rcp rdist rup rwho rwall ruptime rusers rlogin rsh
 
 #PROJECTS = bdes csh db ksh sh at checknr chflags	\
