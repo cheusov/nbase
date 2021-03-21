@@ -180,7 +180,7 @@ main(int argc, char **argv)
 		err(EXIT_FAILURE, "setupterm:");
 	cr = carriage_return;
 	if (cr == NULL)
-		cr = "\r";
+		cr = __UNCONST("\r");
 	if (clear_all_tabs == NULL)
 		errx(EXIT_FAILURE, "terminal cannot clear tabs");
 	if (set_tab == NULL)
