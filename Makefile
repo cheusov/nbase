@@ -8,6 +8,8 @@
 # gettext ipcrm ipcs ldd? locale (whatis man) (mesg talk write) mkesdb
 # mklocale mkubootimage nbperf nbsvtool newsyslog pagesize pathchk
 # progress sortinfo spell tic (tip, cu) vacation
+# unlinke
+# usr.sbin
 
 # NET: ftp rcmd rcp rdist rup rwho rwall ruptime rusers rlogin rsh
 
