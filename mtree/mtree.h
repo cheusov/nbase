@@ -150,13 +150,13 @@ char		*vispath(const char *);
 #define	UF_MASK ((UF_NODUMP | UF_IMMUTABLE |   \
                   UF_APPEND | UF_OPAQUE)       \
                     & UF_SETTABLE)              /* user settable flags */
-#if HAVE_MEMBER_STRUCT_STAT_ST_FLAGS_SYS_STAT_H
+#if HAVE_STRUCT_STAT_ST_FLAGS
 #define	SF_MASK ((SF_ARCHIVED | SF_IMMUTABLE | \
                   SF_APPEND) & SF_SETTABLE)     /* root settable flags */
 #endif
 #define	CH_MASK  (UF_MASK | SF_MASK)            /* all settable flags */
 
-#if HAVE_MEMBER_STRUCT_STAT_ST_FLAGS_SYS_STAT_H
+#if HAVE_STRUCT_STAT_ST_FLAGS
 #define	SP_FLGS  (SF_IMMUTABLE | SF_APPEND)     /* special flags */
 #endif
 

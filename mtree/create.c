@@ -304,7 +304,7 @@ statf(FILE *fp, int indent, FTSENT *p)
 	    (p->fts_info == FTS_SL || p->fts_info == FTS_SLNONE))
 		output(fp, indent, &offset, "link=%s",
 		    vispath(rlink(p->fts_accpath)));
-#ifdef HAVE_STRUCT_STAT_ST_FLAGS
+#if HAVE_STRUCT_STAT_ST_FLAGS
 	if (keys & F_FLAGS && p->fts_statp->st_flags != flags) {
 		char *str = flags_to_string(p->fts_statp->st_flags, "none");
 		output(fp, indent, &offset, "flags=%s", str);
@@ -323,7 +323,7 @@ statf(FILE *fp, int indent, FTSENT *p)
 #define	MTREE_MAXGID	5000
 #define	MTREE_MAXUID	5000
 #define	MTREE_MAXMODE	(MBITS + 1)
-#ifdef HAVE_STRUCT_STAT_ST_FLAGS
+#if HAVE_STRUCT_STAT_ST_FLAGS
 #define	MTREE_MAXFLAGS  (FLAGS2INDEX(CH_MASK) + 1)   /* 1808 */
 #else
 #define MTREE_MAXFLAGS	1
@@ -338,7 +338,7 @@ statd(FILE *fp, FTS *t, FTSENT *parent, uid_t *puid, gid_t *pgid, mode_t *pmode,
 	gid_t sgid;
 	uid_t suid;
 	mode_t smode;
-#ifdef HAVE_STRUCT_STAT_ST_FLAGS
+#if HAVE_STRUCT_STAT_ST_FLAGS
 	u_long sflags = 0;
 #endif
 	const char *name = NULL;
@@ -386,7 +386,7 @@ statd(FILE *fp, FTS *t, FTSENT *parent, uid_t *puid, gid_t *pgid, mode_t *pmode,
 				maxuid = u[suid];
 			}
 
-#ifdef HAVE_STRUCT_STAT_ST_FLAGS
+#if HAVE_STRUCT_STAT_ST_FLAGS
 			sflags = FLAGS2INDEX(p->fts_statp->st_flags);
 			if (sflags < MTREE_MAXFLAGS && ++f[sflags] > maxflags) {
 				saveflags = p->fts_statp->st_flags;

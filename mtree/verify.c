@@ -178,8 +178,8 @@ miss(NODE *p, char *tail)
 	int create;
 	char *tp;
 	const char *type;
-#ifdef HAVE_STRUCT_STAT_ST_FLAGS
-	u_int32_t flags;
+#if HAVE_STRUCT_STAT_ST_FLAGS
+	uint32_t flags;
 #endif
 
 	for (; p; p = p->next) {
@@ -300,7 +300,7 @@ miss(NODE *p, char *tail)
 				printf("%s: permissions not set: %s\n",
 				    path, strerror(errno));
 		}
-#ifdef HAVE_STRUCT_STAT_ST_FLAGS
+#if HAVE_STRUCT_STAT_ST_FLAGS
 		if ((p->flags & F_FLAGS) && p->st_flags) {
 			if (iflag)
 				flags = p->st_flags;
