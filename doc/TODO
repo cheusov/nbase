@@ -1,5 +1,4 @@
-* renice -> netbsd sources
-* ul -> netbsd sources
+* renice, ul, mtree -> netbsd sources
 
 * Switch to mkc-0.35.0
 * fails to detect vdprintf on NetBSD
