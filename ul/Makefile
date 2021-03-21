@@ -1,6 +1,8 @@
 PROG =	ul
 MAN  =	ul.1
 
+CFLAGS.check +=		-erroff=E_STATEMENT_NOT_REACHED
+
 .include <mkc.init.mk>
 
 .include "../mk/hacks.mk"
