@@ -88,7 +88,7 @@ int
 main(int argc, char **argv)
 {
 	char *term, *arg, *token, *end, *tabs = NULL, *p;
-	const char *cr, *spec = NULL;
+	char *cr, *spec = NULL;
 	int i, n, inc = 8, stops[NSTOPS], nstops, last, cols, margin = 0;
 	size_t j;
 	struct winsize ws;
@@ -138,7 +138,7 @@ main(int argc, char **argv)
 		for (j = 0; j < ntabspecs; j++) {
 			if (arg[0] == tabspecs[j].opt[0] &&
 			    arg[1] == tabspecs[j].opt[1]) {
-				spec = tabspecs[j].spec;
+				spec = __UNCONST(tabspecs[j].spec);
 				break;
 			}
 		}
