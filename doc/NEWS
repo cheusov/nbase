@@ -1,4 +1,17 @@
 ======================================================================
+Version 7.0.0.11, by Aleksey Cheusov, Mon, 22 Mar 2021 11:21:43 +0300
+
+ Enable "ul" and "tabs" on Linux/glibc.
+
+ Enable "cmp" and "find" on systems without strtoq(3).
+
+ Fixes for nawk, mtree, csplit, find, tabs, ul, cal, cut.
+
+ Fixes for following features: parsedate, bsd_signal, curses.
+
+ Minimize patch size for a lot of utilities.
+
+======================================================================
 Version 7.0.0.10, by Aleksey Cheusov, Fri, 27 Nov 2020 15:22:51 +0300
 
   Disable grep(1) if REG_STARTEND is not defined in regex.h.
