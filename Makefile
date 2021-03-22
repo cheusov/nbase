@@ -1,22 +1,21 @@
-# WILL NOT BE SUPPORTED: ps
+# TBD
+#   calendar chio date db gcore getaddrinfo getent iconv infocmp
+#   ipcs ipcrm lock logger mt nbperf stat stty time touch uname
+#   uuidgen vgrind whereis xlint disklabel dump apropos biff cvslatest
+#   dc finger gencat gettext ipcrm ipcs ldd? locale (whatis man) (mesg
+#   talk write) mkesdb mklocale mkubootimage nbperf nbsvtool newsyslog
+#   pagesize pathchk progress sortinfo spell tic (tip, cu) vacation
+#   unlink usr.sbin
 
-# TBD: calendar chio date db flock gcore getaddrinfo getent
-# iconv infocmp ipcs ipcrm lock logger mt nbperf stat stty time touch tsort
-# uname uuidgen vgrind whereis xlint
+# Do not want to port:
+#   ftp rcmd rcp rdist rup rwho rwall ruptime rusers rlogin rsh
+#   bdes csh db ksh sh at checknr crunch locate
 
-# TBD: disklabel dump apropos biff cvslatest dc finger gencat
-# gettext ipcrm ipcs ldd? locale (whatis man) (mesg talk write) mkesdb
-# mklocale mkubootimage nbperf nbsvtool newsyslog pagesize pathchk
-# progress sortinfo spell tic (tip, cu) vacation
-# unlinke
-# usr.sbin
-
-# NET: ftp rcmd rcp rdist rup rwho rwall ruptime rusers rlogin rsh
-
-#PROJECTS = bdes csh db ksh sh at checknr chflags	\
-#  crunch locate
+# Impossible to port?
+#   chflags(only to some BSD?) ps
 
 # TBD: units -- /usr/share/misc/units.lib is missing
+
 MKC_REQD     =	0.36.0
 
 MKC_CHECK_HEADER_FILES  = fts.h sys/sysctl.h term.h
