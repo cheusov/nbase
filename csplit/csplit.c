@@ -70,6 +70,8 @@ __RCSID("$NetBSD: csplit.c,v 1.6 2011/08/31 13:35:46 joerg Exp $");
 #include <string.h>
 #include <unistd.h>
 
+#include "mkc_macro.h"
+
 static void	 cleanup(void);
 static void	 do_lineno(const char *);
 static void	 do_rexp(const char *);

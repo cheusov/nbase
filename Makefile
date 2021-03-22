@@ -19,9 +19,8 @@
 # TBD: units -- /usr/share/misc/units.lib is missing
 MKC_REQD     =	0.36.0
 
-MKC_CHECK_HEADER_FILES  = pty.h fts.h sys/sysctl.h
-MKC_CHECK_HEADERS  =	tzfile.h md2.h db.h termcap.h term.h
-MKC_CHECK_TYPES    =	sig_t:signal.h
+MKC_CHECK_HEADER_FILES  = pty.h fts.h sys/sysctl.h term.h
+MKC_CHECK_HEADERS  =	tzfile.h md2.h db.h termcap.h
 MKC_CHECK_FUNCLIBS =	setupterm:terminfo
 MKC_CHECK_FUNCS5   =	openpty:pty.h openpty:util.h dbopen:db.h
 MKC_CHECK_FUNCS4   =	getgrouplist:grp.h getgrouplist:unistd.h
@@ -88,9 +87,9 @@ PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
 
-.if ${HAVE_HEADER.term_h:U1} != 1
+.if ${HAVE_HEADER_FILE.term_h:U1} != 1
 .  for t in cal ul tabs
-   WARN_MSG += "Exclude ${t} due to missing setupterm() in term.h"
+   WARN_MSG += "Exclude ${t} due to missing term.h header file"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif

@@ -48,6 +48,7 @@ __RCSID("$NetBSD: tabs.c,v 1.4 2011/09/16 15:39:29 joerg Exp $");
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <curses.h>
 #include <term.h>
 #include <unistd.h>
 
@@ -87,7 +88,7 @@ int
 main(int argc, char **argv)
 {
 	char *term, *arg, *token, *end, *tabs = NULL, *p;
-	const char *cr, *spec = NULL;
+	char *cr, *spec = NULL;
 	int i, n, inc = 8, stops[NSTOPS], nstops, last, cols, margin = 0;
 	size_t j;
 	struct winsize ws;
@@ -137,7 +138,7 @@ main(int argc, char **argv)
 		for (j = 0; j < ntabspecs; j++) {
 			if (arg[0] == tabspecs[j].opt[0] &&
 			    arg[1] == tabspecs[j].opt[1]) {
-				spec = tabspecs[j].spec;
+				spec = __UNCONST(tabspecs[j].spec);
 				break;
 			}
 		}
@@ -177,9 +178,9 @@ main(int argc, char **argv)
 		errx(EXIT_FAILURE, "no value for $TERM and -T not given");
 	if (setupterm(term, STDOUT_FILENO, NULL) != 0)
 		err(EXIT_FAILURE, "setupterm:");
-	cr = carriage_return;
+	cr = __UNCONST(carriage_return);
 	if (cr == NULL)
-		cr = "\r";
+		cr = __UNCONST("\r");
 	if (clear_all_tabs == NULL)
 		errx(EXIT_FAILURE, "terminal cannot clear tabs");
 	if (set_tab == NULL)

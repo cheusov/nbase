@@ -46,6 +46,7 @@ __RCSID("$NetBSD: ul.c,v 1.19 2016/06/23 03:58:13 abhinav Exp $");
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <curses.h>
 #include <term.h>
 #include <unistd.h>
 
@@ -93,7 +94,7 @@ static int	halfpos;
 static int	upln;
 static int	iflag;
 
-static void filter(FILE *);
+static void filter_stream(FILE *);
 static void flushln(struct CHAR *, size_t);
 static void fwd(struct CHAR *, size_t);
 static void iattr(struct CHAR *);
@@ -144,7 +145,7 @@ main(int argc, char **argv)
 		set_mode();
 	}
 	if (optind == argc)
-		filter(stdin);
+		filter_stream(stdin);
 	else {
 		for (; optind < argc; optind++) {
 			f = fopen(argv[optind], "r");
@@ -158,7 +159,7 @@ main(int argc, char **argv)
 }
 
 static void
-filter(FILE *f)
+filter_stream(FILE *f)
 {
 	int c;
 	struct	CHAR *obuf = NULL;
