@@ -43,12 +43,12 @@ PROJECTS += apply asa nawk/bin banner basename cal cat chmod            \
   fmt fold fpr from fsplit getconf getopt grep head hexdump hostname	\
   id indent join jot kill lam leave libndigest ln logname look lorder	\
   ls m4	\
-  machine mkdep mkdir mkfifo mknod mkstr mktemp mtree menuc msgc mv     \
+  machine menuc mkdep mkdir mkfifo mknod mkstr mktemp msgc mtree mv     \
   nice nl nohup	                                                        \
   paste patch pax pr printenv printf pwd qsubst renice rev rm rmdir	\
   rs script sdiff sed seq shar shlock shuffle sleep soelim sort split	\
   sync tabs tail tee testcmd timeout tr true tsort tty ul unexpand	\
-  unifdef uniq unvis uudecode uuencode vis what whois wc xargs xinstall	\
+  unifdef uniq unvis uudecode uuencode vis wc what whois xargs xinstall	\
   xstr yes
 
 .if ${HAVE_FUNC5.openpty.pty_h:U1} != 1 && ${HAVE_FUNC5.openpty.util_h:U1} != 1

@@ -17,18 +17,18 @@ Additional documentation is under doc/
 
 For now the following tools are a part of collection:
 
-[ apply asa awk banner basename cat chmod cksum cleantags cmp col
-colcrt colrm column comm compress cp csplit ctags cut dd deroff
-dirname domainname du echo ed egrep env error expand expr false fgen
-fgrep find fmt fold fpr from fsplit getconf getopt grep groups head
+apply asa awk banner basename cal cat chmod cksum cleantags cmp col
+colcrt colrm column comm compress cp csplit ctags cut date deroff dd
+dirname domainname du echo ed env error expand expr false fgen
+find fmt fold fpr from fsplit getconf getopt grep head
 hexdump hostname id indent install join jot kill lam leave ln logname
-look lorder ls m4 machine md2 md4 md5 menuc mkdep mkdir mkfifo mknod
-mkstr mktemp msgc mtree mv nice nl nohup od paste patch pax pr
-printenv printf pwd qsubst renice rev rm rmd160 rmdir rs script sdiff
-sed seq sha1 shar shlock shuffle sleep soelim sort split stty sum sync
-tabs tail tee test timeout tr true tty ul uncompress unexpand unifdef
-unifdefall uniq unvis uudecode uuencode vis wc what whoami whois xargs
-xstr yes zegrep zfgrep zgrep
+look lorder ls m4 machine menuc mkdep mkdir mkfifo mknod
+mkstr mktemp msgc mtree mv nice nl nohup paste patch pax pr
+printenv printf pwd qsubst renice rev rm rmdir rs script sdiff
+sed seq shar shlock shuffle sleep soelim sort split sync
+tabs tail tee test timeout tr true tsort tty ul unexpand unifdef
+uniq unvis uudecode uuencode vis wc what whoami whois xargs
+xstr yes
 
 ## WWW
 
