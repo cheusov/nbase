@@ -178,7 +178,7 @@ main(int argc, char **argv)
 		errx(EXIT_FAILURE, "no value for $TERM and -T not given");
 	if (setupterm(term, STDOUT_FILENO, NULL) != 0)
 		err(EXIT_FAILURE, "setupterm:");
-	cr = carriage_return;
+	cr = __UNCONST(carriage_return);
 	if (cr == NULL)
 		cr = __UNCONST("\r");
 	if (clear_all_tabs == NULL)
