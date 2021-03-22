@@ -151,7 +151,7 @@ main(int argc, char **argv)
 			f = fopen(argv[optind], "r");
 			if (f == NULL)
 				err(EXIT_FAILURE, "Failed to open `%s'", argv[optind]);
-			filter(f);
+			filter_stream(f);
 			fclose(f);
 		}
 	}
