@@ -75,6 +75,14 @@
 #define FNM_CASEFOLD 0
 #endif
 
+#ifndef MIN
+# define MIN(a,b)      (((a)<(b))?(a):(b))
+#endif
+
+#ifndef MAX
+# define MAX(b,a)      (((a)<(b))?(a):(b))
+#endif
+
 /*
  * Only to be used in other headers that are included from both c or c++
  * NOT to be used in code.
