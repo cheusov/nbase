@@ -45,8 +45,9 @@ __RCSID("$NetBSD: flock.c,v 1.11 2014/08/18 09:16:35 christos Exp $");
 #include <limits.h>
 #include <time.h>
 #include <stdarg.h>
+#if HAVE_FUNC2_FLOCK_SYS_FILE_H
 #include <sys/file.h>
-
+#endif
 #include "mkc_strlcpy.h"
 #include "mkc_strlcat.h"
 #include "mkc_progname.h"
@@ -237,8 +238,6 @@ main(int argc, char *argv[])
 		break;
 
 	default:
-		if ((lock & LOCK_NB) == LOCK_UN)
-			usage("Unlock is only valid for descriptors");
 		if (strcmp(argv[1], "-c") == 0 ||
 		    strcmp(argv[1], "--command") == 0) {
 			if (argc == 2)

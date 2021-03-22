@@ -25,7 +25,7 @@ MKC_CHECK_FUNCS5   =	openpty:pty.h openpty:util.h dbopen:db.h
 MKC_CHECK_FUNCS4   =	getgrouplist:grp.h getgrouplist:unistd.h
 MKC_CHECK_FUNCS3   =	logwtmp:util.h
 MKC_CHECK_FUNCS2   =	getdomainname:unistd.h makedev:sys/sysmacros.h \
-  makedev:sys/types.h
+  makedev:sys/types.h flock:fcntl.h flock:sys/file.h
 MKC_CHECK_FUNCS1   =	signalname:signal.h
 MKC_CHECK_DEFINES  =	TIMESPEC_TO_TIMEVAL:sys/time.h REG_STARTEND:regex.h
 
@@ -40,9 +40,9 @@ PROJECTS += apply asa nawk/bin banner basename cal cat chmod chown      \
   cmp col colcrt colrm column comm compress cp csplit ctags cut date    \
   deroff dd	\
   dirname domainname du echo ed env error expand expr false fgen find	\
-  fmt fold fpr from fsplit getconf getopt grep head hexdump hostname	\
-  id indent join jot kill lam leave libndigest ln logname look lorder	\
-  ls m4	\
+  flock fmt fold fpr from fsplit getconf getopt grep head hexdump 	\
+  hostname id indent join jot kill lam leave libndigest ln logname look \
+  lorder ls m4	\
   machine menuc mkdep mkdir mkfifo mknod mkstr mktemp msgc mtree mv     \
   nice nl nohup	                                                        \
   paste patch pax pr printenv printf pwd qsubst renice rev rm rmdir	\
@@ -96,6 +96,13 @@ PROJECTS :=	${PROJECTS:N${t}}
 .if ${HAVE_FUNC2.getdomainname.unistd_h:U1} != 1
 .  for t in domainname
    WARN_MSG += "Exclude ${t} due to missing getdomainname in unistd.h"
+PROJECTS :=	${PROJECTS:N${t}}
+.  endfor
+.endif
+
+.if ${HAVE_FUNC2.flock.fcntl_h:U1} != 1 && ${HAVE_FUNC2.flock.sys_file_h:U1} != 1
+.  for t in flock
+   WARN_MSG += "Exclude ${t} due to missing flock(2) in sys/file.h and fcntl.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
