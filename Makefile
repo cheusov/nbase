@@ -19,9 +19,8 @@
 # TBD: units -- /usr/share/misc/units.lib is missing
 MKC_REQD     =	0.36.0
 
-MKC_CHECK_HEADER_FILES  = pty.h fts.h sys/sysctl.h term.h
-MKC_CHECK_HEADERS  =	tzfile.h md2.h db.h termcap.h
-MKC_CHECK_FUNCLIBS =	setupterm:terminfo
+MKC_CHECK_HEADER_FILES  = fts.h sys/sysctl.h term.h
+MKC_CHECK_HEADERS  =	tzfile.h termcap.h
 MKC_CHECK_FUNCS5   =	openpty:pty.h openpty:util.h dbopen:db.h
 MKC_CHECK_FUNCS4   =	getgrouplist:grp.h getgrouplist:unistd.h
 MKC_CHECK_FUNCS3   =	logwtmp:util.h
