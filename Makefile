@@ -4,7 +4,7 @@
 # iconv infocmp ipcs ipcrm lock logger mt nbperf stat stty time touch tsort
 # uname uuidgen vgrind whereis xlint
 
-# TBD: chown disklabel dump apropos biff cvslatest dc finger gencat
+# TBD: disklabel dump apropos biff cvslatest dc finger gencat
 # gettext ipcrm ipcs ldd? locale (whatis man) (mesg talk write) mkesdb
 # mklocale mkubootimage nbperf nbsvtool newsyslog pagesize pathchk
 # progress sortinfo spell tic (tip, cu) vacation
@@ -35,7 +35,7 @@ MKC_FUNC_OR_DEFINE.makedev =	yes
 
 .include <mkc.configure.mk>
 
-PROJECTS += apply asa nawk/bin banner basename cal cat chmod            \
+PROJECTS += apply asa nawk/bin banner basename cal cat chmod chown      \
   cksum cleantags \
   cmp col colcrt colrm column comm compress cp csplit ctags cut date    \
   deroff dd	\
