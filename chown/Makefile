@@ -10,4 +10,4 @@ BINDIR      ?=	${SBINDIR}
 
 MKC_FEATURES +=	progname pwdgrp
 
-.include <mkc.prog.mk>
+.include "../mk/addlinks.mk"
