@@ -89,6 +89,7 @@ static int nopids;		/* tar mode: suppress "pids" for -p option */
 static char flgch[] = FLGCH;	/* list of all possible flags (pax) */
 static OPLIST *ophead = NULL;	/* head for format specific options -x */
 static OPLIST *optail = NULL;	/* option tail */
+char *chdname;
 
 static int opt_add(const char *);
 static int no_op(void);
