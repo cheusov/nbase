@@ -31,6 +31,7 @@ MKC_CHECK_FUNCS2   =	getdomainname:unistd.h makedev:sys/sysmacros.h \
   makedev:sys/types.h flock:fcntl.h flock:sys/file.h
 MKC_CHECK_FUNCS1   =	signalname:signal.h
 MKC_CHECK_DEFINES  =	TIMESPEC_TO_TIMEVAL:sys/time.h REG_STARTEND:regex.h
+MKC_CHECK_TYPES    =	sig_t:signal.h
 
 MKC_FUNC_OR_DEFINE.makedev =	yes
 
