@@ -12,8 +12,9 @@ ${.OBJDIR}/sys/cdefs.h: ${.CURDIR}/sys/cdefs.h.in
 	cp ${.CURDIR}/sys/cdefs.h.in $@
 .endif
 
-CLEANFILES = ${.OBJDIR}/sys/cdefs.h
-CPPFLAGS += -I. -I${.OBJDIR}
+CLEANFILES    =	${.OBJDIR}/sys/cdefs.h
+CPPFLAGS     +=	-I. -I${.OBJDIR}
+CFLAGS.check +=	-Wno-error=unused-const-variable
 
 MKC_FEATURES +=	arc4random bswap dprintf efun errc fgetln fparseln \
    humanize_number pwdgrp raise_default_signal \
