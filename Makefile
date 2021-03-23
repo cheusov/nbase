@@ -55,7 +55,7 @@ PROJECTS += apply asa nawk/bin banner basename cal cat chmod chown      \
 
 .if ${HAVE_FUNC5.openpty.pty_h:U1} != 1 && ${HAVE_FUNC5.openpty.util_h:U1} != 1
 .  for t in script
-   WARN_MSG += "Exclude ${t} due to missing openpty"
+   WARN_MSG += "Exclude ${t} due to missing openpty(3) in pty.h and util.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
@@ -83,7 +83,7 @@ PROJECTS :=	${PROJECTS:N${t}}
 
 .if ${HAVE_TYPE.sig_t.signal_h:U1} != 1
 .  for t in apply patch
-   WARN_MSG += "Exclude ${t} due to missing sig_t in signal.h"
+   WARN_MSG += "Exclude ${t} due to missing sig_t type in signal.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
@@ -97,7 +97,7 @@ PROJECTS :=	${PROJECTS:N${t}}
 
 .if ${HAVE_FUNC2.getdomainname.unistd_h:U1} != 1
 .  for t in domainname
-   WARN_MSG += "Exclude ${t} due to missing getdomainname in unistd.h"
+   WARN_MSG += "Exclude ${t} due to missing getdomainname(3) in unistd.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
@@ -111,21 +111,21 @@ PROJECTS :=	${PROJECTS:N${t}}
 
 .if ${HAVE_FUNC1.signalname.signal_h:U1} != 1
 .  for t in kill
-   WARN_MSG += "Exclude ${t} due to missing signalname in signal.h"
+   WARN_MSG += "Exclude ${t} due to missing signalname(3) in signal.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
 
 .if ${HAVE_FUNC2.makedev.sys_sysmacros_h:U1} != 1 && ${HAVE_FUNC2.makedev.sys_types_h:U1} != 1
 .  for t in mknod
-   WARN_MSG += "Exclude ${t} due to missing makedev in sys/sysmacros.h"
+   WARN_MSG += "Exclude ${t} due to missing makedev(3) in sys/sysmacros.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
 
 .if ${HAVE_FUNC4.getgrouplist.grp_h:U1} != 1 && ${HAVE_FUNC4.getgrouplist.unistd_h:U1} != 1
 .  for t in id
-   WARN_MSG += "Exclude ${t} due to missing getgrouplist in grp.h"
+   WARN_MSG += "Exclude ${t} due to missing getgrouplist(3) in grp.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
@@ -146,7 +146,7 @@ PROJECTS :=	${PROJECTS:N${t}}
 
 .if ${HAVE_FUNC5.dbopen.db_h:U1} != 1
 .  for t in tsort
-   WARN_MSG += "Exclude ${t} due to missing dbopen in db.h"
+   WARN_MSG += "Exclude ${t} due to missing dbopen(3) in db.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
@@ -160,7 +160,7 @@ PROJECTS :=	${PROJECTS:N${t}}
 
 .if ${HAVE_DEFINE.REG_STARTEND.regex_h:U1} != 1
 .  for t in grep
-   WARN_MSG += "Exclude ${t} due to missing REG_STARTEND in regex.h"
+   WARN_MSG += "Exclude ${t} due to missing REG_STARTEND macro in regex.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
