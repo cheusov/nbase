@@ -15,4 +15,6 @@ db_header.h:
 LDADD +=	-l${USE_DB_LIBNAME}
 .endif
 
+CLEANFILES +=	db_header.h
+
 .include "../mk/addlinks.mk"
