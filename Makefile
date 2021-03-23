@@ -26,7 +26,7 @@ MKC_CHECK_HEADERS  =	tzfile.h termcap.h
 MKC_CHECK_FUNCLIBS =	setupterm:terminfo
 MKC_CHECK_FUNCS5   =	openpty:pty.h openpty:util.h dbopen:${USE_DB_HEADER}
 MKC_CHECK_FUNCS4   =	getgrouplist:grp.h getgrouplist:unistd.h
-MKC_CHECK_FUNCS3   =	logwtmp:util.h
+MKC_CHECK_FUNCS3   =	logwtmp:util.h timer_create:signal.h,time.h
 MKC_CHECK_FUNCS2   =	getdomainname:unistd.h makedev:sys/sysmacros.h \
   makedev:sys/types.h flock:fcntl.h flock:sys/file.h
 MKC_CHECK_FUNCS1   =	signalname:signal.h
@@ -132,7 +132,14 @@ PROJECTS :=	${PROJECTS:N${t}}
 
 .if ${HAVE_FUNC3.logwtmp.util_h:U1} != 1
 .  for t in date
-   WARN_MSG += "Exclude ${t} due to missing logwtmp util.h"
+   WARN_MSG += "Exclude ${t} due to missing logwtmp(3) in util.h"
+PROJECTS :=	${PROJECTS:N${t}}
+.  endfor
+.endif
+
+.if ${HAVE_FUNC3.timer_create.time_h:U1} != 1
+.  for t in flock
+   WARN_MSG += "Exclude ${t} due to missing timer_create(2) in time.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
