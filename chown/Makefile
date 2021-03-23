@@ -10,4 +10,6 @@ BINDIR      ?=	${SBINDIR}
 
 MKC_FEATURES +=	progname pwdgrp
 
+MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
+
 .include "../mk/addlinks.mk"
