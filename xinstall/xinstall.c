@@ -442,7 +442,7 @@ parseid(char *name, id_t *id)
 static int
 do_link(char *from_name, char *to_name)
 {
-	char tmpl[MAXPATHLEN];
+	char tmpl[MAXPATHLEN + 12];
 	int ret;
 
 	if (dorename) {
@@ -643,7 +643,7 @@ install(char *from_name, char *to_name, u_int flags)
 	struct timeval	tv[2];
 	off_t		size;
 	int		devnull, from_fd, to_fd, serrno, tmpmode;
-	char		*p, tmpl[MAXPATHLEN], *oto_name, *digestresult;
+	char		*p, tmpl[MAXPATHLEN + 12], *oto_name, *digestresult;
 
 	size = -1;
 	if (!dolink) {
