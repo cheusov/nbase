@@ -90,11 +90,12 @@ main(int argc, char **argv)
         enum {COMPRESS, DECOMPRESS} style = COMPRESS;
 	size_t len;
 	int bits, cat, ch;
-	char *p, newname[MAXPATHLEN];
+	const char *p;
+	char newname[MAXPATHLEN];
 
 	nbsetprogname(argv[0]);
 
-	const char *p = getprogname();
+	p = getprogname();
 	if (!strcmp(p, "uncompress"))
 		style = DECOMPRESS;
 	else if (!strcmp(p, "compress"))
@@ -107,10 +108,11 @@ main(int argc, char **argv)
 		errx(1, "unknown program name");
 
 	bits = cat = 0;
+	char *pp;
 	while ((ch = getopt(argc, argv, "b:cdfv")) != -1)
 		switch(ch) {
 		case 'b':
-			bits = strtol(optarg, &p, 10);
+			bits = strtol(optarg, &pp, 10);
 			if (*p)
 				errx(1, "illegal bit count -- %s", optarg);
 			break;
