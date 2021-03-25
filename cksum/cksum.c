@@ -178,6 +178,9 @@ main(int argc, char **argv)
 	setlocale(LC_ALL, "");
 
 	progname = getprogname();
+	if (progname[0] == 'n' && progname[1] == 'b' && progname[2] == '-'){
+		progname += 3;
+	}
 
 	for (hash = hashes; hash->hashname != NULL; hash++)
 		if (strcmp(progname, hash->progname) == 0)
