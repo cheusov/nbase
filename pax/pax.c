@@ -234,6 +234,17 @@ int	secure = 1;		/* don't extract names that contain .. */
  *	write those routines which id, read and write the archive header.
  */
 
+static void nbsetprogname(const char *progname)
+{
+	setprogname(progname);
+	const char *p = getprogname();
+	if (p[0] == 'n' && p[1] == 'b')
+		p += 2;
+	if (p[0] == '-')
+		p += 1;
+	setprogname(p);
+}
+
 /*
  * main()
  *	parse options, set up and operate as specified by the user.
@@ -248,7 +259,7 @@ main(int argc, char **argv)
 	size_t tdlen;
 	int rval;
 
-	setprogname(argv[0]);
+	nbsetprogname(argv[0]);
 
 	listf = stderr;
 
