@@ -212,6 +212,17 @@ testcmd(int argc, char **argv)
 #else
 int main(int, char *[]);
 
+static void nbsetprogname(const char *progname)
+{
+	setprogname(progname);
+	const char *p = getprogname();
+	if (p[0] == 'n' && p[1] == 'b')
+		p += 2;
+	if (p[0] == '-')
+		p += 1;
+	setprogname(p);
+}
+
 int
 main(int argc, char *argv[])
 #endif
@@ -222,7 +233,7 @@ main(int argc, char *argv[])
 #ifdef SHELL
 	argv0 = argv[0];
 #else
-	setprogname(argv[0]);
+	nbsetprogname(argv[0]);
 	(void)setlocale(LC_ALL, "");
 	argv0 = getprogname();
 #endif
