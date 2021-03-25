@@ -84,6 +84,11 @@ main(int argc, char **argv)
 		p = argv[0];
 	else
 		++p;
+
+	if (p[0] == 'n' && p[1] == 'b' && p[2] == '-'){
+		p += 3;
+	}
+
 	if (!strcmp(p, "uncompress"))
 		style = DECOMPRESS;
         else if (!strcmp(p, "compress"))
