@@ -4,6 +4,8 @@ SRCS =		compress.c zopen.c
 LINKS =		${BINDIR}/compress ${BINDIR}/uncompress
 MLINKS =	compress.1 uncompress.1
 
+MKC_FEATURES +=	progname
+
 .include <mkc.init.mk>
 
 .include "../mk/hacks.mk"
