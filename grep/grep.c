@@ -306,6 +306,17 @@ init_color(const char *d)
 	return (c != NULL ? c : d);
 }
 
+static void nbsetprogname(const char *progname)
+{
+	setprogname(progname);
+	const char *p = getprogname();
+	if (p[0] == 'n' && p[1] == 'b')
+		p += 2;
+	if (p[0] == '-')
+		p += 1;
+	setprogname(p);
+}
+
 int
 main(int argc, char *argv[])
 {
@@ -314,10 +325,9 @@ main(int argc, char *argv[])
 	unsigned long long l;
 	unsigned int aargc, eargc, i, j;
 	int c, lastc, needpattern, newarg, prevoptind;
-	const char *progname;
 
 	setlocale(LC_ALL, "");
-	setprogname(argv[0]);
+	nbsetprogname(argv[0]);
 
 #ifndef WITHOUT_NLS
 	catalog = catopen("grep", NL_CAT_LOCALE);
@@ -326,11 +336,7 @@ main(int argc, char *argv[])
 	/* Check what is the program name of the binary.  In this
 	   way we can have all the funcionalities in one binary
 	   without the need of scripting and using ugly hacks. */
-	progname = getprogname();
-	if (progname[0] == 'n' && progname[1] == 'b' && progname[2] == '-'){
-		progname += 3;
-	}
-	switch (progname[0]) {
+	switch (getprogname()[0]) {
 	case 'e':
 		grepbehave = GREP_EXTENDED;
 		break;
