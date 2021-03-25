@@ -1,4 +1,4 @@
-/* $NetBSD: read.c,v 1.26 2014/10/18 08:33:30 snj Exp $ */
+/* $NetBSD: read.c,v 1.28 2018/09/07 15:16:15 christos Exp $ */
 
 /*
  * Copyright (c) 1996 Christopher G. Demetriou.  All Rights Reserved.
@@ -38,7 +38,7 @@
 
 #include <sys/cdefs.h>
 #if defined(__RCSID) && !defined(lint)
-__RCSID("$NetBSD: read.c,v 1.26 2014/10/18 08:33:30 snj Exp $");
+__RCSID("$NetBSD: read.c,v 1.28 2018/09/07 15:16:15 christos Exp $");
 #endif
 
 #include <ctype.h>
@@ -371,14 +371,9 @@ decldef(pos_t *posp, const char *cp)
 
 	used = 0;
 
-	while (strchr("tdeurosvPS", (c = *cp)) != NULL) {
+	while (strchr("deiorstuvPS", (c = *cp)) != NULL) {
 		cp++;
 		switch (c) {
-		case 't':
-			if (sym.s_def != NODECL)
-				inperr("nodecl %c", c);
-			sym.s_def = TDEF;
-			break;
 		case 'd':
 			if (sym.s_def != NODECL)
 				inperr("nodecl %c", c);
@@ -389,25 +384,35 @@ decldef(pos_t *posp, const char *cp)
 				inperr("nodecl %c", c);
 			sym.s_def = DECL;
 			break;
-		case 'u':
-			if (used)
-				inperr("used %c", c);
-			used = 1;
-			break;
-		case 'r':
-			if (sym.s_rval)
-				inperr("rval");
-			sym.s_rval = 1;
+		case 'i':
+			if (sym.s_inline != NODECL)
+				inperr("inline %c", c);
+			sym.s_inline = DECL;
 			break;
 		case 'o':
 			if (sym.s_osdef)
 				inperr("osdef");
 			sym.s_osdef = 1;
 			break;
+		case 'r':
+			if (sym.s_rval)
+				inperr("rval");
+			sym.s_rval = 1;
+			break;
 		case 's':
 			if (sym.s_static)
 				inperr("static");
 			sym.s_static = 1;
+			break;
+		case 't':
+			if (sym.s_def != NODECL)
+				inperr("nodecl %c", c);
+			sym.s_def = TDEF;
+			break;
+		case 'u':
+			if (used)
+				inperr("used %c", c);
+			used = 1;
 			break;
 		case 'v':
 			if (sym.s_va)
@@ -708,6 +713,10 @@ inptype(const char *cp, const char **epp)
 	case FLOAT:
 	case UQUAD:
 	case QUAD:
+#ifdef INT128_SIZE
+	case UINT128:
+	case INT128:
+#endif
 	case ULONG:
 	case UINT:
 	case INT:
@@ -947,9 +956,13 @@ gettlen(const char *cp, const char **epp)
 	case LDOUBLE:
 	case VOID:
 	case ULONG:
+	case LONG:
 	case QUAD:
 	case UQUAD:
-	case LONG:
+#ifdef INT128_SIZE
+	case INT128:
+	case UINT128:
+#endif
 	case FCOMPLEX:
 	case DCOMPLEX:
 	case LCOMPLEX:

@@ -91,6 +91,7 @@ __RCSID("$NetBSD: sort.c,v 1.64 2017/01/10 21:13:45 christos Exp $");
 #include "mkc_progname.h"
 #include "mkc_macro.h"
 #include "mkc_posix_getopt.h"
+#include "mkc_lchmod.h"
 
 int REC_D = '\n';
 u_char d_mask[NBINS];		/* flags for rec_d, field_d, <blank> */
@@ -366,7 +367,7 @@ main(int argc, char *argv[])
 		 * st is initialized above, when we create the
 		 * temporary spool file.
 		 */
-		if (chmod(outfile, st.st_mode & ALLPERMS) != 0) {
+		if (lchmod(outfile, st.st_mode & ALLPERMS) != 0) {
 			err(2, "cannot chmod %s: output left in %s",
 			    outpath, outfile);
 		}

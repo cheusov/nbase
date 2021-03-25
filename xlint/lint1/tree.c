@@ -1,4 +1,4 @@
-/*	$NetBSD: tree.c,v 1.84 2017/03/06 21:01:39 christos Exp $	*/
+/*	$NetBSD: tree.c,v 1.87 2019/07/12 23:32:45 christos Exp $	*/
 
 /*
  * Copyright (c) 1994, 1995 Jochen Pohl
@@ -37,7 +37,7 @@
 
 #include <sys/cdefs.h>
 #if defined(__RCSID) && !defined(lint)
-__RCSID("$NetBSD: tree.c,v 1.84 2017/03/06 21:01:39 christos Exp $");
+__RCSID("$NetBSD: tree.c,v 1.87 2019/07/12 23:32:45 christos Exp $");
 #endif
 
 #include <stdlib.h>
@@ -695,6 +695,7 @@ typeok(op_t op, int arg, tnode_t *ln, tnode_t *rn)
 	tspec_t	lt, rt = NOTSPEC, lst = NOTSPEC, rst = NOTSPEC, olt = NOTSPEC,
 	    ort = NOTSPEC;
 	type_t	*ltp, *rtp = NULL, *lstp = NULL, *rstp = NULL;
+	char lbuf[128], rbuf[128];
 	tnode_t	*tn;
 
 	mp = &modtab[op];
@@ -951,8 +952,14 @@ typeok(op_t op, int arg, tnode_t *ln, tnode_t *rn)
 	case GE:
 		if ((lt == PTR || rt == PTR) && lt != rt) {
 			if (isityp(lt) || isityp(rt)) {
+				const char *lx = lt == PTR ?
+				    "pointer" : "integer";
+				const char *rx = rt == PTR ?
+				    "pointer" : "integer";
+				tyname(lbuf, sizeof(lbuf), ltp);
+				tyname(rbuf, sizeof(rbuf), rtp);
 				/* illegal comb. of pointer and int., op %s */
-				warning(123, mp->m_name);
+				warning(123, lx, lbuf, rx, rbuf, mp->m_name);
 			} else {
 				incompat(op, lt, rt);
 				return (0);
@@ -993,8 +1000,12 @@ typeok(op_t op, int arg, tnode_t *ln, tnode_t *rn)
 		}
 
 		if ((lt == PTR && isityp(rt)) || (isityp(lt) && rt == PTR)) {
+			const char *lx = lt == PTR ?  "pointer" : "integer";
+			const char *rx = rt == PTR ?  "pointer" : "integer";
+			tyname(lbuf, sizeof(lbuf), ltp);
+			tyname(rbuf, sizeof(rbuf), rtp);
 			/* illegal comb. of ptr. and int., op %s */
-			warning(123, mp->m_name);
+			warning(123, lx, lbuf, rx, rbuf, mp->m_name);
 			break;
 		}
 
@@ -1287,11 +1298,13 @@ asgntypok(op_t op, int arg, tnode_t *ln, tnode_t *rn)
 	switch (op) {
 	case INIT:
 		/* initialisation type mismatch */
-		error(185);
+		error(185, tyname(lbuf, sizeof(lbuf), ltp), 
+		    tyname(rbuf, sizeof(rbuf), rtp));
 		break;
 	case RETURN:
 		/* return value type mismatch */
-		error(211);
+		error(211, tyname(lbuf, sizeof(lbuf), ltp),
+		    tyname(rbuf, sizeof(rbuf), rtp));
 		break;
 	case FARG:
 		/* argument is incompatible with prototype, arg #%d */
@@ -3186,8 +3199,10 @@ cast(tnode_t *tn, type_t *tp)
 		return NULL;
 	} else if (nt == STRUCT || nt == ARRAY || nt == FUNC) {
 		/* invalid cast expression */
-		error(147);
-		return (NULL);
+		if (!Sflag || nt == ARRAY || nt == FUNC) {
+			error(147);
+			return (NULL);
+		}
 	} else if (ot == STRUCT || ot == UNION) {
 		/* invalid cast expression */
 		error(147);

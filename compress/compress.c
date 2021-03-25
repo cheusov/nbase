@@ -94,11 +94,12 @@ main(int argc, char **argv)
 
 	nbsetprogname(argv[0]);
 
-	if (!strcmp(getprogname(), "uncompress"))
+	const char *p = getprogname();
+	if (!strcmp(p, "uncompress"))
 		style = DECOMPRESS;
-        else if (!strcmp(getprogname(), "compress"))
+	else if (!strcmp(p, "compress"))
                 style = COMPRESS;
-        else if (!strcmp(getprogname(), "zcat")) {
+        else if (!strcmp(p, "zcat")) {
                 style = DECOMPRESS;
                 cat = 1;
         }
@@ -416,7 +417,7 @@ setfile(const char *name, struct stat *fs)
 		cwarn("chown: %s", name);
 
 #if HAVE_MEMBER_STRUCT_STAT_ST_FLAGS_SYS_STAT_H
-/*
+	/*
 	 * Restore the file's flags.  However, do this only if the original
 	 * file had any flags set; this avoids a warning on file-systems that
 	 * do not support flags.

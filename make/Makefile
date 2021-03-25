@@ -1,4 +1,4 @@
-#	$NetBSD: Makefile,v 1.59 2016/02/18 20:33:40 sjg Exp $
+#	$NetBSD: Makefile,v 1.61 2019/02/04 03:58:41 mrg Exp $
 #	@(#)Makefile	5.2 (Berkeley) 12/28/90
 
 PROG=	make
@@ -24,7 +24,7 @@ COPTS.meta.c += -DHAVE_FILEMON_H -I${FILEMON_H:H}
 .endif
 
 .PATH:	${.CURDIR}/lst.lib
-SUBDIR=	PSD.doc
+SUBDIR.roff+=	PSD.doc
 .if make(obj) || make(clean)
 SUBDIR+= unit-tests
 .endif
@@ -44,6 +44,10 @@ COPTS.var.c += -Wno-format-nonliteral
 CPPFLAGS+= -DUSE_EMALLOC
 LDADD+=-lutil
 DPADD+=${LIBUTIL}
+.endif
+
+.if defined(HAVE_GCC) && ${HAVE_GCC} == 7 && ${ACTIVE_CC} == "gcc"
+COPTS.arch.c += -Wno-error=format-truncation
 .endif
 
 # A simple unit-test driver to help catch regressions

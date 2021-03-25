@@ -31,7 +31,7 @@
 #ifndef lint
 __COPYRIGHT("@(#) Copyright (c) 2005\
  The NetBSD Foundation, Inc.  All rights reserved.");
-__RCSID("$NetBSD: seq.c,v 1.8 2016/09/05 00:40:29 sevan Exp $");
+__RCSID("$NetBSD: seq.c,v 1.11 2018/12/17 20:10:51 christos Exp $");
 #endif /* not lint */
 
 #include <ctype.h>
@@ -88,7 +88,7 @@ main(int argc, char *argv[])
 	struct lconv *locale;
 	char *fmt = NULL;
 	const char *sep = "\n";
-	const char *term = NULL;
+	const char *term = "\n";
 	char pad = ZERO;
 
 	/* Determine the locale's decimal point. */
@@ -174,14 +174,16 @@ main(int argc, char *argv[])
 		fmt = generate_format(first, incr, last, equalize, pad);
 
 	if (incr > 0) {
-		for (; first <= last; first += incr) {
-			printf(fmt, first);
+		printf(fmt, first);
+		for (first += incr; first <= last; first += incr) {
 			fputs(sep, stdout);
+			printf(fmt, first);
 		}
 	} else {
-		for (; first >= last; first += incr) {
-			printf(fmt, first);
+		printf(fmt, first);
+		for (first += incr; first >= last; first += incr) {
 			fputs(sep, stdout);
+			printf(fmt, first);
 		}
 	}
 	if (term != NULL)
@@ -214,10 +216,10 @@ numeric(const char *s)
 			}
 			if (ISEXP((unsigned char)*s)) {
 				s++;
-				if (ISSIGN((unsigned char)*s)) {
+				/* optional sign */
+				if (ISSIGN((unsigned char)*s))
 					s++;
-					continue;
-				}
+				continue;
 			}
 			break;
 		}
@@ -352,7 +354,7 @@ unescape(char *orig)
 			*orig = c;
 			--cp;
 			continue;
-		case 'x':	/* hexidecimal number */
+		case 'x':	/* hexadecimal number */
 			cp++;	/* skip 'x' */
 			for (i = 0, c = 0;
 			     isxdigit((unsigned char)*cp) && i < 2;
@@ -425,7 +427,7 @@ decimal_places(const char *number)
 /*
  * generate_format - create a format string
  *
- * XXX to be bug for bug compatable with Plan9 and GNU return "%g"
+ * XXX to be bug for bug compatible with Plan9 and GNU return "%g"
  * when "%g" prints as "%e" (this way no width adjustments are made)
  */
 char *

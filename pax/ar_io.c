@@ -1,4 +1,4 @@
-/*	$NetBSD: ar_io.c,v 1.57 2016/05/31 03:32:36 dholland Exp $	*/
+/*	$NetBSD: ar_io.c,v 1.59 2019/02/04 04:36:41 mrg Exp $	*/
 
 /*-
  * Copyright (c) 1992 Keith Muller.
@@ -1631,7 +1631,7 @@ void
 ar_summary(int n)
 {
 	time_t secs;
-	char buf[BUFSIZ];
+	char buf[4096];
 	char tbuf[MAXPATHLEN/4];	/* XXX silly size! */
 	char s1buf[MAXPATHLEN/8];	/* XXX very silly size! */
 	char s2buf[MAXPATHLEN/8];	/* XXX very silly size! */

@@ -1,4 +1,4 @@
-/*	$NetBSD: printf.c,v 1.37.8.1 2018/07/13 15:58:25 martin Exp $	*/
+/*	$NetBSD: printf.c,v 1.50 2019/07/22 17:34:31 kre Exp $	*/
 
 /*
  * Copyright (c) 1989, 1993
@@ -41,7 +41,7 @@ __COPYRIGHT("@(#) Copyright (c) 1989, 1993\
 #if 0
 static char sccsid[] = "@(#)printf.c	8.2 (Berkeley) 3/22/95";
 #else
-__RCSID("$NetBSD: printf.c,v 1.37.8.1 2018/07/13 15:58:25 martin Exp $");
+__RCSID("$NetBSD: printf.c,v 1.50 2019/07/22 17:34:31 kre Exp $");
 #endif
 #endif /* not lint */
 
@@ -75,11 +75,10 @@ static char	 getchr(void);
 static double	 getdouble(void);
 static int	 getwidth(void);
 static intmax_t	 getintmax(void);
-static uintmax_t getuintmax(void);
 static char	*getstr(void);
 static char	*mklong(const char *, char);
 static void      check_conversion(const char *, const char *);
-static void	 usage(void); 
+static void	 usage(void);
 
 static void	b_count(int);
 static void	b_output(int);
@@ -125,29 +124,56 @@ static char  **gargv;
 #ifdef main
 int main(int, char *[]);
 #endif
-int main(int argc, char *argv[])
+
+int
+main(int argc, char *argv[])
 {
 	char *fmt, *start;
 	int fieldwidth, precision;
 	char nextch;
 	char *format;
 	char ch;
-	int error, o;
+	int error;
 
 #if !defined(SHELL) && !defined(BUILTIN)
 	(void)setlocale (LC_ALL, "");
 #endif
 
-	while ((o = getopt(argc, argv, "")) != -1) {
-		switch (o) {
-		case '?':
-		default:
-			usage();
-			return 1;
+	rval = 0;	/* clear for builtin versions (avoid holdover) */
+
+	/*
+	 * printf does not comply with Posix XBD 12.2 - there are no opts,
+	 * not even the -- end of options marker.   Do not run getoot().
+	 */
+	if (argc > 2 && strchr(argv[1], '%') == NULL) {
+		int o;
+
+		/*
+		 * except that if there are multiple args and
+		 * the first (the nominal format) contains no '%'
+		 * conversions (which we will approximate as no '%'
+		 * characters at all, conversions or not) then the
+		 * results are unspecified, and we can do what we
+		 * like.   So in that case, for some backward compat
+		 * to scripts which (stupidly) do:
+		 *	printf -- format args
+		 * process this case the old way.
+		 */
+
+		while ((o = getopt(argc, argv, "")) != -1) {
+			switch (o) {
+			case '?':
+			default:
+				usage();
+				return 1;
+			}
 		}
+		argc -= optind;
+		argv += optind;
+	} else {
+		argc -= 1;	/* drop argv[0] (the program name) */
+		argv += 1;
 	}
-	argc -= optind;
-	argv += optind;
 
 	if (argc < 1) {
 		usage();
@@ -163,9 +189,9 @@ int main(int argc, char *argv[])
 		/*
 		 * Basic algorithm is to scan the format string for conversion
 		 * specifications -- once one is found, find out if the field
-		 * width or precision is a '*'; if it is, gather up value. 
+		 * width or precision is a '*'; if it is, gather up value.
 		 * Note, format strings are reused as necessary to use up the
-		 * provided arguments, arguments of zero/null string are 
+		 * provided arguments, arguments of zero/null string are
 		 * provided to use up the format string.
 		 */
 
@@ -182,8 +208,10 @@ int main(int argc, char *argv[])
 				continue;
 			}
 
-			/* Ok - we've found a format specification,
-			   Save its address for a later printf(). */
+			/*
+			 * Ok - we've found a format specification,
+			 * Save its address for a later printf().
+			 */
 			start = fmt - 1;
 
 			/* skip to field width */
@@ -191,36 +219,44 @@ int main(int argc, char *argv[])
 			if (*fmt == '*') {
 				fmt++;
 				fieldwidth = getwidth();
-			} else
+			} else {
 				fieldwidth = -1;
 
-			/* skip to possible '.', get following precision */
-			fmt += strspn(fmt, SKIP2);
+				/* skip to possible '.' for precision */
+				fmt += strspn(fmt, SKIP2);
+			}
+
 			if (*fmt == '.') {
+				 /* get following precision */
 				fmt++;
 				if (*fmt == '*') {
 					fmt++;
 					precision = getwidth();
-				} else
+				} else {
 					precision = -1;
+					fmt += strspn(fmt, SKIP2);
+				}
 			} else
 				precision = -1;
 
-			fmt += strspn(fmt, SKIP2);
-
 			ch = *fmt;
 			if (!ch) {
-				warnx("missing format character");
-				return (1);
+				warnx("%s: missing format character", start);
+				return 1;
 			}
-			/* null terminate format string to we can use it
-			   as an argument to printf. */
+
+			/*
+			 * null terminate format string to we can use it
+			 * as an argument to printf.
+			 */
 			nextch = fmt[1];
 			fmt[1] = 0;
+
 			switch (ch) {
 
 			case 'B': {
 				const char *p = conv_expand(getstr());
+
 				if (p == NULL)
 					goto out;
 				*fmt = 's';
@@ -230,11 +266,14 @@ int main(int argc, char *argv[])
 				break;
 			}
 			case 'b': {
-				/* There has to be a better way to do this,
+				/*
+				 * There has to be a better way to do this,
 				 * but the string we generate might have
-				 * embedded nulls. */
+				 * embedded nulls
+				 */
 				static char *a, *t;
 				char *cp = getstr();
+
 				/* Free on entry in case shell longjumped out */
 				if (a != NULL)
 					free(a);
@@ -242,6 +281,7 @@ int main(int argc, char *argv[])
 				if (t != NULL)
 					free(t);
 				t = NULL;
+
 				/* Count number of bytes we want to output */
 				b_length = 0;
 				conv_escape_str(cp, b_count, 0);
@@ -250,20 +290,24 @@ int main(int argc, char *argv[])
 					goto out;
 				(void)memset(t, 'x', b_length);
 				t[b_length] = 0;
+
 				/* Get printf to calculate the lengths */
 				*fmt = 's';
 				APF(&a, start, t);
 				if (error == -1)
 					goto out;
 				b_fmt = a;
+
 				/* Output leading spaces and data bytes */
 				conv_escape_str(cp, b_output, 1);
+
 				/* Add any trailing spaces */
 				printf("%s", b_fmt);
 				break;
 			}
 			case 'c': {
 				char p = getchr();
+
 				PF(start, p);
 				if (error < 0)
 					goto out;
@@ -271,6 +315,7 @@ int main(int argc, char *argv[])
 			}
 			case 's': {
 				char *p = getstr();
+
 				PF(start, p);
 				if (error < 0)
 					goto out;
@@ -280,6 +325,7 @@ int main(int argc, char *argv[])
 			case 'i': {
 				intmax_t p = getintmax();
 				char *f = mklong(start, ch);
+
 				PF(f, p);
 				if (error < 0)
 					goto out;
@@ -289,24 +335,34 @@ int main(int argc, char *argv[])
 			case 'u':
 			case 'x':
 			case 'X': {
-				uintmax_t p = getuintmax();
+				uintmax_t p = (uintmax_t)getintmax();
 				char *f = mklong(start, ch);
+
 				PF(f, p);
 				if (error < 0)
 					goto out;
 				break;
 			}
+			case 'a':
+			case 'A':
 			case 'e':
 			case 'E':
 			case 'f':
+			case 'F':
 			case 'g':
 			case 'G': {
 				double p = getdouble();
+
 				PF(start, p);
 				if (error < 0)
 					goto out;
 				break;
 			}
+			case '%':
+				/* Don't ask, but this is useful ... */
+				if (fieldwidth == 'N' && precision == 'B')
+					return 0;
+				/* FALLTHROUGH */
 			default:
 				warnx("%s: invalid directive", start);
 				return 1;
@@ -320,7 +376,7 @@ int main(int argc, char *argv[])
 	} while (gargv != argv && *gargv);
 
 	return rval & ~0x100;
-out:
+  out:
 	warn("print failed");
 	return 1;
 }
@@ -356,7 +412,7 @@ b_output(int ch)
 
 
 /*
- * Print SysV echo(1) style escape string 
+ * Print SysV echo(1) style escape string
  *	Halts processing string if a \c escape is encountered.
  */
 static void
@@ -379,10 +435,10 @@ conv_escape_str(char *str, void (*do_putchar)(int), int quiet)
 			break;
 		}
 
-		/* 
+		/*
 		 * %b string octal constants are not like those in C.
-		 * They start with a \0, and are followed by 0, 1, 2, 
-		 * or 3 octal digits. 
+		 * They start with a \0, and are followed by 0, 1, 2,
+		 * or 3 octal digits.
 		 */
 		if (ch == '0') {
 			int octnum = 0, i;
@@ -424,7 +480,7 @@ conv_escape_str(char *str, void (*do_putchar)(int), int quiet)
 }
 
 /*
- * Print "standard" escape characters 
+ * Print "standard" escape characters
  */
 static char *
 conv_escape(char *str, char *conv_ch, int quiet)
@@ -456,10 +512,12 @@ conv_escape(char *str, char *conv_ch, int quiet)
 		break;
 
 	case 'x':
-		/* Hexadecimal character constants are not required to be
-		   supported (by SuS v1) because there is no consistent
-		   way to detect the end of the constant.
-		   Supporting 2 byte constants is a compromise. */
+		/*
+		 * Hexadecimal character constants are not required to be
+		 * supported (by SuS v1) because there is no consistent
+		 * way to detect the end of the constant.
+		 * Supporting 2 byte constants is a compromise.
+		 */
 		ch = str[0];
 		num_buf[0] = ch;
 		num_buf[1] = (char)(ch != '\0' ? str[1] : '\0');
@@ -474,6 +532,7 @@ conv_escape(char *str, char *conv_ch, int quiet)
 	case 'a':	value = '\a';	break;	/* alert */
 	case 'b':	value = '\b';	break;	/* backspace */
 	case 'e':	value = ESCAPE;	break;	/* escape */
+	case 'E':	value = ESCAPE;	break;	/* escape */
 	case 'f':	value = '\f';	break;	/* form-feed */
 	case 'n':	value = '\n';	break;	/* newline */
 	case 'r':	value = '\r';	break;	/* carriage-return */
@@ -599,8 +658,8 @@ getwidth(void)
 	char *s, *ep;
 
 	s = *gargv;
-	if (!*gargv)
-		return (0);
+	if (s == NULL)
+		return 0;
 	gargv++;
 
 	errno = 0;
@@ -636,35 +695,6 @@ getintmax(void)
 	return val;
 }
 
-static uintmax_t
-getuintmax(void)
-{
-	uintmax_t val;
-	char *cp, *ep;
-
-	cp = *gargv;
-	if (cp == NULL)
-		return 0;
-	gargv++;
-
-	if (*cp == '\"' || *cp == '\'')
-		return (uintmax_t)*(cp + 1);
-
-	/* strtoumax won't error -ve values */
-	while (isspace(*(unsigned char *)cp))
-		cp++;
-	if (*cp == '-') {
-		warnx("%s: expected positive numeric value", cp);
-		rval = 1;
-		return 0;
-	}
-
-	errno = 0;
-	val = strtoumax(cp, &ep, 0);
-	check_conversion(cp, ep);
-	return val;
-}
-
 static double
 getdouble(void)
 {
@@ -672,7 +702,7 @@ getdouble(void)
 	char *ep;
 
 	if (!*gargv)
-		return (0.0);
+		return 0.0;
 
 	if (**gargv == '\"' || **gargv == '\'')
 		return (double) *((*gargv++)+1);

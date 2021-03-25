@@ -7,6 +7,7 @@ CURSES_LIBNAME ?=	curses
 CPPFLAGS +=	-D_GNU_SOURCE
 CPPFLAGS0 +=	-D__COPYRIGHT\(x\)=
 CPPFLAGS0 +=	-D__RCSID\(x\)=
+CPPFLAGS0 +=	-D__FBSDID\(x\)=
 CPPFLAGS0 +=	-D__printflike\(x,y\)=
 CPPFLAGS0 +=	-D__dead=
 CPPFLAGS0 +=	-D__pure=

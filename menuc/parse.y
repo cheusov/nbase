@@ -1,4 +1,4 @@
-/*	$NetBSD: parse.y,v 1.16 2012/03/06 16:55:18 mbalmer Exp $	*/
+/*	$NetBSD: parse.y,v 1.19 2019/06/23 22:48:15 christos Exp $	*/
 
 /*
  * Copyright 1997 Piermont Information Systems Inc.
@@ -41,6 +41,7 @@
 
 static id_rec *cur_menu;
 static optn_info *cur_optn;
+#define OPT_NOMENU 0
 
 %}
 
@@ -53,8 +54,9 @@ static optn_info *cur_optn;
 
 
 %token <i_value> X Y W H NO BOX SUB HELP MENU NEXT EXIT ACTION ENDWIN OPTION 
-%token <i_value> TITLE DEFAULT DISPLAY ERROR EXITSTRING ALLOW DYNAMIC MENUS
-		 SCROLLABLE SHORTCUT CLEAR MESSAGES ALWAYS SCROLL
+%token <i_value> TITLE DEFAULT DISPLAY ERROR EXITSTRING EXPAND ALLOW DYNAMIC
+		 MENUS SCROLLABLE SHORTCUT CLEAR MESSAGES ALWAYS SCROLL
+		 CONTINUOUS
 %token <s_value> STRING NAME CODE INT_CONST CHAR_CONST
 
 %type <s_value> init_code system helpstr text
@@ -81,12 +83,16 @@ menu_list :  /* empty */
 	  |  menu_list menu_def
 	  |  menu_list default_def
 	  |  menu_list initerror_def
+	  |  menu_list expand_def
 	  |  menu_list dynamic_def
 	  |  menu_list msgxlat_def
 	  ;
 
 dynamic_def : ALLOW DYNAMIC MENUS ';'
 		{ do_dynamic = 1; }
+
+expand_def : ALLOW EXPAND ';'
+		{ do_expands = 1; }
 
 msgxlat_def : ALLOW DYNAMIC MESSAGES ';'
 		{ do_msgxlat = 1; }
@@ -103,17 +109,16 @@ menu_def  :  MENU NAME
 		  if (cur_menu->info != NULL)
 			  yyerror ("Menu %s defined twice", $2);
 		  else {
-			  cur_menu->info =
-				  (menu_info *) malloc (sizeof (menu_info));
+			  cur_menu->info = malloc (sizeof (menu_info));
 			  *(cur_menu->info) = default_info;
 		  }
 		}
-	     opts ";" dispact option_list exitact helpstr
+	     opts ";" expaction dispact option_list exitact helpstr
 		{ optn_info *t;
 		  cur_menu->info->optns = NULL;
-		  while ($7 != NULL) {
-			  t = $7;
-			  $7 = $7->next;
+		  while ($8 != NULL) {
+			  t = $8;
+			  $8 = $8->next;
 			  t->next = cur_menu->info->optns;
 			  cur_menu->info->optns = t;
 			  cur_menu->info->numopt++;
@@ -147,6 +152,7 @@ opt	  : NO EXIT		{ cur_menu->info->mopt |= MC_NOEXITOPT; }
 	  | ALWAYS SCROLL 	{ cur_menu->info->mopt |= MC_ALWAYS_SCROLL; }
 	  | NO SUB MENU		{ cur_menu->info->mopt &= ~MC_SUBMENU; }
 	  | SUB MENU 		{ cur_menu->info->mopt |= MC_SUBMENU; }
+	  | CONTINUOUS TITLE	{ cur_menu->info->mopt |= MC_CONTINUOUS; }
 	  | X "=" INT_CONST	{ cur_menu->info->x = atoi($3); }
 	  | Y "=" INT_CONST	{ cur_menu->info->y = atoi($3); }
 	  | W "=" INT_CONST	{ cur_menu->info->w = atoi($3); }
@@ -161,15 +167,8 @@ option_list : option
 	  ;
 
 option	  : OPTION
-		{ cur_optn = (optn_info *) malloc (sizeof(optn_info));
-		  cur_optn->menu = -1;
-		  cur_optn->name = NULL;
-		  cur_optn->name_is_code = FALSE;
-		  cur_optn->issub = FALSE;
-		  cur_optn->doexit = FALSE;
+		{ cur_optn = calloc(1, sizeof(*cur_optn));
 		  cur_optn->optact.code = "";
-		  cur_optn->optact.endwin = FALSE;
-		  cur_optn->next = NULL;
 		}
 	    option_legend ","
 	    elem_list ";"
@@ -185,7 +184,7 @@ elem_list : elem
 
 elem	  : NEXT MENU NAME
 		{ id_rec *t = get_menu ($3);
-		  if (cur_optn->menu != -1)
+		  if (cur_optn->menu != OPT_NOMENU)
 			  yyerror ("Double sub/next menu definition");
 		  else {
 			  cur_optn->menu = t->menu_no;
@@ -193,7 +192,7 @@ elem	  : NEXT MENU NAME
 		}
 	  | SUB MENU NAME
 		{ id_rec *t = get_menu ($3);
-		  if (cur_optn->menu != -1)
+		  if (cur_optn->menu != OPT_NOMENU)
 			  yyerror ("Double sub/next menu definition");
 		  else {
 			  cur_optn->menu = t->menu_no;
@@ -212,6 +211,12 @@ action	  : ACTION act_opt CODE
 
 act_opt	  : /* empty */		{ $$ = 0; }
 	  | "(" ENDWIN ")"	{ $$ = 1; }
+	  ;
+
+expaction : /* empty */ 	{ cur_menu->info->expact.code = ""; }
+	  | EXPAND action ";"	{ if (!do_expands) yyerror ("Menu expands "
+	  						     "not enabled");
+	  			  cur_menu->info->expact = $2; }
 	  ;
 
 dispact	  : /* empty */ 	{ cur_menu->info->postact.code = ""; }

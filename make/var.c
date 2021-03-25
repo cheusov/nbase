@@ -1,4 +1,4 @@
-/*	$NetBSD: var.c,v 1.215.4.2 2018/06/09 15:35:38 martin Exp $	*/
+/*	$NetBSD: var.c,v 1.222 2019/02/03 03:19:29 mrg Exp $	*/
 
 /*
  * Copyright (c) 1988, 1989, 1990, 1993
@@ -69,14 +69,14 @@
  */
 
 #ifndef MAKE_NATIVE
-static char rcsid[] = "$NetBSD: var.c,v 1.215.4.2 2018/06/09 15:35:38 martin Exp $";
+static char rcsid[] = "$NetBSD: var.c,v 1.222 2019/02/03 03:19:29 mrg Exp $";
 #else
 #include <sys/cdefs.h>
 #ifndef lint
 #if 0
 static char sccsid[] = "@(#)var.c	8.3 (Berkeley) 3/19/94";
 #else
-__RCSID("$NetBSD: var.c,v 1.215.4.2 2018/06/09 15:35:38 martin Exp $");
+__RCSID("$NetBSD: var.c,v 1.222 2019/02/03 03:19:29 mrg Exp $");
 #endif
 #endif /* not lint */
 #endif
@@ -836,7 +836,8 @@ Var_UnExport(char *str)
 	environ = savedEnv = newenv;
 	newenv[0] = NULL;
 	newenv[1] = NULL;
-	setenv(MAKE_LEVEL_ENV, cp, 1);
+	if (cp && *cp)
+	    setenv(MAKE_LEVEL_ENV, cp, 1);
     } else {
 	for (; *str != '\n' && isspace((unsigned char) *str); str++)
 	    continue;
@@ -971,7 +972,8 @@ Var_Set(const char *name, const char *val, GNode *ctxt, int flags)
 	VarAdd(name, val, ctxt);
     } else {
 	Buf_Empty(&v->val);
-	Buf_AddBytes(&v->val, strlen(val), val);
+	if (val)
+	    Buf_AddBytes(&v->val, strlen(val), val);
 
 	if (DEBUG(VAR)) {
 	    fprintf(debug_file, "%s:%s = %s\n", ctxt->name, name, val);
@@ -998,7 +1000,7 @@ Var_Set(const char *name, const char *val, GNode *ctxt, int flags)
 	 * Makefile settings.
 	 */
 	if (varNoExportEnv != TRUE)
-	    setenv(name, val, 1);
+	    setenv(name, val ? val : "", 1);
 
 	Var_Append(MAKEOVERRIDES, name, VAR_GLOBAL);
     }
@@ -1061,11 +1063,11 @@ Var_Append(const char *name, const char *val, GNode *ctxt)
 	name = expanded_name;
     }
 
-    v = VarFind(name, ctxt, (ctxt == VAR_GLOBAL) ? FIND_ENV : 0);
+    v = VarFind(name, ctxt, (ctxt == VAR_GLOBAL) ? (FIND_CMD|FIND_ENV) : 0);
 
     if (v == NULL) {
-	VarAdd(name, val, ctxt);
-    } else {
+	Var_Set(name, val, ctxt, 0);
+    } else if (ctxt == VAR_CMD || !(v->flags & VAR_FROM_CMD)) {
 	Buf_AddByte(&v->val, ' ');
 	Buf_AddBytes(&v->val, strlen(val), val);
 
@@ -2398,8 +2400,10 @@ VarHash(char *str)
 	    break;
 	case 3:
 	    k |= (ustr[2] << 16);
+	    /* FALLTHROUGH */
 	case 2:
 	    k |= (ustr[1] << 8);
+	    /* FALLTHROUGH */
 	case 1:
 	    k |= ustr[0];
 	    len = 0;

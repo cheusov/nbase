@@ -1,4 +1,4 @@
-.\"	$NetBSD: crunchgen.1,v 1.32 2014/03/18 18:20:44 riastradh Exp $
+.\"	$NetBSD: crunchgen.1,v 1.37 2018/07/26 08:57:26 wiz Exp $
 .\"
 .\" Copyright (c) 1994 University of Maryland
 .\" All Rights Reserved.
@@ -24,7 +24,7 @@
 .\"			   Computer Science Department
 .\"			   University of Maryland at College Park
 .\"
-.Dd June 10, 2013
+.Dd June 21, 2018
 .Dt CRUNCHGEN 1
 .Os
 .Sh NAME
@@ -32,7 +32,7 @@
 .Nd generates build environment for a crunched binary
 .Sh SYNOPSIS
 .Nm
-.Op Fl fOoq
+.Op Fl fOopqSs
 .Op Fl c Ar c-file-name
 .Op Fl D Ar src-root
 .Op Fl d Ar build-options
@@ -124,9 +124,15 @@ the program objects into a single relocatable.
 Use existing object files.
 Rather than rebuilding object files via reach-over
 makefiles, instead search for and use existing object files.
+.It Fl p
+Produce static pie (position independent executables).
 .It Fl q
 Quiet operation.
 Status messages are suppressed.
+.It Fl S
+Enable sanitization with a sanitizer in libc.
+.It Fl s
+Enable sanitization.
 .It Fl v Ar varspec
 Append a variable specification to the on-the fly generated Makefile.
 .El
@@ -332,7 +338,6 @@ Here is an example
 .Em crunchgen
 input conf file, named
 .Dq Pa kcopy.conf :
-.Pp
 .Bd -literal -offset indent
 srcdirs /usr/src/bin /usr/src/sbin
 
@@ -356,7 +361,6 @@ line.
 The crunched binary
 .Dq kcopy
 can be built as follows:
-.Pp
 .Bd -literal -offset indent
 % crunchgen -m Makefile kcopy.conf    # gen Makefile and kcopy.c
 % make objs             # build the component programs' .o files
@@ -377,7 +381,8 @@ and hard-linked to the names of the component programs.
 was written by
 .An James da Silva Aq Mt jds@cs.umd.edu .
 .Pp
-Copyright (c) 1994 University of Maryland.  All Rights Reserved.
+Copyright (c) 1994 University of Maryland.
+All Rights Reserved.
 .Sh BUGS
 While
 .Nm
@@ -400,7 +405,6 @@ some other arrangements made.
 If a program directory being searched for is found, but contains
 no objects, other directories are not searched.
 This causes the following directive to fail:
-.Pp
 .Bd -literal -offset indent
 srcdirs /usr/src/usr.bin /usr/src/usr.bin/less
 progs less gzip
@@ -418,7 +422,6 @@ fails to find objects for the
 program.
 To avoid this problem, list specific srcdirs first, and
 the more general ones later, for e.g.:
-.Pp
 .Bd -literal -offset indent
 srcdirs /usr/src/usr.bin/less /usr/src/usr.bin
 progs less gzip

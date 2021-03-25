@@ -1,4 +1,4 @@
-/*	$NetBSD: str.c,v 1.29.18.1 2018/06/08 10:02:59 martin Exp $	*/
+/*	$NetBSD: str.c,v 1.30 2018/05/26 11:20:30 leot Exp $	*/
 
 /*-
  * Copyright (c) 1991, 1993
@@ -34,7 +34,7 @@
 #if 0
 static char sccsid[] = "@(#)str.c	8.2 (Berkeley) 4/28/95";
 #endif
-__RCSID("$NetBSD: str.c,v 1.29.18.1 2018/06/08 10:02:59 martin Exp $");
+__RCSID("$NetBSD: str.c,v 1.30 2018/05/26 11:20:30 leot Exp $");
 #endif /* not lint */
 
 #include <sys/types.h>

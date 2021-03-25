@@ -11,4 +11,6 @@ MKC_FEATURES +=		fgetln vis
 
 .include "../mk/hacks.mk"
 
+.include "../mk/imp.f_fgetwln.mk"
+
 .include "../mk/addlinks.mk"

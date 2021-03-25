@@ -1,4 +1,4 @@
-/* $NetBSD: kill.c,v 1.27.36.1 2017/07/23 14:58:13 snj Exp $ */
+/* $NetBSD: kill.c,v 1.30 2018/12/12 20:22:43 kre Exp $ */
 
 /*
  * Copyright (c) 1988, 1993, 1994
@@ -44,7 +44,7 @@ __COPYRIGHT("@(#) Copyright (c) 1988, 1993, 1994\
 #if 0
 static char sccsid[] = "@(#)kill.c	8.4 (Berkeley) 4/28/95";
 #else
-__RCSID("$NetBSD: kill.c,v 1.27.36.1 2017/07/23 14:58:13 snj Exp $");
+__RCSID("$NetBSD: kill.c,v 1.30 2018/12/12 20:22:43 kre Exp $");
 #endif
 #endif /* not lint */
 
@@ -68,7 +68,7 @@ int killcmd(int, char *argv[]);
 #endif /* SHELL */ 
 
 __dead static void nosig(const char *);
-static void printsignals(FILE *);
+void printsignals(FILE *, int);
 static int signum(const char *);
 static pid_t processnum(const char *);
 __dead static void usage(void);
@@ -119,7 +119,7 @@ main(int argc, char *argv[])
 				printf("%s\n", sn);
 				exit(0);
 			}
-			printsignals(stdout);
+			printsignals(stdout, 0);
 			exit(0);
 
 		case 's':
@@ -253,16 +253,22 @@ nosig(const char *name)
 {
 
 	warnx("unknown signal %s; valid signals:", name);
-	printsignals(stderr);
+	printsignals(stderr, 0);
 	exit(1);
 	/* NOTREACHED */
 }
 
-static void
-printsignals(FILE *fp)
+#ifndef SHELL
+/*
+ * Print the names of all the signals (neatly) to fp
+ * "len" gives the number of chars already printed to
+ * the current output line (in kill.c, always 0)
+ */
+void
+printsignals(FILE *fp, int len)
 {
 	int sig;
-	int len, nl, pad;
+	int nl, pad;
 	const char *name;
 	int termwidth = 80;
 
@@ -275,7 +281,9 @@ printsignals(FILE *fp)
 			termwidth = win.ws_col;
 	}
 
-	for (pad = 0, len = 0, sig = 0; (sig = signalnext(sig)) != 0; ) {
+	pad = (len | 7) + 1 - len;
+
+	for (sig = 0; (sig = signalnext(sig)) != 0; ) {
 		name = signalname(sig);
 		if (name == NULL)
 			continue;
@@ -299,6 +307,7 @@ printsignals(FILE *fp)
 	if (len != 0)
 		fprintf(fp, "\n");
 }
+#endif
 
 static void
 usage(void)

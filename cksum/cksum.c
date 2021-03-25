@@ -172,6 +172,7 @@ main(int argc, char **argv)
 	uint32_t val;
 	off_t len;
 	char *fn;
+	const char *progname;
 	int (*cfncn) (int, uint32_t *, off_t *);
 	void (*pfncn) (char *, uint32_t, off_t);
 	const struct hash *hash;
@@ -185,17 +186,19 @@ main(int argc, char **argv)
 	do_check = 0;
 	print_flags = 0;
 
-	nbsetprogname(argv[0]);
 	setlocale(LC_ALL, "");
 
+	nbsetprogname(argv[0]);
+	progname = getprogname();
+
 	for (hash = hashes; hash->hashname != NULL; hash++)
-		if (strcmp(getprogname(), hash->progname) == 0)
+		if (strcmp(progname, hash->progname) == 0)
 			break;
 
 	if (hash->hashname == NULL) {
 		hash = NULL;
 
-		if (!strcmp(getprogname(), "sum")) {
+		if (!strcmp(progname, "sum")) {
 			cfncn = csum1;
 			pfncn = psum1;
 		} else {

@@ -1,4 +1,4 @@
-.\" $NetBSD: tar.1,v 1.36 2015/12/19 18:28:54 christos Exp $
+.\" $NetBSD: tar.1,v 1.39 2019/03/19 10:14:46 wiz Exp $
 .\"
 .\" Copyright (c) 1996 SigmaSoft, Th. Lockert
 .\" All rights reserved.
@@ -25,7 +25,7 @@
 .\"
 .\"	OpenBSD: tar.1,v 1.28 2000/11/09 23:58:56 aaron Exp
 .\"
-.Dd December 19, 2015
+.Dd March 19, 2019
 .Dt TAR 1
 .Os
 .Sh NAME
@@ -107,10 +107,10 @@ then the archive will be processed using
 .It Fl h , Fl Fl dereference
 Follow symbolic links as if they were normal files
 or directories.
-.It Fl J, Fl Fl xz
+.It Fl J , Fl Fl xz
 Compress/decompress archive using
 .Xr xz 1 .
-.It Fl j, Fl Fl bzip2, Fl Fl bunzip2
+.It Fl j , Fl Fl bzip2 , Fl Fl bunzip2
 Use
 .Xr bzip2 1
 for compression of the archive.
@@ -170,14 +170,15 @@ As in
 .Cm old
 is a basic regular expression and
 .Cm new
-can contain an ampersand (\*[Am]), \en (where n is a digit) back-references,
+can contain an ampersand (&), \en (where n is a digit) back-references,
 or subexpression matching.
 The
 .Cm old
 string may also contain
 .Aq Dv newline
 characters.
-Any non-null character can be used as a delimiter (/ is shown here).
+Any non-null character except a backslash (\\) can be used as a delimiter
+(/ is shown here).
 Multiple
 .Fl s
 expressions can be specified.
@@ -196,7 +197,7 @@ The optional trailing
 will cause the final result of a successful substitution to be written to
 .Dv standard error
 in the following format:
-.Dl \*[Lt]original pathname\*[Gt] \*[Gt]\*[Gt] \*[Lt]new pathname\*[Gt]
+.Dl Ao "original pathname" Ac >> Ao "new pathname" Ac
 File or archive member names that substitute to the empty string
 are not selected and will be skipped.
 The substitutions are applied by default to the destination hard and symbolic

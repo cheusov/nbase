@@ -1,4 +1,4 @@
-/*	$NetBSD: print.c,v 1.127 2016/12/12 20:35:36 christos Exp $	*/
+/*	$NetBSD: print.c,v 1.132 2019/06/19 21:25:50 kamil Exp $	*/
 
 /*
  * Copyright (c) 2000, 2007 The NetBSD Foundation, Inc.
@@ -63,7 +63,7 @@
 #if 0
 static char sccsid[] = "@(#)print.c	8.6 (Berkeley) 4/16/94";
 #else
-__RCSID("$NetBSD: print.c,v 1.127 2016/12/12 20:35:36 christos Exp $");
+__RCSID("$NetBSD: print.c,v 1.132 2019/06/19 21:25:50 kamil Exp $");
 #endif
 #endif /* not lint */
 
@@ -103,6 +103,11 @@ static void  strprintorsetwidth(VAR *, const char *, enum mode);
 static time_t now;
 
 #define	min(a,b)	((a) <= (b) ? (a) : (b))
+
+/* pre-NetBSD 5.x support. */
+#ifndef LSDEAD
+#define LSDEAD 6
+#endif
 
 static int
 iwidth(u_int64_t v)
@@ -629,7 +634,7 @@ pri(struct pinfo *pi, VARENT *ve, enum mode mode)
 }
 
 void
-uname(struct pinfo *pi, VARENT *ve, enum mode mode)
+usrname(struct pinfo *pi, VARENT *ve, enum mode mode)
 {
 	struct kinfo_proc2 *k = pi->ki;
 	VAR *v;
@@ -927,22 +932,11 @@ wchan(struct pinfo *pi, VARENT *ve, enum mode mode)
 {
 	struct kinfo_lwp *l = pi->li;
 	VAR *v;
-	char *buf;
 
 	v = ve->var;
-	if (l->l_wchan) {
-		if (l->l_wmesg[0]) {
-			strprintorsetwidth(v, l->l_wmesg, mode);
-			v->width = min(v->width, KI_WMESGLEN);
-		} else {
-			(void)asprintf(&buf, "%-*" PRIx64, v->width,
-			    l->l_wchan);
-			if (buf == NULL)
-				err(1, "%s", "");
-			strprintorsetwidth(v, buf, mode);
-			v->width = min(v->width, KI_WMESGLEN);
-			free(buf);
-		}
+	if (l->l_wmesg[0]) {
+		strprintorsetwidth(v, l->l_wmesg, mode);
+		v->width = min(v->width, KI_WMESGLEN);
 	} else {
 		if (mode == PRINTMODE)
 			(void)printf("%-*s", v->width, "-");
@@ -1333,7 +1327,7 @@ printval(void *bp, VAR *v, enum mode mode)
 		(void)printf(ofmt, width, CHK_INF127(GET(u_int64_t)));
 		return;
 	default:
-		errx(1, "unknown type %d", v->type);
+		errx(EXIT_FAILURE, "unknown type %d", v->type);
 	}
 #undef GET
 #undef CHK_INF127

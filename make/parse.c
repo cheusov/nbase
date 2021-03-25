@@ -1,4 +1,4 @@
-/*	$NetBSD: parse.c,v 1.225 2017/04/17 13:29:07 maya Exp $	*/
+/*	$NetBSD: parse.c,v 1.232 2019/04/09 18:28:10 sjg Exp $	*/
 
 /*
  * Copyright (c) 1988, 1989, 1990, 1993
@@ -69,14 +69,14 @@
  */
 
 #ifndef MAKE_NATIVE
-static char rcsid[] = "$NetBSD: parse.c,v 1.225 2017/04/17 13:29:07 maya Exp $";
+static char rcsid[] = "$NetBSD: parse.c,v 1.232 2019/04/09 18:28:10 sjg Exp $";
 #else
 #include <sys/cdefs.h>
 #ifndef lint
 #if 0
 static char sccsid[] = "@(#)parse.c	8.3 (Berkeley) 3/19/94";
 #else
-__RCSID("$NetBSD: parse.c,v 1.225 2017/04/17 13:29:07 maya Exp $");
+__RCSID("$NetBSD: parse.c,v 1.232 2019/04/09 18:28:10 sjg Exp $");
 #endif
 #endif /* not lint */
 #endif
@@ -365,9 +365,6 @@ static void ParseHasCommands(void *);
 static void ParseDoInclude(char *);
 static void ParseSetParseFile(const char *);
 static void ParseSetIncludedFile(void);
-#ifdef SYSVINCLUDE
-static void ParseTraditionalInclude(char *);
-#endif
 #ifdef GMAKEEXPORT
 static void ParseGmakeExport(char *);
 #endif
@@ -481,7 +478,7 @@ static struct loadedfile *
 loadfile(const char *path, int fd)
 {
 	struct loadedfile *lf;
-	long pagesize;
+	static long pagesize = 0;
 	ssize_t result;
 	size_t bufpos;
 
@@ -503,7 +500,8 @@ loadfile(const char *path, int fd)
 
 	if (load_getsize(fd, &lf->len) == SUCCESS) {
 		/* found a size, try mmap */
-		pagesize = sysconf(_SC_PAGESIZE);
+		if (pagesize == 0)
+			pagesize = sysconf(_SC_PAGESIZE);
 		if (pagesize <= 0) {
 			pagesize = 0x1000;
 		}
@@ -678,21 +676,32 @@ ParseVErrorInternal(FILE *f, const char *cfname, size_t clineno, int type,
 	if (cfname != NULL) {
 		(void)fprintf(f, "\"");
 		if (*cfname != '/' && strcmp(cfname, "(stdin)") != 0) {
-			char *cp;
-			const char *dir;
+			char *cp, *cp2;
+			const char *dir, *fname;
 
 			/*
 			 * Nothing is more annoying than not knowing
-			 * which Makefile is the culprit.
+			 * which Makefile is the culprit; we try ${.PARSEDIR}
+			 * and apply realpath(3) if not absolute.
 			 */
 			dir = Var_Value(".PARSEDIR", VAR_GLOBAL, &cp);
-			if (dir == NULL || *dir == '\0' ||
-			    (*dir == '.' && dir[1] == '\0'))
-				dir = Var_Value(".CURDIR", VAR_GLOBAL, &cp);
 			if (dir == NULL)
 				dir = ".";
-
-			(void)fprintf(f, "%s/%s", dir, cfname);
+			if (*dir != '/') {
+				dir = cp2 = realpath(dir, NULL);
+				free(cp);
+				cp = cp2; /* cp2 set to NULL by Var_Value */
+			}
+			fname = Var_Value(".PARSEFILE", VAR_GLOBAL, &cp2);
+			if (fname == NULL) {
+				if ((fname = strrchr(cfname, '/')))
+					fname++;
+				else
+					fname = cfname;
+			}
+			(void)fprintf(f, "%s/%s", dir, fname);
+			free(cp2);
+			free(cp);
 		} else
 			(void)fprintf(f, "%s", cfname);
 
@@ -703,6 +712,8 @@ ParseVErrorInternal(FILE *f, const char *cfname, size_t clineno, int type,
 	(void)vfprintf(f, fmt, ap);
 	(void)fprintf(f, "\n");
 	(void)fflush(f);
+	if (type == PARSE_INFO)
+		return;
 	if (type == PARSE_FATAL || parseWarnFatal)
 		fatals += 1;
 	if (parseWarnFatal && !fatal_warning_error_printed) {
@@ -795,7 +806,7 @@ ParseMessage(char *line)
 
     switch(*line) {
     case 'i':
-	mtype = 0;
+	mtype = PARSE_INFO;
 	break;
     case 'w':
 	mtype = PARSE_WARNING;
@@ -1742,7 +1753,8 @@ ParseDoDependency(char *line)
     }
 
 out:
-    assert(paths == NULL);
+    if (paths)
+	Lst_Destroy(paths, NULL);
     if (curTargs)
 	    Lst_Destroy(curTargs, NULL);
 }
@@ -2501,7 +2513,72 @@ Parse_SetInput(const char *name, int line, int fd,
     ParseSetParseFile(name);
 }
 
+/*-
+ *-----------------------------------------------------------------------
+ * IsInclude --
+ *	Check if the line is an include directive
+ *
+ * Results:
+ *	TRUE if it is.
+ *
+ * Side Effects:
+ *	None
+ *
+ *-----------------------------------------------------------------------
+ */
+static Boolean
+IsInclude(const char *line, Boolean sysv)
+{
+	static const char inc[] = "include";
+	static const size_t inclen = sizeof(inc) - 1;
+
+	// 'd' is not valid for sysv
+	int o = strchr(&("ds-"[sysv]), *line) != NULL;
+
+	if (strncmp(line + o, inc, inclen) != 0)
+		return FALSE;
+
+	// Space is not mandatory for BSD .include
+	return !sysv || isspace((unsigned char)line[inclen + o]);
+}
+
+
 #ifdef SYSVINCLUDE
+/*-
+ *-----------------------------------------------------------------------
+ * IsSysVInclude --
+ *	Check if the line is a SYSV include directive
+ *
+ * Results:
+ *	TRUE if it is.
+ *
+ * Side Effects:
+ *	None
+ *
+ *-----------------------------------------------------------------------
+ */
+static Boolean
+IsSysVInclude(const char *line)
+{
+	const char *p;
+
+	if (!IsInclude(line, TRUE))
+		return FALSE;
+
+	/* Avoid interpeting a dependency line as an include */
+	for (p = line; (p = strchr(p, ':')) != NULL;) {
+		if (*++p == '\0') {
+			/* end of line -> dependency */
+			return FALSE;
+		}
+		if (*p == ':' || isspace((unsigned char)*p)) {
+			/* :: operator or ': ' -> dependency */
+			return FALSE;
+		}
+	}
+	return TRUE;
+}
+
 /*-
  *---------------------------------------------------------------------
  * ParseTraditionalInclude  --
@@ -3001,9 +3078,7 @@ Parse_File(const char *name, int fd)
 		for (cp = line + 1; isspace((unsigned char)*cp); cp++) {
 		    continue;
 		}
-		if (strncmp(cp, "include", 7) == 0 ||
-			((cp[0] == 'd' || cp[0] == 's' || cp[0] == '-') &&
-			    strncmp(&cp[1], "include", 7) == 0)) {
+		if (IsInclude(cp, FALSE)) {
 		    ParseDoInclude(cp);
 		    continue;
 		}
@@ -3065,12 +3140,7 @@ Parse_File(const char *name, int fd)
 	    }
 
 #ifdef SYSVINCLUDE
-	    if (((strncmp(line, "include", 7) == 0 &&
-		    isspace((unsigned char) line[7])) ||
-			((line[0] == 's' || line[0] == '-') &&
-			    strncmp(&line[1], "include", 7) == 0 &&
-			    isspace((unsigned char) line[8]))) &&
-		    strchr(line, ':') == NULL) {
+	    if (IsSysVInclude(line)) {
 		/*
 		 * It's an S3/S5-style "include".
 		 */

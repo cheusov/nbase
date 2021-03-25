@@ -1,4 +1,4 @@
-/*	$NetBSD: csplit.c,v 1.6 2011/08/31 13:35:46 joerg Exp $	*/
+/*	$NetBSD: csplit.c,v 1.7 2017/07/30 23:02:53 cheusov Exp $	*/
 /*	$FreeBSD: src/usr.bin/csplit/csplit.c,v 1.9 2004/03/22 11:15:03 tjr Exp$	*/
 
 /*-
@@ -53,7 +53,7 @@
 
 #include <sys/cdefs.h>
 #ifndef lint
-__RCSID("$NetBSD: csplit.c,v 1.6 2011/08/31 13:35:46 joerg Exp $");
+__RCSID("$NetBSD: csplit.c,v 1.7 2017/07/30 23:02:53 cheusov Exp $");
 #endif
 
 #include <sys/types.h>

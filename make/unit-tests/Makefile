@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.52.8.1 2018/06/09 15:35:38 martin Exp $
+# $NetBSD: Makefile,v 1.53 2018/05/24 00:25:44 christos Exp $
 #
 # Unit tests for make(1)
 # The main targets are:

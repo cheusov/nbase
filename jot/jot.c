@@ -1,4 +1,4 @@
-/*	$NetBSD: jot.c,v 1.25 2009/04/12 11:19:18 lukem Exp $	*/
+/*	$NetBSD: jot.c,v 1.27 2019/02/03 03:19:29 mrg Exp $	*/
 
 /*-
  * Copyright (c) 1993
@@ -39,7 +39,7 @@ __COPYRIGHT("@(#) Copyright (c) 1993\
 #if 0
 static char sccsid[] = "@(#)jot.c	8.1 (Berkeley) 6/6/93";
 #endif
-__RCSID("$NetBSD: jot.c,v 1.25 2009/04/12 11:19:18 lukem Exp $");
+__RCSID("$NetBSD: jot.c,v 1.27 2019/02/03 03:19:29 mrg Exp $");
 #endif /* not lint */
 
 /*
@@ -194,6 +194,7 @@ getargs(int argc, char *argv[])
 				    argv[3]);
 			have |= STEP;
 		}
+		/* FALLTHROUGH */
 	case 3:
 		if (!is_default(argv[2])) {
 			if (!sscanf(argv[2], "%lf", &ender))
@@ -202,6 +203,7 @@ getargs(int argc, char *argv[])
 			if (prec < 0)
 				n = getprec(argv[2]);
 		}
+		/* FALLTHROUGH */
 	case 2:
 		if (!is_default(argv[1])) {
 			if (!sscanf(argv[1], "%lf", &begin))
@@ -212,6 +214,7 @@ getargs(int argc, char *argv[])
 			if (n > prec)		/* maximum precision */
 				prec = n;
 		}
+		/* FALLTHROUGH */
 	case 1:
 		if (!is_default(argv[0])) {
 			reps = strtoul(argv[0], &ep, 0);
@@ -220,19 +223,17 @@ getargs(int argc, char *argv[])
 				    argv[0]);
 			have |= REPS;
 		}
-		break;
+		/* FALLTHROUGH */
 	case 0:
-		usage();
 		break;
 	default:
 		errx(EXIT_FAILURE,
 		    "Too many arguments.  What do you mean by %s?", argv[4]);
 	}
+	getformat();
 
 	if (prec == -1)
 		prec = 0;
-
-	getformat();
 
 	if (randomize) {
 		/* 'step' is the seed here, use pseudo-random default */

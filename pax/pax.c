@@ -1,4 +1,4 @@
-/*	$NetBSD: pax.c,v 1.47 2011/08/29 14:47:48 joerg Exp $	*/
+/*	$NetBSD: pax.c,v 1.49 2019/04/24 17:27:08 cheusov Exp $	*/
 
 /*-
  * Copyright (c) 1992 Keith Muller.
@@ -468,28 +468,28 @@ gen_init(void)
 
 	if ((sigaction(SIGHUP, &n_hand, &o_hand) < 0) &&
 	    (o_hand.sa_handler == SIG_IGN) &&
-	    (sigaction(SIGHUP, &o_hand, &o_hand) < 0))
+	    (sigaction(SIGHUP, &o_hand, NULL) < 0))
 		goto out;
 
 	if ((sigaction(SIGTERM, &n_hand, &o_hand) < 0) &&
 	    (o_hand.sa_handler == SIG_IGN) &&
-	    (sigaction(SIGTERM, &o_hand, &o_hand) < 0))
+	    (sigaction(SIGTERM, &o_hand, NULL) < 0))
 		goto out;
 
 	if ((sigaction(SIGINT, &n_hand, &o_hand) < 0) &&
 	    (o_hand.sa_handler == SIG_IGN) &&
-	    (sigaction(SIGINT, &o_hand, &o_hand) < 0))
+	    (sigaction(SIGINT, &o_hand, NULL) < 0))
 		goto out;
 
 	if ((sigaction(SIGQUIT, &n_hand, &o_hand) < 0) &&
 	    (o_hand.sa_handler == SIG_IGN) &&
-	    (sigaction(SIGQUIT, &o_hand, &o_hand) < 0))
+	    (sigaction(SIGQUIT, &o_hand, NULL) < 0))
 		goto out;
 
 #ifdef SIGXCPU
 	if ((sigaction(SIGXCPU, &n_hand, &o_hand) < 0) &&
 	    (o_hand.sa_handler == SIG_IGN) &&
-	    (sigaction(SIGXCPU, &o_hand, &o_hand) < 0))
+	    (sigaction(SIGXCPU, &o_hand, NULL) < 0))
 		goto out;
 #endif
 	n_hand.sa_handler = SIG_IGN;

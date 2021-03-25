@@ -1,4 +1,4 @@
-/*	$NetBSD: basename.c,v 1.15 2011/08/29 14:24:03 joerg Exp $	*/
+/*	$NetBSD: basename.c,v 1.16 2019/02/01 08:29:04 mrg Exp $	*/
 
 /*-
  * Copyright (c) 1991, 1993, 1994
@@ -39,7 +39,7 @@ __COPYRIGHT("@(#) Copyright (c) 1991, 1993, 1994\
 #if 0
 static char sccsid[] = "@(#)basename.c	8.4 (Berkeley) 5/4/95";
 #endif
-__RCSID("$NetBSD: basename.c,v 1.15 2011/08/29 14:24:03 joerg Exp $");
+__RCSID("$NetBSD: basename.c,v 1.16 2019/02/01 08:29:04 mrg Exp $");
 #endif /* not lint */
 
 #include <libgen.h>

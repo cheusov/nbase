@@ -90,14 +90,13 @@ main(int argc, char *argv[])
 	Gflag = gflag = nflag = pflag = rflag = uflag = 0;
 
 	nbsetprogname(argv[0]);
-	const char *progname = getprogname();
-	if (strcmp(progname, "groups") == 0) {
+	if (strcmp(getprogname(), "groups") == 0) {
 		Gflag = 1;
 		nflag = 1;
 		opts = "";
 		if (argc > 2)
 			usage();
-	} else if (strcmp(progname, "whoami") == 0) {
+	} else if (strcmp(getprogname(), "whoami") == 0) {
 		uflag = 1;
 		nflag = 1;
 		opts = "";

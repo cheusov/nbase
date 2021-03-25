@@ -1,4 +1,4 @@
-/*	$NetBSD: mdb.h,v 1.9 2012/03/06 16:55:18 mbalmer Exp $	*/
+/*	$NetBSD: mdb.h,v 1.12 2019/06/23 22:46:41 christos Exp $	*/
 
 /*
  * Copyright 1997 Piermont Information Systems Inc.
@@ -81,18 +81,20 @@ struct menu_info {
 	int numopt;
 	int name_is_code;
 	optn_info *optns;
+	action expact;
 	action postact;
 	action exitact;
 };
 
 /* defines for mopt */
-#define MC_NOEXITOPT 1
-#define MC_NOBOX 2
-#define MC_SCROLL 4
-#define MC_NOSHORTCUT 8
-#define MC_NOCLEAR 16
-#define MC_DFLTEXIT 32
-#define MC_ALWAYS_SCROLL 64
-#define MC_SUBMENU 128
-#define MC_VALID 0x10000
+#define MC_NOEXITOPT		0x001
+#define MC_NOBOX		0x002
+#define MC_SCROLL		0x004
+#define MC_NOSHORTCUT		0x008
+#define MC_NOCLEAR		0x010
+#define MC_DFLTEXIT		0x020
+#define MC_ALWAYS_SCROLL	0x040
+#define MC_SUBMENU 		0x080
+#define	MC_CONTINUOUS 		0x100
+#define MC_VALID		0x200
 #endif

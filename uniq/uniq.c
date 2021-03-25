@@ -1,4 +1,4 @@
-/*	$NetBSD: uniq.c,v 1.20 2016/10/16 06:17:51 abhinav Exp $	*/
+/*	$NetBSD: uniq.c,v 1.22 2019/04/23 17:35:10 christos Exp $	*/
 
 /*
  * Copyright (c) 1989, 1993
@@ -42,7 +42,7 @@ __COPYRIGHT("@(#) Copyright (c) 1989, 1993\
 #if 0
 static char sccsid[] = "@(#)uniq.c	8.3 (Berkeley) 5/4/95";
 #endif
-__RCSID("$NetBSD: uniq.c,v 1.20 2016/10/16 06:17:51 abhinav Exp $");
+__RCSID("$NetBSD: uniq.c,v 1.22 2019/04/23 17:35:10 christos Exp $");
 #endif /* not lint */
 
 #include <errno.h>
@@ -79,11 +79,8 @@ main (int argc, char *argv[])
 	setprogname(argv[0]);
 	ifp = ofp = NULL;
 	obsolete(argv);
-	while ((ch = getopt(argc, argv, "-cdf:s:u")) != -1)
+	while ((ch = getopt(argc, argv, "cdf:s:u")) != -1)
 		switch (ch) {
-		case '-':
-			--optind;
-			goto done;
 		case 'c':
 			cflag = 1;
 			break;
@@ -109,7 +106,7 @@ main (int argc, char *argv[])
 			usage();
 	}
 
-done:	argc -= optind;
+	argc -= optind;
 	argv +=optind;
 
 	switch(argc) {

@@ -1,4 +1,4 @@
-/*	$NetBSD: util.c,v 1.18 2014/07/14 21:56:03 christos Exp $	*/
+/*	$NetBSD: util.c,v 1.19 2018/02/05 22:14:26 mrg Exp $	*/
 /*	$FreeBSD: head/usr.bin/grep/util.c 211496 2010-08-19 09:28:59Z des $	*/
 /*	$OpenBSD: util.c,v 1.39 2010/07/02 22:18:03 tedu Exp $	*/
 
@@ -34,7 +34,7 @@
 #endif
 
 #include <sys/cdefs.h>
-__RCSID("$NetBSD: util.c,v 1.18 2014/07/14 21:56:03 christos Exp $");
+__RCSID("$NetBSD: util.c,v 1.19 2018/02/05 22:14:26 mrg Exp $");
 
 #include <sys/stat.h>
 #include <sys/types.h>

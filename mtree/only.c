@@ -1,4 +1,4 @@
-/*	$NetBSD: only.c,v 1.2.26.1 2017/09/11 05:22:18 snj Exp $	*/
+/*	$NetBSD: only.c,v 1.3 2017/09/07 04:04:13 nakayama Exp $	*/
 
 /*-
  * Copyright (c) 2013 The NetBSD Foundation, Inc.
@@ -38,7 +38,7 @@
 #include <sys/cdefs.h>
 
 #if defined(__RCSID) && !defined(lint)
-__RCSID("$NetBSD: only.c,v 1.2.26.1 2017/09/11 05:22:18 snj Exp $");
+__RCSID("$NetBSD: only.c,v 1.3 2017/09/07 04:04:13 nakayama Exp $");
 #endif
 
 #include <sys/param.h>

@@ -40,7 +40,7 @@ __COPYRIGHT("@(#) Copyright (c) 1991, 1993\
 #if 0
 static char sccsid[] = "@(#)tail.c	8.1 (Berkeley) 6/6/93";
 #endif
-__RCSID("$NetBSD: tail.c,v 1.17 2013/01/31 23:09:06 wiz Exp $");
+__RCSID("$NetBSD: tail.c,v 1.20 2018/03/06 03:33:26 eadler Exp $");
 #endif /* not lint */
 
 #include <sys/types.h>
@@ -71,6 +71,8 @@ main(int argc, char *argv[])
 	enum STYLE style;
 	int ch, first;
 	char *p;
+	int qflag = 0;
+	int vflag = 0;
 
 	setprogname(argv[0]);
 	off = 0;
@@ -109,32 +111,48 @@ main(int argc, char *argv[])
 
 	obsolete(argv);
 	style = NOTSET;
-	while ((ch = getopt(argc, argv, "Fb:c:fn:r")) != -1)
-		switch(ch) {
-		case 'F':
-			fflag = 2;
-			break;
-		case 'b':
-			ARG(512, FBYTES, RBYTES);
-			break;
-		case 'c':
-			ARG(1, FBYTES, RBYTES);
-			break;
-		case 'f':
-			fflag = 1;
-			break;
-		case 'n':
-			ARG(1, FLINES, RLINES);
-			break;
-		case 'r':
-			rflag = 1;
-			break;
-		case '?':
-		default:
-			usage();
-		}
-	argc -= optind;
-	argv += optind;
+	if (strcmp(getprogname(), "tac") == 0) {
+		qflag = 1;
+		vflag = 0;
+		rflag = 1;
+		argc -= 1;
+		argv += 1;
+	} else { /* tail */
+		while ((ch = getopt(argc, argv, "Fb:c:fn:rqv")) != -1)
+			switch(ch) {
+			case 'F':
+				fflag = 2;
+				break;
+			case 'b':
+				ARG(512, FBYTES, RBYTES);
+				break;
+			case 'c':
+				ARG(1, FBYTES, RBYTES);
+				break;
+			case 'f':
+				fflag = 1;
+				break;
+			case 'n':
+				ARG(1, FLINES, RLINES);
+				break;
+			case 'r':
+				rflag = 1;
+				break;
+			case 'q':
+				qflag = 1;
+				vflag = 0;
+				break;
+			case 'v':
+				qflag = 0;
+				vflag = 1;
+				break;
+			case '?':
+			default:
+				usage();
+			}
+		argc -= optind;
+		argv += optind;
+	}
 
 	if (fflag && argc > 1)
 		xerrx(1,
@@ -173,7 +191,7 @@ main(int argc, char *argv[])
 				ierr();
 				continue;
 			}
-			if (argc > 1) {
+			if (vflag || (qflag == 0 && argc > 1)) {
 				(void)printf("%s==> %s <==\n",
 				    first ? "" : "\n", fname);
 				first = 0;
@@ -221,7 +239,7 @@ static void
 obsolete(char *argv[])
 {
 	char *ap, *p, *t;
-	int len;
+	size_t len;
 	char *start;
 
 	while ((ap = *++argv) != NULL) {
@@ -303,7 +321,7 @@ static void
 usage(void)
 {
 	(void)fprintf(stderr,
-	    "Usage: %s [-f | -F | -r] [-b # | -c # | -n #] [file ...]\n",
+	    "Usage: %s [-qv] [-f | -F | -r] [-b # | -c # | -n #] [file ...]\n",
 	    getprogname());
 	exit(1);
 }

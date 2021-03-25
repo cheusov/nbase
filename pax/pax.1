@@ -1,4 +1,4 @@
-.\"    $NetBSD: pax.1,v 1.68 2016/08/12 01:52:22 sevan Exp $
+.\"    $NetBSD: pax.1,v 1.71 2019/03/19 00:36:14 gutteridge Exp $
 .\"
 .\" Copyright (c) 1992 Keith Muller.
 .\" Copyright (c) 1992, 1993
@@ -33,7 +33,7 @@
 .\"
 .\"	@(#)pax.1	8.4 (Berkeley) 4/18/94
 .\"
-.Dd August 12, 2016
+.Dd March 19, 2019
 .Dt PAX 1
 .Os
 .Sh NAME
@@ -572,20 +572,21 @@ using the syntax of the
 .Xr ed 1
 utility regular expressions.
 The format of these regular expressions are:
-.Dl /old/new/[gp]
+.Dl /old/new/[gps]
 As in
 .Xr ed 1 ,
 .Cm old
 is a basic regular expression and
 .Cm new
-can contain an ampersand (\*[Am]), \en (where n is a digit) back-references,
+can contain an ampersand (&), \en (where n is a digit) back-references,
 or subexpression matching.
 The
 .Cm old
 string may also contain
 .Aq Dv newline
 characters.
-Any non-null character can be used as a delimiter (/ is shown here).
+Any non-null character except a backslash (\\) can be used as a delimiter
+(/ is shown here).
 Multiple
 .Fl s
 expressions can be specified.
@@ -604,9 +605,14 @@ The optional trailing
 will cause the final result of a successful substitution to be written to
 .Dv standard error
 in the following format:
-.Dl Ao "original pathname" Ac \*[Gt]\*[Gt] Ao "new pathname" Ac
+.Dl Ao "original pathname" Ac >> Ao "new pathname" Ac
 File or archive member names that substitute to the empty string
 are not selected and will be skipped.
+The substitutions are applied by default to the destination hard and symbolic
+links.
+The optional trailing
+.Cm s
+prevents the substitutions from being performed on symbolic link destinations.
 .It Fl t
 Reset the access times of any file or directory read or accessed by
 .Nm
