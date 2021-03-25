@@ -11,7 +11,15 @@ COPTS.xinstall.c += -Wno-format-nonliteral
 
 PROGNAME ?=	install
 
-.include <mkc.init.mk>
+MKC_CHECK_FUNCS4     +=	pwcache_groupdb:grp.h
+
+.include <mkc.configure.mk>
+
+.if ${HAVE_FUNC4.pwcache_groupdb.grp_h:U1}
+SRCS +=		getid.c
+.else
+SRCS +=		fake_getid.c
+.endif
 
 CFLAGS.check   +=	-Wno-error=deprecated-declarations
 CFLAGS.check   +=	-Wno-error=unused-result # write(...) on glibc/Linux-es
