@@ -78,13 +78,17 @@ main(int argc, char *argv[])
 
 	Gflag = gflag = nflag = pflag = rflag = uflag = 0;
 
-	if (strcmp(getprogname(), "groups") == 0) {
+	const char *progname = getprogname();
+	if (progname[0] == 'n' && progname[1] == 'b' && progname[2] == '-'){
+		progname += 3;
+	}
+	if (strcmp(progname, "groups") == 0) {
 		Gflag = 1;
 		nflag = 1;
 		opts = "";
 		if (argc > 2)
 			usage();
-	} else if (strcmp(getprogname(), "whoami") == 0) {
+	} else if (strcmp(progname, "whoami") == 0) {
 		uflag = 1;
 		nflag = 1;
 		opts = "";
