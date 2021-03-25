@@ -67,6 +67,17 @@ static struct passwd *who(char *);
 static int maxgroups;
 static gid_t *groups;
 
+static void nbsetprogname(const char *progname)
+{
+	setprogname(progname);
+	const char *p = getprogname();
+	if (p[0] == 'n' && p[1] == 'b')
+		p += 2;
+	if (p[0] == '-')
+		p += 1;
+	setprogname(p);
+}
+
 int
 main(int argc, char *argv[])
 {
@@ -78,10 +89,8 @@ main(int argc, char *argv[])
 
 	Gflag = gflag = nflag = pflag = rflag = uflag = 0;
 
+	nbsetprogname(argv[0]);
 	const char *progname = getprogname();
-	if (progname[0] == 'n' && progname[1] == 'b' && progname[2] == '-'){
-		progname += 3;
-	}
 	if (strcmp(progname, "groups") == 0) {
 		Gflag = 1;
 		nflag = 1;
