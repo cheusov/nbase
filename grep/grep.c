@@ -314,6 +314,7 @@ main(int argc, char *argv[])
 	unsigned long long l;
 	unsigned int aargc, eargc, i, j;
 	int c, lastc, needpattern, newarg, prevoptind;
+	const char *progname;
 
 	setlocale(LC_ALL, "");
 	setprogname(argv[0]);
@@ -325,7 +326,11 @@ main(int argc, char *argv[])
 	/* Check what is the program name of the binary.  In this
 	   way we can have all the funcionalities in one binary
 	   without the need of scripting and using ugly hacks. */
-	switch (getprogname()[0]) {
+	progname = getprogname();
+	if (progname[0] == 'n' && progname[1] == 'b' && progname[2] == '-'){
+		progname += 3;
+	}
+	switch (progname[0]) {
 	case 'e':
 		grepbehave = GREP_EXTENDED;
 		break;
