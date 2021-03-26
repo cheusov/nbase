@@ -25,7 +25,7 @@ MKC_CHECK_HEADER_FILES  = pty.h fts.h sys/sysctl.h term.h
 MKC_CHECK_HEADERS  =	tzfile.h termcap.h
 MKC_CHECK_FUNCLIBS =	setupterm:terminfo
 MKC_CHECK_FUNCS5   =	openpty:pty.h openpty:util.h dbopen:${USE_DB_HEADER}
-MKC_CHECK_FUNCS4   =	getgrouplist:grp.h getgrouplist:unistd.h
+MKC_CHECK_FUNCS4   =	getgrouplist:grp.h getgrouplist:unistd.h clock_nanosleep:time.h
 MKC_CHECK_FUNCS3   =	logwtmp:util.h timer_create:signal.h,time.h
 MKC_CHECK_FUNCS2   =	getdomainname:unistd.h makedev:sys/sysmacros.h \
   makedev:sys/types.h flock:fcntl.h flock:sys/file.h
@@ -112,6 +112,13 @@ PROJECTS :=	${PROJECTS:N${t}}
 .if ${HAVE_FUNC1.signalname.signal_h:U1} != 1
 .  for t in kill
    WARN_MSG += "Exclude ${t} due to missing signalname(3) in signal.h"
+PROJECTS :=	${PROJECTS:N${t}}
+.  endfor
+.endif
+
+.if ${HAVE_FUNC4.clock_nanosleep.time_h:U1} != 1
+.  for t in sleep
+   WARN_MSG += "Exclude ${t} due to missing clock_nanosleep(2) in time.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
