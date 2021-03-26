@@ -1,15 +1,17 @@
-# TBD
-#   calendar chio date db gcore getaddrinfo getent iconv infocmp
-#   ipcs ipcrm lock logger mt nbperf stat stty time touch uname
-#   uuidgen vgrind whereis xlint disklabel dump apropos biff cvslatest
-#   dc finger gencat gettext ipcrm ipcs ldd? locale (whatis man) (mesg
-#   talk write) mkesdb mklocale mkubootimage nbperf nbsvtool newsyslog
-#   pagesize pathchk progress sortinfo spell tic (tip, cu) vacation
-#   unlink usr.sbin
+# TBD:
+#
+# biff calendar catman chio chroot crunchgen cu cvslatest date db dc
+# df disklabel dump finger gcore gencat getaddrinfo getent gettext
+# iconv inetd infocmp ipcrm ipcrm ipcs ipcs ldd?  link locale lock
+# logger makenabdb man) (mesg mkesdb mklocale mkubootimage mt nbperf
+# nbperf nbsvtool newsyslog pagesize pathchk progress service sortinfo
+# spell stat stty talk tic time (tip, touch uname unlink usr.sbin
+# uuidgen vacation vgrind (whatis whereis write) xlint
 
 # Do not want to port:
-#   ftp rcmd rcp rdist rup rwho rwall ruptime rusers rlogin rsh
-#   bdes csh db ksh sh at checknr crunch locate
+#
+#   ftp rcmd rcp rdist rup rwho rwall ruptime rusers rlogin rsh bdes
+#   csh db ksh sh at checknr locate
 
 # Impossible to port?
 #   chflags(only to some BSD?) ps
