@@ -19,6 +19,8 @@ MKC_FEATURES +=	arc4random bswap dprintf efun errc fgetln fparseln \
    humanize_number pwdgrp raise_default_signal \
    reallocarray strndup strsep vis
 
+MKINSTALL=no
+
 .include "../mk/hacks.mk"
 
 .include "../mk/imp.f_parsedate.mk"
