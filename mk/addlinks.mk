@@ -23,11 +23,11 @@ SYMLINKS +=	${from:S,^${DESTDIR},,} ${LBINDIR}/${USE_NB_PREFIX}${to:T}
 .endfor
 
 .for m in ${MAN:U${PROG}.1}
-SYMLINKS +=	${MANDIR}/man${m:E}/${m} ${LMANDIR}/man${m:E}/${USE_NB_PREFIX}${m}
+SYMLINKS +=	${MANDIR}/man${m:E}/${m}${MCOMPRESSSUFFIX} ${LMANDIR}/man${m:E}/${USE_NB_PREFIX}${m}${MCOMPRESSSUFFIX}
 .endfor
 
 .for m mto in ${MLINKS}
-SYMLINKS +=	${MANDIR}/man${m:E}/${m} ${LMANDIR}/man${m:E}/${USE_NB_PREFIX}${mto}
+SYMLINKS +=	${MANDIR}/man${m:E}/${m}${MCOMPRESSSUFFIX} ${LMANDIR}/man${m:E}/${USE_NB_PREFIX}${mto}${MCOMPRESSSUFFIX}
 .endfor
 
 .endif # LINKSPREFIX
