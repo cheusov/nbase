@@ -1,4 +1,16 @@
 ======================================================================
+Version 7.0.0.13, by Aleksey Cheusov, Sat, 27 Mar 2021 20:36:32 +0300
+
+ Fixes for LINKSPREFIX (support for MANZ)
+
+======================================================================
+Version 7.0.0.12, by Aleksey Cheusov, Thu, 25 Mar 2021 16:13:44 +0300
+
+ The following utilities correctly handle optional "nb-" and "nb"
+ prefixes: id, groups, whoami, {,e,f,z,ze,zf}grep, {,z}compress,
+ cksum, md5, sha1, etc., test, [, which whereis, pax, cpio,
+
+======================================================================
 Version 7.0.0.11, by Aleksey Cheusov, Mon, 22 Mar 2021 11:21:43 +0300
 
  Enable "ul" and "tabs" on Linux/glibc.
