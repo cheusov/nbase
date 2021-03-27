@@ -1,8 +1,9 @@
 ======================================================================
-Version 7.0.0.12, by Aleksey Cheusov, Thu, 25 Mar 2021 13:34:01 +0300
+Version 8.0.0.1, by Aleksey Cheusov, Sat, 27 Mar 2021 23:18:53 +0300
 
- grep: correctly handle optional "nb-" prefix, that it, nb-egrep,
- nb-fgrep etc. work correctly.
+ When LINKSPREFIX is set:
+   - programs prefix if "nb" instead of "nb-"
+   - MANZ is handled correctly
 
 ======================================================================
 Version 7.0.0.11, by Aleksey Cheusov, Mon, 22 Mar 2021 11:21:43 +0300
