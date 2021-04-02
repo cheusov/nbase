@@ -64,7 +64,7 @@ __RCSID("$NetBSD: gen_subs.c,v 1.37 2018/11/30 00:53:11 christos Exp $");
 #include "pax.h"
 #include "extern.h"
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_strmode.h"
 #include "mkc_pwdgrp.h"
 

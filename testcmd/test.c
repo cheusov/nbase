@@ -10,7 +10,7 @@
  * This program is in the Public Domain.
  */
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_progname.h"
 #include "mkc_timecmp.h"
 #include "mkc_err.h"

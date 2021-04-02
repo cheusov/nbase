@@ -67,7 +67,7 @@ __RCSID("$NetBSD: function.c,v 1.77 2018/09/04 15:16:15 kre Exp $");
 #include "mkc_tzfile.h"
 #include "mkc_timespeccmp.h"
 #include "mkc_efun.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_getsetmode.h"
 #include "mkc_strlcpy.h"
 #include "mkc_pwdgrp.h"

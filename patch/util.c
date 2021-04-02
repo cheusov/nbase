@@ -49,7 +49,7 @@ __RCSID("$NetBSD: util.c,v 1.28 2018/06/18 18:33:31 christos Exp $");
 
 #include "mkc_strlcat.h"
 #include "mkc_strlcpy.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #include "common.h"
 #include "util.h"

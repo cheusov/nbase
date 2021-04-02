@@ -32,7 +32,7 @@
  * SUCH DAMAGE.
  */
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_pwdgrp.h"
 #include "mkc_progname.h"
 #include "mkc_getbsize.h"

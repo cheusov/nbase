@@ -54,7 +54,7 @@ __RCSID("$NetBSD: hostname.c,v 1.21 2014/02/13 12:00:29 elric Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 __dead static void usage(void);
 

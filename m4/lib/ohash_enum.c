@@ -17,7 +17,7 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "ohash_int.h"
 
 void *

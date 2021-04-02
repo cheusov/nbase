@@ -52,7 +52,7 @@ __RCSID("$NetBSD: timeout.c,v 1.4 2014/08/05 08:20:02 christos Exp $");
 
 #include "mkc_progname.h"
 #include "mkc_sys_signame.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_err.h"
 
 #define EXIT_TIMEOUT 124

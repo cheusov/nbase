@@ -70,7 +70,7 @@ __RCSID("$NetBSD: deroff.c,v 1.12 2019/02/03 03:19:29 mrg Exp $");
 #include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 #include "mkc_progname.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #include <limits.h>
 #include <stddef.h>

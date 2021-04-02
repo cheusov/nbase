@@ -52,7 +52,7 @@ __RCSID("$NetBSD: ul.c,v 1.20 2019/02/03 03:19:30 mrg Exp $");
 
 #include "mkc_posix_getopt.h"
 #include "mkc_reallocarr.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #include <errno.h>
 static void _ereallocarr(void *p, size_t n, size_t s)

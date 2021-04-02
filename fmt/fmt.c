@@ -55,7 +55,7 @@ __RCSID("$NetBSD: fmt.c,v 1.33 2017/10/13 00:11:56 christos Exp $");
 
 #include "mkc_fgetln.h"
 #include "mkc_progname.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"

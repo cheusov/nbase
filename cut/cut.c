@@ -58,7 +58,7 @@ __RCSID("$NetBSD: cut.c,v 1.29 2014/02/03 20:22:19 wiz Exp $");
 
 #include "mkc_efun.h"
 #include "mkc_fgetln.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"

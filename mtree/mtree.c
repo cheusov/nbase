@@ -57,7 +57,7 @@ __RCSID("$NetBSD: mtree.c,v 1.50 2015/01/23 02:27:01 christos Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_posix_getopt.h"
 
 #include "extern.h"

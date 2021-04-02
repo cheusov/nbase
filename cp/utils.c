@@ -64,7 +64,7 @@ __RCSID("$NetBSD: utils.c,v 1.46 2018/07/17 13:04:58 darcy Exp $");
 #include <unistd.h>
 
 #include "mkc_lchmod.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #include "extern.h"
 

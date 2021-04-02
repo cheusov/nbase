@@ -24,7 +24,7 @@ THIS SOFTWARE.
 
 /* lasciate ogne speranza, voi ch'intrate. */
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #if HAVE_NBTOOL_CONFIG_H
 #include "nbtool_config.h"

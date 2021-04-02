@@ -56,7 +56,7 @@ __RCSID("$NetBSD: display.c,v 1.25 2016/03/04 03:02:52 dholland Exp $");
 #include "hexdump.h"
 
 #include "mkc_efun.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 

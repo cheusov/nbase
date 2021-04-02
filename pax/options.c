@@ -74,7 +74,7 @@ __RCSID("$NetBSD: options.c,v 1.118 2015/12/19 18:45:52 christos Exp $");
 #endif	/* SMALL */
 
 #include "mkc_fgetln.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #ifndef _PATH_DEFTAPE
 #define _PATH_DEFTAPE "/dev/nrst0"

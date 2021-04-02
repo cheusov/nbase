@@ -59,7 +59,7 @@ __RCSID("$NetBSD: xlint.c,v 1.47 2019/04/13 15:08:49 christos Exp $");
 #include "findcc.h"
 
 #include "mkc_posix_getopt.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #define DEFAULT_PATH		_PATH_DEFPATH
 

@@ -58,7 +58,7 @@ __RCSID("$NetBSD: touch.c,v 1.33 2015/03/02 03:17:24 enami Exp $");
 #include <getopt.h>
 
 #include "mkc_progname.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_tzfile.h"
 #include "mkc_struct_stat.h"
 

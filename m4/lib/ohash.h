@@ -1,7 +1,7 @@
 #ifndef OHASH_H
 #define OHASH_H
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 /* $OpenBSD: ohash.h,v 1.8 2005/12/29 18:54:47 jaredy Exp $ */
 /* ex:ts=8 sw=4: 

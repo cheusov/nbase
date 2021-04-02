@@ -9,6 +9,6 @@
  * on July 29, 2003.
  */
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #define	_PATH_ED		"/bin/ed"

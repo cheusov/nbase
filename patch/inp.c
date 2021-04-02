@@ -50,7 +50,7 @@ __RCSID("$NetBSD: inp.c,v 1.26 2018/06/18 18:33:31 christos Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #include "common.h"
 #include "util.h"

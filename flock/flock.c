@@ -51,7 +51,7 @@ __RCSID("$NetBSD: flock.c,v 1.11 2014/08/18 09:16:35 christos Exp $");
 #include "mkc_strlcpy.h"
 #include "mkc_strlcat.h"
 #include "mkc_progname.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 static struct option flock_longopts[] = {
 	{ "debug",		no_argument,		0, 'd' },

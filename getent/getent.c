@@ -65,7 +65,7 @@ __RCSID("$NetBSD: getent.c,v 1.19 2012/03/15 02:02:23 joerg Exp $");
 #include <disktab.h>
 
 #include "mkc_posix_getopt.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 static int	usage(void) __attribute__((__noreturn__));
 static int	parsenum(const char *, unsigned long *);

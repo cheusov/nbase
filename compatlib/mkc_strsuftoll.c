@@ -60,7 +60,7 @@
  * SUCH DAMAGE.
  */
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_strsuftoll.h"
 #include "mkc_err.h"
 

@@ -9,7 +9,7 @@
 #ifndef _SYS_SHA1_H_
 #define	_SYS_SHA1_H_
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #include <sys/types.h>
 #include <stdint.h>

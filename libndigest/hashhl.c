@@ -20,7 +20,7 @@
 #include "nbtool_config.h"
 #endif
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 /*
  * Do all the name mangling before we include "namespace.h"

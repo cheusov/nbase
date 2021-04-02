@@ -47,7 +47,7 @@ __RCSID("$NetBSD: gnum4.c,v 1.10 2016/01/16 16:59:18 christos Exp $");
 #include <errno.h>
 #include <unistd.h>
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 #include "mkc_strsep.h"

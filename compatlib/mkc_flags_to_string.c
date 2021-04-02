@@ -23,7 +23,7 @@
  */
 
 #include "mkc_flags_to_string.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #if !defined(HAVE_FUNC2_FLAGS_TO_STRING_UTIL_H)
 char *flags_to_string(unsigned long flags, const char *def)
