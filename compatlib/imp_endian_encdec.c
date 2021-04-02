@@ -22,8 +22,8 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "mkc_endian_encdec.h"
-#include "mkc_macro.h"
+#include "imp_endian_encdec.h"
+#include "imp_macro.h"
 
 #ifndef HAVE_FUNC1_BE16DEC_SYS_ENDIAN_H
 uint16_t be16dec(const void *buf)

@@ -22,7 +22,7 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "mkc_bsd_signal.h"
+#include "imp_bsd_signal.h"
 
 static int sigupdatemask(int how, int mask)
 {

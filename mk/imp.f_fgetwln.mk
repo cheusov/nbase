@@ -14,7 +14,7 @@ MKC_CHECK_FUNCS2   +=	fgetwln:stdio.h
 
 .if ${.CURDIR:T} == "compatlib"
 . if ${HAVE_FUNCLIB.fgetwln:U} != 1
-SRCS +=	mkc_fgetwln.c
+SRCS +=	imp_fgetwln.c
 . endif
 .endif
 

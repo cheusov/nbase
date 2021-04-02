@@ -30,7 +30,7 @@
  */
 
 #include "mkc_progname.h"
-#include "mkc_struct_stat.h"
+#include "imp_struct_stat.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 
@@ -62,8 +62,8 @@ __RCSID("$NetBSD: utils.c,v 1.42.6.1 2016/03/03 14:27:54 martin Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_lchmod.h"
-#include "mkc_macro.h"
+#include "imp_lchmod.h"
+#include "imp_macro.h"
 
 #include "extern.h"
 

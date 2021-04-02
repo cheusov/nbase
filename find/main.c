@@ -65,6 +65,7 @@ __RCSID("$NetBSD: main.c,v 1.31 2013/01/24 17:50:08 christos Exp $");
 #endif
 
 #include "find.h"
+#include "imp_macro.h"
 
 time_t now;			/* time find was run */
 int dotfd;			/* starting directory */

@@ -53,8 +53,8 @@ __RCSID("$NetBSD: apply.c,v 1.17 2008/03/08 03:35:53 christos Exp $");
 
 #include "mkc_progname.h"
 #include "mkc_posix_getopt.h"
-#include "mkc_bsd_signal.h"
-#include "mkc_macro.h"
+#include "imp_bsd_signal.h"
+#include "imp_macro.h"
 
 static void	usage(void) __dead;
 static int	shell_system(const char *);

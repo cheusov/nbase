@@ -16,7 +16,7 @@ CLEANFILES = ${.OBJDIR}/sys/cdefs.h
 CPPFLAGS += -I. -I${.OBJDIR}
 
 MKC_FEATURES +=	arc4random bswap dprintf efun errc fgetln fparseln \
-   humanize_number pwdgrp raise_default_signal \
+   pwdgrp raise_default_signal \
    reallocarray strndup strsep vis
 
 MKINSTALL=no

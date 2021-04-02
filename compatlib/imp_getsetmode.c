@@ -32,7 +32,7 @@
  * SUCH DAMAGE.
  */
 
-#include "mkc_getsetmode.h"
+#include "imp_getsetmode.h"
 
 #if defined(LIBC_SCCS) && !defined(lint)
 #if 0

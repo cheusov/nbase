@@ -13,7 +13,7 @@ MKC_FEATURES       +=	warn
 
 .if ${.CURDIR:T} == "compatlib"
 . if ${HAVE_FUNCLIB.getbsize:U} != 1
-SRCS +=	mkc_getbsize.c
+SRCS +=	imp_getbsize.c
 . endif
 .endif
 

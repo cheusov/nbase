@@ -52,7 +52,7 @@ __RCSID("$NetBSD: tabs.c,v 1.4 2011/09/16 15:39:29 joerg Exp $");
 #include <term.h>
 #include <unistd.h>
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #define NSTOPS 20
 

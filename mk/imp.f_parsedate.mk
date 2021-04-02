@@ -13,7 +13,7 @@ MKC_CHECK_FUNCLIBS +=	parsedate:util
 
 .if ${HAVE_FUNCLIB.parsedate:U} != 1 && ${HAVE_FUNCLIB.parsedate.util:U} != 1
 . if ${.CURDIR:T} == "compatlib"
-SRCS +=	mkc_parsedate.y
+SRCS +=	imp_parsedate.y
 . endif
 .endif
 

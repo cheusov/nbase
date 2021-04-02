@@ -67,7 +67,7 @@ static const char sccsid[] = "@(#)process.c	8.6 (Berkeley) 4/20/94";
 #include "defs.h"
 #include "extern.h"
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_err.h"
 
 static SPACE HS, PS, SS, YS;

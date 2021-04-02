@@ -49,6 +49,7 @@
 #include "mkc_raise_default_signal.h"
 #include "mkc_posix_getopt.h"
 #include "mkc_err.h"
+#include "imp_macro.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -69,7 +70,7 @@ __RCSID("$NetBSD: csplit.c,v 1.6 2011/08/31 13:35:46 joerg Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 static void	 cleanup(void);
 static void	 do_lineno(const char *);

@@ -13,7 +13,7 @@ MKC_CHECK_FUNCLIBS +=	setmode getmode
 
 .if ${HAVE_FUNCLIB.setmode:U} != 1 || ${HAVE_FUNCLIB.getmode:U} != 1
 . if ${.CURDIR:T} == "compatlib"
-SRCS +=	mkc_getsetmode.c
+SRCS +=	imp_getsetmode.c
 . endif
 .endif
 

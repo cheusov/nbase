@@ -74,7 +74,7 @@ static const char sccsid[] = "@(#)main.c	8.2 (Berkeley) 1/3/94";
 #include "defs.h"
 #include "extern.h"
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_strlcat.h"
 #include "mkc_strlcpy.h"
 #include "mkc_progname.h"

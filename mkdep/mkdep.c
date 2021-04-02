@@ -55,7 +55,7 @@ __RCSID("$NetBSD: mkdep.c,v 1.43 2013/03/05 21:57:47 christos Exp $");
 #include "mkc_progname.h"
 #include "mkc_posix_getopt.h"
 #include "mkc_dprintf.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 

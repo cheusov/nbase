@@ -12,7 +12,7 @@ MKC_CHECK_FUNCLIBS +=	strmode
 
 .if ${.CURDIR:T} == "compatlib"
 . if ${HAVE_FUNCLIB.strmode:U} != 1
-SRCS +=	mkc_strmode.c
+SRCS +=	imp_strmode.c
 . endif
 .endif
 

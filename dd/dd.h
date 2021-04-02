@@ -35,7 +35,7 @@
  *	@(#)dd.h	8.3 (Berkeley) 4/2/94
  */
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #include <sys/stat.h>
 #include <stdint.h>

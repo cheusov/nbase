@@ -50,7 +50,7 @@ __RCSID("$NetBSD: flock.c,v 1.9.4.1 2014/08/30 14:06:55 martin Exp $");
 #include "mkc_strlcpy.h"
 #include "mkc_strlcat.h"
 #include "mkc_progname.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #ifndef timespecclear
 #define	timespecclear(tsp)	(tsp)->tv_sec = (time_t)((tsp)->tv_nsec = 0L)

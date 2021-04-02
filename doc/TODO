@@ -3,7 +3,7 @@
 * wgetwln, reallocarray, fopencookie on NetBSD
 
 * Disable modules based on configure tests
-* Convert mkc_macro.h to mk/* module
+* Convert imp_macro.h to mk/* module
 * Support for all POSIX utils
 * warnings on Darwin:
   - stty

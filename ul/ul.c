@@ -50,7 +50,7 @@ __RCSID("$NetBSD: ul.c,v 1.16 2012/03/20 20:34:59 matt Exp $");
 #include <unistd.h>
 
 #include "mkc_posix_getopt.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #define	IESC	'\033'
 #define	SO	'\016'

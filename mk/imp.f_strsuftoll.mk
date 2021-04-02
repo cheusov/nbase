@@ -15,7 +15,7 @@ MKC_FEATURES       +=	err
 
 .if ${.CURDIR:T} == "compatlib"
 . if ${HAVE_FUNCLIB.strsuftoll:U} != 1 || ${HAVE_FUNCLIB.strsuftollx:U} != 1
-SRCS +=	mkc_strsuftoll.c
+SRCS +=	imp_strsuftoll.c
 . endif
 .endif
 

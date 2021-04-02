@@ -27,7 +27,7 @@ MKC_COMMON_HEADERS :=   ${old}
 .if ${HAVE_FUNC4.b64_ntop.resolv_h:U} == 1 && ${HAVE_FUNC3.b64_pton.resolv_h:U} == 1
 CPPFLAGS += -DHAVE_B64_FUNCS
 .elif ${.CURDIR:T} == "compatlib"
-SRCS +=	mkc_base64.c
+SRCS +=	imp_base64.c
 .endif
 
 CPPFLAGS +=	-D_MKC_CHECK_BASE64

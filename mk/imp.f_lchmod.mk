@@ -13,7 +13,7 @@ MKC_CHECK_DEFINES  +=	__GLIBC__:string.h
 
 .if ${.CURDIR:T} == "compatlib"
 . if ${HAVE_FUNCLIB.lchmod:U} != 1 || ${HAVE_DEFINE.__GLIBC__.string_h:U} == 1
-SRCS +=	mkc_lchmod.c
+SRCS +=	imp_lchmod.c
 . endif
 .endif
 

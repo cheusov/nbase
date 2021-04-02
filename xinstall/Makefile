@@ -28,6 +28,6 @@ CFLAGS.check   +=	-Wno-error=pointer-sign
 .include "../mk/imp.f_lchmod.mk"
 .include "../mk/imp.f_struct_stat.mk"
 
-MKC_FEATURES +=	fparseln LIST pwdgrp strsep vis
+MKC_FEATURES +=	fparseln errc LIST pwdgrp strsep vis
 
 .include "../mk/addlinks.mk"

@@ -67,7 +67,7 @@ __RCSID("$NetBSD: look.c,v 1.16 2012/02/23 22:57:53 joerg Exp $");
 #include <unistd.h>
 
 #include "mkc_posix_getopt.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_err.h"
 
 #include "pathnames.h"

@@ -10,7 +10,7 @@ MKC_CHECK_VARS  +=	sys_signame:signal.h sys_nsig:signal.h
 
 .if ${.CURDIR:T} == "compatlib"
 .  if ${HAVE_VAR.sys_signame.signal_h:U} != 1 || ${HAVE_VAR.sys_nsig.signal_h:U} != 1
-SRCS +=	mkc_sys_signame.c
+SRCS +=	imp_sys_signame.c
 .  endif
 .endif
 

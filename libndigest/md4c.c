@@ -34,7 +34,7 @@
 __RCSID("$NetBSD: md4c.c,v 1.4 2009/03/16 05:59:21 cegger Exp $");
 #endif /* LIBC_SCCS and not lint */
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #include <sys/types.h>
 
