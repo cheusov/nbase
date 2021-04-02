@@ -52,7 +52,7 @@ __RCSID("$NetBSD: reverse.c,v 1.23 2011/09/03 10:59:11 christos Exp $");
 #include <string.h>
 #include <inttypes.h>
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #include "extern.h"
 

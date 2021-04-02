@@ -38,7 +38,7 @@ __RCSID("$NetBSD: sha1.c,v 1.6 2009/11/06 20:31:18 joerg Exp $");
 #include <sys/types.h>
 #include <sha1.h>
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #if HAVE_NBTOOL_CONFIG_H
 #include "nbtool_config.h"

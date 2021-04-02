@@ -31,7 +31,7 @@
 #include <wchar.h>
 
 #include "mkc_reallocarray.h"
-#include "mkc_fgetwln.h"
+#include "imp_fgetwln.h"
 
 struct filewbuf {
 	FILE *fp;

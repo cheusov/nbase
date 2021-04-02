@@ -52,7 +52,7 @@ __RCSID("$NetBSD: leave.c,v 1.15 2011/09/16 15:39:27 joerg Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_err.h"
 
 #define	SECOND	1

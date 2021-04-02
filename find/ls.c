@@ -50,15 +50,15 @@ __RCSID("$NetBSD: ls.c,v 1.21 2011/08/31 16:24:57 plunky Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "mkc_tzfile.h"
+#include "imp_tzfile.h"
 #include <unistd.h>
 
-#include "mkc_strmode.h"
+#include "imp_strmode.h"
 #include "mkc_pwdgrp.h"
 
 #include "find.h"
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 /* Derived from the print routines in the ls(1) source code. */
 

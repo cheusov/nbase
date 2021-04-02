@@ -24,7 +24,7 @@ __RCSID("$NetBSD: parsedate.y,v 1.28 2016/05/03 18:14:54 kre Exp $");
 #include <time.h>
 #include <stdlib.h>
 
-#include "mkc_parsedate.h"
+#include "imp_parsedate.h"
 
 /* NOTES on rebuilding parsedate.c (particularly for inclusion in CVS
    releases):

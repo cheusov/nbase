@@ -52,6 +52,8 @@ __RCSID("$NetBSD: expr.y,v 1.39 2016/09/05 01:00:07 sevan Exp $");
 #ifndef REG_BASIC
 #define REG_BASIC 0
 #endif
+#include <mkc_progname.h>
+#include <imp_macro.h>
 
 static const char * const *av;
 

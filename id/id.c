@@ -55,7 +55,7 @@ __RCSID("$NetBSD: id.c,v 1.32 2011/09/16 15:39:26 joerg Exp $");
 
 #include "mkc_progname.h"
 #include "mkc_posix_getopt.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 static void current(void);
 static void pretty(struct passwd *);

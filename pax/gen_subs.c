@@ -64,8 +64,8 @@ __RCSID("$NetBSD: gen_subs.c,v 1.36 2012/08/09 08:09:21 christos Exp $");
 #include "pax.h"
 #include "extern.h"
 
-#include "mkc_macro.h"
-#include "mkc_strmode.h"
+#include "imp_macro.h"
+#include "imp_strmode.h"
 #include "mkc_pwdgrp.h"
 
 #ifndef DAYSPERNYEAR

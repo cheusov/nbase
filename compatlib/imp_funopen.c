@@ -31,7 +31,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "mkc_funopen.h"
+#include "imp_funopen.h"
 
 #ifdef HAVE_PROTOTYPE_FOPENCOOKIE
 struct funopen_cookie {

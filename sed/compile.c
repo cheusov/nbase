@@ -66,7 +66,7 @@ static const char sccsid[] = "@(#)compile.c	8.1 (Berkeley) 6/6/93";
 #include "mkc_err.h"
 #include "mkc_warn.h"
 #include "mkc_errc.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #define LHSZ	128
 #define	LHMASK	(LHSZ - 1)

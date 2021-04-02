@@ -31,7 +31,7 @@
  * $DragonFly: src/lib/libc/gen/getbsize.c,v 1.4 2005/11/13 00:07:42 swildner Exp $
  */
 
-#include "mkc_getbsize.h"
+#include "imp_getbsize.h"
 #include "mkc_warn.h"
 
 #include <stdio.h>

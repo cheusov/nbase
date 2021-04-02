@@ -32,7 +32,7 @@
 
 #include "mkc_err.h"
 #include "mkc_warn.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #ifndef lint
 #if 0

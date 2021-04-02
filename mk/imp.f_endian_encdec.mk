@@ -29,7 +29,7 @@ MKC_CHECK_DEFINES  +=	${MKC_CHECK_FUNCS1} ${MKC_CHECK_FUNCS2}
      ${HAVE_DEFINE.le32enc.sys_endian_h:U} != 1 && ${HAVE_FUNC2.le32enc.sys_endian_h:U} != 1 || \
      ${HAVE_DEFINE.le64dec.sys_endian_h:U} != 1 && ${HAVE_FUNC1.le64dec.sys_endian_h:U} != 1 || \
      ${HAVE_DEFINE.le64enc.sys_endian_h:U} != 1 && ${HAVE_FUNC2.le64enc.sys_endian_h:U} != 1
-MKC_SRCS +=	mkc_endian_encdec.c
+MKC_SRCS +=	imp_endian_encdec.c
 .endif
 
 CPPFLAGS +=	-D_MKC_CHECK_ENDIAN_ENCDEC

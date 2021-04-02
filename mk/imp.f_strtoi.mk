@@ -11,7 +11,7 @@ MKC_CHECK_FUNCLIBS +=	strtoi
 .include <mkc.conf.mk>
 
 .if ${HAVE_FUNCLIB.strtoi:U} != 1
-MKC_SRCS +=	mkc_strtoi.c
+MKC_SRCS +=	imp_strtoi.c
 .endif
 
 CPPFLAGS +=	-D_MKC_CHECK_STRTOI

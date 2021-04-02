@@ -7,7 +7,7 @@
  */
 
 #include "mkc_SIMPLEQ.h"
-#include "mkc_strtonum.h"
+#include "imp_strtonum.h"
 
 #include <sys/param.h>
 #include <sys/stat.h>
@@ -27,7 +27,7 @@
 #include "mkc_strlcpy.h"
 #include "mkc_strlcat.h"
 #include "mkc_fparseln.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 #include "mkc_progname.h"

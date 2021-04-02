@@ -51,7 +51,7 @@ __RCSID("$NetBSD: key.c,v 1.22 2017/01/10 20:44:05 christos Exp $");
 #include "stty.h"
 #include "extern.h"
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #ifndef ALTWERASE
 #define ALTWERASE 0

@@ -54,7 +54,7 @@ __RCSID("$NetBSD: sleep.c,v 1.24 2011/08/29 14:51:19 joerg Exp $");
 
 #include "mkc_progname.h"
 #include "mkc_posix_getopt.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 

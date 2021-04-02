@@ -11,7 +11,7 @@ MKC_CHECK_FUNCLIBS +=	utimens lutimens
 .include <mkc.conf.mk>
 
 .if ${HAVE_FUNCLIB.utimens:U} != 1 || ${HAVE_FUNCLIB.lutimens:U} != 1
-MKC_SRCS +=	mkc_utimens.c
+MKC_SRCS +=	imp_utimens.c
 .endif
 
 CPPFLAGS +=	-D_MKC_CHECK_UTIMENS

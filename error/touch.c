@@ -51,7 +51,7 @@ __RCSID("$NetBSD: touch.c,v 1.27 2012/02/29 23:37:07 joerg Exp $");
 #include "pathnames.h"
 
 #include "mkc_raise_default_signal.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 

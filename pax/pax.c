@@ -66,7 +66,7 @@ __RCSID("$NetBSD: pax.c,v 1.47 2011/08/29 14:47:48 joerg Exp $");
 
 #include "mkc_progname.h"
 #include "mkc_raise_default_signal.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 static int gen_init(void);
 

@@ -12,7 +12,7 @@ MKC_FEATURES       +=	warn
 .include <mkc.conf.mk>
 
 .if ${HAVE_FUNCLIB.getbsize:U} != 1
-MKC_SRCS +=	mkc_getbsize.c
+MKC_SRCS +=	imp_getbsize.c
 .endif
 
 CPPFLAGS +=	-D_MKC_CHECK_GETBSIZE

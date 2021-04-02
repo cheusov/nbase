@@ -35,7 +35,7 @@ __RCSID("$NetBSD: md2.c,v 1.5 2008/04/28 20:23:00 martin Exp $");
 #endif /* LIBC_SCCS and not lint */
 
 //#include "namespace.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #include <sys/types.h>
 

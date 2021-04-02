@@ -59,7 +59,7 @@ __RCSID("$NetBSD: uuencode.c,v 1.16 2014/09/06 18:58:35 dholland Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_base64.h"
+#include "imp_base64.h"
 #include "mkc_posix_getopt.h"
 #include "mkc_progname.h"
 #include "mkc_err.h"
