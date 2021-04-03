@@ -60,7 +60,7 @@ __RCSID("$NetBSD: setmode.c,v 1.34 2012/06/25 22:32:43 abs Exp $");
 #define	SET_LEN_INCR 4		/* # of bitcmd structs to add as needed */
 
 #ifndef S_ISTXT
-#define S_ISTXT 0
+#define S_ISTXT S_ISVTX
 #endif
 
 typedef struct bitcmd {

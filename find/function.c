@@ -77,7 +77,7 @@ __RCSID("$NetBSD: function.c,v 1.72 2013/05/04 06:29:32 uebayasi Exp $");
 #include "mkc_warn.h"
 
 #ifndef S_ISTXT
-#  define S_ISTXT 0
+#  define S_ISTXT S_ISVTX
 #endif
 
 #ifndef ARG_MAX

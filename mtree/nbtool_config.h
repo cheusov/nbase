@@ -23,7 +23,7 @@
 #include <grp.h>
 
 #ifndef S_ISTXT
-# define S_ISTXT 0
+# define S_ISTXT S_ISVTX
 #endif
 
 #ifndef UID_MAX
