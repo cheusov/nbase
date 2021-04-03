@@ -78,7 +78,7 @@ __RCSID("$NetBSD: function.c,v 1.75.8.1 2017/06/15 05:46:49 snj Exp $");
 #include "mkc_parsedate.h"
 
 #ifndef S_ISTXT
-#  define S_ISTXT 0
+#  define S_ISTXT S_ISVTX
 #endif
 
 #ifndef ARG_MAX
