@@ -30,10 +30,10 @@
  */
 
 #include "mkc_progname.h"
-#include "mkc_struct_stat.h"
+#include "imp_struct_stat.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
-#include "mkc_utimens.h"
+#include "imp_utimens.h"
 
 #include <sys/cdefs.h>
 #ifndef lint
@@ -63,7 +63,7 @@ __RCSID("$NetBSD: utils.c,v 1.46 2018/07/17 13:04:58 darcy Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_lchmod.h"
+#include "imp_lchmod.h"
 #include "imp_macro.h"
 
 #include "extern.h"

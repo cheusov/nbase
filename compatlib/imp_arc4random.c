@@ -6,7 +6,7 @@
 
 #include <stdlib.h>
 
-#include "mkc_arc4random.h"
+#include "imp_arc4random.h"
 
 static int seed_initialized = 0;
 

@@ -75,7 +75,7 @@ __RCSID("$NetBSD: create.c,v 1.76 2018/11/18 23:03:36 sevan Exp $");
 #endif
 
 #include "mkc_pwdgrp.h"
-#include "mkc_flags_to_string.h"
+#include "imp_flags_to_string.h"
 
 #include "extern.h"
 

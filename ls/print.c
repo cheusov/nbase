@@ -62,8 +62,8 @@ __RCSID("$NetBSD: print.c,v 1.55 2014/05/10 09:39:18 martin Exp $");
 
 #include "mkc_humanize_number.h"
 #include "imp_macro.h"
-#include "mkc_strmode.h"
-#include "mkc_tzfile.h"
+#include "imp_strmode.h"
+#include "imp_tzfile.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 

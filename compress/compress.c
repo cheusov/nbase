@@ -56,7 +56,7 @@ __RCSID("$NetBSD: compress.c,v 1.26 2011/08/30 23:08:05 joerg Exp $");
 #include <unistd.h>
 
 #include "mkc_posix_getopt.h"
-#include "mkc_struct_stat.h"
+#include "imp_struct_stat.h"
 #include "mkc_progname.h"
 #include "imp_macro.h"
 

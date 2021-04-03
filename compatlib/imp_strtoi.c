@@ -64,8 +64,8 @@ __RCSID("$NetBSD: strtoi.c,v 1.2 2015/05/01 14:17:56 christos Exp $");
 
 #include "imp_macro.h"
 #define _STANDALONE
-#include "mkc_strtoi.h"
-#include "mkc__strtoi.h"
+#include "imp_strtoi.h"
+#include "imp__strtoi.h"
 
 #ifdef _LIBC
 __weak_alias(strtoi, _strtoi)

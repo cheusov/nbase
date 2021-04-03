@@ -51,7 +51,7 @@ __RCSID("$NetBSD: ul.c,v 1.20 2019/02/03 03:19:30 mrg Exp $");
 #include <unistd.h>
 
 #include "mkc_posix_getopt.h"
-#include "mkc_reallocarr.h"
+#include "imp_reallocarr.h"
 #include "imp_macro.h"
 
 #include <errno.h>

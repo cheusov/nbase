@@ -91,7 +91,7 @@ __RCSID("$NetBSD: sort.c,v 1.64 2017/01/10 21:13:45 christos Exp $");
 #include "mkc_progname.h"
 #include "imp_macro.h"
 #include "mkc_posix_getopt.h"
-#include "mkc_lchmod.h"
+#include "imp_lchmod.h"
 
 int REC_D = '\n';
 u_char d_mask[NBINS];		/* flags for rec_d, field_d, <blank> */

@@ -5,9 +5,9 @@
 # define HAVE_STRUCT_STAT_ST_FLAGS 1
 #endif
 
-#include "mkc_lchmod.h"
-#include "mkc_flags_to_string.h"
-#include "mkc_struct_stat.h"
+#include "imp_lchmod.h"
+#include "imp_flags_to_string.h"
+#include "imp_struct_stat.h"
 #include "mkc_LIST.h"
 #include "mkc_strsep.h"
 #include "mkc_err.h"

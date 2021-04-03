@@ -62,9 +62,9 @@ __RCSID("$NetBSD: file_subs.c,v 1.64 2019/03/20 03:13:39 gutteridge Exp $");
 #include "extern.h"
 #include "options.h"
 
-#include "mkc_lchmod.h"
+#include "imp_lchmod.h"
 #include "mkc_strlcpy.h"
-#include "mkc_struct_stat.h"
+#include "imp_struct_stat.h"
 
 char *xtmp_name;
 

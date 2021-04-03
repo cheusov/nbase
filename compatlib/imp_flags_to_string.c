@@ -22,7 +22,7 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "mkc_flags_to_string.h"
+#include "imp_flags_to_string.h"
 #include "imp_macro.h"
 
 #if !defined(HAVE_FUNC2_FLAGS_TO_STRING_UTIL_H)

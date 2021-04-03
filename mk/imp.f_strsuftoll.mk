@@ -14,7 +14,7 @@ MKC_FEATURES       +=	err
 .include <mkc.conf.mk>
 
 .if ${HAVE_FUNCLIB.strsuftoll:U} != 1 || ${HAVE_FUNCLIB.strsuftollx:U} != 1
-MKC_SRCS +=	mkc_strsuftoll.c
+MKC_SRCS +=	imp_strsuftoll.c
 .endif
 
 CPPFLAGS +=	-D_MKC_CHECK_STRSUFTOLL

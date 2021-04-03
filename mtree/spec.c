@@ -89,8 +89,8 @@ __RCSID("$NetBSD: spec.c,v 1.90 2017/12/14 18:34:41 christos Exp $");
 #include "mkc_vis.h"
 #include "mkc_fparseln.h"
 #include "mkc_pwdgrp.h"
-#include "mkc_getsetmode.h"
-#include "mkc_flags_to_string.h"
+#include "imp_getsetmode.h"
+#include "imp_flags_to_string.h"
 
 #include "extern.h"
 #include "pack_dev.h"

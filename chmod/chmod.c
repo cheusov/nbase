@@ -29,9 +29,9 @@
  * SUCH DAMAGE.
  */
 
-#include "mkc_lchmod.h"
+#include "imp_lchmod.h"
 #include "mkc_progname.h"
-#include "mkc_getsetmode.h"
+#include "imp_getsetmode.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 

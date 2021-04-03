@@ -11,7 +11,7 @@ MKC_CHECK_FUNCLIBS +=	strmode
 .include <mkc.conf.mk>
 
 .if ${HAVE_FUNCLIB.strmode:U} != 1
-MKC_SRCS +=	mkc_strmode.c
+MKC_SRCS +=	imp_strmode.c
 .endif
 
 CPPFLAGS +=	-D_MKC_CHECK_STRMODE

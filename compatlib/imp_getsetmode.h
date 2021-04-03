@@ -35,7 +35,7 @@
 #include <unistd.h>
 
 #if !defined(HAVE_FUNC1_SETMODE_UNISTD_H) || !defined(HAVE_FUNC2_GETMODE_UNISTD_H)
-#include "mkc_getsetmode.h"
+#include "imp_getsetmode.h"
 
 //__BEGIN_DECLS
 void *setmode(const char *mode_str);

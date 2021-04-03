@@ -53,7 +53,7 @@ __RCSID("$NetBSD: apply.c,v 1.19 2016/03/12 22:28:04 dholland Exp $");
 
 #include "mkc_progname.h"
 #include "mkc_posix_getopt.h"
-#include "mkc_bsd_signal.h"
+#include "imp_bsd_signal.h"
 #include "imp_macro.h"
 
 static __dead void usage(void);

@@ -1,12 +1,12 @@
-/*	$NetBSD: lchmod.c,v 1.4 2008/04/28 20:24:12 martin Exp $	*/
+/*	$NetBSD: utimens.c,v 1.2 2019/09/16 01:25:16 kamil Exp $	*/
 
 /*-
- * Copyright (c) 2002 The NetBSD Foundation, Inc.
- * Copyright (c) 2017 Aleksey Cheusov <vle@gmx.net>
+ * Copyright (c) 2012 The NetBSD Foundation, Inc.
+ * Copyright (c) 2021 Aleksey Cheusov <vle@gmx.net>
  * All rights reserved.
  *
  * This code is derived from software contributed to The NetBSD Foundation
- * by Luke Mewburn.
+ * by Christos Zoulas.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -30,24 +30,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* Emulate lchmod(2), checking path with lstat(2) first to ensure that
- * it's not a symlink, and then call chmod(2) */
+#include <sys/cdefs.h>
+#if defined(LIBC_SCCS) && !defined(lint)
+__RCSID("$NetBSD: utimens.c,v 1.2 2019/09/16 01:25:16 kamil Exp $");
+#endif /* LIBC_SCCS and not lint */
 
+#include <fcntl.h>
 #include <sys/stat.h>
-#include <errno.h>
-#include <unistd.h>
 
-#include "mkc_lchmod.h"
+#include "imp_utimens.h"
 
+#ifndef HAVE_FUNC2_UTIMENS_SYS_STAT_H
 int
-lchmod(const char *path, mode_t mode)
+utimens(const char *path, const struct timespec *times)
 {
-	struct stat psb;
-
-	if (lstat(path, &psb) == -1)
-		return -1;
-	if (S_ISLNK(psb.st_mode)) {
-		return 0;
-	}
-	return (chmod(path, mode));
+	return utimensat(AT_FDCWD, path, times, 0);
 }
+#endif
+
+#ifndef HAVE_FUNC2_LUTIMENS_SYS_STAT_H
+int
+lutimens(const char *path, const struct timespec *times)
+{
+	return utimensat(AT_FDCWD, path, times, AT_SYMLINK_NOFOLLOW);
+}
+#endif

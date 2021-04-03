@@ -13,7 +13,7 @@ MKC_CHECK_FUNCS2   +=	fgetwln:stdio.h
 .include <mkc.conf.mk>
 
 .if ${HAVE_FUNCLIB.fgetwln:U} != 1
-MKC_SRCS +=	mkc_fgetwln.c
+MKC_SRCS +=	imp_fgetwln.c
 .endif
 
 CPPFLAGS +=	-D_MKC_CHECK_FGETWLN

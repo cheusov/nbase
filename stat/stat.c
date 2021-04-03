@@ -65,11 +65,11 @@ __RCSID("$NetBSD: stat.c,v 1.44 2019/02/04 08:07:33 mrg Exp $");
 #include <unistd.h>
 
 #include "mkc_vis.h"
-#include "mkc_strmode.h"
+#include "imp_strmode.h"
 #include "mkc_progname.h"
 #include "mkc_strlcpy.h"
 #include "mkc_posix_getopt.h"
-#include "mkc_struct_stat.h"
+#include "imp_struct_stat.h"
 
 #if HAVE_STRUCT_STAT_ST_FLAGS
 #define DEF_F "%#Xf "

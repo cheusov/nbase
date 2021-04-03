@@ -13,7 +13,7 @@ MKC_CHECK_FUNCLIBS +=	strtonum
 .include <mkc.conf.mk>
 
 .if ${HAVE_FUNCLIB.strtonum:U} != 1
-MKC_SRCS +=	mkc_strtonum.c
+MKC_SRCS +=	imp_strtonum.c
 .endif
 
 CPPFLAGS +=	-D_MKC_CHECK_STRTONUM

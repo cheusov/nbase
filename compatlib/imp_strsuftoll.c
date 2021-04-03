@@ -61,7 +61,7 @@
  */
 
 #include "imp_macro.h"
-#include "mkc_strsuftoll.h"
+#include "imp_strsuftoll.h"
 #include "mkc_err.h"
 
 #if HAVE_NBTOOL_CONFIG_H

@@ -63,7 +63,7 @@ __RCSID("$NetBSD: xargs.c,v 1.20 2010/12/17 11:32:57 plunky Exp $");
 #include "mkc_progname.h"
 #include "mkc_fgetln.h"
 #include "imp_macro.h"
-#include "mkc_sys_signame.h"
+#include "imp_sys_signame.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 

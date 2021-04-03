@@ -59,8 +59,8 @@ __RCSID("$NetBSD: touch.c,v 1.33 2015/03/02 03:17:24 enami Exp $");
 
 #include "mkc_progname.h"
 #include "imp_macro.h"
-#include "mkc_tzfile.h"
-#include "mkc_struct_stat.h"
+#include "imp_tzfile.h"
+#include "imp_struct_stat.h"
 
 static void	stime_arg0(char *, struct timespec *);
 static void	stime_arg1(char *, struct timespec *);

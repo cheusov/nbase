@@ -35,7 +35,7 @@
 #include <wchar.h>
 
 #include "mkc_err.h"
-#include "mkc_fgetwln.h"
+#include "imp_fgetwln.h"
 
 #define BUF_SIZE	BUFSIZ
 struct buffer {

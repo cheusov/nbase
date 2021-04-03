@@ -7,7 +7,7 @@
  */
 
 #include "mkc_SIMPLEQ.h"
-#include "mkc_strtonum.h"
+#include "imp_strtonum.h"
 
 #include <sys/param.h>
 #include <sys/stat.h>

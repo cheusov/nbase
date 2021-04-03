@@ -65,7 +65,7 @@ __RCSID("$NetBSD: date.c,v 1.61 2014/09/01 21:42:21 dholland Exp $");
 #endif
 
 #include "mkc_posix_getopt.h"
-#include "mkc_parsedate.h"
+#include "imp_parsedate.h"
 
 #include "extern.h"
 

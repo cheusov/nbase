@@ -15,7 +15,7 @@ MKC_CHECK_FUNCLIBS +=	flags_to_string:util string_to_flags:util
 
 .if ${HAVE_FUNCLIB.flags_to_string.util:U} != 1 || \
      ${HAVE_FUNCLIB.string_to_flags.util:U} != 1
-MKC_SRCS     +=	mkc_flags_to_string.c
+MKC_SRCS     +=	imp_flags_to_string.c
 .endif
 
 CPPFLAGS +=	-D_MKC_CHECK_FLAGS_TO_STRING

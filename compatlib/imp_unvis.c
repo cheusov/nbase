@@ -40,7 +40,7 @@ __RCSID("$NetBSD: unvis.c,v 1.41 2012/12/15 04:29:53 matt Exp $");
 
 #include <sys/types.h>
 
-#include "mkc_vis.h"
+#include "imp_vis.h"
 #include "imp_macro.h"
 
 #include <assert.h>

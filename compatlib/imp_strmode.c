@@ -27,7 +27,7 @@
  * SUCH DAMAGE.
  */
 
-#include "mkc_strmode.h"
+#include "imp_strmode.h"
 
 #if defined(LIBC_SCCS) && !defined(lint)
 static char sccsid[] = "@(#)strmode.c	8.3 (Berkeley) 8/15/94";

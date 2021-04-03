@@ -4,7 +4,7 @@
  See LICENSE file in the distribution.
 */
 
-#include "mkc_sys_signame.h"
+#include "imp_sys_signame.h"
 
 #include <string.h>
 

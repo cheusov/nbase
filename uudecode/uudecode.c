@@ -64,7 +64,7 @@ __RCSID("$NetBSD: uudecode.c,v 1.28 2013/01/28 19:50:30 apb Exp $");
 #include "mkc_progname.h"
 #include "imp_macro.h"
 #include "mkc_posix_getopt.h"
-#include "mkc_base64.h"
+#include "imp_base64.h"
 #include "mkc_warn.h"
 
 #ifndef NO_BASE64
