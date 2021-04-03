@@ -1,4 +1,13 @@
 ======================================================================
+Version 7.0.2.2, by Aleksey Cheusov, Sun,  4 Apr 2021 00:11:20 +0300
+
+ Replace prefix mkc_ with imp_ for avoiding
+ naming collision with mkcmake
+
+ Fix: On linux S_ISTXT should be S_ISVTX, but 0.
+ This fixes the issue #6.
+
+======================================================================
 Version 7.0.2.1, by Aleksey Cheusov, Sat, 27 Mar 2021 20:36:32 +0300
 
  Fixes for LINKSPREFIX (support for MANZ)
