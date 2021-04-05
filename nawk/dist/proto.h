@@ -136,12 +136,9 @@ extern	Cell	*fieldadr(int);
 extern	void	yyerror(const char *);
 extern	void	bracecheck(void);
 extern	void	bcheck2(int, int, int);
-extern	void	SYNTAX(const char *, ...)
-    __attribute__((__format__(__printf__, 1, 2)));
-extern	void	FATAL(const char *, ...) __dead
-    __attribute__((__format__(__printf__, 1, 2), __noreturn__));
-extern	void	WARNING(const char *, ...)
-    __attribute__((__format__(__printf__, 1, 2)));
+extern	void	SYNTAX(const char *, ...) __printflike(1, 2);
+extern	void	FATAL(const char *, ...) __printflike(1, 2) __dead;
+extern	void	WARNING(const char *, ...) __printflike(1, 2);
 extern	void	error(void);
 extern	void	eprint(void);
 extern	void	bclass(int);
