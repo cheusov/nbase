@@ -22,10 +22,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _MKC_STRTOI_H_
-#define _MKC_STRTOI_H_ 1
+#ifndef _IMP_STRTOI_H_
+#define _IMP_STRTOI_H_ 1
 
-#ifndef _MKC_CHECK_STRTOI
+#ifndef _IMP_CHECK_STRTOI
 # error "Missing MKC_FEATURES += strtoi"
 #endif
 

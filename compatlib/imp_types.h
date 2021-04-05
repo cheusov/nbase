@@ -4,10 +4,10 @@
  See LICENSE file in the distribution.
 \********************************************************************/
 
-#ifndef _MKC_TYPES_H_
-#define _MKC_TYPES_H_
+#ifndef _IMP_TYPES_H_
+#define _IMP_TYPES_H_
 
-#ifndef _MKC_CHECK_TYPES
+#ifndef _IMP_CHECK_TYPES
 # error "Missing MKC_FEATURES += types"
 #endif
 
@@ -25,4 +25,4 @@ typedef unsigned int blksize_t;
 typedef unsigned int blkcnt_t;
 #endif
 
-#endif // _MKC_TYPES_H_
+#endif // _IMP_TYPES_H_

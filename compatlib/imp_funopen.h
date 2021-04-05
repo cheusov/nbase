@@ -22,10 +22,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _MKC_FUNOPEN_H_
-#define _MKC_FUNOPEN_H_
+#ifndef _IMP_FUNOPEN_H_
+#define _IMP_FUNOPEN_H_
 
-#ifndef _MKC_CHECK_FUNOPEN
+#ifndef _IMP_CHECK_FUNOPEN
 # error "Missing MKC_FEATURES += funopen"
 #endif
 
@@ -39,4 +39,4 @@ FILE *funopen(void *cookie,
     int (*closefn)(void *));
 #endif
 
-#endif // _MKC_FUNOPEN_H_
+#endif // _IMP_FUNOPEN_H_

@@ -2,8 +2,8 @@
 #
 # See LICENSE file in the distribution.
 
-.ifndef _MKC_IMP_CURSES_MK
-_MKC_IMP_CURSES_MK := 1
+.ifndef _IMP_CURSES_MK
+_IMP_CURSES_MK := 1
 
 MKC_REQUIRE_HEADERS +=	curses.h
 
@@ -30,8 +30,8 @@ MKC_REQUIRE_FUNCLIBS +=	main:${libcurses}
 
 LDADD += -l${libcurses}
 
-#CPPFLAGS +=	-D_MKC_CHECK_CURSES
+#CPPFLAGS +=	-D_IMP_CHECK_CURSES
 
 .endif # HAVE_HEADER.curses_h
 
-.endif #_MKC_IMP_CURSES_MK
+.endif #_IMP_CURSES_MK

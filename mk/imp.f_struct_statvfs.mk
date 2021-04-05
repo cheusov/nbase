@@ -2,8 +2,8 @@
 #
 # See LICENSE file in the distribution.
 
-.ifndef _MKC_IMP_F_STRUCT_STATVFS_MK
-_MKC_IMP_F_STRUCT_STATVFS_MK := 1
+.ifndef _IMP_F_STRUCT_STATVFS_MK
+_IMP_F_STRUCT_STATVFS_MK := 1
 
 MKC_CHECK_MEMBERS +=	\
    struct-statvfs.f_mntfromname:sys/statvfs.h \
@@ -11,6 +11,6 @@ MKC_CHECK_MEMBERS +=	\
 
 .include <mkc.conf.mk>
 
-CPPFLAGS +=	-D_MKC_CHECK_STRUCT_STATVFS
+CPPFLAGS +=	-D_IMP_CHECK_STRUCT_STATVFS
 
-.endif #_MKC_IMP_F_STRUCT_STATVFS_MK
+.endif #_IMP_F_STRUCT_STATVFS_MK

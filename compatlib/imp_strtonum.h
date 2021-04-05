@@ -22,10 +22,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _MKC_STRTONUM_H_
-#define _MKC_STRTONUM_H_ 1
+#ifndef _IMP_STRTONUM_H_
+#define _IMP_STRTONUM_H_ 1
 
-#ifndef _MKC_CHECK_STRTONUM
+#ifndef _IMP_CHECK_STRTONUM
 # error "Missing MKC_FEATURES += strtonum"
 #endif
 

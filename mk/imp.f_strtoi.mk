@@ -2,8 +2,8 @@
 #
 # See LICENSE file in the distribution.
 
-.ifndef _MKC_IMP_F_STRTOI_MK
-_MKC_IMP_F_STRTOI_MK := 1
+.ifndef _IMP_F_STRTOI_MK
+_IMP_F_STRTOI_MK := 1
 
 MKC_CHECK_FUNCS6   +=	strtoi:inttypes.h
 MKC_CHECK_FUNCLIBS +=	strtoi
@@ -14,6 +14,6 @@ MKC_CHECK_FUNCLIBS +=	strtoi
 MKC_SRCS +=	imp_strtoi.c
 .endif
 
-CPPFLAGS +=	-D_MKC_CHECK_STRTOI
+CPPFLAGS +=	-D_IMP_CHECK_STRTOI
 
-.endif #_MKC_IMP_F_STRTOI_MK
+.endif #_IMP_F_STRTOI_MK

@@ -2,8 +2,8 @@
 #
 # See LICENSE file in the distribution.
 
-.ifndef _MKC_IMP_F_STRSUFTOLL_MK
-_MKC_IMP_F_STRSUFTOLL_MK := 1
+.ifndef _IMP_F_STRSUFTOLL_MK
+_IMP_F_STRSUFTOLL_MK := 1
 
 MKC_CHECK_FUNCS4   +=	strsuftoll:stdlib.h
 MKC_CHECK_FUNCS6   +=	strsuftollx:stdlib.h
@@ -17,6 +17,6 @@ MKC_FEATURES       +=	err
 MKC_SRCS +=	imp_strsuftoll.c
 .endif
 
-CPPFLAGS +=	-D_MKC_CHECK_STRSUFTOLL
+CPPFLAGS +=	-D_IMP_CHECK_STRSUFTOLL
 
-.endif #_MKC_IMP_F_STRSUFTOLL_MK
+.endif #_IMP_F_STRSUFTOLL_MK

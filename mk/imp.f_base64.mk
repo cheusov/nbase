@@ -2,8 +2,8 @@
 #
 # See LICENSE file in the distribution.
 
-.ifndef _MKC_IMP_F_BASE64_MK
-_MKC_IMP_F_BASE64_MK := 1
+.ifndef _IMP_F_BASE64_MK
+_IMP_F_BASE64_MK := 1
 
 old :=			${MKC_COMMON_HEADERS}
 MKC_COMMON_HEADERS +=	netinet/in.h # for OpenBSD 5.3 and FreeBSD 12.1
@@ -30,6 +30,6 @@ CPPFLAGS +=	-DHAVE_B64_FUNCS
 MKC_SRCS +=	imp_base64.c
 .endif
 
-CPPFLAGS +=	-D_MKC_CHECK_BASE64
+CPPFLAGS +=	-D_IMP_CHECK_BASE64
 
-.endif #_MKC_IMP_F_BASE64_MK
+.endif #_IMP_F_BASE64_MK

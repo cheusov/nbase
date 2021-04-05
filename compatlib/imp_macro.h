@@ -1,7 +1,7 @@
-#ifndef _MKC_MACRO_H_
-#define _MKC_MACRO_H_
+#ifndef _IMP_MACRO_H_
+#define _IMP_MACRO_H_
 
-#ifndef _MKC_CHECK_MACRO
+#ifndef _IMP_CHECK_MACRO
 # error "Missing MKC_FEATURES += macro"
 #endif
 
@@ -244,4 +244,4 @@ typedef unsigned long int u_quad_t;
 	} while (/* CONSTCOND */ 0)
 #endif
 
-#endif // _MKC_MACRO_H_
+#endif // _IMP_MACRO_H_

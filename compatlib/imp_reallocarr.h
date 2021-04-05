@@ -22,10 +22,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _MKC_REALLOCARR_H_
-#define _MKC_REALLOCARR_H_
+#ifndef _IMP_REALLOCARR_H_
+#define _IMP_REALLOCARR_H_
 
-#ifndef _MKC_CHECK_REALLOCARR
+#ifndef _IMP_CHECK_REALLOCARR
 # error "Missing MKC_FEATURES += reallocarr"
 #endif
 
@@ -35,4 +35,4 @@
 int reallocarr(void *ptr, size_t number, size_t size);
 #endif
 
-#endif // _MKC_REALLOCARR_H_
+#endif // _IMP_REALLOCARR_H_

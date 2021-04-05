@@ -22,10 +22,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _MKC_TIMESPECCMP_H_
-#define _MKC_TIMESPECCMP_H_ 1
+#ifndef _IMP_TIMESPECCMP_H_
+#define _IMP_TIMESPECCMP_H_ 1
 
-#ifndef _MKC_CHECK_TIMESPECCMP
+#ifndef _IMP_CHECK_TIMESPECCMP
 # error "Missing MKC_FEATURES += timespeccmp"
 #endif
 

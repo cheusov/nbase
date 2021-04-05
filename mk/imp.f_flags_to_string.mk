@@ -2,8 +2,8 @@
 #
 # See LICENSE file in the distribution.
 
-.ifndef _MKC_IMP_F_FLAGS_TO_STRING_MK
-_MKC_IMP_F_FLAGS_TO_STRING_MK := 1
+.ifndef _IMP_F_FLAGS_TO_STRING_MK
+_IMP_F_FLAGS_TO_STRING_MK := 1
 
 MKC_CHECK_HEADER   +=	util.h
 MKC_CHECK_FUNC2    +=	flags_to_string:util.h
@@ -18,6 +18,6 @@ MKC_CHECK_FUNCLIBS +=	flags_to_string:util string_to_flags:util
 MKC_SRCS     +=	imp_flags_to_string.c
 .endif
 
-CPPFLAGS +=	-D_MKC_CHECK_FLAGS_TO_STRING
+CPPFLAGS +=	-D_IMP_CHECK_FLAGS_TO_STRING
 
-.endif #_MKC_IMP_F_FLAGS_TO_STRING_MK
+.endif #_IMP_F_FLAGS_TO_STRING_MK

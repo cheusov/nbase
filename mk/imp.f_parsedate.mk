@@ -2,8 +2,8 @@
 #
 # See LICENSE file in the distribution.
 
-.ifndef _MKC_IMP_F_PARSEDATE_MK
-_MKC_IMP_F_PARSEDATE_MK := 1
+.ifndef _IMP_F_PARSEDATE_MK
+_IMP_F_PARSEDATE_MK := 1
 
 MKC_CHECK_HEADERS  +=	util.h
 MKC_CHECK_FUNCS3   +=	parsedate:util.h
@@ -15,6 +15,6 @@ MKC_CHECK_FUNCLIBS +=	parsedate:util
 MKC_SRCS +=	imp_parsedate.y
 .endif
 
-CPPFLAGS +=	-D_MKC_CHECK_PARSEDATE
+CPPFLAGS +=	-D_IMP_CHECK_PARSEDATE
 
-.endif #_MKC_IMP_F_PARSEDATE_MK
+.endif #_IMP_F_PARSEDATE_MK

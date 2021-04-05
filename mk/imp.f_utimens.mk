@@ -2,8 +2,8 @@
 #
 # See LICENSE file in the distribution.
 
-.ifndef _MKC_IMP_F_UTIMENS_MK
-_MKC_IMP_F_UTIMENS_MK := 1
+.ifndef _IMP_F_UTIMENS_MK
+_IMP_F_UTIMENS_MK := 1
 
 MKC_CHECK_FUNCS2   +=	utimens:fcntl.h,sys/stat.h lutimens:fcntl.h,sys/stat.h
 MKC_CHECK_FUNCLIBS +=	utimens lutimens
@@ -14,6 +14,6 @@ MKC_CHECK_FUNCLIBS +=	utimens lutimens
 MKC_SRCS +=	imp_utimens.c
 .endif
 
-CPPFLAGS +=	-D_MKC_CHECK_UTIMENS
+CPPFLAGS +=	-D_IMP_CHECK_UTIMENS
 
-.endif # _MKC_IMP_F_UTIMENS_MK
+.endif # _IMP_F_UTIMENS_MK

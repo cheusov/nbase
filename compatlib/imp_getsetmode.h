@@ -22,10 +22,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _MKC_SETMODE_H_
-#define _MKC_SETMODE_H_
+#ifndef _IMP_SETMODE_H_
+#define _IMP_SETMODE_H_
 
-#ifndef _MKC_CHECK_GETSETMODE
+#ifndef _IMP_CHECK_GETSETMODE
 # error "Missing MKC_FEATURES += getsetmode"
 #endif
 
@@ -44,4 +44,4 @@ mode_t getmode(const void *set, mode_t mode);
 
 #endif
 
-#endif /* _MKC_SETMODE_H_ */
+#endif /* _IMP_SETMODE_H_ */

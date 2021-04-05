@@ -22,10 +22,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _MKC_PARSEDATE_H_
-#define _MKC_PARSEDATE_H_
+#ifndef _IMP_PARSEDATE_H_
+#define _IMP_PARSEDATE_H_
 
-#ifndef _MKC_CHECK_PARSEDATE
+#ifndef _IMP_CHECK_PARSEDATE
 # error "Missing MKC_FEATURES += parsedate"
 #endif
 
@@ -36,4 +36,4 @@
 time_t parsedate(const char *datestr, const time_t *time, const int *tzoff);
 #endif
 
-#endif // _MKC_PARSEDATE_H_
+#endif // _IMP_PARSEDATE_H_

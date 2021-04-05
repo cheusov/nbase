@@ -1,8 +1,8 @@
 # Copyright (c) 2017 by Aleksey Cheusov
 #
 # See LICENSE file in the distribution.
-.ifndef _MKC_IMP_F_ENDIAN_ENCDEC_MK
-_MKC_IMP_F_ENDIAN_ENCDEC_MK := 1
+.ifndef _IMP_F_ENDIAN_ENCDEC_MK
+_IMP_F_ENDIAN_ENCDEC_MK := 1
 
 funcs1 =	be16dec be32dec be64dec le16dec le32dec le64dec
 funcs2 =	be16enc be32enc be64enc le16enc le32enc le64enc
@@ -32,6 +32,6 @@ MKC_CHECK_DEFINES  +=	${MKC_CHECK_FUNCS1} ${MKC_CHECK_FUNCS2}
 MKC_SRCS +=	imp_endian_encdec.c
 .endif
 
-CPPFLAGS +=	-D_MKC_CHECK_ENDIAN_ENCDEC
+CPPFLAGS +=	-D_IMP_CHECK_ENDIAN_ENCDEC
 
-.endif #_MKC_IMP_F_ENDIAN_ENCDEC_MK
+.endif #_IMP_F_ENDIAN_ENCDEC_MK

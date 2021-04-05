@@ -22,10 +22,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _MKC_BSD_SIGNAL_H_
-#define _MKC_BSD_SIGNAL_H_
+#ifndef _IMP_BSD_SIGNAL_H_
+#define _IMP_BSD_SIGNAL_H_
 
-#ifndef _MKC_CHECK_BSD_SIGNAL
+#ifndef _IMP_CHECK_BSD_SIGNAL
 # error "Missing MKC_FEATURES += bsd_signal"
 #endif
 
@@ -47,4 +47,4 @@ int sigsetmask(int);
 int siggetmask(void);
 #endif
 
-#endif // _MKC_BSD_SIGNAL_H_
+#endif // _IMP_BSD_SIGNAL_H_

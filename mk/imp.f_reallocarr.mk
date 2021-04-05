@@ -2,8 +2,8 @@
 #
 # See LICENSE file in the distribution.
 
-.ifndef _MKC_IMP_F_REALLOCARR_MK
-_MKC_IMP_F_REALLOCARR_MK := 1
+.ifndef _IMP_F_REALLOCARR_MK
+_IMP_F_REALLOCARR_MK := 1
 
 MKC_CHECK_FUNCS3   +=	reallocarr:stdlib.h
 MKC_CHECK_FUNCLIBS +=	reallocarr
@@ -14,6 +14,6 @@ MKC_CHECK_FUNCLIBS +=	reallocarr
 MKC_SRCS +=	imp_reallocarr.c
 .endif
 
-CPPFLAGS +=	-D_MKC_CHECK_REALLOCARR
+CPPFLAGS +=	-D_IMP_CHECK_REALLOCARR
 
-.endif #_MKC_IMP_F_REALLOCARR_MK
+.endif #_IMP_F_REALLOCARR_MK

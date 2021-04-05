@@ -4,10 +4,10 @@
  See LICENSE file in the distribution.
 \********************************************************************/
 
-#ifndef _MKC_FGETWLN_H_
-#define _MKC_FGETWLN_H_
+#ifndef _IMP_FGETWLN_H_
+#define _IMP_FGETWLN_H_
 
-#ifndef _MKC_CHECK_FGETWLN
+#ifndef _IMP_CHECK_FGETWLN
 # error "Missing MKC_FEATURES += fgetwln"
 #endif
 
@@ -18,4 +18,4 @@
 wchar_t *fgetwln(FILE *stream, size_t *len);
 #endif
 
-#endif // _MKC_FGETWLN_H_
+#endif // _IMP_FGETWLN_H_

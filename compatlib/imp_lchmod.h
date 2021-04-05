@@ -22,10 +22,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _MKC_LCHMOD_H_
-#define _MKC_LCHMOD_H_
+#ifndef _IMP_LCHMOD_H_
+#define _IMP_LCHMOD_H_
 
-#ifndef _MKC_CHECK_LCHMOD
+#ifndef _IMP_CHECK_LCHMOD
 # error "Missing MKC_FEATURES += lchmod"
 #endif
 
@@ -34,4 +34,4 @@
 int lchmod(const char *path, mode_t mode);
 #endif
 
-#endif // _MKC_LCHMOD_H_
+#endif // _IMP_LCHMOD_H_

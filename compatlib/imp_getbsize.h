@@ -22,10 +22,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _MKC_GETBSIZE_H_
-#define _MKC_GETBSIZE_H_
+#ifndef _IMP_GETBSIZE_H_
+#define _IMP_GETBSIZE_H_
 
-#ifndef _MKC_CHECK_GETBSIZE
+#ifndef _IMP_CHECK_GETBSIZE
 # error "Missing MKC_FEATURES += getbsize"
 #endif
 
@@ -33,4 +33,4 @@
 char *getbsize(int *headerlenp, long *blocksizep);
 #endif
 
-#endif // _MKC_GETBSIZE_H_
+#endif // _IMP_GETBSIZE_H_

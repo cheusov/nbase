@@ -4,10 +4,10 @@
  See LICENSE file in the distribution.
 */
 
-#ifndef _MKC_SYS_SIGNAME_H_
-#define _MKC_SYS_SIGNAME_H_
+#ifndef _IMP_SYS_SIGNAME_H_
+#define _IMP_SYS_SIGNAME_H_
 
-#ifndef _MKC_CHECK_SYS_SIGNAME
+#ifndef _IMP_CHECK_SYS_SIGNAME
 # error "Missing MKC_FEATURES += sys_signame"
 #endif
 
@@ -22,4 +22,4 @@ extern const char * * sys_signame__ (void);
 #define sys_signame sys_signame__()
 #endif
 
-#endif // _MKC_SYS_SIGNAME_H_
+#endif // _IMP_SYS_SIGNAME_H_
