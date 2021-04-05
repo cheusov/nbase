@@ -33,7 +33,9 @@
  * Return the number of elements in a statically-allocated array,
  * __x.
  */
+#ifndef __arraycount
 #define __arraycount(__x)       (sizeof(__x) / sizeof(__x[0]))
+#endif
 
 #ifndef HN_DECIMAL
 #define   HN_DECIMAL              0x01
