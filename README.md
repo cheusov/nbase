@@ -36,4 +36,4 @@ vis wc what whois xargs install xstr yes
 
 ## AUTHOR
 
-2015-2018 (C) Aleksey Cheusov <vle@gmx.net> or <cheusov@netbsd.org>
+2015-2021 (C) Aleksey Cheusov <vle@gmx.net> or <cheusov@netbsd.org>
