@@ -2,8 +2,8 @@
 #
 # See LICENSE file in the distribution.
 
-.ifndef _MKC_IMP_F_FGETWLN_MK
-_MKC_IMP_F_FGETWLN_MK := 1
+.ifndef _IMP_F_FGETWLN_MK
+_IMP_F_FGETWLN_MK := 1
 
 MKC_FEATURES += reallocarray
 
@@ -16,6 +16,6 @@ MKC_CHECK_FUNCS2   +=	fgetwln:stdio.h
 MKC_SRCS +=	imp_fgetwln.c
 .endif
 
-CPPFLAGS +=	-D_MKC_CHECK_FGETWLN
+CPPFLAGS +=	-D_IMP_CHECK_FGETWLN
 
-.endif #_MKC_IMP_F_FGETWLN_MK
+.endif #_IMP_F_FGETWLN_MK

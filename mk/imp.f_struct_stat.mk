@@ -2,8 +2,8 @@
 #
 # See LICENSE file in the distribution.
 
-.ifndef _MKC_IMP_F_STRUCT_STAT_MK
-_MKC_IMP_F_STRUCT_STAT_MK := 1
+.ifndef _IMP_F_STRUCT_STAT_MK
+_IMP_F_STRUCT_STAT_MK := 1
 
 MKC_CHECK_MEMBERS += \
    struct-stat.st_atimespec:sys/stat.h \
@@ -19,6 +19,6 @@ MKC_CHECK_MEMBERS += \
 
 .include <mkc.conf.mk>
 
-CPPFLAGS +=	-D_MKC_CHECK_STRUCT_STAT
+CPPFLAGS +=	-D_IMP_CHECK_STRUCT_STAT
 
-.endif #_MKC_IMP_F_STRUCT_STAT_MK
+.endif #_IMP_F_STRUCT_STAT_MK

@@ -22,10 +22,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _MKC_STRMODE_H_
-#define _MKC_STRMODE_H_
+#ifndef _IMP_STRMODE_H_
+#define _IMP_STRMODE_H_
 
-#ifndef _MKC_CHECK_STRMODE
+#ifndef _IMP_CHECK_STRMODE
 # error "Missing MKC_FEATURES += strmode"
 #endif
 
@@ -36,4 +36,4 @@
 void strmode(mode_t mode, char *bp);
 #endif
 
-#endif // _MKC_STRMODE_H_
+#endif // _IMP_STRMODE_H_

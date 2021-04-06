@@ -42,6 +42,8 @@
 
 #include "mdb.h"
 
+#include <mkc_macro.h>
+
 #ifdef MAIN
 #define EXTERN 
 #define INIT(x) = x
@@ -80,8 +82,7 @@ EXTERN action error_act INIT({NULL});
 /* Prototypes. */
 
 /* From util.c */
-void yyerror(const char *, ...)
-     __attribute__((__format__(__printf__, 1, 2)));
+void yyerror(const char *, ...) __printflike(1, 2);
 void buff_add_ch(char);
 char *buff_copy(void); 
 

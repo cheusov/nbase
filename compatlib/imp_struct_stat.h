@@ -4,10 +4,10 @@
  See LICENSE file in the distribution.
 \********************************************************************/
 
-#ifndef _MKC_STRUCT_STAT_H_
-#define _MKC_STRUCT_STAT_H_
+#ifndef _IMP_STRUCT_STAT_H_
+#define _IMP_STRUCT_STAT_H_
 
-#ifndef _MKC_CHECK_STRUCT_STAT
+#ifndef _IMP_CHECK_STRUCT_STAT
 # error "Missing MKC_FEATURES += struct_stat"
 #endif
 
@@ -23,4 +23,4 @@
 #define st_mtimespec st_mtim
 #endif /* HAVE_STRUCT_STAT_ST_MTIM */
 
-#endif /* _MKC_STRUCT_STAT_H_ */
+#endif /* _IMP_STRUCT_STAT_H_ */

@@ -2,8 +2,8 @@
 #
 # See LICENSE file in the distribution.
 
-.ifndef _MKC_IMP_F_STRTONUM_MK
-_MKC_IMP_F_STRTONUM_MK := 1
+.ifndef _IMP_F_STRTONUM_MK
+_IMP_F_STRTONUM_MK := 1
 
 MKC_CHECK_FUNCS4   +=	strtonum:limits.h,stdlib.h
 MKC_CHECK_FUNCLIBS +=	strtonum
@@ -16,6 +16,6 @@ MKC_CHECK_FUNCLIBS +=	strtonum
 MKC_SRCS +=	imp_strtonum.c
 .endif
 
-CPPFLAGS +=	-D_MKC_CHECK_STRTONUM
+CPPFLAGS +=	-D_IMP_CHECK_STRTONUM
 
-.endif #_MKC_IMP_F_STRTONUM_MK
+.endif #_IMP_F_STRTONUM_MK

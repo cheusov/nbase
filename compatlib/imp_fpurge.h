@@ -22,10 +22,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _MKC_FPURGE_H_
-#define _MKC_FPURGE_H_ 1
+#ifndef _IMP_FPURGE_H_
+#define _IMP_FPURGE_H_ 1
 
-#ifndef _MKC_CHECK_FPURGE
+#ifndef _IMP_CHECK_FPURGE
 # error "Missing MKC_FEATURES += fpurge"
 #endif
 

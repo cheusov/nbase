@@ -4,10 +4,10 @@
  See LICENSE file in the distribution.
 \********************************************************************/
 
-#ifndef _MKC_MAKEDEV_H_
-#define _MKC_MAKEDEV_H_
+#ifndef _IMP_MAKEDEV_H_
+#define _IMP_MAKEDEV_H_
 
-#ifndef _MKC_CHECK_MAKEDEV
+#ifndef _IMP_CHECK_MAKEDEV
 # error "Missing MKC_FEATURES += makedev"
 #endif
 
@@ -17,4 +17,4 @@
 # include <sys/stat.h>
 #endif
 
-#endif // _MKC_MAKEDEV_H_
+#endif // _IMP_MAKEDEV_H_

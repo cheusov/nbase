@@ -22,10 +22,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _MKC_ENDIAN_ENCDEC_H_
-#define _MKC_ENDIAN_ENCDEC_H_
+#ifndef _IMP_ENDIAN_ENCDEC_H_
+#define _IMP_ENDIAN_ENCDEC_H_
 
-#ifndef _MKC_CHECK_ENDIAN_ENCDEC
+#ifndef _IMP_CHECK_ENDIAN_ENCDEC
 # error "Missing MKC_FEATURES += endian_encdec"
 #endif
 
@@ -89,4 +89,4 @@ void le64enc(void *stream, uint64_t host64);
 
 //__END_DECLS
 
-#endif /* _MKC_ENDIAN_ENCDEC_H_ */
+#endif /* _IMP_ENDIAN_ENCDEC_H_ */

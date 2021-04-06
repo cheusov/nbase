@@ -2,10 +2,10 @@
 #
 # See LICENSE file in the distribution.
 
-.ifndef _MKC_IMP_F_LUTIMES_MK
-_MKC_IMP_F_LUTIMES_MK := 1
+.ifndef _IMP_F_LUTIMES_MK
+_IMP_F_LUTIMES_MK := 1
 
 MKC_CHECK_FUNCS2 +=	lutimes:sys/time.h
-CPPFLAGS +=	-D_MKC_CHECK_LUTIMES
+CPPFLAGS +=	-D_IMP_CHECK_LUTIMES
 
-.endif #_MKC_IMP_F_LUTIMES_MK
+.endif #_IMP_F_LUTIMES_MK

@@ -4,10 +4,10 @@
  See LICENSE file in the distribution.
 \********************************************************************/
 
-#ifndef _MKC_BASE64_H_
-#define _MKC_BASE64_H_
+#ifndef _IMP_BASE64_H_
+#define _IMP_BASE64_H_
 
-#ifndef _MKC_CHECK_BASE64
+#ifndef _IMP_CHECK_BASE64
 # error "Missing MKC_FEATURES += base64"
 #endif
 
@@ -20,4 +20,4 @@ int b64_ntop(u_char const *, size_t, char *, size_t);
 int b64_pton(char const *src, u_char *target, size_t targsize);
 #endif /* HAVE_B64_FUNCS */
 
-#endif /* _MKC_BASE64_H_ */
+#endif /* _IMP_BASE64_H_ */

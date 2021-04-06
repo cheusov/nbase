@@ -49,7 +49,7 @@ LDADD+=	-lrmt
 DPADD+=	${LIBRMT}
 .endif
 
-MKC_FEATURES =	fgetln pwdgrp raise_default_signal strlcpy vis
+MKC_FEATURES =	fgetln macro pwdgrp raise_default_signal strlcpy vis
 
 MKC_CHECK_HEADER_FILES +=	sys/mtio.h
 MKC_CHECK_HEADERS =	sys/sysmacros.h # Linux/glibc-2.26 -- major/minor from sys/types.h are deprecated

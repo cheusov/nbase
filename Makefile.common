@@ -4,7 +4,9 @@ WARNS          ?=	4
 
 CURSES_LIBNAME ?=	curses
 
-CPPFLAGS +=	-D_GNU_SOURCE
+CPPFLAGS +=	-D_GNU_SOURCE    # for glibc
+CPPFLAGS +=	-D__EXTENSIONS__ # for SunOS
+
 CPPFLAGS0 +=	-D__COPYRIGHT\(x\)=
 CPPFLAGS0 +=	-D__RCSID\(x\)=
 CPPFLAGS0 +=	-D__FBSDID\(x\)=

@@ -22,10 +22,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _MKC_STRSUFTOLL_H_
-#define _MKC_STRSUFTOLL_H_
+#ifndef _IMP_STRSUFTOLL_H_
+#define _IMP_STRSUFTOLL_H_
 
-#ifndef _MKC_CHECK_STRSUFTOLL
+#ifndef _IMP_CHECK_STRSUFTOLL
 # error "Missing MKC_FEATURES += strsuftoll"
 #endif
 
@@ -41,4 +41,4 @@ long long strsuftollx(const char *desc, const char *val, long long min,
 					  long long max, char *errbuf, size_t errbuflen);
 #endif
 
-#endif // _MKC_STRSUFTOLL_H_
+#endif // _IMP_STRSUFTOLL_H_

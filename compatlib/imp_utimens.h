@@ -22,10 +22,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _MKC_UTIMENS_H_
-#define _MKC_UTIMENS_H_ 1
+#ifndef _IMP_UTIMENS_H_
+#define _IMP_UTIMENS_H_ 1
 
-#ifndef _MKC_CHECK_UTIMENS
+#ifndef _IMP_CHECK_UTIMENS
 # error "Missing MKC_FEATURES += utimens"
 #endif
 

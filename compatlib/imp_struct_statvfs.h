@@ -4,11 +4,11 @@
  See LICENSE file in the distribution.
 \********************************************************************/
 
-#ifndef _MKC_STRUCT_STATVFS_H_
-#define _MKC_STRUCT_STATVFS_H_
+#ifndef _IMP_STRUCT_STATVFS_H_
+#define _IMP_STRUCT_STATVFS_H_
 
-#ifndef _MKC_CHECK_STRUCT_STATVFS
+#ifndef _IMP_CHECK_STRUCT_STATVFS
 # error "Missing MKC_FEATURES += struct_statvfs"
 #endif
 
-#endif /* _MKC_STRUCT_STATVFS_H_ */
+#endif /* _IMP_STRUCT_STATVFS_H_ */

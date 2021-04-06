@@ -2,8 +2,8 @@
 #
 # See LICENSE file in the distribution.
 
-.ifndef _MKC_IMP_F_FUNOPEN_MK
-_MKC_IMP_F_FUNOPEN_MK := 1
+.ifndef _IMP_F_FUNOPEN_MK
+_IMP_F_FUNOPEN_MK := 1
 
 MKC_CHECK_FUNCS3   +=	fopencookie:stdio.h
 MKC_CHECK_FUNCS5   +=	funopen:stdio.h
@@ -21,6 +21,6 @@ MKC_PROTOTYPE_HEADERS.fopencookie = stdio.h
 MKC_SRCS +=	imp_funopen.c
 .endif
 
-CPPFLAGS +=	-D_MKC_CHECK_FUNOPEN
+CPPFLAGS +=	-D_IMP_CHECK_FUNOPEN
 
-.endif #_MKC_IMP_F_FUNOPEN_MK
+.endif #_IMP_F_FUNOPEN_MK

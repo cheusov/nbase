@@ -22,10 +22,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _MKC_FLAGS_TO_STRING_H_
-#define _MKC_FLAGS_TO_STRING_H_
+#ifndef _IMP_FLAGS_TO_STRING_H_
+#define _IMP_FLAGS_TO_STRING_H_
 
-#ifndef _MKC_CHECK_FLAGS_TO_STRING
+#ifndef _IMP_CHECK_FLAGS_TO_STRING
 # error "Missing MKC_FEATURES += flags_to_string"
 #endif
 
@@ -44,4 +44,4 @@ char *flags_to_string(unsigned long flags, const char *def);
 int string_to_flags(char **stringp, unsigned long *setp, unsigned long *clrp);
 #endif
 
-#endif // _MKC_FLAGS_TO_STRING_H_
+#endif // _IMP_FLAGS_TO_STRING_H_

@@ -2,8 +2,8 @@
 #
 # See LICENSE file in the distribution.
 
-.ifndef _MKC_IMP_GETSETMODE_MK
-_MKC_IMP_GETSETMODE_MK := 1
+.ifndef _IMP_GETSETMODE_MK
+_IMP_GETSETMODE_MK := 1
 
 MKC_CHECK_FUNCS1   +=	setmode:unistd.h
 MKC_CHECK_FUNCS2   +=	getmode:unistd.h
@@ -15,6 +15,6 @@ MKC_CHECK_FUNCLIBS +=	setmode getmode
 MKC_SRCS +=	imp_getsetmode.c
 .endif
 
-CPPFLAGS +=	-D_MKC_CHECK_GETSETMODE
+CPPFLAGS +=	-D_IMP_CHECK_GETSETMODE
 
-.endif #_MKC_IMP_GETSETMODE_MK
+.endif #_IMP_GETSETMODE_MK

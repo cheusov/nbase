@@ -43,6 +43,8 @@
 #include <stdint.h>
 #include <inttypes.h>
 
+#include <mkc_macro.h>
+
 /*
  * ar_io.c
  */
@@ -317,10 +319,7 @@ int tar_gnutar_minus_minus_exclude(const char *);
  * tty_subs.c
  */
 int tty_init(void);
-void tty_prnt(const char *, ...)
-    __attribute__((format (printf, 1, 2)));
+void tty_prnt(const char *, ...) __printflike(1, 2);
 int tty_read(char *, int);
-void tty_warn(int, const char *, ...)
-    __attribute__((format (printf, 2, 3)));
-void syswarn(int, int, const char *, ...)
-    __attribute__((format (printf, 3, 4)));
+void tty_warn(int, const char *, ...) __printflike(2, 3);
+void syswarn(int, int, const char *, ...) __printflike(3, 4);

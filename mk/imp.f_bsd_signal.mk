@@ -2,8 +2,8 @@
 #
 # See LICENSE file in the distribution.
 
-.ifndef _MKC_IMP_F_BSD_SIGNAL_MK
-_MKC_IMP_F_BSD_SIGNAL_MK := 1
+.ifndef _IMP_F_BSD_SIGNAL_MK
+_IMP_F_BSD_SIGNAL_MK := 1
 
 MKC_CHECK_FUNCS1   +=	sigblock:signal.h sigsetmask:signal.h sigmask:signal.h
 # MKC_CHECK_FUNCS0   +=	siggetmask:signal.h
@@ -18,6 +18,6 @@ MKC_FUNC_OR_DEFINE.sigmask    =	yes
 MKC_SRCS +=	imp_bsd_signal.c
 .endif
 
-CPPFLAGS +=	-D_MKC_CHECK_BSD_SIGNAL
+CPPFLAGS +=	-D_IMP_CHECK_BSD_SIGNAL
 
-.endif #_MKC_IMP_F_BSD_SIGNAL_MK
+.endif #_IMP_F_BSD_SIGNAL_MK

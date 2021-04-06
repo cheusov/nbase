@@ -1,8 +1,8 @@
 # Copyright (c) 2015-2017 by Aleksey Cheusov
 #
 # See LICENSE file in the distribution.
-.ifndef _MKC_IMP_F_SYS_SIGNAME_MK
-_MKC_IMP_F_SYS_SIGNAME_MK := 1
+.ifndef _IMP_F_SYS_SIGNAME_MK
+_IMP_F_SYS_SIGNAME_MK := 1
 
 MKC_CHECK_VARS  +=	sys_signame:signal.h sys_nsig:signal.h
 
@@ -12,6 +12,6 @@ MKC_CHECK_VARS  +=	sys_signame:signal.h sys_nsig:signal.h
 MKC_SRCS +=	imp_sys_signame.c
 .endif
 
-CPPFLAGS +=	-D_MKC_CHECK_SYS_SIGNAME
+CPPFLAGS +=	-D_IMP_CHECK_SYS_SIGNAME
 
-.endif #_MKC_IMP_F_SYS_SIGNAME_MK
+.endif #_IMP_F_SYS_SIGNAME_MK
