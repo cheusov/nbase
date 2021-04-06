@@ -17,18 +17,18 @@ Additional documentation is under doc/
 
 For now the following tools are a part of collection:
 
-apply asa awk banner basename cal cat chmod cksum cleantags cmp col
-colcrt colrm column comm compress cp csplit ctags cut date deroff dd
-dirname domainname du echo ed env error expand expr false fgen
-find fmt fold fpr from fsplit getconf getopt grep head
-hexdump hostname id indent install join jot kill lam leave ln logname
-look lorder ls m4 machine menuc mkdep mkdir mkfifo mknod
-mkstr mktemp msgc mtree mv nice nl nohup paste patch pax pr
-printenv printf pwd qsubst renice rev rm rmdir rs script sdiff
-sed seq shar shlock shuffle sleep soelim sort split sync
-tabs tail tee test timeout tr true tsort tty ul unexpand unifdef
-uniq unvis uudecode uuencode vis wc what whoami whois xargs
-xstr yes
+apply asa awk banner basename cal cat chmod cksum sum md2 md4 md5 sha1
+rmd160 cleantags cmp col colcrt colrm column comm compress uncompress
+cp csplit ctags cut date dd deroff dirname du domainname echo ed env
+error expand expr false fgen find flock fmt fold fpr from fsplit
+getconf getopt grep egrep fgrep zgrep zegrep zfgrep head hexdump od
+hostname id groups whoami indent join jot kill lam leave ln logname
+look lorder ls m4 machine menuc mkdep mkdir mkfifo mknod mkstr mktemp
+msgc mtree mv nice nl nohup paste patch pax pr printenv printf pwd
+qsubst renice rev rm rmdir rs script sdiff sed seq shar shlock shuffle
+sleep soelim sort split sync tabs tail tee test [ timeout tr true
+tsort tty ul unexpand unifdef unifdefall uniq unvis uudecode uuencode
+vis wc what whois xargs install xstr yes
 
 ## WWW
 
