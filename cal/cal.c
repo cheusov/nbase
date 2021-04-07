@@ -62,6 +62,7 @@ __RCSID("$NetBSD: cal.c,v 1.29.18.1 2020/06/30 18:41:07 martin Exp $");
 #include <unistd.h>
 
 #include "mkc_posix_getopt.h"
+#include "mkc_macro.h"
 
 #define	SATURDAY 		6		/* 1 Jan 1 was a Saturday */
 
