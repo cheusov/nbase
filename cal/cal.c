@@ -905,7 +905,7 @@ init_hilite(void)
 	term = getenv("TERM");
 	if (term == NULL)
 		term = "dumb";
-	if (setupterm(term, fileno(stdout), &errret) != 0 && errret != 1)
+	if (setupterm(__UNCONST(term), fileno(stdout), &errret) != 0 && errret != 1)
 		return;
 
 	if (hilite > 1)
