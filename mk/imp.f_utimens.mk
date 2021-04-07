@@ -11,7 +11,9 @@ MKC_CHECK_FUNCLIBS +=	utimens lutimens
 .include <mkc.conf.mk>
 
 .if ${HAVE_FUNCLIB.utimens:U} != 1 || ${HAVE_FUNCLIB.lutimens:U} != 1
-MKC_SRCS +=	imp_utimens.c
+#MKC_SRCS +=	imp_utimens.c # cannot be used from compatlib due to absense of utimensat(2) on Darwinn
+.PATH: ../compatlib
+SRCS +=	imp_utimens.c
 .endif
 
 CPPFLAGS +=	-D_IMP_CHECK_UTIMENS

@@ -57,7 +57,7 @@ PROJECTS += apply asa nawk/bin banner basename cal cat chmod chown      \
   unifdef uniq unvis uudecode uuencode vis wc what whois xargs xinstall	\
   xstr yes
 
-.if ${HAVE_FUNC2.utimens.sys_stat_h} != 1 && ${HAVE_FUNC4.utimensat.sys_stat_h} != 1
+.if ${HAVE_FUNC2.utimens.sys_stat_h:U1} != 1 && ${HAVE_FUNC4.utimensat.sys_stat_h:U1} != 1
 .  for t in cp touch
    WARN_MSG += "Exclude ${t} due to missing utimens(3) and utimensat(2) in sys/stat.h"
 PROJECTS :=	${PROJECTS:N${t}}
