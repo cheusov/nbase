@@ -47,7 +47,7 @@ PROJECTS += apply asa nawk/bin banner basename cal cat chmod chown      \
   deroff dd	\
   dirname domainname du echo ed env error expand expr false fgen find	\
   flock fmt fold fpr from fsplit getconf getopt grep head hexdump 	\
-  hostname id indent join jot kill lam leave libndigest ln logname look \
+  hostname id join jot kill lam leave libndigest ln logname look \
   lorder ls m4	\
   machine menuc mkdep mkdir mkfifo mknod mkstr mktemp msgc mtree mv     \
   nice nl nohup	                                                        \
@@ -56,6 +56,7 @@ PROJECTS += apply asa nawk/bin banner basename cal cat chmod chown      \
   sync tabs tail tee testcmd timeout tr true tsort tty ul unexpand	\
   unifdef uniq unvis uudecode uuencode vis wc what whois xargs xinstall	\
   xstr yes
+# PROJECTS +=	indent
 
 .if ${HAVE_FUNC2.utimens.sys_stat_h:U1} != 1 && ${HAVE_FUNC4.utimensat.sys_stat_h:U1} != 1
 .  for t in cp touch
