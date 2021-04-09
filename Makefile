@@ -18,7 +18,7 @@
 
 # TBD: units -- /usr/share/misc/units.lib is missing
 
-MKC_REQD     =	0.36.90
+MKC_REQD     =	0.37.0
 
 .include "help.mk"
 .include "use.mk"
