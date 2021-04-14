@@ -18,7 +18,7 @@ CFLAGS.check +=	-Wno-error=unused-const-variable
 
 MKC_FEATURES +=	arc4random bswap dprintf efun errc fgetln fparseln \
    pwdgrp raise_default_signal humanize_number \
-   reallocarray strndup strsep vis
+   reallocarr reallocarray strndup strsep vis
 
 MKINSTALL=no
 
@@ -45,6 +45,5 @@ MKINSTALL=no
 #.include "../mk/imp.f_utimens.mk"
 .include "../mk/imp.f_strtoi.mk"
 .include "../mk/imp.f_strtonum.mk"
-.include "../mk/imp.f_reallocarr.mk"
 
 .include <mkc.mk>
