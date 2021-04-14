@@ -9,8 +9,8 @@ SRCS +=	ohash_create_entry.c ohash_delete.c ohash_do.c ohash_entries.c \
 	ohash_qlookupi.c strtonum.c
 YHEADER =	1
 
-MKC_REQD =	0.34.0
-MKC_FEATURES +=	libl
+MKC_REQD =	0.37.0
+MKC_FEATURES +=	libl strtoi
 
 tokenizer.o: parser.h
 
@@ -21,7 +21,5 @@ CPPFLAGS +=	-DHAVE_NBTOOL_CONFIG_H=1 -I${.CURDIR}
 WARNERR   =	no
 
 MKC_FEATURES +=		strsep
-
-.include "../mk/imp.f_strtoi.mk"
 
 .include "../mk/addlinks.mk"
