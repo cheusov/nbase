@@ -18,7 +18,7 @@
 
 # TBD: units -- /usr/share/misc/units.lib is missing
 
-MKC_REQD     =	0.36.0
+MKC_REQD     =	0.37.0
 
 .include "help.mk"
 .include "use.mk"
@@ -28,9 +28,11 @@ MKC_CHECK_HEADERS  =	tzfile.h termcap.h
 MKC_CHECK_FUNCLIBS =	setupterm:terminfo
 MKC_CHECK_FUNCS5   =	openpty:pty.h openpty:util.h dbopen:${USE_DB_HEADER}
 MKC_CHECK_FUNCS4   =	getgrouplist:grp.h getgrouplist:unistd.h clock_nanosleep:time.h
+MKC_CHECK_FUNCS4   +=	utimensat:fcntl.h,sys/stat.h
 MKC_CHECK_FUNCS3   =	logwtmp:util.h timer_create:signal.h,time.h
 MKC_CHECK_FUNCS2   =	getdomainname:unistd.h makedev:sys/sysmacros.h \
   makedev:sys/types.h flock:fcntl.h flock:sys/file.h
+MKC_CHECK_FUNCS2   +=   utimens:fcntl.h,sys/stat.h
 MKC_CHECK_FUNCS1   =	signalname:signal.h
 MKC_CHECK_DEFINES  =	TIMESPEC_TO_TIMEVAL:sys/time.h REG_STARTEND:regex.h
 MKC_CHECK_TYPES    =	sig_t:signal.h
@@ -45,7 +47,7 @@ PROJECTS += apply asa nawk/bin banner basename cal cat chmod chown      \
   deroff dd	\
   dirname domainname du echo ed env error expand expr false fgen find	\
   flock fmt fold fpr from fsplit getconf getopt grep head hexdump 	\
-  hostname id indent join jot kill lam leave libndigest ln logname look \
+  hostname id join jot kill lam leave libndigest ln logname look \
   lorder ls m4	\
   machine menuc mkdep mkdir mkfifo mknod mkstr mktemp msgc mtree mv     \
   nice nl nohup	                                                        \
@@ -54,6 +56,14 @@ PROJECTS += apply asa nawk/bin banner basename cal cat chmod chown      \
   sync tabs tail tee testcmd timeout tr true tsort tty ul unexpand	\
   unifdef uniq unvis uudecode uuencode vis wc what whois xargs xinstall	\
   xstr yes
+# PROJECTS +=	indent
+
+.if ${HAVE_FUNC2.utimens.sys_stat_h:U1} != 1 && ${HAVE_FUNC4.utimensat.sys_stat_h:U1} != 1
+.  for t in cp touch
+   WARN_MSG += "Exclude ${t} due to missing utimens(3) and utimensat(2) in sys/stat.h"
+PROJECTS :=	${PROJECTS:N${t}}
+.  endfor
+.endif
 
 .if ${HAVE_FUNC5.openpty.pty_h:U1} != 1 && ${HAVE_FUNC5.openpty.util_h:U1} != 1
 .  for t in script

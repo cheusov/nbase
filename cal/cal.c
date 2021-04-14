@@ -62,6 +62,7 @@ __RCSID("$NetBSD: cal.c,v 1.29.18.1 2020/06/30 18:41:07 martin Exp $");
 #include <unistd.h>
 
 #include "mkc_posix_getopt.h"
+#include "mkc_macro.h"
 
 #define	SATURDAY 		6		/* 1 Jan 1 was a Saturday */
 
@@ -904,7 +905,7 @@ init_hilite(void)
 	term = getenv("TERM");
 	if (term == NULL)
 		term = "dumb";
-	if (setupterm(term, fileno(stdout), &errret) != 0 && errret != 1)
+	if (setupterm(__UNCONST(term), fileno(stdout), &errret) != 0 && errret != 1)
 		return;
 
 	if (hilite > 1)

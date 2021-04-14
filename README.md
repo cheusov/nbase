@@ -22,7 +22,7 @@ rmd160 cleantags cmp col colcrt colrm column comm compress uncompress
 cp csplit ctags cut date dd deroff dirname du domainname echo ed env
 error expand expr false fgen find flock fmt fold fpr from fsplit
 getconf getopt grep egrep fgrep zgrep zegrep zfgrep head hexdump od
-hostname id groups whoami indent join jot kill lam leave ln logname
+hostname id groups whoami join jot kill lam leave ln logname
 look lorder ls m4 machine menuc mkdep mkdir mkfifo mknod mkstr mktemp
 msgc mtree mv nice nl nohup paste patch pax pr printenv printf pwd
 qsubst renice rev rm rmdir rs script sdiff sed seq shar shlock shuffle

@@ -1,4 +1,52 @@
 ======================================================================
+Version 9.1.0.1, by Aleksey Cheusov, Fri,  9 Apr 2021 16:12:28 +0300
+
+ Avoid using "mkc_" prefix everywhere in order to remove naming
+ collesion with mk-configure.
+
+ Fix: On linux S_ISTXT should be S_ISVTX, but 0.
+ This fixes the issue #6.
+
+ Update README.md
+
+ Fix mk/imp.f_flags_to_string.mk (incorrect mk-configure variable
+ names (mistypes))
+
+ menuc, awk, pax: fix build failure with Sun C compiler where
+ attribute format/printf is not available
+
+ Enable "cp" on Solaris
+
+ Exclude "cal" and "touch" if neither utimens(3) nor utimensat(2) is
+ available
+
+ cal: fix build failure on Darwin-15.6.0
+
+ Disable "indent" permanently. It seems it is totally broken with
+ gcc-10 (m,ultiple defintion of symbols). It is better to fix the
+ problem in NetBSD.
+
+======================================================================
+Version 9.1.0.0, by Aleksey Cheusov, San, 27 Mar 2021 23:42:21 +0300
+
+ Synch sources with NetBSD-9.0 RELEASE
+
+ ***A LOT OF*** minor fixes, improvements and clean-ups
+
+======================================================================
+Version 7.0.0.11, by Aleksey Cheusov, Mon, 22 Mar 2021 11:21:43 +0300
+
+ Enable "ul" and "tabs" on Linux/glibc.
+
+ Enable "cmp" and "find" on systems without strtoq(3).
+
+ Fixes for nawk, mtree, csplit, find, tabs, ul, cal, cut.
+
+ Fixes for following features: parsedate, bsd_signal, curses.
+
+ Minimize patch size for a lot of utilities.
+
+======================================================================
 Version 7.0.0.11, by Aleksey Cheusov, Mon, 22 Mar 2021 11:21:43 +0300
 
  Enable "ul" and "tabs" on Linux/glibc.
