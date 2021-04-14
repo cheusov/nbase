@@ -1,3 +1,4 @@
+* rename compatlib to libnbase
 * renice, ul, mtree -> netbsd sources
 
 * Switch to mkc-0.35.0
