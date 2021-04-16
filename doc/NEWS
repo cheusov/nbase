@@ -1,4 +1,10 @@
 ======================================================================
+Version 9.1.0.2, by Aleksey Cheusov, Fri, 16 Apr 2021 18:32:52 +0300
+
+ Fix replacement for "flags_to_string". This fixes segfaults in
+ "mtree", "install" and "ls".
+
+======================================================================
 Version 9.1.0.1, by Aleksey Cheusov, Fri,  9 Apr 2021 16:12:28 +0300
 
  Avoid using "mkc_" prefix everywhere in order to remove naming
