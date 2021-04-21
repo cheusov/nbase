@@ -101,6 +101,10 @@ flags_to_string(u_long flags, const char *def)
 	if (flags & SF_SNAPSHOT)
 		SAPPEND("snap");
 #endif
+#ifdef UF_HIDDEN
+	if (flags & UF_HIDDEN)
+		SAPPEND("hidden");
+#endif
 #endif
 	if (prefix != NULL)
 		return strdup(string);
@@ -163,6 +167,11 @@ string_to_flags(char **stringp, u_long *setp, u_long *clrp)
 			clear = !clear;
 #ifdef UF_NODUMPUF_NODUMP
 			TEST(p, "dump", UF_NODUMP);
+#endif
+			return (1);
+		case 'h':
+#ifdef UF_HIDDEN
+			TEST(p, "hidden", UF_HIDDEN);
 #endif
 			return (1);
 		case 'n':
