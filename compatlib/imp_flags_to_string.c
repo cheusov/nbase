@@ -165,7 +165,7 @@ string_to_flags(char **stringp, u_long *setp, u_long *clrp)
 			return (1);
 		case 'd':
 			clear = !clear;
-#ifdef UF_NODUMPUF_NODUMP
+#ifdef UF_NODUMP
 			TEST(p, "dump", UF_NODUMP);
 #endif
 			return (1);
