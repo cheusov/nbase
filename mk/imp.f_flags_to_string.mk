@@ -1,4 +1,4 @@
-# Copyright (c) 2017 by Aleksey Cheusov
+# Copyright (c) 2017-2021 by Aleksey Cheusov
 #
 # See LICENSE file in the distribution.
 
@@ -15,6 +15,7 @@ MKC_CHECK_FUNCLIBS +=	flags_to_string:util string_to_flags:util
 
 .if ${HAVE_FUNCLIB.flags_to_string.util:U} != 1 || \
      ${HAVE_FUNCLIB.string_to_flags.util:U} != 1
+MKC_FEATURES += strlcat strsep
 MKC_SRCS     +=	imp_flags_to_string.c
 .endif
 
