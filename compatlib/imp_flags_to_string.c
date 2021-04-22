@@ -31,12 +31,6 @@
  * SUCH DAMAGE.
  */
 
-#if HAVE_NBTOOL_CONFIG_H
-#include "nbtool_config.h"
-#else
-#define HAVE_STRUCT_STAT_ST_FLAGS 1
-#endif
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stddef.h>
@@ -55,6 +49,47 @@
 	prefix = ",";							\
 } while (/* CONSTCOND */ 0)
 
+struct flag_name {
+	const char *name;
+	u_long flag;
+};
+
+static const struct flag_name flag_names[] = {
+#ifdef UF_APPEND
+	{ "uappnd", UF_APPEND },
+	{ "uappend", UF_APPEND },
+#endif
+#ifdef UF_IMMUTABLE
+	{ "uchg", UF_IMMUTABLE },
+	{ "uchange", UF_IMMUTABLE },
+	{ "uimmutable", UF_IMMUTABLE },
+#endif
+#ifdef UF_NODUMP
+	{ "nodump", UF_NODUMP },
+#endif
+#ifdef UF_OPAQUE
+	{ "opaque", UF_OPAQUE },
+#endif
+#ifdef SF_APPEND
+	{ "sappnd", SF_APPEND },
+#endif
+#ifdef SF_ARCHIVED
+	{ "arch", SF_ARCHIVED },
+	{ "archived", SF_ARCHIVED },
+#endif
+#ifdef SF_IMMUTABLE
+	{ "schg", SF_IMMUTABLE },
+	{ "schange", SF_IMMUTABLE },
+	{ "simmutable", SF_IMMUTABLE },
+#endif
+#ifdef SF_SNAPSHOT
+	{ "snap", SF_SNAPSHOT },
+#endif
+#ifdef UF_HIDDEN
+	{ "hidden", UF_HIDDEN },
+#endif
+};
+
 /*
  * flags_to_string --
  *	Convert stat flags to a comma-separated string.  If no flags
@@ -65,47 +100,18 @@ flags_to_string(u_long flags, const char *def)
 {
 	char string[128];
 	const char *prefix;
+	size_t i;
+	u_long prev_flag = 0;
+	u_long curr_flag;
 
 	string[0] = '\0';
 	prefix = NULL;
-#if HAVE_STRUCT_STAT_ST_FLAGS
-#ifdef UF_APPEND
-	if (flags & UF_APPEND)
-		SAPPEND("uappnd");
-#endif
-#ifdef UF_IMMUTABLE
-	if (flags & UF_IMMUTABLE)
-		SAPPEND("uchg");
-#endif
-#ifdef UF_NODUMP
-	if (flags & UF_NODUMP)
-		SAPPEND("nodump");
-#endif
-#ifdef UF_OPAQUE
-	if (flags & UF_OPAQUE)
-		SAPPEND("opaque");
-#endif
-#ifdef SF_APPEND
-	if (flags & SF_APPEND)
-		SAPPEND("sappnd");
-#endif
-#ifdef SF_ARCHIVED
-	if (flags & SF_ARCHIVED)
-		SAPPEND("arch");
-#endif
-#ifdef SF_IMMUTABLE
-	if (flags & SF_IMMUTABLE)
-		SAPPEND("schg");
-#endif
-#ifdef SF_SNAPSHOT
-	if (flags & SF_SNAPSHOT)
-		SAPPEND("snap");
-#endif
-#ifdef UF_HIDDEN
-	if (flags & UF_HIDDEN)
-		SAPPEND("hidden");
-#endif
-#endif
+	for (i = 0 ; i < sizeof(flag_names)/sizeof(flag_names[0]); ++i) {
+		curr_flag = flag_names[i].flag;
+		if (curr_flag != prev_flag && (flags & curr_flag) != 0)
+			SAPPEND(flag_names[i].name);
+		prev_flag = curr_flag;
+	}
 	if (prefix != NULL)
 		return strdup(string);
 	return strdup(def);
@@ -124,7 +130,7 @@ flags_to_string(u_long flags, const char *def)
 			if (clrp)					\
 				*clrp &= ~(f);				\
 		}							\
-		break;							\
+		matched = 1;						\
 	}								\
 }
 
@@ -139,13 +145,14 @@ string_to_flags(char **stringp, u_long *setp, u_long *clrp)
 {
 	int clear;
 	char *string, *p;
+	size_t i;
+	int matched;
 
 	if (setp)
 		*setp = 0;
 	if (clrp)
 		*clrp = 0;
 
-#if HAVE_STRUCT_STAT_ST_FLAGS
 	string = *stringp;
 	while ((p = strsep(&string, "\t ,")) != NULL) {
 		clear = 0;
@@ -156,65 +163,19 @@ string_to_flags(char **stringp, u_long *setp, u_long *clrp)
 			clear = 1;
 			p += 2;
 		}
-		switch (p[0]) {
-		case 'a':
-#ifdef SF_ARCHIVED
-			TEST(p, "arch", SF_ARCHIVED);
-			TEST(p, "archived", SF_ARCHIVED);
-#endif
-			return (1);
-		case 'd':
-			clear = !clear;
-#ifdef UF_NODUMP
-			TEST(p, "dump", UF_NODUMP);
-#endif
-			return (1);
-		case 'h':
-#ifdef UF_HIDDEN
-			TEST(p, "hidden", UF_HIDDEN);
-#endif
-			return (1);
-		case 'n':
-				/*
-				 * Support `nonodump'. Note that
-				 * the state of clear is not changed.
-				 */
-#ifdef UF_NODUMP
-			TEST(p, "nodump", UF_NODUMP);
-#endif
-			return (1);
-		case 'o':
-#ifdef UF_OPAQUE
-			TEST(p, "opaque", UF_OPAQUE);
-#endif
-			return (1);
-		case 's':
-#ifdef SF_APPEND
-			TEST(p, "sappnd", SF_APPEND);
-			TEST(p, "sappend", SF_APPEND);
-#endif
-#ifdef SF_IMMUTABLE
-			TEST(p, "schg", SF_IMMUTABLE);
-			TEST(p, "schange", SF_IMMUTABLE);
-			TEST(p, "simmutable", SF_IMMUTABLE);
-#endif
-			return (1);
-		case 'u':
-#ifdef UF_APPEND
-			TEST(p, "uappnd", UF_APPEND);
-			TEST(p, "uappend", UF_APPEND);
-#endif
-#ifdef UF_IMMUTABLEUF_IMMUTABLE
-			TEST(p, "uchg", UF_IMMUTABLE);
-			TEST(p, "uchange", UF_IMMUTABLE);
-			TEST(p, "uimmutable", UF_IMMUTABLE);
-#endif
-			return (1);
-		default:
-			return (1);
+		matched = 0;
+		for (i = 0 ; i < sizeof(flag_names)/sizeof(flag_names[0]); ++i) {
+			TEST(p, flag_names[i].name, flag_names[i].flag);
 		}
-	}
+#ifdef UF_NODUMP
+		if (p[0] == 'd') {
+			clear = !clear;
+			TEST(p, "dump", UF_NODUMP);
+		}
 #endif
+		if (!matched)
+			return (1);
+	}
 
 	return (0);
 }
