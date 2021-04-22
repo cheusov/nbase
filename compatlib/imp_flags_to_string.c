@@ -72,6 +72,7 @@ static const struct flag_name flag_names[] = {
 #endif
 #ifdef SF_APPEND
 	{ "sappnd", SF_APPEND },
+	{ "sappend", SF_APPEND },
 #endif
 #ifdef SF_ARCHIVED
 	{ "arch", SF_ARCHIVED },
@@ -84,9 +85,44 @@ static const struct flag_name flag_names[] = {
 #endif
 #ifdef SF_SNAPSHOT
 	{ "snap", SF_SNAPSHOT },
+	{ "snapshot", SF_SNAPSHOT },
+#endif
+#ifdef SF_NOUNLINK
+	{ "sunlnk", SF_NOUNLINK },
+	{ "sunlink", SF_NOUNLINK },
+#endif
+#ifdef UF_NOUNLINK
+	{ "uunlnk", UF_NOUNLINK },
+	{ "uunlink", UF_NOUNLINK },
+#endif
+#ifdef UF_OFFLINE
+	{ "offline", UF_OFFLINE },
+	{ "uoffline", UF_OFFLINE },
+#endif
+#ifdef UF_READONLY
+	{ "urdonly", UF_READONLY },
+	{ "rdonly", UF_READONLY },
+	{ "readonly", UF_READONLY },
+#endif
+#ifdef UF_REPARSE
+	{ "ureparse", UF_REPARSE },
+	{ "reparse", UF_REPARSE },
+#endif
+#ifdef UF_SPARSE
+	{ "usparse", UF_SPARSE },
+	{ "sparse", UF_SPARSE },
+#endif
+#ifdef UF_SYSTEM
+	{ "usystem", UF_SYSTEM },
+	{ "system", UF_SYSTEM },
+#endif
+#ifdef UF_ARCHIVED
+	{ "uarch", UF_ARCHIVED },
+	{ "uarchived", UF_ARCHIVED },
 #endif
 #ifdef UF_HIDDEN
 	{ "hidden", UF_HIDDEN },
+	{ "uhidden", UF_HIDDEN },
 #endif
 };
 
