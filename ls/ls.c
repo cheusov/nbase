@@ -32,6 +32,8 @@
  * SUCH DAMAGE.
  */
 
+#include "nbtool_config.h"
+
 #include "imp_macro.h"
 #include "mkc_pwdgrp.h"
 #include "mkc_progname.h"
@@ -40,6 +42,7 @@
 #include "imp_types.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
+#include "imp_flags_to_string.h"
 
 #include <stdint.h>
 

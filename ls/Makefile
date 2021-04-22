@@ -2,6 +2,8 @@ PROG =	ls
 MAN  =	ls.1
 SRCS =	cmp.c ls.c main.c print.c util.c
 
+CPPFLAGS +=	-DHAVE_NBTOOL_CONFIG_H -I.
+
 MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 
 .include <mkc.init.mk>
@@ -23,5 +25,7 @@ MKC_FEATURES += humanize_number pwdgrp vis
 .include "../mk/imp.f_getbsize.mk"
 .include "../mk/imp.f_strmode.mk"
 .include "../mk/imp.f_types.mk"
+.include "../mk/imp.f_struct_stat.mk"
+.include "../mk/imp.f_flags_to_string.mk"
 
 .include "../mk/addlinks.mk"
