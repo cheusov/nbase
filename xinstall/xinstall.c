@@ -349,7 +349,7 @@ main(int argc, char *argv[])
 		iflags |= HASUID;
 	}
 
-#if ! HAVE_NBTOOL_CONFIG_H
+#if HAVE_STRUCT_STAT_ST_FLAGS
 	if (fflags && !dounpriv) {
 		if (string_to_flags(&fflags, &fileflags, NULL))
 			errx(EXIT_FAILURE, "%s: invalid flag", fflags);
