@@ -15,6 +15,7 @@ ${.OBJDIR}/sys/cdefs.h: ${.CURDIR}/sys/cdefs.h.in
 CLEANFILES    =	${.OBJDIR}/sys/cdefs.h
 CPPFLAGS     +=	-I. -I${.OBJDIR}
 CFLAGS.check +=	-Wno-error=unused-const-variable
+CFLAGS.check +=	-Wno-tautological-compare # for clang-3.8.1 and imp_flags_to_string.c on Linux
 
 MKC_FEATURES +=	arc4random bswap dprintf efun errc fgetln fparseln \
    pwdgrp raise_default_signal humanize_number \
