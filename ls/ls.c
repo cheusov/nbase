@@ -43,6 +43,7 @@
 #include "mkc_err.h"
 #include "mkc_warn.h"
 #include "imp_flags_to_string.h"
+#include "mkc_efun.h"
 
 #include <stdint.h>
 
@@ -613,7 +614,7 @@ display(FTSENT *p, FTSENT *list)
 					flags =
 					    flags_to_string((u_long)sp->st_flags, "-");
 #else
-					flags = "";
+					flags = estrdup("-");
 #endif
 					if ((flen = strlen(flags)) > maxflags)
 						maxflags = flen;

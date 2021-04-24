@@ -18,7 +18,7 @@ WARNERR   =	no # FreeBSD has a bit different fts_open(3)
 
 MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 
-MKC_FEATURES += humanize_number pwdgrp vis
+MKC_FEATURES += efun humanize_number pwdgrp vis
 
 .include "../mk/hacks.mk"
 
