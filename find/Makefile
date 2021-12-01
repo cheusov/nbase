@@ -12,6 +12,8 @@ MKC_FEATURES         +=	efun pwdgrp
 CFLAGS.check +=	-Wno-error=return-type
 CFLAGS.check +=	-Wno-error=unused-result # write(...) on glibc/Linux-es
 CFLAGS.check +=	-erroff=E_STATEMENT_NOT_REACHED
+# vfork(2) on Solaris
+CFLAGS.check += -Wno-error=deprecated-declarations -erroff=E_DEPRECATED_ATT
 
 .if ${OPSYS:U} == FreeBSD
 WARNERR   =	no # FreeBSD has a bit different fts_open(3)

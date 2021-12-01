@@ -154,6 +154,17 @@ static int	hash_digest_file(char *, const struct hash *, int);
 __dead static void	requirehash(const char *);
 __dead static void	usage(void);
 
+static void nbsetprogname(const char *progname)
+{
+	setprogname(progname);
+	const char *p = getprogname();
+	if (p[0] == 'n' && p[1] == 'b')
+		p += 2;
+	if (p[0] == '-')
+		p += 1;
+	setprogname(p);
+}
+
 int
 main(int argc, char **argv)
 {
@@ -161,7 +172,6 @@ main(int argc, char **argv)
 	uint32_t val;
 	off_t len;
 	char *fn;
-	const char *progname;
 	int (*cfncn) (int, uint32_t *, off_t *);
 	void (*pfncn) (char *, uint32_t, off_t);
 	const struct hash *hash;
@@ -175,18 +185,17 @@ main(int argc, char **argv)
 	do_check = 0;
 	print_flags = 0;
 
+	nbsetprogname(argv[0]);
 	setlocale(LC_ALL, "");
 
-	progname = getprogname();
-
 	for (hash = hashes; hash->hashname != NULL; hash++)
-		if (strcmp(progname, hash->progname) == 0)
+		if (strcmp(getprogname(), hash->progname) == 0)
 			break;
 
 	if (hash->hashname == NULL) {
 		hash = NULL;
 
-		if (!strcmp(progname, "sum")) {
+		if (!strcmp(getprogname(), "sum")) {
 			cfncn = csum1;
 			pfncn = psum1;
 		} else {

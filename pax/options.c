@@ -74,7 +74,7 @@ __RCSID("$NetBSD: options.c,v 1.118 2015/12/19 18:45:52 christos Exp $");
 #endif	/* SMALL */
 
 #include "mkc_fgetln.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #ifndef _PATH_DEFTAPE
 #define _PATH_DEFTAPE "/dev/nrst0"
@@ -89,6 +89,7 @@ static int nopids;		/* tar mode: suppress "pids" for -p option */
 static char flgch[] = FLGCH;	/* list of all possible flags (pax) */
 static OPLIST *ophead = NULL;	/* head for format specific options -x */
 static OPLIST *optail = NULL;	/* option tail */
+char *chdname;
 
 static int opt_add(const char *);
 static int no_op(void);

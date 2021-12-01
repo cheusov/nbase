@@ -55,7 +55,7 @@ __RCSID("$NetBSD: id.c,v 1.32 2011/09/16 15:39:26 joerg Exp $");
 
 #include "mkc_progname.h"
 #include "mkc_posix_getopt.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 static void current(void);
 static void pretty(struct passwd *);
@@ -66,6 +66,17 @@ static struct passwd *who(char *);
 
 static int maxgroups;
 static gid_t *groups;
+
+static void nbsetprogname(const char *progname)
+{
+	setprogname(progname);
+	const char *p = getprogname();
+	if (p[0] == 'n' && p[1] == 'b')
+		p += 2;
+	if (p[0] == '-')
+		p += 1;
+	setprogname(p);
+}
 
 int
 main(int argc, char *argv[])
@@ -78,13 +89,15 @@ main(int argc, char *argv[])
 
 	Gflag = gflag = nflag = pflag = rflag = uflag = 0;
 
-	if (strcmp(getprogname(), "groups") == 0) {
+	nbsetprogname(argv[0]);
+	const char *progname = getprogname();
+	if (strcmp(progname, "groups") == 0) {
 		Gflag = 1;
 		nflag = 1;
 		opts = "";
 		if (argc > 2)
 			usage();
-	} else if (strcmp(getprogname(), "whoami") == 0) {
+	} else if (strcmp(progname, "whoami") == 0) {
 		uflag = 1;
 		nflag = 1;
 		opts = "";

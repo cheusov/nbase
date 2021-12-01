@@ -12,7 +12,7 @@ MKC_CHECK_FUNCLIBS +=	parsedate:util
 .include <mkc.conf.mk>
 
 .if ${HAVE_FUNCLIB.parsedate:U} != 1 && ${HAVE_FUNCLIB.parsedate.util:U} != 1
-MKC_SRCS +=	mkc_parsedate.y
+MKC_SRCS +=	imp_parsedate.y
 .endif
 
 CPPFLAGS +=	-D_MKC_CHECK_PARSEDATE

@@ -66,7 +66,7 @@ tail	{white}
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_posix_getopt.h"
 #include "mkc_progname.h"
 #include "mkc_efun.h"

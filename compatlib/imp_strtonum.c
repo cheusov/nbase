@@ -38,8 +38,8 @@ __RCSID("$NetBSD: strtonum.c,v 1.6 2018/12/06 06:29:56 kamil Exp $");
 #include <errno.h>
 #include <inttypes.h>
 
-#include "mkc_strtoi.h"
-#include "mkc_strtonum.h"
+#include "imp_strtoi.h"
+#include "imp_strtonum.h"
 
 long long
 strtonum(const char *nptr, long long minval, long long maxval,

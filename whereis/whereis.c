@@ -58,6 +58,17 @@ __RCSID("$NetBSD: whereis.c,v 1.21 2008/10/17 10:53:26 apb Exp $");
 
 static void usage(void) __dead;
 
+static void nbsetprogname(const char *progname)
+{
+	setprogname(progname);
+	const char *p = getprogname();
+	if (p[0] == 'n' && p[1] == 'b')
+		p += 2;
+	if (p[0] == '-')
+		p += 1;
+	setprogname(p);
+}
+
 int
 main(int argc, char *argv[])
 {
@@ -66,6 +77,7 @@ main(int argc, char *argv[])
 	int ch, mib[2];
 	char *p, *std, path[MAXPATHLEN];
 	const char *t;
+	nbsetprogname(argv[0]);
 	int which = strcmp(getprogname(), "which") == 0;
 	int useenvpath = which, found = 0;
 	gid_t egid = getegid();

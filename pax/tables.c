@@ -63,7 +63,7 @@ __RCSID("$NetBSD: tables.c,v 1.31 2013/10/18 19:53:34 christos Exp $");
 #include "extern.h"
 
 #include "mkc_strlcpy.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 /*
  * Routines for controlling the contents of all the different databases pax

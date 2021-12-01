@@ -61,7 +61,7 @@ __RCSID("$NetBSD: wc.c,v 1.35 2011/09/16 15:39:30 joerg Exp $");
 #include <wchar.h>
 #include <wctype.h>
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_posix_getopt.h"
 #include "mkc_warn.h"
 

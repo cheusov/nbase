@@ -95,7 +95,7 @@ __RCSID("$NetBSD: ftree.c,v 1.42 2012/09/27 00:44:59 christos Exp $");
 #endif	/* SMALL */
 
 #include "mkc_strlcpy.h"
-#include "mkc_struct_stat.h"
+#include "imp_struct_stat.h"
 
 /*
  * routines to interface with the fts library function.

@@ -85,14 +85,14 @@ __RCSID("$NetBSD: xinstall.c,v 1.125 2016/05/31 06:55:02 pgoyette Exp $");
 #include "mkc_progname.h"
 #include "mkc_strlcpy.h"
 #include "mkc_strlcat.h"
-#include "mkc_macro.h"
-#include "mkc_getsetmode.h"
+#include "imp_macro.h"
+#include "imp_getsetmode.h"
 #include "mkc_pwdgrp.h"
 #include "mkc_posix_getopt.h"
 #include "mkc_vis.h"
-#include "mkc_flags_to_string.h"
-#include "mkc_struct_stat.h"
-#include "mkc_macro.h"
+#include "imp_flags_to_string.h"
+#include "imp_struct_stat.h"
+#include "imp_macro.h"
 #include "mkc_errc.h"
 
 #define STRIP_ARGS_MAX 32
@@ -442,7 +442,7 @@ parseid(char *name, id_t *id)
 static int
 do_link(char *from_name, char *to_name)
 {
-	char tmpl[MAXPATHLEN];
+	char tmpl[MAXPATHLEN + 12];
 	int ret;
 
 	if (dorename) {
@@ -643,7 +643,7 @@ install(char *from_name, char *to_name, u_int flags)
 	struct timeval	tv[2];
 	off_t		size;
 	int		devnull, from_fd, to_fd, serrno, tmpmode;
-	char		*p, tmpl[MAXPATHLEN], *oto_name, *digestresult;
+	char		*p, tmpl[MAXPATHLEN + 12], *oto_name, *digestresult;
 
 	size = -1;
 	if (!dolink) {

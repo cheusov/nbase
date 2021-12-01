@@ -54,7 +54,7 @@ __RCSID("$NetBSD: split.c,v 1.27 2017/01/10 21:14:13 christos Exp $");
 #include <unistd.h>
 
 #include "mkc_progname.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"

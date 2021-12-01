@@ -73,8 +73,8 @@ static char rcsid[] = "$NetBSD: zopen.c,v 1.15 2011/08/16 13:55:01 joerg Exp $";
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_funopen.h"
-#include "mkc_macro.h"
+#include "imp_funopen.h"
+#include "imp_macro.h"
 
 #define	BITS		16		/* Default bits. */
 #define	HSIZE		69001		/* 95% occupancy */

@@ -89,7 +89,7 @@ __RCSID("$NetBSD: sort.c,v 1.64 2017/01/10 21:13:45 christos Exp $");
 
 #include "mkc_efun.h"
 #include "mkc_progname.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_posix_getopt.h"
 
 int REC_D = '\n';

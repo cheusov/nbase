@@ -37,7 +37,7 @@
 #include <signal.h>
 #include <limits.h>
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 typedef struct {
 	char *p_end;			/* pointer to NULL at end of path */

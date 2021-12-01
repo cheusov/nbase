@@ -306,6 +306,17 @@ init_color(const char *d)
 	return (c != NULL ? c : d);
 }
 
+static void nbsetprogname(const char *progname)
+{
+	setprogname(progname);
+	const char *p = getprogname();
+	if (p[0] == 'n' && p[1] == 'b')
+		p += 2;
+	if (p[0] == '-')
+		p += 1;
+	setprogname(p);
+}
+
 int
 main(int argc, char *argv[])
 {
@@ -316,7 +327,7 @@ main(int argc, char *argv[])
 	int c, lastc, needpattern, newarg, prevoptind;
 
 	setlocale(LC_ALL, "");
-	setprogname(argv[0]);
+	nbsetprogname(argv[0]);
 
 #ifndef WITHOUT_NLS
 	catalog = catopen("grep", NL_CAT_LOCALE);

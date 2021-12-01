@@ -39,7 +39,7 @@
 #ifndef __SHA2_H__
 #define __SHA2_H__
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 #include <sys/types.h>
 #include <stdint.h>

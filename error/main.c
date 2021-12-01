@@ -52,7 +52,7 @@ __RCSID("$NetBSD: main.c,v 1.21 2011/08/17 13:11:22 christos Exp $");
 #include "error.h"
 #include "pathnames.h"
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_progname.h"
 #include "mkc_posix_getopt.h"
 #include "mkc_err.h"

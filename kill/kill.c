@@ -30,7 +30,7 @@
  */
 
 #include "mkc_progname.h"
-#include "mkc_sys_signame.h"
+#include "imp_sys_signame.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 

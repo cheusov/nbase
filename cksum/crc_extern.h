@@ -31,7 +31,7 @@
  *	@(#)extern.h	8.1 (Berkeley) 6/6/93
  */
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 
 __BEGIN_DECLS
 #include <stdint.h>

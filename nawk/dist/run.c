@@ -22,9 +22,9 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
 THIS SOFTWARE.
 ****************************************************************/
 
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_strlcat.h"
-#include "mkc_fpurge.h"
+#include "imp_fpurge.h"
 
 #if HAVE_NBTOOL_CONFIG_H
 #include "nbtool_config.h"

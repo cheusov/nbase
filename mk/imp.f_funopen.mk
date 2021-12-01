@@ -18,7 +18,7 @@ MKC_PROTOTYPE_HEADERS.fopencookie = stdio.h
 .include <mkc.conf.mk>
 
 .if ${HAVE_FUNCLIB.funopen:U} != 1
-MKC_SRCS +=	mkc_funopen.c
+MKC_SRCS +=	imp_funopen.c
 .endif
 
 CPPFLAGS +=	-D_MKC_CHECK_FUNOPEN

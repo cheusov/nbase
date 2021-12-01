@@ -13,6 +13,7 @@
 #include <sys/param.h>
 #include <sys/types.h>
 #include <sys/time.h>
+#include <time.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <limits.h>
@@ -78,6 +79,18 @@
 
 #ifndef FNM_CASEFOLD
 #define FNM_CASEFOLD 0
+#endif
+
+#ifndef MIN
+# define MIN(a,b)      (((a)<(b))?(a):(b))
+#endif
+
+#ifndef MAX
+# define MAX(b,a)      (((a)<(b))?(a):(b))
+#endif
+
+#ifndef TIMER_RELTIME
+# define TIMER_RELTIME 0
 #endif
 
 /*

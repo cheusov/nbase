@@ -63,7 +63,7 @@ __RCSID("$NetBSD: eval.c,v 1.28 2020/06/27 19:18:58 uwe Exp $");
 
 #include "mkc_strlcpy.h"
 #include "mkc_err.h"
-#include "mkc_strtoi.h"
+#include "imp_strtoi.h"
 
 static void	dodefn(const char *);
 static void	dopushdef(const char *, const char *);

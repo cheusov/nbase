@@ -32,12 +32,11 @@
  * SUCH DAMAGE.
  */
 
-#include "mkc_macro.h"
 #include "mkc_pwdgrp.h"
 #include "mkc_progname.h"
-#include "mkc_getbsize.h"
+#include "imp_getbsize.h"
 #include "mkc_posix_getopt.h"
-#include "mkc_types.h"
+#include "imp_types.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 
@@ -76,6 +75,7 @@ __RCSID("$NetBSD: ls.c,v 1.76 2017/02/06 21:06:04 rin Exp $");
 
 #include "ls.h"
 #include "extern.h"
+#include "imp_macro.h"
 
 #if HAVE_HEADER_SYS_SYSMACROS_H
 /* Linux/glibc-2.26 -- major/minor from sys/types.h are deprecated */

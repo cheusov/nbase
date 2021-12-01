@@ -52,7 +52,7 @@ __RCSID("$NetBSD: rmd160.c,v 1.5 2009/08/21 09:40:51 skrll Exp $");
 #include <sys/param.h>
 #include <rmd160.h>
 
-#include "mkc_endian_encdec.h"
+#include "imp_endian_encdec.h"
 
 #define PUT_64BIT_LE(cp, value) do { \
 	(cp)[7] = (u_char)((value) >> 56); \

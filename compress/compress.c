@@ -56,8 +56,9 @@ __RCSID("$NetBSD: compress.c,v 1.26 2011/08/30 23:08:05 joerg Exp $");
 #include <unistd.h>
 
 #include "mkc_posix_getopt.h"
-#include "mkc_struct_stat.h"
-#include "mkc_macro.h"
+#include "imp_struct_stat.h"
+#include "mkc_progname.h"
+#include "imp_macro.h"
 
 static void	compress(const char *, const char *, int);
 static void	cwarn(const char *, ...) __printflike(1, 2);
@@ -72,6 +73,17 @@ extern FILE *zopen(const char *fname, const char *mode, int bits);
 static int eval, force, verbose;
 static int isstdout, isstdin;
 
+static void nbsetprogname(const char *progname)
+{
+	setprogname(progname);
+	const char *p = getprogname();
+	if (p[0] == 'n' && p[1] == 'b')
+		p += 2;
+	if (p[0] == '-')
+		p += 1;
+	setprogname(p);
+}
+
 int
 main(int argc, char **argv)
 {
@@ -80,15 +92,13 @@ main(int argc, char **argv)
 	int bits, cat, ch;
 	char *p, newname[MAXPATHLEN];
 
-	if ((p = strrchr(argv[0], '/')) == NULL)
-		p = argv[0];
-	else
-		++p;
-	if (!strcmp(p, "uncompress"))
+	nbsetprogname(argv[0]);
+
+	if (!strcmp(getprogname(), "uncompress"))
 		style = DECOMPRESS;
-        else if (!strcmp(p, "compress"))
+        else if (!strcmp(getprogname(), "compress"))
                 style = COMPRESS;
-        else if (!strcmp(p, "zcat")) {
+        else if (!strcmp(getprogname(), "zcat")) {
                 style = DECOMPRESS;
                 cat = 1;
         }

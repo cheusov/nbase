@@ -54,7 +54,7 @@ __RCSID("$NetBSD: tee.c,v 1.12 2016/09/05 00:40:30 sevan Exp $");
 #include <locale.h>
 
 #include "mkc_posix_getopt.h"
-#include "mkc_macro.h"
+#include "imp_macro.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
 

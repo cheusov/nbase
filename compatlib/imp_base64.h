@@ -15,7 +15,7 @@
 #include <netinet/in.h>
 #include <resolv.h>
 #else
-#include "mkc_macro.h"
+#include "imp_macro.h"
 int b64_ntop(u_char const *, size_t, char *, size_t);
 int b64_pton(char const *src, u_char *target, size_t targsize);
 #endif /* HAVE_B64_FUNCS */

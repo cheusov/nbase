@@ -44,8 +44,8 @@ __RCSID("$NetBSD: reallocarr.c,v 1.5 2015/08/20 22:27:49 kamil Exp $");
 #include <stdlib.h>
 #include <string.h>
 
-#include "mkc_reallocarr.h"
-#include "mkc_macro.h"
+#include "imp_reallocarr.h"
+#include "imp_macro.h"
 
 #ifdef _LIBC
 #ifdef __weak_alias

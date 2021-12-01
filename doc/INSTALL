@@ -9,26 +9,49 @@
 
 *) On such systems as Solaris-10 and -11 you may need libfts library
    (https://github.com/pullmoll/musl-fts). This allows you to build
-   programs that use fts(3) functions. After installation modify
-   CPPFLAGS and LDFLAGS according, e.g.
+   programs that use fts(3) functions. For building modify CPPFLAGS
+   and LDFLAGS according, e.g.
 
    export CPPFLAGS='-I/usr/local/include'
    export LDFLAGS='-L/usr/local/lib -lfts'
 
-*) cd nbase-X-Y-Z-N
+   For building tsort(1) you also need libdb1.
+   For many utilities you need curses library.
 
-*) Set build variables, for example, PREFIX.
+*) Set build variables, for example,
+
    export PREFIX=/usr/local/nbase LINKSPREFIX=/usr/local
    export COPTS='-g'
    export CC='cc -xc99 -m32'
    export CPPFLAGS='-I/opt/csw/lib'
-   export LDFLAGS='-L/opt/csw/lib -Wl,-rpath,/opt/csw/lib -lfts'
+   export LDFLAGS='-L/opt/csw/lib -Wl,-rpath,/opt/csw/lib'
+   export LDADD='-lfts'
 
 *) Build utilities you need
+
    mkcmake ls grep find
+
+     or
+
    mkcmake all
 
-*) mkcmake install
+     or
+
+   export SUBPRJ_DFLT='ls grep find'
+   mkcmake all
+
+*) Install evrything you build
+
+   mkcmake install-ls install-grep install-find
+
+     or
+
+   mkcmake install
+
+     or
+
+   export SUBPRJ_DFLT='ls grep find'
+   mkcmake install DESTDIR=/tmp/destdir
 
 *) nbase project contains a lot of subprojects: cat, cut, etc.
    By default all subprojects are built and installed. You can build and
@@ -36,13 +59,15 @@
 
    mkcmake all-cut all-cat install-cut install-cut
 
+   Alternatively, you may set SUBPRJ_DFLT variable as shown above.
+
 *)
 There is a lot of Makefile variables that can be changed during
 build and installation.
 
   Uniq for nbase:
   CURSES_LIBNAME - name of curses library, e.g., ncurses, curses, pdcurses etc.
-                   The default it is "curses".
+                   The default is "curses".
 
   Common for mk-configure:
   PREFIX         - where programs are installed to
@@ -53,7 +78,6 @@ build and installation.
   CFLAGS
   LDFLAGS
   LDADD
-  LEXLIB
   LEX
   YACC
   ...
@@ -66,11 +90,10 @@ Examples of build and installation:
      mkcmake all
      env DESTDIR=/tmp/fake-root mkcmake install
 
- 2)  env CC='icc' \
+ 2)  env CC='cc' \
        PREFIX=/usr/pkg \
        LEX=flex \
-       LEXLIB=-lfl \
        YACC='bison -y' \
-       CPPFLAGS='-I/usr/pkg/include' \
+       CPPFLAGS='-I/usr/pkg/include/ncurses' \
        LDFLAGS='-L/usr/pkg/lib -Wl,-rpath -Wl,/usr/pkg/lib' \
           mkcmake -s all-banner install-banner

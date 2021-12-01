@@ -61,8 +61,8 @@ __RCSID("$NetBSD: sha2.c,v 1.21 2010/01/24 21:11:18 joerg Exp $");
 #include <sys/types.h>
 #include <sha2.h>
 
-#include "mkc_macro.h"
-#include "mkc_endian_encdec.h"
+#include "imp_macro.h"
+#include "imp_endian_encdec.h"
 
 #if HAVE_NBTOOL_CONFIG_H
 #  if HAVE_FUNC1_BE32TOH_SYS_ENDIAN_H && HAVE_FUNC1_BE64TOH_SYS_ENDIAN_H && 0

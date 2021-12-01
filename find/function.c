@@ -64,21 +64,21 @@ __RCSID("$NetBSD: function.c,v 1.75.8.1 2017/06/15 05:46:49 snj Exp $");
 #include <util.h>
 #endif
 
-#include "mkc_tzfile.h"
-#include "mkc_timespeccmp.h"
+#include "imp_tzfile.h"
+#include "imp_timespeccmp.h"
 #include "mkc_efun.h"
-#include "mkc_macro.h"
-#include "mkc_getsetmode.h"
+#include "imp_macro.h"
+#include "imp_getsetmode.h"
 #include "mkc_strlcpy.h"
 #include "mkc_pwdgrp.h"
-#include "mkc_struct_stat.h"
-#include "mkc_struct_statvfs.h"
+#include "imp_struct_stat.h"
+#include "imp_struct_statvfs.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
-#include "mkc_parsedate.h"
+#include "imp_parsedate.h"
 
 #ifndef S_ISTXT
-#  define S_ISTXT 0
+#  define S_ISTXT S_ISVTX
 #endif
 
 #ifndef ARG_MAX

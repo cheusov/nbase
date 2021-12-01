@@ -1,4 +1,33 @@
 ======================================================================
+Version 8.0.0.2, by Aleksey Cheusov, Sun,  4 Apr 2021 00:45:00 +0300
+
+ Replace prefix mkc_ with imp_ for avoiding
+ naming collision with mkcmake
+
+ Fix: On linux S_ISTXT should be S_ISVTX, but 0.
+ This fixes the issue #6.
+
+======================================================================
+Version 8.0.0.1, by Aleksey Cheusov, Sat, 27 Mar 2021 23:18:53 +0300
+
+ When LINKSPREFIX is set:
+   - programs prefix if "nb" instead of "nb-"
+   - MANZ is handled correctly
+
+======================================================================
+Version 7.0.0.11, by Aleksey Cheusov, Mon, 22 Mar 2021 11:21:43 +0300
+
+ Enable "ul" and "tabs" on Linux/glibc.
+
+ Enable "cmp" and "find" on systems without strtoq(3).
+
+ Fixes for nawk, mtree, csplit, find, tabs, ul, cal, cut.
+
+ Fixes for following features: parsedate, bsd_signal, curses.
+
+ Minimize patch size for a lot of utilities.
+
+======================================================================
 Version 7.0.0.10, by Aleksey Cheusov, Fri, 27 Nov 2020 15:22:51 +0300
 
   Disable grep(1) if REG_STARTEND is not defined in regex.h.
