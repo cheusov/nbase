@@ -124,6 +124,7 @@ static const struct flag_name flag_names[] = {
 	{ "hidden", UF_HIDDEN },
 	{ "uhidden", UF_HIDDEN },
 #endif
+	{ "fake", (u_long)-1 }
 };
 
 /*
