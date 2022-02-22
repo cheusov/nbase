@@ -3,6 +3,7 @@ SRCS =	vis.c foldit.c
 MAN  =	vis.1
 
 CFLAGS.check +=	-Wno-error=unused-result # wctomb(...) and asprintf(...) on glibc/Linux-es
+CFLAGS.check +=	-ww2218 # for icc
 
 MKC_FEATURES +=	vis
 

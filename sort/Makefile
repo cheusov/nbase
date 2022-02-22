@@ -4,6 +4,7 @@ SRCS =	append.c fields.c files.c fsort.c init.c msort.c sort.c tmp.c
 SRCS +=	radix_sort.c
 
 CFLAGS.check +=	-Wno-error=unused-result # asprintf(...) and fread(...) on glibc/Linux-es
+CFLAGS.check +=	-ww2218 # for icc
 
 MKC_FEATURES +=	efun
 

@@ -3,6 +3,7 @@ MAN       =	ed.1
 CPPFLAGS +=	-DBACKWARDS
 
 CFLAGS.check +=	-Wno-error=unused-result # asprintf(...) and system(...) on glibc/Linux-es
+CFLAGS.check +=	-ww2218 # for icc
 
 #.if (${MKCRYPTO} != "no")
 #CPPFLAGS+=-DDES

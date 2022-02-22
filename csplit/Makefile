@@ -2,6 +2,7 @@ PROG =		csplit
 MAN  =		csplit.1
 
 CFLAGS.check +=	-Wno-error=unused-result # write(...) on glibc/Linux-es
+CFLAGS.check +=	-ww2218 # for icc
 
 MKC_FEATURES +=	raise_default_signal
 

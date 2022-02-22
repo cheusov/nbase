@@ -5,6 +5,7 @@ SRCS =	compile.c main.c misc.c process.c
 MKC_FEATURES +=	errc getline
 
 CFLAGS.check +=	-Wno-error=unused-result # fchown(...) on glibc/Linux-es
+CFLAGS.check +=	-ww2218 # for icc
 
 .include <mkc.init.mk>
 

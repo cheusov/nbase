@@ -24,6 +24,7 @@ SRCS +=		fake_getid.c
 CFLAGS.check   +=	-Wno-error=deprecated-declarations
 CFLAGS.check   +=	-Wno-error=unused-result # write(...) on glibc/Linux-es
 CFLAGS.check   +=	-erroff=E_DEPRECATED_ATT # vfork(2) on SunOS
+CFLAGS.check   +=	-ww2218 # for icc
 
 .if ${TARGET_OPSYS} == "SunOS"
 CFLAGS.check   +=	-Wno-error=pointer-sign
