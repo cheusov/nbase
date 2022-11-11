@@ -44,6 +44,7 @@ __RCSID("$NetBSD: xstr.c,v 1.26 2016/03/11 18:39:03 christos Exp $");
 #endif /* not lint */
 
 #include <sys/param.h>
+#include <stddef.h>
 #include <signal.h>
 #include <errno.h>
 #include <unistd.h>
@@ -344,12 +345,13 @@ yankstr(char **cpp)
 gotc:
 		if (dp >= edp - 1) {
 			char *nbuf;
+			ptrdiff_t diff = dp - dbuf;
 			bsiz += BUFSIZ;
 			if ((nbuf = realloc(dbuf, bsiz)) == NULL) {
 				free(dbuf);
 				err(1, "realloc");
 			}
-			dp = nbuf + (dp - dbuf);
+			dp = nbuf + diff;
 			edp = nbuf + bsiz;
 			dbuf = nbuf;
 		}
