@@ -51,6 +51,7 @@ __RCSID("$NetBSD: setmode.c,v 1.34 2012/06/25 22:32:43 abs Exp $");
 #include <stdlib.h>
 #include <limits.h>
 #include <unistd.h>
+#include <stddef.h>
 
 #ifdef SETMODE_DEBUG
 #include <stdio.h>
@@ -158,11 +159,12 @@ common:			if (set->cmd2 & CMD2_CLR) {
 #define	ADDCMD(a, b, c, d) do {						\
 	if (set >= endset) {						\
 		BITCMD *newset;						\
+		ptrdiff_t diff = set - saveset;				\
 		setlen += SET_LEN_INCR;					\
 		newset = realloc(saveset, setlen * sizeof(BITCMD));	\
 		if (newset == NULL)					\
 			goto out;					\
-		set = newset + (set - saveset);				\
+		set = newset + diff;					\
 		saveset = newset;					\
 		endset = newset + (setlen - 2);				\
 	}								\
