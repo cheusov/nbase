@@ -100,7 +100,7 @@
 
 #define	FCLOSE(file) {							\
 	if (EOF == fclose(file))					\
-		err(2, "%p", file);					\
+		err(2, "fclose(3) failed");				\
 }
 
 #define	EWRITE(ptr, size, n, f, fmt) {					\
