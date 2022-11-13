@@ -138,9 +138,10 @@ main(int argc, char *argv[])
 		err(2, "getrlimit");
 	rl.rlim_cur = rl.rlim_max;
 	if (setrlimit(RLIMIT_NOFILE, &rl) < 0){
-#ifndef __APPLE__ /* setrlimit(2) may fail on Darwin older than 21.6.0 when rl.rlim_max == (rlim_t) -1 */
-		err(2, "setrlimit");
+#ifdef __APPLE__ /* setrlimit(2) may fail on Darwin older than 21.6.0 when rl.rlim_max == LONG_MAX */
+	  if (rl.rlim_cur != LONG_MAX)
 #endif
+		err(2, "setrlimit");
 	}
 	
 	d_mask[REC_D = '\n'] = REC_D_F;
