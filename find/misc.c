@@ -43,7 +43,7 @@ __RCSID("$NetBSD: misc.c,v 1.14 2006/10/11 19:51:10 apb Exp $");
 
 #include <sys/types.h>
 #include <sys/stat.h>
-
+#include <stddef.h>
 #include <err.h>
 #include <errno.h>
 #include <fts.h>
@@ -63,7 +63,8 @@ void
 brace_subst(char *orig, char **store, char *path, int *len)
 {
 	int nlen, plen, rest;
-	char ch, *p, *ostore;
+	char ch, *p;
+	ptrdiff_t offs;
 
 	plen = strlen(path);
 	for (p = *store; (ch = *orig) != '\0'; ++orig)
@@ -76,11 +77,11 @@ brace_subst(char *orig, char **store, char *path, int *len)
 				nlen *= 2;
 
 			if (nlen > *len) {
-				ostore = *store;
-				if ((*store = realloc(ostore, nlen)) == NULL)
+				offs = p - *store;
+				if ((*store = realloc(*store, nlen)) == NULL)
 					err(1, "realloc");
 				*len = nlen;
-				p += *store - ostore;	/* Relocate. */
+				p = *store + offs;	/* Relocate. */
 			}
 			memmove(p, path, plen);
 			p += plen;
