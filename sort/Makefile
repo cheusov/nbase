@@ -8,6 +8,8 @@ CFLAGS.check +=	-ww2218 # for icc
 
 MKC_FEATURES +=	efun
 
+CFLAGS.check += -Wno-error=use-after-free
+
 .include <mkc.init.mk>
 
 .include "../mk/hacks.mk"
