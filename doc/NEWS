@@ -1,4 +1,25 @@
 ======================================================================
+Version 9.1.0.3, by Aleksey Cheusov, Fri, 18 Nov 2022 02:00:55 +0400
+
+  Fix compilations issues with icc, gcc-12.2 and clang-14
+
+  install:
+    - fix handling the file flags
+
+  ls:
+    - fix option -o on non-BSD systems
+
+    - add/improve support for extended file attributes on Darwin and
+      FreeBSD (UF_HIDDEN, UF_NODUMP, UF_APPEND, UF_IMMUTABLE,
+      UF_OPAQUE, UF_ARCHIVED, UF_SPARSE, UF_SYSTEM,
+      UF_NOUNLINK, UF_OFFLINE, UF_READONLY, UF_REPARSE, SF_APPEND,
+      SF_ARCHIVED, SF_IMMUTABLE and SF_SNAPSHOT, SF_NOUNLINK)
+
+  sort:
+    - Workaround for Darwin < 21.6.0 where setrlimit(RLIMIT_NOFILE)
+      may fail when argument is rlim_t(-1).  This fixes github issue #8
+
+======================================================================
 Version 9.1.0.2, by Aleksey Cheusov, Fri, 16 Apr 2021 18:32:52 +0300
 
  Fix replacement for "flags_to_string". This fixes segfaults in
