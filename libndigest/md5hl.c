@@ -77,9 +77,7 @@ MDNAME(End)(MDNAME(_CTX) *ctx, char *buf)
 }
 
 char *
-MDNAME(File)(filename, buf)
-	const char *filename;
-	char *buf;
+MDNAME(File)(const char *filename, char *buf)
 {
 	unsigned char buffer[BUFSIZ];
 	MDNAME(_CTX) ctx;
