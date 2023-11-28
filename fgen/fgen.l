@@ -91,7 +91,6 @@ static char *outbuf = NULL;
 static char *outfile, *infile;
 #define BUFCLICK	(1024*1024)
 static size_t outbufsiz = 0;
-static char *myname = NULL;
 static int offsetsize = 8;
 static int defining = 0;
 static int tokenizer = 0;
@@ -2047,8 +2046,8 @@ tokenize(YY_BUFFER_STATE yinput)
 				emit("execute");
 #else
 				token_err(yylineno, infile, yytext,
-					"%s: undefined token `%s'\n",
-					myname, token->text);
+					"undefined token `%s'\n",
+					token->text);
 #endif
 			}
 			break;
