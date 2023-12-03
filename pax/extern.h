@@ -1,4 +1,4 @@
-/*	$NetBSD: extern.h,v 1.59 2012/08/09 08:09:21 christos Exp $	*/
+/*	$NetBSD: extern.h,v 1.59.36.1 2021/04/30 14:07:02 martin Exp $	*/
 
 /*-
  * Copyright (c) 1992 Keith Muller.
@@ -53,7 +53,6 @@ extern int curdirfd;
 extern const char *gzip_program;
 extern time_t starttime;
 extern int force_one_volume;
-extern char *chdname;
 extern int forcelocal;
 extern int secure;
 
@@ -207,8 +206,9 @@ void options(int, char **);
 OPLIST * opt_next(void);
 int bad_opt(void);
 int mkpath(char *);
+extern char *chdname;
 #if !HAVE_NBTOOL_CONFIG_H
-int do_chroot;
+extern int do_chroot;
 #endif
 
 /*
