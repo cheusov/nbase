@@ -16,7 +16,9 @@ SRCS +=		fake_getid.c
 .endif
 
 CPPFLAGS+=	-I${.CURDIR}/../mknod
+
 .PATH:		${.CURDIR}/../mknod
+.NOPATH:	pack_dev.o
 
 WARNERR   =	no
 
