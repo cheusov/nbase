@@ -3,7 +3,7 @@ SRCS =	xinstall.c metachar.c
 MAN  =	install.1
 
 .PATH:		${.CURDIR}/../mtree ${.CURDIR}/../make
-.NOPATH:	fake_getid.o
+.NOPATH:	fake_getid.o getid.o
 
 CPPFLAGS +=	-I${.CURDIR}/../mtree -I${.CURDIR}/../make -I${.CURDIR}
 
