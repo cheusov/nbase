@@ -40,9 +40,10 @@ __RCSID("$NetBSD: special.c,v 1.14 2011/11/28 10:10:10 wiz Exp $");
 
 #include <sys/types.h>
 
-#include <err.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+#include <mkc_err.h>
 
 #include "extern.h"
 

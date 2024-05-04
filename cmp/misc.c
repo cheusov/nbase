@@ -40,9 +40,11 @@ __RCSID("$NetBSD: misc.c,v 1.12 2009/04/11 12:16:12 lukem Exp $");
 
 #include <sys/types.h>
 
-#include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include <mkc_err.h>
+#include <mkc_warn.h>
 
 #include "extern.h"
 
