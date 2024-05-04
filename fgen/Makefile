@@ -4,6 +4,6 @@ MAN  =	fgen.1
 
 CPPFLAGS +=	-I${.CURDIR}
 
-MKC_FEATURES +=	err efun progname errc
+MKC_FEATURES +=	err efun errc progname warn
 
 .include "../mk/addlinks.mk"
