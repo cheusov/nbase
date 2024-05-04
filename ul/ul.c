@@ -42,7 +42,6 @@ static char sccsid[] = "@(#)ul.c	8.1 (Berkeley) 6/6/93";
 __RCSID("$NetBSD: ul.c,v 1.20 2019/02/03 03:19:30 mrg Exp $");
 #endif /* not lint */
 
-#include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -52,6 +51,7 @@ __RCSID("$NetBSD: ul.c,v 1.20 2019/02/03 03:19:30 mrg Exp $");
 
 #include "mkc_posix_getopt.h"
 #include "mkc_efun.h"
+#include "mkc_err.h"
 #include "imp_macro.h"
 
 #include <errno.h>
