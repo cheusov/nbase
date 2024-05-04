@@ -49,7 +49,6 @@ __RCSID("$NetBSD: ln.c,v 1.40 2018/08/26 23:01:06 sevan Exp $");
 #include <sys/param.h>
 #include <sys/stat.h>
 
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <libgen.h>
@@ -59,8 +58,10 @@ __RCSID("$NetBSD: ln.c,v 1.40 2018/08/26 23:01:06 sevan Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_strlcpy.h"
-#include "mkc_progname.h"
+#include <mkc_strlcpy.h>
+#include <mkc_progname.h>
+#include <mkc_err.h>
+#include <mkc_warn.h>
 
 static int	fflag;			/* Unlink existing files. */
 static int	Fflag;			/* Remove empty directories also. */
