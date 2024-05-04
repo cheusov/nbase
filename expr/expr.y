@@ -37,7 +37,6 @@ __RCSID("$NetBSD: expr.y,v 1.45 2018/06/27 17:23:36 kamil Exp $");
 
 #include <sys/types.h>
 
-#include <err.h>
 #include <errno.h>
 #include <limits.h>
 #include <locale.h>
@@ -49,6 +48,8 @@ __RCSID("$NetBSD: expr.y,v 1.45 2018/06/27 17:23:36 kamil Exp $");
 #include <string.h>
 
 #include <mkc_progname.h>
+#include <mkc_err.h>
+
 #include <imp_macro.h>
 
 static const char * const *av;
