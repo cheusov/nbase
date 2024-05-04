@@ -50,6 +50,9 @@ __RCSID("$NetBSD: seq.c,v 1.11 2018/12/17 20:10:51 christos Exp $");
 #define ZERO	'0'
 #define SPACE	' '
 
+#ifndef MAX
+#define MAX(a, b)	(((a) < (b))? (b) : (a))
+#endif
 #define ISSIGN(c)	((int)(c) == '-' || (int)(c) == '+')
 #define ISEXP(c)	((int)(c) == 'e' || (int)(c) == 'E')
 #define ISODIGIT(c)	((int)(c) >= '0' && (int)(c) <= '7')
