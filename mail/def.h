@@ -53,10 +53,11 @@
 #include <sys/wait.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
+#ifdef HAVE_HEADER_PATHS_H
 #include <paths.h>
+#endif
 #include <pwd.h>
 #include <setjmp.h>
 #include <signal.h>
