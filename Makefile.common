@@ -15,7 +15,7 @@ CPPFLAGS0 +=	-D__dead=
 CPPFLAGS0 +=	-D__pure=
 # CPPFLAGS +=	-D__unused= # used by glibc headers :-(
 
-# Normal Unix headers should always exist (used at least by libndigest)
+# Normal Unix headers should always exist
 CPPFLAGS +=	-DHAVE_ERRNO_H -DHAVE_LOCALE_H -DHAVE_UNISTD_H -DHAVE_STDINT_H \
 		-DHAVE_INTTYPES_H -DHAVE_FCNTL_H -DHAVE_SETLOCALE
 

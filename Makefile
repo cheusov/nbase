@@ -47,7 +47,7 @@ PROJECTS += apply asa nawk/bin banner basename cal cat chmod chown      \
   deroff dd	\
   dirname domainname du echo ed env error expand expr false fgen find	\
   flock fmt fold fpr from fsplit getconf getopt grep head hexdump 	\
-  hostname id join jot kill lam leave libndigest ln logname look \
+  hostname id join jot kill lam leave ln logname look \
   lorder ls m4	\
   machine menuc mkdep mkdir mkfifo mknod mkstr mktemp msgc mtree mv     \
   nice nl nohup	                                                        \
@@ -192,7 +192,6 @@ PROJECTS :=	${PROJECTS:N${t}}
 .endif
 
 COMPATLIB    =	compatlib
-INTERNALLIBS =	libndigest
 
 .if ${HAVE_HEADER.tzfile_h:U1} != 1
 . for t in cal date
@@ -216,15 +215,6 @@ PROJECTS :=     ${PROJECTS:N${t}}
 .endif
 
 LIBDEPS   =	${PROJECTS:S/^/compatlib:/}
-.if !empty(PROJECTS:Mmtree)
-LIBDEPS +=	libndigest:mtree
-.endif
-.if !empty(PROJECTS:Mxinstall)
-LIBDEPS +=	libndigest:xinstall
-.endif
-.if !empty(PROJECTS:Mcksum)
-LIBDEPS +=	libndigest:cksum
-.endif
 
 SUBPRJ    =	doc nawk/bin:awk
 
