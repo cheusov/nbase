@@ -41,7 +41,6 @@ __RCSID("$NetBSD: ls.c,v 1.21 2011/08/31 16:24:57 plunky Exp $");
 #include <sys/param.h>
 #include <sys/stat.h>
 
-#include <err.h>
 #include <errno.h>
 #include <fts.h>
 #include <grp.h>
@@ -53,8 +52,9 @@ __RCSID("$NetBSD: ls.c,v 1.21 2011/08/31 16:24:57 plunky Exp $");
 #include "imp_tzfile.h"
 #include <unistd.h>
 
+#include <mkc_err.h>
+#include <mkc_pwdgrp.h>
 #include "imp_strmode.h"
-#include "mkc_pwdgrp.h"
 
 #include "find.h"
 
