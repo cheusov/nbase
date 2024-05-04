@@ -3,6 +3,8 @@ MAN  =	tsort.1
 
 MKC_NOAUTO_FUNCLIBS = 1
 
+MKC_FEATURES +=	err warn
+
 CPPFLAGS +=	-I${.OBJDIR}
 
 tsort.o tsort.so tsort.po: db_header.h

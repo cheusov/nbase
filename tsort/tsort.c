@@ -49,7 +49,6 @@ __RCSID("$NetBSD: tsort.c,v 1.23 2011/09/06 18:34:37 joerg Exp $");
 #include <sys/types.h>
 #include <ctype.h>
 #include "db_header.h"
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
@@ -57,8 +56,10 @@ __RCSID("$NetBSD: tsort.c,v 1.23 2011/09/06 18:34:37 joerg Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_progname.h"
-#include "mkc_posix_getopt.h"
+#include <mkc_progname.h>
+#include <mkc_posix_getopt.h>
+#include <mkc_err.h>
+#include <mkc_warn.h>
 
 /*
  *  Topological sort.  Input is a list of pairs of strings separated by
