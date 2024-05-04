@@ -23,5 +23,6 @@ MKC_FEATURES +=	humanize_number raise_default_signal strsep
 .include "../mk/hacks.mk"
 
 .include "../mk/imp.f_strsuftoll.mk"
+.include "../mk/imp.f_posix_memalign.mk"
 
 .include "../mk/addlinks.mk"

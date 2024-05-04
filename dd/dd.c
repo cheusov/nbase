@@ -38,6 +38,8 @@
 #include "mkc_err.h"
 #include "mkc_warn.h"
 
+#include "imp_posix_memalign.h"
+
 #include <sys/cdefs.h>
 #ifndef lint
 __COPYRIGHT("@(#) Copyright (c) 1991, 1993, 1994\
