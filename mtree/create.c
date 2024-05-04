@@ -298,11 +298,11 @@ statf(FILE *fp, int indent, FTSENT *p)
 		dosum(fp, indent, p, &offset, F_SHA1, SHA1File, SHA1KEY);
 #endif	/* ! NO_SHA1 */
 #ifndef NO_SHA2
-		dosum(fp, indent, p, &offset, F_SHA256, SHA256_File, SHA256KEY);
+		dosum(fp, indent, p, &offset, F_SHA256, SHA256File, SHA256KEY);
 #ifdef SHA384_BLOCK_LENGTH
-		dosum(fp, indent, p, &offset, F_SHA384, SHA384_File, SHA384KEY);
+		dosum(fp, indent, p, &offset, F_SHA384, SHA384File, SHA384KEY);
 #endif
-		dosum(fp, indent, p, &offset, F_SHA512, SHA512_File, SHA512KEY);
+		dosum(fp, indent, p, &offset, F_SHA512, SHA512File, SHA512KEY);
 #endif	/* ! NO_SHA2 */
 	}
 	if (keys & F_SLINK &&

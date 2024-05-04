@@ -4,6 +4,8 @@ MAN       =	mtree.8
 SRCS      =	compare.c crc.c create.c excludes.c misc.c mtree.c spec.c \
 		specspec.c verify.c pack_dev.c only.c
 
+MKC_REQUIRE_FUNCLIBS =	SHA512Init:md
+
 MKC_CHECK_FUNCS4     +=	pwcache_groupdb:grp.h
 MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 
