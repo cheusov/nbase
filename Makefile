@@ -26,7 +26,7 @@ MKC_REQD     =	0.37.0
 MKC_CHECK_HEADER_FILES  = pty.h fts.h sys/sysctl.h term.h
 MKC_CHECK_HEADERS  =	tzfile.h termcap.h
 MKC_CHECK_FUNCLIBS =	setupterm:terminfo
-MKC_CHECK_FUNCS5   =	openpty:pty.h openpty:util.h dbopen:${USE_DB_HEADER}
+MKC_CHECK_FUNCS5   =	openpty:pty.h openpty:util.h dbopen:${USE_DB_HEADER} linkat:unistd.h
 MKC_CHECK_FUNCS4   =	getgrouplist:grp.h getgrouplist:unistd.h clock_nanosleep:time.h
 MKC_CHECK_FUNCS4   +=	utimensat:fcntl.h,sys/stat.h
 MKC_CHECK_FUNCS3   =	logwtmp:util.h timer_create:signal.h,time.h
@@ -110,6 +110,13 @@ PROJECTS :=	${PROJECTS:N${t}}
 .if ${HAVE_FUNC2.getdomainname.unistd_h:U1} != 1
 .  for t in domainname
    WARN_MSG += "Exclude ${t} due to missing getdomainname(3) in unistd.h"
+PROJECTS :=	${PROJECTS:N${t}}
+.  endfor
+.endif
+
+.if ${HAVE_FUNC5.linkat.unistd_h:U1} != 1
+.  for t in ln
+   WARN_MSG += "Exclude ${t} due to missing linkat(3) in unistd.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
