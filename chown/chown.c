@@ -48,7 +48,6 @@ __RCSID("$NetBSD: chown.c,v 1.8 2012/10/24 01:12:51 enami Exp $");
 
 #include <ctype.h>
 #include <dirent.h>
-#include <err.h>
 #include <errno.h>
 #include <locale.h>
 #include <fts.h>
@@ -62,6 +61,8 @@ __RCSID("$NetBSD: chown.c,v 1.8 2012/10/24 01:12:51 enami Exp $");
 
 #include <mkc_pwdgrp.h>
 #include <mkc_progname.h>
+#include <mkc_err.h>
+#include <mkc_warn.h>
 
 static void	a_gid(const char *);
 static void	a_uid(const char *);
