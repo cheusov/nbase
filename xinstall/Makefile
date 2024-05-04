@@ -2,6 +2,8 @@ PROG =	xinstall
 SRCS =	xinstall.c metachar.c
 MAN  =	install.1
 
+MKC_REQUIRE_FUNCLIBS =	SHA512Init:md
+
 .PATH:		${.CURDIR}/../mtree ${.CURDIR}/../make
 .NOPATH:	fake_getid.o getid.o
 
