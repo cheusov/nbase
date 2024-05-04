@@ -5,7 +5,9 @@ CPPFLAGS +=	-DFMT_PROG
 
 .PATH: ${.CURDIR}/../mail
 
-MKC_FEATURES +=		fgetln vis
+MKC_CHECK_HEADERS +=	paths.h
+
+MKC_FEATURES +=		fgetln vis err warn
 
 .include <mkc.init.mk>
 
