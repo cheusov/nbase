@@ -140,13 +140,13 @@ const struct hash {
 	  SHA1Filter, (_filefunc) SHA1File },
 	{ "sha256", "SHA256",
 	  SHA256_String, SHA256_TimeTrial, SHA256_TestSuite,
-	  SHA256_Filter, (_filefunc) SHA256_File },
+	  SHA256_Filter, (_filefunc) SHA256File },
 	{ "sha384", "SHA384",
 	  SHA384_String, SHA384_TimeTrial, SHA384_TestSuite,
-	  SHA384_Filter, (_filefunc) SHA384_File },
+	  SHA384_Filter, (_filefunc) SHA384File },
 	{ "sha512", "SHA512",
 	  SHA512_String, SHA512_TimeTrial, SHA512_TestSuite,
-	  SHA512_Filter, (_filefunc) SHA512_File },
+	  SHA512_Filter, (_filefunc) SHA512File },
 	{ .progname = NULL, },
 };
 

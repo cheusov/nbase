@@ -15,11 +15,11 @@
 #define MD5TestSuite	SHA512_TestSuite
 #define MD5TimeTrial	SHA512_TimeTrial
 
-#define MD5Data		SHA512_Data
-#define MD5Init		SHA512_Init
-#define MD5Update	SHA512_Update
-#define MD5End		SHA512_End
+#define MD5Data		SHA512Data
+#define MD5Init		SHA512Init
+#define MD5Update	SHA512Update
+#define MD5End		SHA512End
 
-#define MD5_CTX		SHA512_CTX
+#define MD5_CTX		SHA2_CTX
 
 #include "md5.c"
