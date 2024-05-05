@@ -837,9 +837,9 @@ copy(int from_fd, char *from_name, int to_fd, char *to_name, off_t size)
 	MD5_CTX		ctxMD5;
 	RMD160_CTX	ctxRMD160;
 	SHA1_CTX	ctxSHA1;
-	SHA2_CTX	ctxSHA256;
-	SHA2_CTX	ctxSHA384;
-	SHA2_CTX	ctxSHA512;
+	SHA256_CTX	ctxSHA256;
+	SHA384_CTX	ctxSHA384;
+	SHA512_CTX	ctxSHA512;
 
 	switch (digesttype) {
 	case DIGEST_MD5:

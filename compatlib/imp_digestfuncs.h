@@ -23,4 +23,16 @@
 # include <sha512.h>
 #endif
 
+#ifndef HAVE_TYPE_SHA512_CTX_SHA2_H
+#define SHA512_CTX SHA2_CTX
+#endif
+
+#ifndef HAVE_TYPE_SHA384_CTX_SHA2_H
+#define SHA384_CTX SHA2_CTX
+#endif
+
+#ifndef HAVE_TYPE_SHA256_CTX_SHA2_H
+#define SHA256_CTX SHA2_CTX
+#endif
+
 #endif // _IMP_DIGESTFUNCS_H_

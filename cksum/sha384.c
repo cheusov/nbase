@@ -20,6 +20,6 @@
 #define MD5Update	SHA384_Update
 #define MD5End		SHA384_End
 
-#define MD5_CTX		SHA2_CTX
+#define MD5_CTX		SHA384_CTX
 
 #include "md5.c"
