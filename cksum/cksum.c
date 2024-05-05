@@ -107,6 +107,8 @@ __RCSID("$NetBSD: cksum.c,v 1.48 2015/06/16 22:54:10 christos Exp $");
 #include "mkc_err.h"
 #include "mkc_warn.h"
 
+#include "imp_digestfuncs.h"
+
 #include "extern.h"
 
 #define PRINT_NORMAL     0x01
@@ -140,13 +142,13 @@ const struct hash {
 	  SHA1Filter, (_filefunc) SHA1File },
 	{ "sha256", "SHA256",
 	  SHA256_String, SHA256_TimeTrial, SHA256_TestSuite,
-	  SHA256_Filter, (_filefunc) SHA256File },
+	  SHA256_Filter, (_filefunc) SHA256_File },
 	{ "sha384", "SHA384",
 	  SHA384_String, SHA384_TimeTrial, SHA384_TestSuite,
-	  SHA384_Filter, (_filefunc) SHA384File },
+	  SHA384_Filter, (_filefunc) SHA384_File },
 	{ "sha512", "SHA512",
 	  SHA512_String, SHA512_TimeTrial, SHA512_TestSuite,
-	  SHA512_Filter, (_filefunc) SHA512File },
+	  SHA512_Filter, (_filefunc) SHA512_File },
 	{ .progname = NULL, },
 };
 

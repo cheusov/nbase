@@ -2,8 +2,6 @@ PROG =	xinstall
 SRCS =	xinstall.c metachar.c
 MAN  =	install.1
 
-MKC_REQUIRE_FUNCLIBS =	SHA512Init:md
-
 .PATH:		${.CURDIR}/../mtree ${.CURDIR}/../make
 .NOPATH:	fake_getid.o getid.o
 
@@ -40,6 +38,7 @@ CFLAGS.check   +=	-Wno-error=pointer-sign
 .include "../mk/imp.f_flags_to_string.mk"
 .include "../mk/imp.f_lchmod.mk"
 .include "../mk/imp.f_struct_stat.mk"
+.include "../mk/imp.f_digestfuncs.mk"
 
 MKC_FEATURES +=	fparseln LIST pwdgrp strsep vis errc
 

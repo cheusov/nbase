@@ -68,6 +68,8 @@ __RCSID("$NetBSD: compare.c,v 1.58 2013/11/21 18:39:50 christos Exp $");
 #include <sha2.h>
 #endif
 
+#include "imp_digestfuncs.h"
+
 #include "extern.h"
 
 #define	INDENTNAMELEN	8
@@ -490,7 +492,7 @@ typeerr:		LABEL;
 #endif	/* ! NO_SHA1 */
 #ifndef NO_SHA2
 	if (s->flags & F_SHA256) {
-		if ((digestbuf = SHA256File(p->fts_accpath, NULL)) == NULL) {
+		if ((digestbuf = SHA256_File(p->fts_accpath, NULL)) == NULL) {
 			LABEL;
 			printf("%s%s: %s: %s\n",
 			    tab, SHA256KEY, p->fts_accpath, strerror(errno));
@@ -509,7 +511,7 @@ typeerr:		LABEL;
 	}
 #ifdef SHA384_BLOCK_LENGTH
 	if (s->flags & F_SHA384) {
-		if ((digestbuf = SHA384File(p->fts_accpath, NULL)) == NULL) {
+		if ((digestbuf = SHA384_File(p->fts_accpath, NULL)) == NULL) {
 			LABEL;
 			printf("%s%s: %s: %s\n",
 			    tab, SHA384KEY, p->fts_accpath, strerror(errno));
@@ -528,7 +530,7 @@ typeerr:		LABEL;
 	}
 #endif
 	if (s->flags & F_SHA512) {
-		if ((digestbuf = SHA512File(p->fts_accpath, NULL)) == NULL) {
+		if ((digestbuf = SHA512_File(p->fts_accpath, NULL)) == NULL) {
 			LABEL;
 			printf("%s%s: %s: %s\n",
 			    tab, SHA512KEY, p->fts_accpath, strerror(errno));

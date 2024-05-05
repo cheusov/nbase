@@ -15,10 +15,10 @@
 #define MD5TestSuite	SHA256_TestSuite
 #define MD5TimeTrial	SHA256_TimeTrial
 
-#define MD5Data		SHA256Data
-#define MD5Init		SHA256Init
-#define MD5Update	SHA256Update
-#define MD5End		SHA256End
+#define MD5Data		SHA256_Data
+#define MD5Init		SHA256_Init
+#define MD5Update	SHA256_Update
+#define MD5End		SHA256_End
 
 #define MD5_CTX		SHA2_CTX
 
