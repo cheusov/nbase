@@ -43,9 +43,10 @@ __RCSID("$NetBSD: operator.c,v 1.10 2014/10/18 08:33:30 snj Exp $");
 
 #include <sys/types.h>
 
-#include <err.h>
 #include <fts.h>
 #include <stdio.h>
+
+#include <mkc_err.h>
 
 #include "find.h"
 

@@ -35,6 +35,8 @@ __RCSID("$NetBSD: md5.c,v 1.10 2008/12/29 00:51:29 christos Exp $");
 
 #include "mkc_err.h"
 
+#include "imp_digestfuncs.h"
+
 void	MD5Filter(int);
 void	MD5String(const char *);
 void	MD5TestSuite(void);

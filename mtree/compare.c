@@ -68,6 +68,8 @@ __RCSID("$NetBSD: compare.c,v 1.58 2013/11/21 18:39:50 christos Exp $");
 #include <sha2.h>
 #endif
 
+#include "imp_digestfuncs.h"
+
 #include "extern.h"
 
 #define	INDENTNAMELEN	8

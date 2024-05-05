@@ -123,7 +123,7 @@ __RCSID("$NetBSD: qsubst.c,v 1.8 2004/11/01 21:36:11 dsl Exp $");
 #define TCSASOFT 0
 #endif
 
-extern const char *__progname;
+#define __progname getprogname()
 
 #define MAX_C_A 10
 #define MAX_C_B 10
@@ -511,6 +511,8 @@ main(int ac, char **av)
 {
 	int skip;
 	char *cp;
+	
+	setprogname(av[0]);
 
 	if (ac < 3) {
 		fprintf(stderr, "usage: %s str1 str2 [ -w -! -noask -go -f file -F file ]\n",

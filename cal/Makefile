@@ -1,7 +1,7 @@
 PROG =	cal
 MAN  =	cal.1
 
-MKC_FEATURES +=	macro
+MKC_FEATURES +=	macro err
 
 .include <mkc.init.mk>
 

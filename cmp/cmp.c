@@ -46,7 +46,6 @@ __RCSID("$NetBSD: cmp.c,v 1.20 2016/10/30 19:33:49 christos Exp $");
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
@@ -55,8 +54,10 @@ __RCSID("$NetBSD: cmp.c,v 1.20 2016/10/30 19:33:49 christos Exp $");
 #include <unistd.h>
 #include <locale.h>
 
-#include "mkc_posix_getopt.h"
-#include "mkc_progname.h"
+#include <mkc_err.h>
+#include <mkc_warn.h>
+#include <mkc_posix_getopt.h>
+#include <mkc_progname.h>
 
 #include "extern.h"
 

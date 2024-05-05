@@ -42,11 +42,12 @@ __RCSID("$NetBSD: regular.c,v 1.24 2013/11/20 17:19:14 kleink Exp $");
 #include <sys/mman.h>
 #include <sys/stat.h>
 
-#include <err.h>
 #include <limits.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
+
+#include <mkc_err.h>
 
 #include "extern.h"
 #include "imp_macro.h"

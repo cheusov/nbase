@@ -41,16 +41,18 @@ __RCSID("$NetBSD: misc.c,v 1.14 2006/10/11 19:51:10 apb Exp $");
 #endif
 #endif /* not lint */
 
+#include <stddef.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <stddef.h>
-#include <err.h>
+
 #include <errno.h>
 #include <fts.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
+#include <mkc_err.h>
 
 #include "find.h"
 

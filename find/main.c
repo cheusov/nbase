@@ -46,7 +46,6 @@ __RCSID("$NetBSD: main.c,v 1.31 2013/01/24 17:50:08 christos Exp $");
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <fts.h>
@@ -57,8 +56,9 @@ __RCSID("$NetBSD: main.c,v 1.31 2013/01/24 17:50:08 christos Exp $");
 #include <time.h>
 #include <unistd.h>
 
-#include "mkc_progname.h"
-#include "mkc_posix_getopt.h"
+#include <mkc_progname.h>
+#include <mkc_posix_getopt.h>
+#include <mkc_err.h>
 
 #include "find.h"
 

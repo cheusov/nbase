@@ -49,7 +49,6 @@ __RCSID("$NetBSD: cal.c,v 1.29.18.1 2020/06/30 18:41:07 martin Exp $");
 #include <sys/types.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <limits.h>
 #include <stdio.h>
@@ -61,6 +60,7 @@ __RCSID("$NetBSD: cal.c,v 1.29.18.1 2020/06/30 18:41:07 martin Exp $");
 #include <tzfile.h>
 #include <unistd.h>
 
+#include "mkc_err.h"
 #include "mkc_posix_getopt.h"
 #include "mkc_macro.h"
 
@@ -888,7 +888,7 @@ getnum(const char *p)
 
 error:
 	errx(1, "bad number: %s", p);
-	/*NOTREACHED*/
+	/*NOTREACHED*/ return -1;
 }
 
 static void

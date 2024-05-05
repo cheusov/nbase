@@ -31,7 +31,10 @@
 
 #include <sys/cdefs.h>
 
-#include "mkc_strsep.h"
+#include <mkc_strsep.h>
+#include <mkc_err.h>
+#include <mkc_warn.h>
+#include <mkc_progname.h>
 
 #ifndef lint
 __COPYRIGHT("@(#) Copyright (c) 2008 \
@@ -43,7 +46,6 @@ __RCSID("$NetBSD: tabs.c,v 1.5 2019/02/01 08:29:04 mrg Exp $");
 #include <sys/types.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>

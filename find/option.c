@@ -44,11 +44,12 @@ __RCSID("$NetBSD: option.c,v 1.27 2016/06/13 00:04:40 pgoyette Exp $");
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <err.h>
 #include <fts.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include <mkc_err.h>
 
 #include "find.h"
 

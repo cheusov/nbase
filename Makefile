@@ -26,7 +26,7 @@ MKC_REQD     =	0.37.0
 MKC_CHECK_HEADER_FILES  = pty.h fts.h sys/sysctl.h term.h
 MKC_CHECK_HEADERS  =	tzfile.h termcap.h
 MKC_CHECK_FUNCLIBS =	setupterm:terminfo
-MKC_CHECK_FUNCS5   =	openpty:pty.h openpty:util.h dbopen:${USE_DB_HEADER}
+MKC_CHECK_FUNCS5   =	openpty:pty.h openpty:util.h dbopen:${USE_DB_HEADER} linkat:unistd.h
 MKC_CHECK_FUNCS4   =	getgrouplist:grp.h getgrouplist:unistd.h clock_nanosleep:time.h
 MKC_CHECK_FUNCS4   +=	utimensat:fcntl.h,sys/stat.h
 MKC_CHECK_FUNCS3   =	logwtmp:util.h timer_create:signal.h,time.h
@@ -47,7 +47,7 @@ PROJECTS += apply asa nawk/bin banner basename cal cat chmod chown      \
   deroff dd	\
   dirname domainname du echo ed env error expand expr false fgen find	\
   flock fmt fold fpr from fsplit getconf getopt grep head hexdump 	\
-  hostname id join jot kill lam leave libndigest ln logname look \
+  hostname id join jot kill lam leave ln logname look \
   lorder ls m4	\
   machine menuc mkdep mkdir mkfifo mknod mkstr mktemp msgc mtree mv     \
   nice nl nohup	                                                        \
@@ -110,6 +110,13 @@ PROJECTS :=	${PROJECTS:N${t}}
 .if ${HAVE_FUNC2.getdomainname.unistd_h:U1} != 1
 .  for t in domainname
    WARN_MSG += "Exclude ${t} due to missing getdomainname(3) in unistd.h"
+PROJECTS :=	${PROJECTS:N${t}}
+.  endfor
+.endif
+
+.if ${HAVE_FUNC5.linkat.unistd_h:U1} != 1
+.  for t in ln
+   WARN_MSG += "Exclude ${t} due to missing linkat(3) in unistd.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
@@ -185,7 +192,6 @@ PROJECTS :=	${PROJECTS:N${t}}
 .endif
 
 COMPATLIB    =	compatlib
-INTERNALLIBS =	libndigest
 
 .if ${HAVE_HEADER.tzfile_h:U1} != 1
 . for t in cal date
@@ -209,15 +215,6 @@ PROJECTS :=     ${PROJECTS:N${t}}
 .endif
 
 LIBDEPS   =	${PROJECTS:S/^/compatlib:/}
-.if !empty(PROJECTS:Mmtree)
-LIBDEPS +=	libndigest:mtree
-.endif
-.if !empty(PROJECTS:Mxinstall)
-LIBDEPS +=	libndigest:xinstall
-.endif
-.if !empty(PROJECTS:Mcksum)
-LIBDEPS +=	libndigest:cksum
-.endif
 
 SUBPRJ    =	doc nawk/bin:awk
 

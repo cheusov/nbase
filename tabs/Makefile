@@ -1,7 +1,7 @@
 PROG =	tabs
 MAN  =	tabs.1
 
-MKC_FEATURES +=		strsep
+MKC_FEATURES +=		strsep err warn progname
 
 .include <mkc.init.mk>
 

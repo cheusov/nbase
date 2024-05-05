@@ -8,7 +8,7 @@ SYMLINKS    :=	../sbin/chown ${ORIG_BINDIR}/chgrp
 
 BINDIR      ?=	${SBINDIR}
 
-MKC_FEATURES +=	progname pwdgrp
+MKC_FEATURES +=	progname pwdgrp err warn
 
 MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 

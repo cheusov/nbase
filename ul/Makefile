@@ -5,7 +5,7 @@ CFLAGS.check +=		-erroff=E_STATEMENT_NOT_REACHED
 
 MKC_REQD     +=		0.37.0
 
-MKC_FEATURES +=		efun
+MKC_FEATURES +=		efun err
 
 .include <mkc.init.mk>
 

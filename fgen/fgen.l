@@ -72,6 +72,7 @@ tail	{white}
 #include "mkc_efun.h"
 #include "mkc_err.h"
 #include "mkc_errc.h"
+#include "mkc_warn.h"
 
 #include "fgen.h"
 static TOKEN ltoken;

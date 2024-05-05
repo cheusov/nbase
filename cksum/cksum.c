@@ -107,6 +107,8 @@ __RCSID("$NetBSD: cksum.c,v 1.48 2015/06/16 22:54:10 christos Exp $");
 #include "mkc_err.h"
 #include "mkc_warn.h"
 
+#include "imp_digestfuncs.h"
+
 #include "extern.h"
 
 #define PRINT_NORMAL     0x01

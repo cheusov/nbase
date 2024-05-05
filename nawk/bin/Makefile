@@ -6,7 +6,7 @@ MAN  =		awk.1
 SRCS =		awkgram.y b.c lex.c lib.c main.c parse.c proctab.c run.c tran.c
 
 awkgram_depends=b lex lib main maketab parse proctab run tran
-.info "depends=${awkgram_depends:S/$/.o/}"
+
 ${awkgram_depends:S/$/.o/}:	awkgram.h
 ${awkgram_depends:S/$/.os/}:	awkgram.h
 

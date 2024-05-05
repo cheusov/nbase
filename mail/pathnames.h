@@ -35,7 +35,9 @@
 #ifndef __PATHNAMES_H__
 #define __PATHNAMES_H__
 
+#if HAVE_HEADER_PATHS_H
 #include <paths.h>
+#endif
 
 #define	_PATH_EX	"/usr/bin/ex"
 #define	_PATH_HELP	"/usr/share/misc/mail.help"

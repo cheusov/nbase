@@ -32,5 +32,6 @@ MKC_FEATURES         +=	fparseln LIST pwdgrp strsep vis
 .include "../mk/imp.f_getsetmode.mk"
 .include "../mk/imp.f_struct_stat.mk"
 .include "../mk/imp.f_makedev.mk"
+.include "../mk/imp.f_digestfuncs.mk"
 
 .include "../mk/addlinks.mk"

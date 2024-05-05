@@ -5,7 +5,7 @@ SRCS =	find.c function.c ls.c main.c misc.c operator.c option.c
 CPPFLAGS +=	-D_NETBSD_SOURCE
 
 MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
-MKC_FEATURES         +=	efun pwdgrp
+MKC_FEATURES         +=	efun pwdgrp err
 
 .include <mkc.init.mk>
 
