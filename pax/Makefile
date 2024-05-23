@@ -31,7 +31,7 @@ CPPFLAGS+=	-DHOSTPROG
 # XXX: Interix does not have it; we need a conditional for it.
 CPPFLAGS+=	-DHAVE_NBTOOL_CONFIG_H
 
-.if ${MKBSDTAR:U} == "no"
+.if ${MKBSDTAR:U} != "no"
 LINKS+=	${BINDIR}/pax ${BINDIR}/tar
 SYMLINKS+=${BINDIR}/tar /usr/bin/tar
 MAN+=tar.1

@@ -16,6 +16,8 @@ Version 9.3.0.2, by Aleksey Cheusov, Thu, 23 May 2024 16:38:40 +0400
 
   cksum, mtree, xinstall: minimize patch size
 
+  pax: fix Makefile that enables tar and cpio
+
 ======================================================================
 Version 9.3.0.1, by Aleksey Cheusov, Tue, 5 Dec 2023 14:53:59 +0400
 
