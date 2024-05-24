@@ -13,7 +13,7 @@ MKC_CHECK_VARS   +=	sys_siglist:signal.h sys_signame:signal.h
 .include <mkc.conf.mk>
 
 .if ${HAVE_FUNC1.signalname.signal_h:U} != 1 || ${HAVE_FUNC1.signalnumber.signal_h:U} != 1 || \
-	${HAVE_FUNC0.signalnext.signal_h:U} != 1
+	${HAVE_FUNC1.signalnext.signal_h:U} != 1
 MKC_SRCS +=	imp_signalname.c
 .endif
 
