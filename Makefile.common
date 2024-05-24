@@ -24,7 +24,9 @@ CFLAGS.dflt.gcc +=	-Werror=implicit-function-declaration \
 
 CFLAGS.warns.sunpro.4 += -erroff=E_EMPTY_DECLARATION -errtags
 
-DOCDIR ?=	${DATADIR}/doc/nbase
+CFLAGS.check +=	-Werror=implicit-function-declaration
+
+DOCDIR ?=		${DATADIR}/doc/nbase
 
 MKC_FEATURES +=	posix_getopt progname strlcpy strlcat err warn
 
