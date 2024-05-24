@@ -28,6 +28,11 @@
 
 #include "imp_signalname.h"
 
+#if HAVE_VAR__SYS_SIGNAME_SIGNAL_H && !HAVE_VAR_SYS_SIGNAME_SIGNAL_H
+# define HAVE_VAR_SYS_SIGNAME_SIGNAL_H 1
+# define sys_signame _sys_signame
+#endif
+
 #ifndef NSIG
 #define NSIG sys_nsig
 #endif
@@ -38,10 +43,17 @@ const char * signalname(int sig)
 	if (sig <= 0 || sig >= NSIG)
 		return NULL;
 
-#if HAVE_FUNC1_SIGABBREV_NP_STRING_H
+#if HAVE_FUNC2_SIG2STR_SIGNAL_H
+	static char buffer[SIG2STR_MAX];
+	buffer[0] = '\0';
+	sig2str(sig, buffer);
+	return buffer;
+#elif HAVE_FUNC1_SIGABBREV_NP_STRING_H
 	return sigabbrev_np(sig);
 #elif HAVE_VAR_SYS_SIGNAME_SIGNAL_H
 	return sys_signame[sig];
+#elif HAVE_FUNC1_STRSIGNAL_STRING_H
+	return strsignal(sig);
 #else
 #error "Do know how to implement signalname(3)"
 #endif

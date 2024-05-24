@@ -6,9 +6,10 @@
 _IMP_F_SIGNALNAME_MK := 1
 
 MKC_CHECK_FUNCS1  =	signalname:signal.h signalnumber:signal.h \
-	signalnext:signal.h sigabbrev_np:string.h
+	signalnext:signal.h sigabbrev_np:string.h strsignal:string.h
+MKC_CHECK_FUNCS2  =	sig2str:signal.h
 
-MKC_CHECK_VARS   +=	sys_siglist:signal.h sys_signame:signal.h
+MKC_CHECK_VARS   +=	sys_signame:signal.h _sys_signame:signal.h
 
 .include <mkc.conf.mk>
 
