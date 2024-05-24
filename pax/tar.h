@@ -145,7 +145,7 @@ typedef struct {
 	char typeflag;			/* type of file. */
 	char linkname[TNMSZ];		/* linked to name */
 	char magic[TMAGLEN];		/* magic cookie */
-	char version[TVERSLEN];		/* version */
+	char version[TVERSLEN+1];		/* version */
 	char uname[32];			/* ascii owner name */
 	char gname[32];			/* ascii group name */
 	char devmajor[8];		/* major device number */
