@@ -457,7 +457,7 @@ ar_close(void)
 	/* mimic cpio's block count first */
 	if (frmt && strcmp(NM_CPIO, argv0) == 0) {
 		(void)fprintf(listf, OFFT_F " blocks\n",
-		    (rdcnt ? rdcnt : wrcnt) / 5120);
+		    (uintmax_t)(rdcnt ? rdcnt : wrcnt) / 5120);
 	}
 
 	ar_summary(0);
