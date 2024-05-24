@@ -20,4 +20,7 @@ CPPFLAGS +=	-DHAVE_NBTOOL_CONFIG_H=1 -I${.CURDIR}
 
 MKC_FEATURES +=		strsep
 
+# va_end after verr in misc.c
+CFLAGS.check +=		-erroff=E_STATEMENT_NOT_REACHED
+
 .include "../mk/addlinks.mk"
