@@ -1,75 +1,66 @@
 PROG=   pax
-SRCS=	ar_io.c ar_subs.c buf_subs.c file_subs.c ftree.c\
-	gen_subs.c getoldopt.c options.c pat_rep.c pax.c sel_subs.c tables.c\
+SRCS=	ar_io.c ar_subs.c buf_subs.c file_subs.c ftree.c \
+	gen_subs.c getoldopt.c options.c pat_rep.c pax.c sel_subs.c tables.c \
 	tar.c tty_subs.c
 
-MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
+MAN+=	pax.1
 
-SMALLPROG=1
+CPPFLAGS+=	-DHAVE_NBTOOL_CONFIG_H
 
+SMALLPROG :=	1
 .if defined(SMALLPROG)
 CPPFLAGS+=	-DSMALL -DNO_CPIO
 .else
-SRCS+=		getid.c spec.c misc.c pack_dev.c cpio.c
-CPPFLAGS+=	-I${NETBSDSRCDIR}/usr.sbin/mtree \
-		-I${NETBSDSRCDIR}/sbin/mknod
-.PATH:		${NETBSDSRCDIR}/usr.sbin/mtree \
-		${NETBSDSRCDIR}/sbin/mknod
+.PATH:		${.CURDIR}/../mtree ${.CURDIR}/../mknod
+.NOPATH:	getid.o spec.o misc.o pack_dev.o getid.o fake_getid.o
 
-.if (${HOSTPROG:U} == "")
-DPADD+= ${LIBUTIL}
-LDADD+= -lutil
-.endif
-.endif
+CPPFLAGS+=	-I../mtree -I../mknod
 
-MAN=	pax.1
+MAN+=		tar.1 cpio.1
+MKC_CHECK_FUNCS4     +=	pwcache_groupdb:grp.h
 
-.if defined(HOSTPROG)
-CPPFLAGS+=	-DHOSTPROG
-.else	# {	! HOSTPROG
+.include <mkc.configure.mk>
 
-# XXX: Interix does not have it; we need a conditional for it.
-CPPFLAGS+=	-DHAVE_NBTOOL_CONFIG_H
+. if ${HAVE_FUNC4.pwcache_groupdb.grp_h:U1}
+SRCS +=	getid.c
+. else
+SRCS +=	fake_getid.c
+. endif
 
-.if ${MKBSDTAR:U} != "no"
+SRCS+=		spec.c misc.c pack_dev.c cpio.c
+
+. if ${MKBSDTAR:U} != "no"
 LINKS+=	${BINDIR}/pax ${BINDIR}/tar
-SYMLINKS+=${BINDIR}/tar /usr/bin/tar
-MAN+=tar.1
-
 LINKS+=	${BINDIR}/pax ${BINDIR}/cpio
-SYMLINKS+=${BINDIR}/cpio /usr/bin/cpio
-MAN+=cpio.1
-.endif
-.endif	# }	! HOSTPROG
+. endif
 
-.if !defined(HOSTPROG) && !defined(SMALLPROG)
-CPPFLAGS+=	-DSUPPORT_RMT
+MKC_FEATURES +=	fparseln SLIST posix_getopt err warn
+.endif	# SMALLPROG
 
-LDADD+=	-lrmt
-DPADD+=	${LIBRMT}
-.endif
+#.if !defined(HOSTPROG) && !defined(SMALLPROG)
+#CPPFLAGS+=	-DSUPPORT_RMT
 
-MKC_FEATURES =	fgetln macro pwdgrp raise_default_signal strlcpy vis
+#LDADD+=	-lrmt
+#DPADD+=	${LIBRMT}
+#.endif
+
+MKC_FEATURES +=	fgetln macro pwdgrp raise_default_signal strlcpy vis
 
 MKC_CHECK_HEADER_FILES +=	sys/mtio.h
-MKC_CHECK_HEADERS =	sys/sysmacros.h # Linux/glibc-2.26 -- major/minor from sys/types.h are deprecated
 MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
-
-# Disable -Werror because of warning with gcc-8
-#   tar.c: In function 'ustar_wr':
-#   tar.c:1210:3: error: 'strncpy' output truncated before terminating nul copying 2 bytes from a string of the same length [-Werror=stringop-truncation]
-#      strncpy(hd->version, TVERSION, TVERSLEN);
-WARNERR =	no
 
 .include <mkc.configure.mk>
 
 .include "../mk/hacks.mk"
 
-.include "../mk/imp.f_strmode.mk"
+.include "../mk/imp.f_macro.mk"
 .include "../mk/imp.f_lchmod.mk"
+.include "../mk/imp.f_flags_to_string.mk"
 .include "../mk/imp.f_getsetmode.mk"
 .include "../mk/imp.f_struct_stat.mk"
+.include "../mk/imp.f_makedev.mk"
 .include "../mk/imp.f_types.mk"
 .include "../mk/imp.f_lutimes.mk"
+.include "../mk/imp.f_strmode.mk"
 
 .include "../mk/addlinks.mk"
