@@ -22,8 +22,8 @@ CFLAGS.check +=	-Wno-error=restrict
 .include <mkc.init.mk>
 
 .if "${TARGET_OPSYS}" == "SunOS"
-# ioctl(2) on Solaris
-CFLAGS.check +=	-Wno-error=incompatible-pointer-types
+# ioctl(2) on Solaris is incompatible with other systems
+CFLAGS.check +=	-Wno-error=incompatible-pointer-types -erroff=E_INITIALIZATION_TYPE_MISMATCH
 .endif
 
 .include <mkc.configure.mk>
