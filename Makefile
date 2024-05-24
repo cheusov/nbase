@@ -33,7 +33,6 @@ MKC_CHECK_FUNCS3   =	logwtmp:util.h timer_create:signal.h,time.h
 MKC_CHECK_FUNCS2   =	getdomainname:unistd.h makedev:sys/sysmacros.h \
   makedev:sys/types.h flock:fcntl.h flock:sys/file.h
 MKC_CHECK_FUNCS2   +=   utimens:fcntl.h,sys/stat.h
-MKC_CHECK_FUNCS1   =	signalname:signal.h
 MKC_CHECK_DEFINES  =	TIMESPEC_TO_TIMEVAL:sys/time.h REG_STARTEND:regex.h
 MKC_CHECK_TYPES    =	sig_t:signal.h
 
@@ -124,13 +123,6 @@ PROJECTS :=	${PROJECTS:N${t}}
 .if ${HAVE_FUNC2.flock.fcntl_h:U1} != 1 && ${HAVE_FUNC2.flock.sys_file_h:U1} != 1
 .  for t in flock
    WARN_MSG += "Exclude ${t} due to missing flock(2) in sys/file.h and fcntl.h"
-PROJECTS :=	${PROJECTS:N${t}}
-.  endfor
-.endif
-
-.if ${HAVE_FUNC1.signalname.signal_h:U1} != 1
-.  for t in kill
-   WARN_MSG += "Exclude ${t} due to missing signalname(3) in signal.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif

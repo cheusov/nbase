@@ -44,6 +44,7 @@ MKINSTALL=no
 .include "../mk/imp.f_types.mk"
 .include "../mk/imp.f_lutimes.mk"
 .include "../mk/imp.f_bsd_signal.mk"
+.include "../mk/imp.f_signalname.mk"
 .include "../mk/imp.f_fpurge.mk"
 #.include "../mk/imp.f_utimens.mk"
 .include "../mk/imp.f_strtonum.mk"
