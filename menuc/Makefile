@@ -13,4 +13,10 @@ FILES =		menu_sys.def
 FILESDIR =	${_PATH_DEFSYSPREFIX}
 .endif
 
+# variable "root" and function argument "root"
+CFLAGS.check +=	-Wno-error=shadow
+
+# Ex.: char * lalala = "";
+CFLAGS.check +=	-Wno-error=discarded-qualifiers
+
 .include "../mk/addlinks.mk"

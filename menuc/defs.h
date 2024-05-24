@@ -60,8 +60,8 @@
 #endif
 /* Global variables .. to be defined in main.c, extern elsewhere. */
 
-EXTERN char *prog_name;
-EXTERN char *src_name;
+EXTERN char const *prog_name;
+EXTERN char const *src_name;
 EXTERN const char *out_name INIT("menu_defs");
 EXTERN const char *sys_name INIT("menu_sys.def");
 
