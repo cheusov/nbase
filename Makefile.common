@@ -22,8 +22,9 @@ CPPFLAGS +=	-DHAVE_ERRNO_H -DHAVE_LOCALE_H -DHAVE_UNISTD_H -DHAVE_STDINT_H \
 CFLAGS.dflt.gcc +=	-Werror=implicit-function-declaration \
 #  -Werror=missing-prototypes # -Werror=int-to-pointer-cast
 
-CFLAGS.warns.sunpro.4 += -erroff=E_EMPTY_DECLARATION -errtags
+CFLAGS.check += -erroff=E_EMPTY_DECLARATION # SunC + __RCSID(...);
 
+# too serious error to ignore
 CFLAGS.check +=	-Werror=implicit-function-declaration
 
 DOCDIR ?=		${DATADIR}/doc/nbase
