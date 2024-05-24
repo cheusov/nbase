@@ -86,6 +86,10 @@ __RCSID("$NetBSD: ftree.c,v 1.42 2012/09/27 00:44:59 christos Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
+#include "mkc_strlcpy.h"
+#include "imp_struct_stat.h"
+
 #include "pax.h"
 #include "ftree.h"
 #include "extern.h"
@@ -94,8 +98,11 @@ __RCSID("$NetBSD: ftree.c,v 1.42 2012/09/27 00:44:59 christos Exp $");
 #include "mtree.h"
 #endif	/* SMALL */
 
-#include "mkc_strlcpy.h"
-#include "imp_struct_stat.h"
+#if HAVE_STRUCT_STAT_ST_ATIM
+#define st_atimespec st_atim
+#define st_ctimespec st_ctim
+#define st_mtimespec st_mtim
+#endif /* HAVE_STRUCT_STAT_ST_ATIM */
 
 /*
  * routines to interface with the fts library function.

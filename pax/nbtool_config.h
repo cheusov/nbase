@@ -4,6 +4,7 @@
 
 #include "imp_types.h"
 #include "imp_lutimes.h"
-#include "mkc_posix_getopt.h"
-#include "mkc_err.h"
-#include "mkc_warn.h"
+
+#include <mkc_posix_getopt.h>
+#include <mkc_err.h>
+#include <mkc_warn.h>
