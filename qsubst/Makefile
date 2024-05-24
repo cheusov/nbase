@@ -3,6 +3,9 @@ MAN       =	qsubst.1
 
 MKC_FEATURES +=	progname
 
+# sigmask, sigblock etc. are deprecated on some systems
+CFLAGS.check +=	-Wno-error=deprecated-declarations -Wno-error
+
 .include <mkc.init.mk>
 
 .include "../mk/hacks.mk"
