@@ -73,7 +73,7 @@ int signalnumber(const char *name)
 }
 #endif
 
-#ifndef HAVE_FUNC0_SIGNALNEXT_SIGNAL_H
+#ifndef HAVE_FUNC1_SIGNALNEXT_SIGNAL_H
 int signalnext(int sig)
 {
 	if (sig < 0 || sig >= NSIG || (sig > 0 && signalname(sig) == NULL))
