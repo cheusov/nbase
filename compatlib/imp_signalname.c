@@ -23,6 +23,7 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 #include <strings.h>
 
 #include "imp_signalname.h"
@@ -37,7 +38,13 @@ const char * signalname(int sig)
 	if (sig <= 0 || sig >= NSIG)
 		return NULL;
 
+#if HAVE_FUNC1_SIGABBREV_NP_STRING_H
+	return sigabbrev_np(sig);
+#elif HAVE_VAR_SYS_SIGNAME_SIGNAL_H
 	return sys_signame[sig];
+#else
+#error "Do know how to implement signalname(3)"
+#endif
 }
 #endif
 
@@ -45,7 +52,7 @@ const char * signalname(int sig)
 int signalnumber(const char *name)
 {
 	for (unsigned i = 1; i < NSIG; ++i) {
-		const char *sname = sys_signame[i];
+		const char *sname = signalname(i);
 		if (sname != NULL && !strcasecmp(sname, name))
 			return i;
 	}
@@ -57,11 +64,11 @@ int signalnumber(const char *name)
 #ifndef HAVE_FUNC0_SIGNALNEXT_SIGNAL_H
 int signalnext(int sig)
 {
-	if (sig < 0 || sig >= NSIG || (sig > 0 && sys_signame[sig] == NULL))
+	if (sig < 0 || sig >= NSIG || (sig > 0 && signalname(sig) == NULL))
 		return -1;
 
 	while (++sig < NSIG)
-		if (sys_signame[sig] != NULL)
+		if (signalname(sig) != NULL)
 			return sig;
 
 	return 0;
