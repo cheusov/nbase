@@ -18,8 +18,6 @@ CLEANFILES += parser.c parser.h tokenizer.o
 
 CPPFLAGS +=	-DHAVE_NBTOOL_CONFIG_H=1 -I${.CURDIR}
 
-WARNERR   =	no
-
 MKC_FEATURES +=		strsep
 
 .include "../mk/addlinks.mk"

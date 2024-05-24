@@ -7,8 +7,6 @@ YHEADER=
 MKC_REQD =	0.34.0
 MKC_FEATURES +=	libl macro
 
-WARNERR =	no
-
 _PATH_DEFSYSPREFIX =	${DATADIR}/misc
 .if ${MKSHARE:U} != "no"
 FILES =		menu_sys.def

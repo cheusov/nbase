@@ -20,8 +20,6 @@ CPPFLAGS+=	-I${.CURDIR}/../mknod
 .PATH:		${.CURDIR}/../mknod
 .NOPATH:	pack_dev.o
 
-WARNERR   =	no
-
 MKC_FEATURES         +=	fparseln LIST pwdgrp strsep vis
 
 .include "../mk/hacks.mk"

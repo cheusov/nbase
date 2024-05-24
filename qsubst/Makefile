@@ -1,8 +1,6 @@
 PROG      =	qsubst
 MAN       =	qsubst.1
 
-WARNERR   =	no
-
 MKC_FEATURES +=	progname
 
 .include <mkc.init.mk>

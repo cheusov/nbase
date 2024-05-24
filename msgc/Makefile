@@ -9,8 +9,6 @@ YHEADER=
 MKC_REQD =		0.34.0
 MKC_FEATURES +=	libl
 
-WARNERR =		no
-
 _PATH_DEFSYSPREFIX =	${DATADIR}/misc
 .if ${MKSHARE:U} != "no"
 FILES =		msg_sys.def
