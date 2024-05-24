@@ -17,6 +17,6 @@ FILESDIR =	${_PATH_DEFSYSPREFIX}
 CFLAGS.check +=	-Wno-error=shadow
 
 # Ex.: char * lalala = "";
-CFLAGS.check +=	-Wno-error=discarded-qualifiers
+CFLAGS.check +=	-Wno-error=discarded-qualifiers -Wno-error
 
 .include "../mk/addlinks.mk"
