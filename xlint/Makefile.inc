@@ -1,7 +1,3 @@
-#	$NetBSD: Makefile.inc,v 1.13 2013/01/28 14:25:18 matt Exp $
-
-WARNS?=		3	# XXX: fails -Wsign-compare
-
 .include <bsd.own.mk>
 
 .PATH:		${.CURDIR}/../common
