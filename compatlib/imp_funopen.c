@@ -142,7 +142,7 @@ funopen(void *cookie,
 }
 #else
 FILE *
-funopen(void *cookie,
+funopen(const void *cookie,
         int (*readfn)(void *cookie, char *buf, int size),
         int (*writefn)(void *cookie, const char *buf, int size),
         off_t (*seekfn)(void *cookie, off_t offset, int whence),
