@@ -1,8 +1,6 @@
-* link with libmd only cksum, mtree etc.
 sleep on Darwin, OpenBSD
 kill on Darwin, OpenBSD
 
-* install chown(8) to bin/ but sbin/
 * rename compatlib to libnbase
 * indent, renice, ul, mtree -> netbsd sources
 
