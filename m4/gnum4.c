@@ -173,7 +173,7 @@ void
 doindir(const char *argv[], int argc)
 {
 	ndptr n;
-	struct macro_definition *p;
+	struct macro_definition *p = NULL;
 
 	n = lookup(argv[2]);
 	if (n == NULL || (p = macro_getdef(n)) == NULL)
