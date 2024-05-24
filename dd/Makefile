@@ -17,7 +17,8 @@ MKC_CHECK_HEADER_FILES +=	sys/mtio.h
 MKC_FEATURES +=	humanize_number raise_default_signal strsep
 
 # void swab(const void *restrict from, void *restrict to, ssize_t n);
-CFLAGS.check +=	-Wno-error=restrict -erroff=E_ARG_INCOMPATIBLE_WITH_ARG_L
+CFLAGS.check +=	-Wno-error=restrict -erroff=E_ARG_INCOMPATIBLE_WITH_ARG_L \
+	-Wno-error=pointer-sign
 
 .include <mkc.init.mk>
 
