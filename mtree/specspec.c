@@ -73,7 +73,7 @@ shownode(NODE *n, int f, char const *path)
 			printf(" gname=%s", gr->gr_name);
 	}
 	if (f & F_MODE)
-		printf(" mode=%o", n->st_mode);
+		printf(" mode=%lu", (unsigned long)n->st_mode);
 	if (f & F_NLINK)
 		printf(" nlink=%ju", (uintmax_t)n->st_nlink);
 	if (f & F_SIZE)
