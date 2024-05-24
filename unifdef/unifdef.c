@@ -449,7 +449,7 @@ static void Idrop (void) { Fdrop();  ignoreon(); }
 static void Itrue (void) { Ftrue();  ignoreon(); }
 static void Ifalse(void) { Ffalse(); ignoreon(); }
 /* edit this line */
-static void Mpass (void) { strncpy(keyword, "if  ", 4); Pelif(); }
+static void Mpass (void) { memcpy(keyword, "if  ", 4); Pelif(); }
 static void Mtrue (void) { keywordedit("else\n");  state(IS_TRUE_MIDDLE); }
 static void Melif (void) { keywordedit("endif\n"); state(IS_FALSE_TRAILER); }
 static void Melse (void) { keywordedit("endif\n"); state(IS_FALSE_ELSE); }
