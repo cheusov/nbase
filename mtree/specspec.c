@@ -64,11 +64,11 @@ shownode(NODE *n, int f, char const *path)
 	if (f & F_CKSUM)
 		printf(" cksum=%lu", n->cksum);
 	if (f & F_GID)
-		printf(" gid=%d", n->st_gid);
+		printf(" gid=%lu", (unsigned long)n->st_gid);
 	if (f & F_GNAME) {
 		gr = getgrgid(n->st_gid);
 		if (gr == NULL)
-			printf(" gid=%d", n->st_gid);
+			printf(" gid=%lu", (unsigned long)n->st_gid);
 		else
 			printf(" gname=%s", gr->gr_name);
 	}
@@ -79,11 +79,11 @@ shownode(NODE *n, int f, char const *path)
 	if (f & F_SIZE)
 		printf(" size=%jd", (intmax_t)n->st_size);
 	if (f & F_UID)
-		printf(" uid=%d", n->st_uid);
+		printf(" uid=%lu", (unsigned long)n->st_uid);
 	if (f & F_UNAME) {
 		pw = getpwuid(n->st_uid);
 		if (pw == NULL)
-			printf(" uid=%d", n->st_uid);
+			printf(" uid=%lu", (unsigned long)n->st_uid);
 		else
 			printf(" uname=%s", pw->pw_name);
 	}
