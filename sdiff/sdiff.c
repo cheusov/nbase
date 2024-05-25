@@ -575,7 +575,7 @@ xfgets(FILE *file)
 static int
 parsecmd(FILE *diffpipe, FILE *file1, FILE *file2)
 {
-	size_t file1start, file1end, file2start, file2end, n;
+	size_t file1start, file1end, file2start, file2end, n = 0;
 	/* ed command line and pointer to characters in line */
 	char *line, *p, *q;
 	const char *errstr;
