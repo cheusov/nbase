@@ -563,7 +563,7 @@ doformat(const char *argv[], int argc)
 	int left_padded;
 	long width;
 	size_t l;
-	const char *thisarg;
+	const char *thisarg = NULL;
 	char temp[2];
 	size_t extra;
 
