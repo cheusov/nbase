@@ -23,7 +23,10 @@ MKC_FEATURES +=		strsep
 # va_end after verr in misc.c
 CFLAGS.check +=		-erroff=E_STATEMENT_NOT_REACHED
 
-# m4/main.c: write(2)
-CFLAGS.check+=		-Wno-error=unused-result
+# main.c: write(2)
+CFLAGS.check +=		-Wno-error=unused-result
+
+# variable yysccsid
+CFLAGS.check +=		-Wno-error=unused-const-variable
 
 .include "../mk/addlinks.mk"
