@@ -49,6 +49,9 @@ MKC_FEATURES +=	fgetln macro pwdgrp raise_default_signal strlcpy vis
 MKC_CHECK_HEADER_FILES +=	sys/mtio.h
 MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 
+# write(2)
+CFLAGS.check +=		-Wno-error=unused-result
+
 .include <mkc.configure.mk>
 
 .include "../mk/hacks.mk"

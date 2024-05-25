@@ -7,6 +7,9 @@ SRCS      =	compare.c crc.c create.c excludes.c misc.c mtree.c spec.c \
 MKC_CHECK_FUNCS4     +=	pwcache_groupdb:grp.h
 MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 
+# mtree/specspec.c: asprintf(3)
+CFLAGS.check         +=	-Wno-error=unused-result
+
 .include <mkc.configure.mk>
 
 .if ${HAVE_FUNC4.pwcache_groupdb.grp_h:U1}

@@ -27,6 +27,9 @@ CFLAGS.check +=	-Wno-error=restrict -erroff=E_ARG_INCOMPATIBLE_WITH_ARG_L \
 CFLAGS.check +=	-Wno-error=incompatible-pointer-types -erroff=E_INITIALIZATION_TYPE_MISMATCH
 .endif
 
+# write(2)
+CFLAGS.check +=	-Wno-error=unused-result
+
 .include <mkc.configure.mk>
 
 .include "../mk/hacks.mk"
