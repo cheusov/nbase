@@ -56,7 +56,6 @@ __RCSID("$NetBSD: parse.c,v 1.27 2011/09/04 20:27:27 joerg Exp $");
 #include "mkc_efun.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
-#include "mkc_strlcpy.h"
 
 #include "hexdump.h"
 
@@ -313,7 +312,7 @@ isint:
 				 * we end up with "llo" or "qo".
 				 */
 				savech = cs[0];
-				strncpy(cs, PRId64, sizeof(PRId64) - 2);
+				memcpy(cs, PRId64, sizeof(PRId64) - 2);
 				cs[sizeof(PRId64) - 2] = savech;
 				cs[sizeof(PRId64) - 1] = '\0';
 				switch(fu->bcnt) {
@@ -377,8 +376,8 @@ isint:
 						 * See comments above for
 						 * the way we use PRId64.
 						 */
-						strlcpy(cs, PRId64,
-							sizeof(PRId64));
+						memcpy(cs, PRId64,
+							sizeof(PRId64) - 1);
 						cs[sizeof(PRId64) - 2] = p1[2];
 						cs[sizeof(PRId64) - 1] = '\0';
 						break;
