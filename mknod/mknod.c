@@ -95,8 +95,8 @@ main(int argc, char **argv)
 	int	 major;
 #endif
 	void	*modes = 0;
-	uid_t	 uid = -1;
-	gid_t	 gid = -1;
+	uid_t	 uid = (uid_t)-1;
+	gid_t	 gid = (gid_t)-1;
 	int	 rval;
 
 	dev = 0;
