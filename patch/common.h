@@ -115,6 +115,10 @@ extern bool	last_line_missing_eol;
 #define NEW_CONTEXT_DIFF 4
 #define UNI_DIFF 5
 
+#if !HAVE_TYPE_SIG_T_SIGNAL_H
+typedef void (*sig_t) (int);
+#endif
+
 extern int	diff_type;
 extern char	*revision;	/* prerequisite revision, if any */
 extern LINENUM	input_lines;	/* how long is input file in lines */

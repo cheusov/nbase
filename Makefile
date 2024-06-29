@@ -85,13 +85,6 @@ PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
 
-.if ${HAVE_TYPE.sig_t.signal_h:U1} != 1
-.  for t in apply patch
-   WARN_MSG += "Exclude ${t} due to missing sig_t type in signal.h"
-PROJECTS :=	${PROJECTS:N${t}}
-.  endfor
-.endif
-
 .if ${HAVE_HEADER_FILE.term_h:U1} != 1
 .  for t in cal ul tabs
    WARN_MSG += "Exclude ${t} due to missing term.h header file"

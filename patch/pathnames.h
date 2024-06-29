@@ -11,4 +11,10 @@
 
 #include "imp_macro.h"
 
+#ifndef _PATH_ED
 #define	_PATH_ED		"/bin/ed"
+#endif
+
+#ifndef NAME_MAX
+#define NAME_MAX 255
+#endif
