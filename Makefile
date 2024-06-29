@@ -23,7 +23,7 @@ MKC_REQD     =	0.37.0
 .include "help.mk"
 .include "use.mk"
 
-MKC_CHECK_HEADER_FILES  = pty.h fts.h sys/sysctl.h term.h
+MKC_CHECK_HEADER_FILES  = pty.h fts.h term.h
 MKC_CHECK_HEADERS  =	tzfile.h termcap.h
 MKC_CHECK_FUNCLIBS =	setupterm:terminfo
 MKC_CHECK_FUNCS5   =	openpty:pty.h openpty:util.h dbopen:${USE_DB_HEADER} linkat:unistd.h
@@ -45,11 +45,11 @@ PROJECTS += apply asa nawk/bin banner basename cal cat chmod chown      \
   cmp col colcrt colrm column comm compress cp csplit ctags cut date    \
   deroff dd	\
   dirname domainname du echo ed env error expand expr false fgen find	\
-  flock fmt fold fpr from fsplit getconf getopt grep head hexdump 	\
+  flock fmt fold fpr from fsplit getconf getopt grep head hexdump	\
   hostname id join jot kill lam leave ln logname look \
   lorder ls m4	\
   machine menuc mkdep mkdir mkfifo mknod mkstr mktemp msgc mtree mv     \
-  nice nl nohup	                                                        \
+  nice nl nohup							\
   paste patch pax pr printenv printf pwd qsubst renice rev rm rmdir	\
   rs script sdiff sed seq shar shlock shuffle sleep soelim sort split	\
   sync tabs tail tee testcmd timeout tr true tsort tty ul unexpand	\
@@ -67,13 +67,6 @@ PROJECTS :=	${PROJECTS:N${t}}
 .if ${HAVE_FUNC5.openpty.pty_h:U1} != 1 && ${HAVE_FUNC5.openpty.util_h:U1} != 1
 .  for t in script
    WARN_MSG += "Exclude ${t} due to missing openpty(3) in pty.h and util.h"
-PROJECTS :=	${PROJECTS:N${t}}
-.  endfor
-.endif
-
-.if ${HAVE_HEADER_FILE.sys_sysctl_h:U1} != 1
-.  for t in mknod
-   WARN_MSG += "Exclude ${t} due to missing sys/sysctl.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif

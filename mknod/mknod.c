@@ -43,9 +43,6 @@ __RCSID("$NetBSD: mknod.c,v 1.41 2013/06/14 16:28:20 tsutsui Exp $");
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/param.h>
-#if !HAVE_NBTOOL_CONFIG_H
-#include <sys/sysctl.h>
-#endif
 
 #include <err.h>
 #include <errno.h>
