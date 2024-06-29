@@ -36,9 +36,11 @@
 #include <sys/cdefs.h>
 __RCSID("$NetBSD: mkpath.c,v 1.1 2008/09/19 18:33:34 joerg Exp $");
 
+#include <mkc_err.h>
+#include <mkc_warn.h>
+
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <err.h>
 #include <errno.h>
 #include <string.h>
 
