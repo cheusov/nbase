@@ -312,7 +312,7 @@ isint:
 				 * we end up with "llo" or "qo".
 				 */
 				savech = cs[0];
-				strncpy(cs, PRId64, sizeof(PRId64) - 2);
+				memcpy(cs, PRId64, sizeof(PRId64) - 2);
 				cs[sizeof(PRId64) - 2] = savech;
 				cs[sizeof(PRId64) - 1] = '\0';
 				switch(fu->bcnt) {
@@ -376,8 +376,8 @@ isint:
 						 * See comments above for
 						 * the way we use PRId64.
 						 */
-						strncpy(cs, PRId64,
-							sizeof(PRId64));
+						memcpy(cs, PRId64,
+							sizeof(PRId64) - 1);
 						cs[sizeof(PRId64) - 2] = p1[2];
 						cs[sizeof(PRId64) - 1] = '\0';
 						break;

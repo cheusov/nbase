@@ -52,6 +52,9 @@ MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 # write(2)
 CFLAGS.check +=		-Wno-error=unused-result
 
+# clang-16 and options.c "if ((num == OFFT_MAX) || ..."
+CFLAGS.check +=		-Wno-error=tautological-constant-out-of-range-compare
+
 .include <mkc.configure.mk>
 
 .include "../mk/hacks.mk"
