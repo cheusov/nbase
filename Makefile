@@ -29,7 +29,7 @@ MKC_CHECK_FUNCLIBS =	setupterm:terminfo
 MKC_CHECK_FUNCS5   =	openpty:pty.h openpty:util.h dbopen:${USE_DB_HEADER} linkat:unistd.h
 MKC_CHECK_FUNCS4   =	getgrouplist:grp.h getgrouplist:unistd.h clock_nanosleep:time.h
 MKC_CHECK_FUNCS4   +=	utimensat:fcntl.h,sys/stat.h
-MKC_CHECK_FUNCS3   =	logwtmp:util.h timer_create:signal.h,time.h
+MKC_CHECK_FUNCS3   =	logwtmp:util.h logwtmp:utmp.h timer_create:signal.h,time.h
 MKC_CHECK_FUNCS2   =	getdomainname:unistd.h makedev:sys/sysmacros.h \
   makedev:sys/types.h flock:fcntl.h flock:sys/file.h
 MKC_CHECK_FUNCS2   +=   utimens:fcntl.h,sys/stat.h
@@ -141,9 +141,9 @@ PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
 
-.if ${HAVE_FUNC3.logwtmp.util_h:U1} != 1
+.if ${HAVE_FUNC3.logwtmp.util_h:U1} != 1 && ${HAVE_FUNC3.logwtmp.utmp_h:U1} != 1
 .  for t in date
-   WARN_MSG += "Exclude ${t} due to missing logwtmp(3) in util.h"
+   WARN_MSG += "Exclude ${t} due to missing logwtmp(3) in util.h and utmp.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
 .endif
