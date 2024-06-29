@@ -5,6 +5,8 @@ MAN     =	apply.1
 CFLAGS.check +=	-Wno-error=deprecated-declarations
 CFLAGS.check +=	-Wno-error
 
+MKC_CHECK_TYPES    =	sig_t:signal.h
+
 .include "../mk/imp.f_bsd_signal.mk"
 
 .include "../mk/addlinks.mk"

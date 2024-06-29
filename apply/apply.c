@@ -56,6 +56,10 @@ __RCSID("$NetBSD: apply.c,v 1.19 2016/03/12 22:28:04 dholland Exp $");
 #include "imp_bsd_signal.h"
 #include "imp_macro.h"
 
+#if !HAVE_TYPE_SIG_T_SIGNAL_H
+typedef void (*sig_t) (int);
+#endif
+
 static __dead void usage(void);
 static int shell_system(const char *);
 
