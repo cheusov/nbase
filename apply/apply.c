@@ -44,15 +44,17 @@ __RCSID("$NetBSD: apply.c,v 1.19 2016/03/12 22:28:04 dholland Exp $");
 #include <sys/wait.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_progname.h"
-#include "mkc_posix_getopt.h"
+#include <mkc_progname.h>
+#include <mkc_posix_getopt.h>
+#include <mkc_err.h>
+#include <mkc_warn.h>
+
 #include "imp_bsd_signal.h"
 #include "imp_macro.h"
 

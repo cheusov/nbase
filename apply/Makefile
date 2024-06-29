@@ -7,6 +7,8 @@ CFLAGS.check +=	-Wno-error
 
 MKC_CHECK_TYPES    =	sig_t:signal.h
 
+MKC_FEATURES +=		err warn
+
 .include "../mk/imp.f_bsd_signal.mk"
 
 .include "../mk/addlinks.mk"
