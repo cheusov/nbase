@@ -44,7 +44,6 @@ __RCSID("$NetBSD: mknod.c,v 1.41 2013/06/14 16:28:20 tsutsui Exp $");
 #include <sys/stat.h>
 #include <sys/param.h>
 
-#include <err.h>
 #include <errno.h>
 #include <limits.h>
 #include <stdio.h>
@@ -55,10 +54,13 @@ __RCSID("$NetBSD: mknod.c,v 1.41 2013/06/14 16:28:20 tsutsui Exp $");
 #include <string.h>
 #include <ctype.h>
 
-#include "mkc_progname.h"
-#include "mkc_pwdgrp.h"
+#include <mkc_progname.h>
+#include <mkc_err.h>
+#include <mkc_warn.h>
+#include <mkc_pwdgrp.h>
+#include <mkc_posix_getopt.h>
+
 #include "imp_getsetmode.h"
-#include "mkc_posix_getopt.h"
 
 #include "pack_dev.h"
 

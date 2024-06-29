@@ -4,7 +4,7 @@ MAN  =	mknod.8
 
 .include <mkc.init.mk>
 
-MKC_FEATURES    +=	pwdgrp
+MKC_FEATURES    +=	pwdgrp err warn
 
 CFLAGS.check    +=	-Wno-error=cpp
 
