@@ -1,4 +1,28 @@
 ======================================================================
+Version 9.3.0.3, by Aleksey Cheusov, Sun, 30 Jun 2024 20:40:36 +0400
+
+  Enable -Werror=implicit-function-declaration globally if it works.
+
+  Compilation failure fixes on diverse systems and compilers.
+
+  Enable WARNERR=yes for some projects
+
+  kill: add support for systems which do not support signalname(3),
+  signalnumber(3) and signalnext(3), tested on Darwin, Solaris-{10,11}
+  and glibc-based Linuxes.
+
+  Fix mk/imp.f_signalname.mk
+
+  compatlib/imp_funopen.c: sync funopen signature with declaration
+  from compatlib/imp_funopen.h
+
+  mknod: add support for Linux and Solaris-10
+
+  patch: add support for Solaris-10 and 11
+
+  apply: add support for Solaris-10 and 11
+
+======================================================================
 Version 9.3.0.2, by Aleksey Cheusov, Thu, 23 May 2024 16:38:40 +0400
 
   Remove libndigest local library and use libmd instead.
