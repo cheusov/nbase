@@ -59,6 +59,8 @@ __RCSID("$NetBSD: cpio.c,v 1.22 2012/08/09 08:09:21 christos Exp $");
 #include "cpio.h"
 #include "extern.h"
 
+#include "imp_makedev.h"
+
 static int rd_nm(ARCHD *, int);
 static int rd_ln_nm(ARCHD *);
 static int com_rd(ARCHD *);
