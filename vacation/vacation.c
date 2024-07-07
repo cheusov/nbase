@@ -603,7 +603,7 @@ sendmessage(const char *myname)
 			syslog(LOG_ERR, "%s: pipe: %m", getprogname());
 			exit(1);
 		}
-		i = vfork();
+		i = fork();
 		if (i < 0) {
 			syslog(LOG_ERR, "%s: fork: %m", getprogname());
 			exit(1);
