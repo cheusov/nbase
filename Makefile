@@ -49,7 +49,7 @@ PROJECTS += apply asa nawk/bin banner base64 basename cal cat chmod chown      \
   hostname id join jot kill lam leave ln logname look \
   lorder ls m4	\
   machine menuc mkdep mkdir mkfifo mknod mkstr mktemp msgc mtree mv     \
-  nice nl nohup							\
+  nice nl nohup nologin						\
   paste patch pax pr printenv printf progress pwd qsubst renice rev rm rmdir	\
   rs script sdiff sed seq shar shlock shuffle sleep soelim sort split	\
   sync tabs tail tee testcmd timeout tr true tsort tty ul unexpand	\
