@@ -366,7 +366,7 @@ main(int argc, char **argv)
 			err(1, "%s", argv[i]);
 		if (sb.st_size > SIZE_T_MAX)
 			errx(1, "%s: %s", argv[i], strerror(EFBIG));
-		wlists[i].front = mmap(NULL, (size_t)sb.st_size, PROT_READ,
+		wlists[i].front = (void *)mmap(NULL, (size_t)sb.st_size, PROT_READ,
 		    MAP_PRIVATE, wlists[i].fd, (off_t)0);
 		if (wlists[i].front == MAP_FAILED)
 			err(1, "%s", argv[i]);

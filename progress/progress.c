@@ -48,6 +48,12 @@ __RCSID("$NetBSD: progress.c,v 1.21.18.1 2021/01/29 18:27:05 martin Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#if HAVE_HEADER_SYS_IOCCOM_H
+# include "sys/ioccom.h"
+#endif
+#if HAVE_HEADER_SYS_PTYVAR_H
+# include "sys/ptyvar.h"
+#endif
 
 #include <mkc_err.h>
 #include <mkc_progname.h>
