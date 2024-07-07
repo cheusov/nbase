@@ -150,7 +150,7 @@ PROJECTS :=	${PROJECTS:N${t}}
 .endif
 
 .if ${HAVE_FUNC5.dbopen.db_h:U1} != 1
-.  for t in tsort
+.  for t in tsort vacation
    WARN_MSG += "Exclude ${t} due to missing dbopen(3) in db.h"
 PROJECTS :=	${PROJECTS:N${t}}
 .  endfor
