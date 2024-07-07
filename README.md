@@ -17,18 +17,18 @@ Additional documentation is under doc/
 
 For now the following tools are a part of collection:
 
-apply asa awk banner basename cal cat chmod cksum sum md2 md4 md5 sha1
-rmd160 cleantags cmp col colcrt colrm column comm compress uncompress
-cp csplit ctags cut date dd deroff dirname du domainname echo ed env
-error expand expr false fgen find flock fmt fold fpr from fsplit
-getconf getopt grep egrep fgrep zgrep zegrep zfgrep head hexdump od
-hostname id groups whoami join jot kill lam leave ln logname
-look lorder ls m4 machine menuc mkdep mkdir mkfifo mknod mkstr mktemp
-msgc mtree mv nice nl nohup paste patch pax pr printenv printf pwd
-qsubst renice rev rm rmdir rs script sdiff sed seq shar shlock shuffle
-sleep soelim sort split sync tabs tail tee test [ timeout tr true
-tsort tty ul unexpand unifdef unifdefall uniq unvis uudecode uuencode
-vis wc what whois xargs install xstr yes
+[ apply asa awk banner basename cal cat chmod cksum cleantags cmp col
+colcrt colrm column comm compress cp cpio csplit ctags cut date dd
+deroff dirname domainname du echo ed egrep env error expand expr false
+fgen fgrep find flock fmt fold fpr from fsplit getconf getopt grep
+groups head hexdump hostname id install join jot kill lam leave ln
+logname look lorder ls m4 machine md2 md4 md5 menuc mkdep mkdir mkfifo
+mknod mkstr mktemp msgc mtree mv nice nl nohup od paste patch pax pr
+printenv printf pwd qsubst renice rev rm rmd160 rmdir rs script sdiff
+sed seq sha1 shar shlock shuffle sleep soelim sort split sum sync tabs
+tail tar tee test timeout tr true tsort tty ul uncompress unexpand
+unifdef unifdefall uniq unvis uudecode uuencode vis wc what whereis
+which whoami whois xargs xstr yes zegrep zfgrep zgrep
 
 ## WWW
 
