@@ -47,7 +47,9 @@ __RCSID("$NetBSD: chroot.c,v 1.19 2011/09/20 14:28:52 christos Exp $");
 
 #include <errno.h>
 #include <grp.h>
+#if HAVE_HEADER_PATHS_H
 #include <paths.h>
+#endif
 #include <pwd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -57,6 +59,14 @@ __RCSID("$NetBSD: chroot.c,v 1.19 2011/09/20 14:28:52 christos Exp $");
 
 #include <mkc_err.h>
 #include <mkc_progname.h>
+#include <mkc_strsep.h>
+
+#ifndef _PATH_BSHELL
+# define _PATH_BSHELL "/bin/sh"
+#endif
+#ifndef NGROUPS_MAX
+# define NGROUPS_MAX 256
+#endif
 
 static void	usage(void) __dead;
 
@@ -110,6 +120,8 @@ getuser(const char *user)
 	return (uid_t)num;
 }
 
+static gid_t gidlist[NGROUPS_MAX];
+
 int
 main(int argc, char *argv[])
 {
@@ -118,7 +130,7 @@ main(int argc, char *argv[])
 	char	*grouplist;	/* group list to switch to ... */
 	char		*p;
 	const char	*shell;
-	gid_t		gid, gidlist[NGROUPS_MAX];
+	gid_t		gid;
 	uid_t		uid;
 	int		ch, gids;
 
