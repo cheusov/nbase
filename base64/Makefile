@@ -1,9 +1,6 @@
-#	$NetBSD: Makefile,v 1.1 2018/07/24 15:26:16 christos Exp $
+PROG =	base64
+MAN  =	base64.1
 
-WARNS?= 6	
+MKC_FEATURES +=	errc
 
-.include <bsd.own.mk>
-
-PROG=		base64
-
-.include <bsd.prog.mk>
+.include "../mk/addlinks.mk"

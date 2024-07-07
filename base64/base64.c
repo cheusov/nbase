@@ -34,13 +34,20 @@ __RCSID("$NetBSD: base64.c,v 1.2 2018/07/25 03:45:34 christos Exp $");
 
 #include <ctype.h>
 #include <errno.h>
-#include <err.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
+#include <mkc_err.h>
+#include <mkc_errc.h>
+#include <mkc_progname.h>
+
+#ifndef EFTYPE
+# define EFTYPE EINVAL
+#endif
 
 static const char B64[] =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";

@@ -40,7 +40,7 @@ MKC_FUNC_OR_DEFINE.makedev =	yes
 
 .include <mkc.configure.mk>
 
-PROJECTS += apply asa nawk/bin banner basename cal cat chmod chown      \
+PROJECTS += apply asa nawk/bin banner base64 basename cal cat chmod chown      \
   chroot cksum cleantags \
   cmp col colcrt colrm column comm compress cp csplit ctags cut date    \
   deroff dd	\
