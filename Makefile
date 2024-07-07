@@ -53,7 +53,7 @@ PROJECTS += apply asa nawk/bin banner basename cal cat chmod chown      \
   paste patch pax pr printenv printf pwd qsubst renice rev rm rmdir	\
   rs script sdiff sed seq shar shlock shuffle sleep soelim sort split	\
   sync tabs tail tee testcmd timeout tr true tsort tty ul unexpand	\
-  unifdef uniq unvis uudecode uuencode vis wc what \
+  unifdef uniq unvis uudecode uuencode vacation vis wc what \
   whereis whois xargs xinstall	\
   xstr yes
 # PROJECTS +=	indent
@@ -173,7 +173,7 @@ PROJECTS :=	${PROJECTS:N${t}}
 COMPATLIB    =	compatlib
 
 .if ${HAVE_HEADER.tzfile_h:U1} != 1
-. for t in cal date
+. for t in cal date vacation
 PROJECTS :=     ${PROJECTS:N${t}}
    WARN_MSG += "Exclude ${t} due to missing tzfile.h"
 . endfor

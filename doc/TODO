@@ -1,6 +1,6 @@
 * Bug #9: at base64 bc cap_mkdb cu dev_mkdb diff diff3 factor ftp
 gzip lndir newsyslog nologin pathchk progress rdate realpath
-tftp spell su truncate users vacation who
+tftp spell su truncate users who
 
 * Add man, mandoc
 * Add crond, crontab
