@@ -86,6 +86,7 @@ __RCSID("$NetBSD: ftree.c,v 1.42 2012/09/27 00:44:59 christos Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <limits.h>
 
 #include "mkc_strlcpy.h"
 #include "imp_struct_stat.h"
@@ -103,6 +104,10 @@ __RCSID("$NetBSD: ftree.c,v 1.42 2012/09/27 00:44:59 christos Exp $");
 #define st_ctimespec st_ctim
 #define st_mtimespec st_mtim
 #endif /* HAVE_STRUCT_STAT_ST_ATIM */
+
+#ifndef ALLPERMS
+# define ALLPERMS (S_ISUID|S_ISGID|S_ISVTX|S_IRWXU|S_IRWXG|S_IRWXO)/* 07777 */
+#endif
 
 /*
  * routines to interface with the fts library function.
