@@ -36,13 +36,15 @@ __RCSID("$NetBSD: pathchk.c,v 1.2 2011/09/16 15:39:28 joerg Exp $");
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <err.h>
 #include <errno.h>
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
+#include <mkc_err.h>
+#include <mkc_warn.h>
 
 static int check(const char *);
 static int portable(const char *);

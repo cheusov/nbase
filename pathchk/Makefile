@@ -1,6 +1,5 @@
-#	$NetBSD: Makefile,v 1.2 2009/04/14 22:15:25 lukem Exp $
+PROG =	pathchk
+MAN  =	pathchk.1
+SRCS =	pathchk.c
 
-PROG=	pathchk
-SRCS=	pathchk.c
-
-.include <bsd.prog.mk>
+.include "../mk/addlinks.mk"
