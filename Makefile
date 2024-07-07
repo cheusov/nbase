@@ -41,7 +41,7 @@ MKC_FUNC_OR_DEFINE.makedev =	yes
 .include <mkc.configure.mk>
 
 PROJECTS += apply asa nawk/bin banner basename cal cat chmod chown      \
-  cksum cleantags \
+  chroot cksum cleantags \
   cmp col colcrt colrm column comm compress cp csplit ctags cut date    \
   deroff dd	\
   dirname domainname du echo ed env error expand expr false fgen find	\

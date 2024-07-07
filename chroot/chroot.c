@@ -45,7 +45,6 @@ __RCSID("$NetBSD: chroot.c,v 1.19 2011/09/20 14:28:52 christos Exp $");
 
 #include <sys/param.h>
 
-#include <err.h>
 #include <errno.h>
 #include <grp.h>
 #include <paths.h>
@@ -55,6 +54,9 @@ __RCSID("$NetBSD: chroot.c,v 1.19 2011/09/20 14:28:52 christos Exp $");
 #include <inttypes.h>
 #include <string.h>
 #include <unistd.h>
+
+#include <mkc_err.h>
+#include <mkc_progname.h>
 
 static void	usage(void) __dead;
 
