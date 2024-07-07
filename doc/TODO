@@ -1,9 +1,12 @@
-Bug #9: at base64 bc cap_mkdb chroot cu dev_mkdb diff diff3 factor ftp
-gzip lndir newsyslog nologin pathchk progress qsubst rdate realpath
+* Bug #9: at base64 bc cap_mkdb cu dev_mkdb diff diff3 factor ftp
+gzip lndir newsyslog nologin pathchk progress rdate realpath
 tftp spell su truncate users vacation who
 
-sleep on Darwin, OpenBSD
-kill on Darwin, OpenBSD
+* Add man, mandoc
+* Add crond, crontab
+
+* sleep on Darwin, OpenBSD
+* kill on Darwin, OpenBSD
 
 * rename compatlib to libnbase
 * indent, renice, ul, mtree -> netbsd sources
