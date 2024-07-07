@@ -1,5 +1,5 @@
 * Bug #9: at bc cap_mkdb cu dev_mkdb diff diff3 factor ftp
-gzip lndir newsyslog nologin pathchk progress rdate realpath
+gzip lndir newsyslog nologin pathchk rdate realpath
 tftp spell su truncate users who
 
 * Add man, mandoc

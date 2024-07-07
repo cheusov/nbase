@@ -1,12 +1,11 @@
-# $NetBSD: Makefile,v 1.2 2003/01/22 02:56:30 lukem Exp $
+PROG =		progress
+SRCS =		progress.c progressbar.c
+MAN  =		progress.1
 
-.include <bsd.own.mk>
+CPPFLAGS +=	-I${.CURDIR}/../ftp -DSTANDALONE_PROGRESS
 
-PROG=	progress
-SRCS=	progress.c progressbar.c
+.PATH:		${.CURDIR}/../ftp
+.NOPATH:	progressbar.o
 
-CPPFLAGS+=-I${NETBSDSRCDIR}/usr.bin/ftp -DSTANDALONE_PROGRESS
-
-.PATH:	${NETBSDSRCDIR}/usr.bin/ftp
-
-.include <bsd.prog.mk>
+.include "../mk/imp.f_strsuftoll.mk"
+.include "../mk/addlinks.mk"

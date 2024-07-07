@@ -39,7 +39,6 @@ __RCSID("$NetBSD: progress.c,v 1.21.18.1 2021/01/29 18:27:05 martin Exp $");
 #include <sys/stat.h>
 #include <sys/wait.h>
 
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <inttypes.h>
@@ -49,6 +48,16 @@ __RCSID("$NetBSD: progress.c,v 1.21.18.1 2021/01/29 18:27:05 martin Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
+#include <mkc_err.h>
+#include <mkc_progname.h>
+#include "imp_strsuftoll.h"
+
+#ifndef TIOCGSIZE
+# define TIOCGSIZE TIOCGWINSZ
+# define ttysize winsize
+# define ts_cols ws_col
+#endif
 
 #define GLOBAL			/* force GLOBAL decls in progressbar.h to be
 				 * declared */

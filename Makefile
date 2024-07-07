@@ -50,7 +50,7 @@ PROJECTS += apply asa nawk/bin banner base64 basename cal cat chmod chown      \
   lorder ls m4	\
   machine menuc mkdep mkdir mkfifo mknod mkstr mktemp msgc mtree mv     \
   nice nl nohup							\
-  paste patch pax pr printenv printf pwd qsubst renice rev rm rmdir	\
+  paste patch pax pr printenv printf progress pwd qsubst renice rev rm rmdir	\
   rs script sdiff sed seq shar shlock shuffle sleep soelim sort split	\
   sync tabs tail tee testcmd timeout tr true tsort tty ul unexpand	\
   unifdef uniq unvis uudecode uuencode vacation vis wc what \

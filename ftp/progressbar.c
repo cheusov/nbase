@@ -41,17 +41,24 @@ __RCSID("$NetBSD: progressbar.c,v 1.23.2.1 2021/01/29 20:58:19 martin Exp $");
 #include <sys/types.h>
 #include <sys/time.h>
 
-#include <err.h>
 #include <errno.h>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#if HAVE_HEADER_TZFILE_H
 #include <tzfile.h>
+#endif
 #include <unistd.h>
 
 #include "progressbar.h"
+
+#include <mkc_err.h>
+
+#ifndef SECSPERHOUR
+# define SECSPERHOUR 3600
+#endif
 
 #if !defined(NO_PROGRESS)
 /*
