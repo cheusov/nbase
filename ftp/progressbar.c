@@ -41,18 +41,6 @@ __RCSID("$NetBSD: progressbar.c,v 1.23.2.1 2021/01/29 20:58:19 martin Exp $");
 #include <sys/types.h>
 #include <sys/time.h>
 
-#ifndef timersub
-#define timersub(tvp, uvp, vvp)                                 \
-        do {                                                    \
-            (vvp)->tv_sec = (tvp)->tv_sec - (uvp)->tv_sec;      \
-            (vvp)->tv_usec = (tvp)->tv_usec - (uvp)->tv_usec;   \
-            if ((vvp)->tv_usec < 0) {                           \
-                (vvp)->tv_sec--;                                \
-                (vvp)->tv_usec += 1000000;                      \
-            }                                                   \
-        } while (/* CONSTCOND */ 0)
-#endif
-
 #include <errno.h>
 #include <signal.h>
 #include <stdio.h>
@@ -67,6 +55,25 @@ __RCSID("$NetBSD: progressbar.c,v 1.23.2.1 2021/01/29 20:58:19 martin Exp $");
 #include "progressbar.h"
 
 #include <mkc_err.h>
+
+#ifndef timersub
+#define timersub(tvp, uvp, vvp)                                 \
+        do {                                                    \
+            (vvp)->tv_sec = (tvp)->tv_sec - (uvp)->tv_sec;      \
+            (vvp)->tv_usec = (tvp)->tv_usec - (uvp)->tv_usec;   \
+            if ((vvp)->tv_usec < 0) {                           \
+                (vvp)->tv_sec--;                                \
+                (vvp)->tv_usec += 1000000;                      \
+            }                                                   \
+        } while (/* CONSTCOND */ 0)
+#endif
+
+#ifndef MIN
+# define MIN(a, b) ((a < b) ? a : b)
+#endif
+#ifndef MAX
+# define MAX(a, b) ((a < b) ? b : a)
+#endif
 
 #ifndef SECSPERHOUR
 # define SECSPERHOUR 3600
