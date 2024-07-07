@@ -46,7 +46,8 @@ static const char rcsid[] = "$NetBSD: look.c,v 1.2 2005/06/30 16:25:05 christos 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <err.h>
+
+#include <mkc_err.h>
 
 #include "extern.h"
 

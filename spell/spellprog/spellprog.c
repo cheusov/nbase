@@ -87,7 +87,6 @@ static const char rcsid[] = "$OpenBSD: spellprog.c,v 1.4 2003/06/03 02:56:16 mil
 #include <sys/stat.h>
 
 #include <ctype.h>
-#include <err.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <limits.h>
@@ -96,7 +95,15 @@ static const char rcsid[] = "$OpenBSD: spellprog.c,v 1.4 2003/06/03 02:56:16 mil
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <util.h>
+
+#include <mkc_err.h>
+#include <mkc_warn.h>
+#include <mkc_efun.h>
+#include <mkc_progname.h>
+
+#ifndef SIZE_T_MAX
+# define SIZE_T_MAX sizeof(size_t)
+#endif
 
 #include "extern.h"
 

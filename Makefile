@@ -51,7 +51,7 @@ PROJECTS += apply asa nawk/bin banner base64 basename cal cat chmod chown      \
   machine menuc mkdep mkdir mkfifo mknod mkstr mktemp msgc mtree mv     \
   nice nl nohup nologin pathchk					\
   paste patch pax pr printenv printf progress pwd qsubst renice rev rm rmdir	\
-  rs script sdiff sed seq shar shlock shuffle sleep soelim sort split	\
+  rs script sdiff sed seq shar shlock shuffle sleep soelim sort spell split	\
   sync tabs tail tee testcmd timeout tr true tsort tty ul unexpand	\
   unifdef uniq unvis uudecode uuencode vacation vis wc what \
   whereis whois xargs xinstall	\
@@ -187,6 +187,11 @@ PROJECTS :=     ${PROJECTS:N${t}}
 #PROJECTS += df
 #.endif
 
+.if ${PROJECTS:Mspell}
+PROJECTS +=	spell/spellprog
+SUBPRJ   +=	spell/spell:spell spell/spellprog:spell
+.endif
+
 .if empty(MKC_ERR_MSG:U)
 .for w in ${WARN_MSG}
 .info ${w}
@@ -195,6 +200,6 @@ PROJECTS :=     ${PROJECTS:N${t}}
 
 LIBDEPS   =	${PROJECTS:S/^/compatlib:/}
 
-SUBPRJ    =	doc nawk/bin:awk
+SUBPRJ   +=	doc nawk/bin:awk
 
 .include <mkc.mk>

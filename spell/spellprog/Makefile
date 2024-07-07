@@ -1,12 +1,9 @@
-#	$NetBSD: Makefile,v 1.4 2009/04/14 22:15:26 lukem Exp $
+PROG   =	spellprog
+SRCS   =	spellprog.c look.c
+BINDIR =	${LIBEXECDIR}
 
-NOMAN=	1
+MKC_FEATURES +=	efun
 
-PROG=	spellprog
-SRCS=	spellprog.c look.c
-BINDIR=	/usr/libexec
+CPPFLAGS +=	-Dlint
 
-LDADD+=-lutil
-DPADD+=${LIBUTIL}
-
-.include <bsd.prog.mk>
+.include "../../mk/addlinks.mk"

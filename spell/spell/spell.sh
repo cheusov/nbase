@@ -25,13 +25,13 @@
 # Agency (DARPA) and Air Force Research Laboratory, Air Force
 # Materiel Command, USAF, under agreement number F39502-99-1-0512.
 #
-SPELLPROG=/usr/libexec/spellprog
-DICT=/usr/share/dict/words
-LOCAL_DICT=/usr/local/share/dict/words
-STOP=/usr/share/dict/stop
-LOCAL_STOP=/usr/local/share/dict/stop
-AMERICAN=/usr/share/dict/american
-BRITISH=/usr/share/dict/british
+SPELLPROG=@prefix@/libexec/spellprog
+DICT=@prefix@/share/dict/words
+LOCAL_DICT=@prefix@/local/share/dict/words
+STOP=@prefix@/share/dict/stop
+LOCAL_STOP=@prefix@/local/share/dict/stop
+AMERICAN=@prefix@/share/dict/american
+BRITISH=@prefix@/share/dict/british
 LANG=$AMERICAN
 STOP_LANG=$BRITISH
 EXTRA=
