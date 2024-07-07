@@ -10,5 +10,7 @@ CPPFLAGS +=	-I${.CURDIR}/../ftp -DSTANDALONE_PROGRESS
 # progress.c asprintf
 CFLAGS.check +=	-Wno-error=unused-result
 
+MKC_CHECK_HEADERS +=	sys/ptyvar.h sys/ioccom.h
+
 .include "../mk/imp.f_strsuftoll.mk"
 .include "../mk/addlinks.mk"
