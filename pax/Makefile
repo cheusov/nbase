@@ -43,7 +43,7 @@ MKC_FEATURES +=	fparseln SLIST posix_getopt err warn
 #DPADD+=	${LIBRMT}
 #.endif
 
-MKC_FEATURES +=	fgetln macro pwdgrp raise_default_signal strlcpy vis
+MKC_FEATURES +=	fgetln macro pwdgrp raise_default_signal strlcpy vis strsep
 
 MKC_CHECK_HEADER_FILES +=	sys/mtio.h
 MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
