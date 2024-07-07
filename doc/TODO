@@ -1,6 +1,17 @@
-* Bug #9: at+atd bc(bsd) cap_mkdb cu+tip? ftp
-lndir(x11) newsyslog rdate realpath(HEAD)
-tftp spell su users who
+* Bug #9: missing tools
+  - at+atd
+  - bc(bsd)
+  - cap_mkdb+passwd+...
+  - cu+tip?
+  - ftp
+  - lndir(x11)
+  - newsyslog
+  - rdate
+  - realpath(HEAD)
+  - tftp
+  - su
+  - users
+  - who
 
 * Add man, mandoc
 * Add crond, crontab
