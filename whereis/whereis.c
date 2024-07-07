@@ -44,17 +44,19 @@ __RCSID("$NetBSD: whereis.c,v 1.21 2008/10/17 10:53:26 apb Exp $");
 
 #include <sys/param.h>
 #include <sys/stat.h>
+#if HAVE_HEADER_SYS_SYSCTL_H
 #include <sys/sysctl.h>
+#endif
 
-#include <err.h>
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_progname.h"
-#include "mkc_posix_getopt.h"
+#include <mkc_progname.h>
+#include <mkc_posix_getopt.h>
+#include <mkc_err.h>
 
 static void usage(void) __dead;
 
@@ -74,7 +76,7 @@ main(int argc, char *argv[])
 {
 	struct stat sb;
 	size_t len;
-	int ch, mib[2];
+	int ch;
 	char *p, *std, path[MAXPATHLEN];
 	const char *t;
 	nbsetprogname(argv[0]);
@@ -112,6 +114,8 @@ main(int argc, char *argv[])
  		if ((std = getenv("PATH")) == NULL)
  			errx(1, "PATH environment variable is not set");
 	} else {
+#if HAVE_HEADER_SYS_SYSCTL_H
+		int mib[2];
 		/* Retrieve the standard path. */
 		mib[0] = CTL_USER;
 		mib[1] = USER_CS_PATH;
@@ -123,8 +127,10 @@ main(int argc, char *argv[])
 			err(1, NULL);
 		if (sysctl(mib, 2, std, &len, NULL, 0) == -1)
 			err(1, "sysctl: user.cs_path");
+#else
+		abort();
+#endif
 	}
-
 	/* For each path, for each program... */
 	for (; *argv; ++argv) {
 		if (**argv == '/') {

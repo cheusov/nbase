@@ -53,7 +53,8 @@ PROJECTS += apply asa nawk/bin banner basename cal cat chmod chown      \
   paste patch pax pr printenv printf pwd qsubst renice rev rm rmdir	\
   rs script sdiff sed seq shar shlock shuffle sleep soelim sort split	\
   sync tabs tail tee testcmd timeout tr true tsort tty ul unexpand	\
-  unifdef uniq unvis uudecode uuencode vis wc what whois xargs xinstall	\
+  unifdef uniq unvis uudecode uuencode vis wc what \
+  whereis whois xargs xinstall	\
   xstr yes
 # PROJECTS +=	indent
 
