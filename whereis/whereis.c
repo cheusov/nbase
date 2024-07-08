@@ -44,7 +44,7 @@ __RCSID("$NetBSD: whereis.c,v 1.21 2008/10/17 10:53:26 apb Exp $");
 
 #include <sys/param.h>
 #include <sys/stat.h>
-#if HAVE_HEADER_SYS_SYSCTL_H
+#if HAVE_DEFINE_CTL_USER_SYS_SYSCTL_H
 #include <sys/sysctl.h>
 #endif
 
@@ -114,7 +114,7 @@ main(int argc, char *argv[])
  		if ((std = getenv("PATH")) == NULL)
  			errx(1, "PATH environment variable is not set");
 	} else {
-#if HAVE_HEADER_SYS_SYSCTL_H
+#if HAVE_DEFINE_CTL_USER_SYS_SYSCTL_H
 		int mib[2];
 		/* Retrieve the standard path. */
 		mib[0] = CTL_USER;
@@ -128,7 +128,7 @@ main(int argc, char *argv[])
 		if (sysctl(mib, 2, std, &len, NULL, 0) == -1)
 			err(1, "sysctl: user.cs_path");
 #else
-		abort();
+		abort(); // whereis not not supported
 #endif
 	}
 	/* For each path, for each program... */
