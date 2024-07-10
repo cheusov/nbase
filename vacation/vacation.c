@@ -53,10 +53,12 @@ __RCSID("$NetBSD: vacation.c,v 1.37 2019/05/05 23:08:37 pgoyette Exp $");
 #include <sys/stat.h>
 
 #include <ctype.h>
-#include <db.h>
+#include "db_header.h"
 #include <errno.h>
 #include <fcntl.h>
+#if HAVE_HEADER_PATHS_H
 #include <paths.h>
+#endif
 #include <pwd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -72,6 +74,7 @@ __RCSID("$NetBSD: vacation.c,v 1.37 2019/05/05 23:08:37 pgoyette Exp $");
 #endif
 
 #include <mkc_err.h>
+#include <mkc_progname.h>
 
 /*
  *  VACATION -- return a message to the sender when on vacation.
