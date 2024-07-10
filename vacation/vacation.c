@@ -62,9 +62,14 @@ __RCSID("$NetBSD: vacation.c,v 1.37 2019/05/05 23:08:37 pgoyette Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <syslog.h>
+#include <limits.h>
 #include <time.h>
 #include <tzfile.h>
 #include <unistd.h>
+
+#ifndef _PATH_SENDMAIL
+# define _PATH_SENDMAIL "/usr/sbin/sendmail"
+#endif
 
 #include <mkc_err.h>
 
