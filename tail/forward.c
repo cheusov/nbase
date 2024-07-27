@@ -57,9 +57,7 @@ __RCSID("$NetBSD: forward.c,v 1.33 2015/10/09 17:51:26 christos Exp $");
 #include <string.h>
 #include "extern.h"
 
-#if HAVE_HEADER_SYS_EVENT_H
 static int rlines(FILE *, off_t, struct stat *);
-#endif
 
 /* defines for inner loop actions */
 #define	USE_SLEEP	0
@@ -88,15 +86,16 @@ static int rlines(FILE *, off_t, struct stat *);
  *	REG	mmap the file and step back until reach the correct offset.
  *	NOREG	cyclically read lines into a wrap-around array of buffers
  */
-#if HAVE_HEADER_SYS_EVENT_H
-
 void
 forward(FILE *fp, enum STYLE style, off_t off, struct stat *sbp)
 {
-	int ch, n;
+	int ch;
 	int kq=-1, action=USE_SLEEP;
 	struct stat statbuf;
+#if HAVE_HEADER_SYS_EVENT_H
 	struct kevent ev[2];
+	int n;
+#endif
 
 	switch(style) {
 	case FBYTES:
@@ -178,10 +177,15 @@ forward(FILE *fp, enum STYLE style, off_t off, struct stat *sbp)
 	}
 
 	if (fflag) {
+#if HAVE_HEADER_SYS_EVENT_H
 		kq = kqueue();
 		if (kq < 0)
 			xerr(1, "kqueue");
 		action = ADD_EVENTS;
+#else
+		fprintf(stderr, "kevent is not supported\n");
+		exit(EXIT_FAILURE);
+#endif
 	}
 
 	for (;;) {
@@ -201,6 +205,7 @@ forward(FILE *fp, enum STYLE style, off_t off, struct stat *sbp)
 
 		switch (action) {
 		case ADD_EVENTS:
+#if HAVE_HEADER_SYS_EVENT_H
 			n = 0;
 
 			memset(ev, 0, sizeof(ev));
@@ -221,9 +226,14 @@ forward(FILE *fp, enum STYLE style, off_t off, struct stat *sbp)
 			} else {
 				action = USE_KQUEUE;
 			}
+#else
+			kq = -1;
+			action = USE_SLEEP;
+#endif
 			break;
 
 		case USE_KQUEUE:
+#if HAVE_HEADER_SYS_EVENT_H
 			if (kevent(kq, NULL, 0, ev, 1, NULL) == -1)
 				xerr(1, "kevent");
 
@@ -237,6 +247,10 @@ forward(FILE *fp, enum STYLE style, off_t off, struct stat *sbp)
 					return;
 				}
 			}
+#else
+			fprintf(stderr, "kevent is not supported\n");
+			exit(EXIT_FAILURE);
+#endif
 			break;
 
 		case USE_SLEEP:
@@ -359,14 +373,3 @@ rlines(FILE *fp, off_t off, struct stat *sbp)
 	}
 	return 0;
 }
-
-#else
-
-void
-forward(FILE *fp, enum STYLE style, off_t off, struct stat *sbp)
-{
-	fprintf(stderr, "kevent is not supported\n");
-	exit(EXIT_FAILURE);
-}
-
-#endif /* HAVE_HEADER_SYS_EVENT_H */
