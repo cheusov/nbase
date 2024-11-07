@@ -317,7 +317,7 @@ rlines(FILE *fp, off_t off, struct stat *sbp)
 
 	while (off) {
 		start = mmap(NULL, (size_t)mmap_size, PROT_READ,
-			     MAP_FILE|MAP_SHARED, fileno(fp), mmap_offset);
+			     MAP_SHARED, fileno(fp), mmap_offset);
 		if (start == MAP_FAILED) {
 			xerr(0, "%s", fname);
 			return 1;
