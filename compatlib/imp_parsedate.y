@@ -12,6 +12,7 @@
 /* SUPPRESS 287 on yaccpar_sccsid *//* Unused static variable */
 /* SUPPRESS 288 on yyerrlab *//* Label unused */
 
+#include <sys/cdefs.h>
 #ifdef __RCSID
 __RCSID("$NetBSD: parsedate.y,v 1.28 2016/05/03 18:14:54 kre Exp $");
 #endif
