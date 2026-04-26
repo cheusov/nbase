@@ -47,7 +47,7 @@ struct ddfops {
 	int (*op_close)(int);
 
 	int (*op_fcntl)(int, int, ...);
-	int (*op_ioctl)(int, unsigned long, ...);
+	int (*op_ioctl)(int, IOCTL_2ARG_TYPE, ...);
 
 	int (*op_fstat)(int, struct stat *);
 	int (*op_fsync)(int);

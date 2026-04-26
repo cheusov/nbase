@@ -30,7 +30,21 @@ CFLAGS.check +=	-Wno-error=incompatible-pointer-types -erroff=E_INITIALIZATION_T
 # write(2)
 CFLAGS.check +=	-Wno-error=unused-result
 
+MKC_CHECK_PROTOTYPES             +=	ioctl_int ioctl_ulong
+MKC_PROTOTYPE_FUNC.ioctl_int      =	int ioctl(int d, int request, ...)
+MKC_PROTOTYPE_HEADERS.ioctl_int   =	sys/ioctl.h
+MKC_PROTOTYPE_FUNC.ioctl_ulong    =	int ioctl(int d, unsigned long request, ...)
+MKC_PROTOTYPE_HEADERS.ioctl_ulong =	sys/ioctl.h
+
 .include <mkc.configure.mk>
+
+.if ${HAVE_PROTOTYPE.ioctl_int:U0}
+CPPFLAGS += -DIOCTL_2ARG_TYPE=int
+.elif ${HAVE_PROTOTYPE.ioctl_ulong:U0}
+CPPFLAGS += -DIOCTL_2ARG_TYPE='unsigned long'
+.else
+.error "Cannot detect prototype for ioctl(2)"
+.endif
 
 .include "../mk/hacks.mk"
 
