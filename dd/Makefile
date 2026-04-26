@@ -42,7 +42,7 @@ MKC_PROTOTYPE_HEADERS.ioctl_ulong =	sys/ioctl.h
 CPPFLAGS += -DIOCTL_2ARG_TYPE=int
 .elif ${HAVE_PROTOTYPE.ioctl_ulong:U0}
 CPPFLAGS += -DIOCTL_2ARG_TYPE='unsigned long'
-.else
+.elif ${MKCHECKS:Uno:tl} == "yes"
 .error "Cannot detect prototype for ioctl(2)"
 .endif
 
