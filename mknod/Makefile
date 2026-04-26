@@ -6,8 +6,6 @@ MAN  =	mknod.8
 
 MKC_FEATURES    +=	pwdgrp err warn
 
-CFLAGS.check    +=	-Wno-error=cpp
-
 .include "../mk/hacks.mk"
 
 .include "../mk/imp.f_getsetmode.mk"

@@ -27,6 +27,8 @@ CFLAGS.check += -erroff=E_EMPTY_DECLARATION # SunC + __RCSID(...);
 # too serious error to ignore
 CFLAGS.check +=	-Werror=implicit-function-declaration
 
+CFLAGS.check +=    -Wno-error=cpp # sys/cdefs.h
+
 DOCDIR ?=		${DATADIR}/doc/nbase
 
 MKC_FEATURES +=	posix_getopt progname strlcpy strlcat err warn
