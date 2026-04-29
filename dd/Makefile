@@ -30,15 +30,17 @@ CFLAGS.check +=	-Wno-error=incompatible-pointer-types -erroff=E_INITIALIZATION_T
 # write(2)
 CFLAGS.check +=	-Wno-error=unused-result
 
-MKC_CHECK_PROTOTYPES             +=	ioctl_int ioctl_ulong
+MKC_CHECK_PROTOTYPES             +=	ioctl_int ioctl_ulong ioctl_int2
 MKC_PROTOTYPE_FUNC.ioctl_int      =	int ioctl(int d, int request, ...)
 MKC_PROTOTYPE_HEADERS.ioctl_int   =	sys/ioctl.h
+MKC_PROTOTYPE_FUNC.ioctl_int2     =     int ioctl(int d, int request, ...)
+MKC_PROTOTYPE_HEADERS.ioctl_int2  =     unistd.h stropts.h # SunOS-5.{10,11}
 MKC_PROTOTYPE_FUNC.ioctl_ulong    =	int ioctl(int d, unsigned long request, ...)
 MKC_PROTOTYPE_HEADERS.ioctl_ulong =	sys/ioctl.h
 
 .include <mkc.configure.mk>
 
-.if ${HAVE_PROTOTYPE.ioctl_int:U0}
+.if ${HAVE_PROTOTYPE.ioctl_int:U0} || ${HAVE_PROTOTYPE.ioctl_int2:U0}
 CPPFLAGS += -DIOCTL_2ARG_TYPE=int
 .elif ${HAVE_PROTOTYPE.ioctl_ulong:U0}
 CPPFLAGS += -DIOCTL_2ARG_TYPE='unsigned long'
