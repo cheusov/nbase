@@ -1,4 +1,4 @@
-/*	$NetBSD: progressbar.h,v 1.8.48.1 2021/01/29 20:58:19 martin Exp $	*/
+/*	$NetBSD: progressbar.h,v 1.9 2021/01/06 04:43:14 lukem Exp $	*/
 
 /*-
  * Copyright (c) 1996-2021 The NetBSD Foundation, Inc.

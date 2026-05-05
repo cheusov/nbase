@@ -1,4 +1,4 @@
-/* $NetBSD: emit2.c,v 1.13 2008/09/26 22:52:24 matt Exp $ */
+/* $NetBSD: emit2.c,v 1.28 2022/05/20 21:18:55 rillig Exp $ */
 
 /*
  * Copyright (c) 1996 Christopher G. Demetriou.  All Rights Reserved.
@@ -33,8 +33,8 @@
  */
 
 #include <sys/cdefs.h>
-#if defined(__RCSID) && !defined(lint)
-__RCSID("$NetBSD: emit2.c,v 1.13 2008/09/26 22:52:24 matt Exp $");
+#if defined(__RCSID)
+__RCSID("$NetBSD: emit2.c,v 1.28 2022/05/20 21:18:55 rillig Exp $");
 #endif
 
 #include "lint2.h"
@@ -50,56 +50,33 @@ static	void	outfiles(void);
 static void
 outtype(type_t *tp)
 {
-	int	t, s, na;
+#ifdef INT128_SIZE
+	static const char tt[NTSPEC] = "???BCCCSSIILLQQJJDDDVTTTPAF?XXX";
+	static const char ss[NTSPEC] = "???  su u u u u us l sue   ?s l";
+#else
+	static const char tt[NTSPEC] = "???BCCCSSIILLQQDDDVTTTPAF?XXX";
+	static const char ss[NTSPEC] = "???  su u u u us l sue   ?s l";
+#endif
+	int	na;
 	tspec_t	ts;
 	type_t	**ap;
 
 	while (tp != NULL) {
-		if ((ts = tp->t_tspec) == INT && tp->t_isenum)
+		if ((ts = tp->t_tspec) == INT && tp->t_is_enum)
 			ts = ENUM;
-		switch (ts) {
-		case BOOL:	t = 'B';	s = '\0';	break;
-		case CHAR:	t = 'C';	s = '\0';	break;
-		case SCHAR:	t = 'C';	s = 's';	break;
-		case UCHAR:	t = 'C';	s = 'u';	break;
-		case SHORT:	t = 'S';	s = '\0';	break;
-		case USHORT:	t = 'S';	s = 'u';	break;
-		case INT:	t = 'I';	s = '\0';	break;
-		case UINT:	t = 'I';	s = 'u';	break;
-		case LONG:	t = 'L';	s = '\0';	break;
-		case ULONG:	t = 'L';	s = 'u';	break;
-		case QUAD:	t = 'Q';	s = '\0';	break;
-		case UQUAD:	t = 'Q';	s = 'u';	break;
-		case FLOAT:	t = 'D';	s = 's';	break;
-		case DOUBLE:	t = 'D';	s = '\0';	break;
-		case LDOUBLE:	t = 'D';	s = 'l';	break;
-		case VOID:	t = 'V';	s = '\0';	break;
-		case PTR:	t = 'P';	s = '\0';	break;
-		case ARRAY:	t = 'A';	s = '\0';	break;
-		case ENUM:	t = 'T';	s = 'e';	break;
-		case STRUCT:	t = 'T';	s = 's';	break;
-		case UNION:	t = 'T';	s = 'u';	break;
-		case FCOMPLEX:	t = 'X';	s = 's';	break;
-		case DCOMPLEX:	t = 'X';	s = '\0';	break;
-		case LCOMPLEX:	t = 'X';	s = 'l';	break;
-		case FUNC:
-			if (tp->t_args != NULL && !tp->t_proto) {
-				t = 'f';
-			} else {
-				t = 'F';
-			}
-			s = '\0';
-			break;
-		default:
-			errx(1, "internal error: outtype() 1");
-		}
+		if (!ch_isupper(tt[ts]))
+			errx(1, "internal error: outtype(%d)", ts);
 		if (tp->t_const)
 			outchar('c');
 		if (tp->t_volatile)
 			outchar('v');
-		if (s != '\0')
-			outchar(s);
-		outchar(t);
+		if (ss[ts] != ' ')
+			outchar(ss[ts]);
+		if (ts == FUNC && tp->t_args != NULL && !tp->t_proto)
+			outchar('f');
+		else
+			outchar(tt[ts]);
+
 		if (ts == ARRAY) {
 			outint(tp->t_dim);
 		} else if (ts == ENUM || ts == STRUCT || ts == UNION) {
@@ -156,25 +133,25 @@ outdef(hte_t *hte, sym_t *sym)
 	outint(0);
 
 	/* flags */
-	if (sym->s_va) {
-		outchar('v');		/* varargs */
-		outint(sym->s_nva);
+	if (sym->s_check_only_first_args) {
+		outchar('v');
+		outint(sym->s_check_num_args);
 	}
-	if (sym->s_scfl) {
-		outchar('S');		/* scanflike */
-		outint(sym->s_nscfl);
+	if (sym->s_scanflike) {
+		outchar('S');
+		outint(sym->s_scanflike_arg);
 	}
-	if (sym->s_prfl) {
-		outchar('P');		/* printflike */
-		outint(sym->s_nprfl);
+	if (sym->s_printflike) {
+		outchar('P');
+		outint(sym->s_printflike_arg);
 	}
 	/* definition or tentative definition */
 	outchar(sym->s_def == DEF ? 'd' : 't');
 	if (TP(sym->s_type)->t_tspec == FUNC) {
-		if (sym->s_rval)
-			outchar('r');	/* fkt. has return value */
-		if (sym->s_osdef)
-			outchar('o');	/* old style definition */
+		if (sym->s_function_has_return_value)
+			outchar('r');
+		if (sym->s_old_style_function)
+			outchar('o');
 	}
 	outchar('u');			/* used (no warning if not used) */
 
@@ -203,7 +180,7 @@ dumpname(hte_t *hte)
 	 * definition is allowed (except with sflag).
 	 */
 	def = NULL;
-	for (sym = hte->h_syms; sym != NULL; sym = sym->s_nxt) {
+	for (sym = hte->h_syms; sym != NULL; sym = sym->s_next) {
 		if (sym->s_def == DEF) {
 			def = sym;
 			break;
@@ -223,7 +200,7 @@ dumpname(hte_t *hte)
 void
 outlib(const char *name)
 {
-	/* Open of output file and initialisation of the output buffer */
+	/* Open of output file and initialization of the output buffer */
 	outopen(name);
 
 	/* write name of lint library */
@@ -236,13 +213,13 @@ outlib(const char *name)
 	outstrg(name);
 
 	/*
-	 * print the names of all files references by unnamed
+	 * print the names of all files referenced by unnamed
 	 * struct/union/enum declarations.
 	 */
 	outfiles();
 
 	/* write all definitions with external linkage */
-	forall(dumpname);
+	symtab_forall_sorted(dumpname);
 
 	/* close the output */
 	outclose();
@@ -277,11 +254,11 @@ addoutfile(short num)
 	}
 
 	if (ofl == NULL) {
-		ofl = *pofl = xmalloc(sizeof (struct outflist));
+		ofl = *pofl = xmalloc(sizeof(**pofl));
 		ofl->ofl_num = num;
 		ofl->ofl_next = NULL;
 	}
-	return (i);
+	return i;
 }
 
 static void

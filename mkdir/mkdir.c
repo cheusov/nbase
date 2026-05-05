@@ -1,4 +1,4 @@
-/* $NetBSD: mkdir.c,v 1.38.46.1 2021/09/23 10:09:20 martin Exp $ */
+/* $NetBSD: mkdir.c,v 1.39 2021/09/13 22:46:02 kre Exp $ */
 
 /*
  * Copyright (c) 1983, 1992, 1993
@@ -45,7 +45,7 @@ __COPYRIGHT("@(#) Copyright (c) 1983, 1992, 1993\
 #if 0
 static char sccsid[] = "@(#)mkdir.c	8.2 (Berkeley) 1/25/94";
 #else
-__RCSID("$NetBSD: mkdir.c,v 1.38.46.1 2021/09/23 10:09:20 martin Exp $");
+__RCSID("$NetBSD: mkdir.c,v 1.39 2021/09/13 22:46:02 kre Exp $");
 #endif
 #endif /* not lint */
 

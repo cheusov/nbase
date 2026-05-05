@@ -1,4 +1,4 @@
-.\"	$NetBSD: kill.1,v 1.28 2017/04/22 23:01:36 christos Exp $
+.\"	$NetBSD: kill.1,v 1.35 2022/08/07 09:36:55 andvar Exp $
 .\"
 .\" Copyright (c) 1980, 1990, 1993
 .\"	The Regents of the University of California.  All rights reserved.
@@ -32,7 +32,7 @@
 .\"
 .\"	@(#)kill.1	8.2 (Berkeley) 4/28/95
 .\"
-.Dd April 22, 2017
+.Dd August 15, 2021
 .Dt KILL 1
 .Os
 .Sh NAME
@@ -81,6 +81,12 @@ parameter
 or a signal number.
 .Pp
 If no operand is given, display the names of all the signals.
+In
+.Pa /bin/kill ,
+if the variable
+.Ev POSIXLY_CORRECT
+is set in the environment, this uses the POSIX specified format,
+otherwise a slightly more pleasing layout is used.
 .It Fl signal_name
 A symbolic signal name specifying the signal to be sent instead of the
 default
@@ -91,7 +97,9 @@ of the default
 .Dv TERM .
 .El
 .Pp
-The following pids have special meanings:
+The following
+.Ar pid Ns s
+have special meanings:
 .Bl -tag -width Ds -compact
 .It -1
 If superuser, broadcast the signal to all processes; otherwise broadcast
@@ -100,6 +108,24 @@ to all processes belonging to the user.
 Broadcast the signal to all processes in the current process group
 belonging to the user.
 .El
+Any other negative
+.Ar pid
+is interpreted as the negative of a process group identifier,
+and the signal is sent to all members of that group.
+.Pp
+Note that while not required by this implementation,
+if the first
+.Ar pid
+operand is negative, it should be preceded by the
+.Dq \&--
+end of options indicator, to avoid the
+.Ar pid
+being treated as yet more options.
+That is always required if no specific signal is specified
+and the first
+.Ar pid
+is negative, or that pid would be treated as the
+.Ar signal_number .
 .Pp
 Some of the more commonly used signals:
 .Bl -tag -width Ds -compact
@@ -120,17 +146,28 @@ KILL (non-catchable, non-ignorable kill)
 ALRM (alarm clock)
 .It 15
 TERM (software termination signal)
+.It 17
+STOP (non-catchable, non-ignorable, causes process to temporarily stop,
+after which it can later be resumed using
+.Dv SIGCONT )
+.It 19
+CONT (stopped processes resume execution)
 .El
 .Pp
 .Nm
-is a built-in to
+is a built-in to most shells,
+including
+.Xr sh 1
+and
 .Xr csh 1 ;
 it allows job specifiers of the form ``%...'' as arguments
 so process id's are not as often used as
 .Nm
 arguments.
 See
-.Xr csh 1
+.Xr csh 1 ,
+.Xr sh 1
+or the man page for the shell in use
 for details.
 .Sh DIAGNOSTICS
 .Ex -std
@@ -139,6 +176,7 @@ for details.
 .Xr pgrep 1 ,
 .Xr pkill 1 ,
 .Xr ps 1 ,
+.Xr sh 1 ,
 .Xr kill 2 ,
 .Xr sigaction 2 ,
 .Xr signal 7
@@ -154,3 +192,5 @@ A
 command appeared in
 .At v3
 in section 8 of the manual.
+The original BSD description was: 
+.Sq terminate a process with extreme prejudice .

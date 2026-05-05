@@ -1,7 +1,7 @@
-/*	$NetBSD: util.c,v 1.160.2.1 2021/06/14 11:28:28 martin Exp $	*/
+/*	$NetBSD: util.c,v 1.164.2.4 2024/12/02 10:19:39 martin Exp $	*/
 
 /*-
- * Copyright (c) 1997-2020 The NetBSD Foundation, Inc.
+ * Copyright (c) 1997-2023 The NetBSD Foundation, Inc.
  * All rights reserved.
  *
  * This code is derived from software contributed to The NetBSD Foundation
@@ -64,7 +64,7 @@
 
 #include <sys/cdefs.h>
 #ifndef lint
-__RCSID("$NetBSD: util.c,v 1.160.2.1 2021/06/14 11:28:28 martin Exp $");
+__RCSID("$NetBSD: util.c,v 1.164.2.4 2024/12/02 10:19:39 martin Exp $");
 #endif /* not lint */
 
 /*
@@ -171,7 +171,7 @@ parse_feat(const char *fline)
 			 * work-around broken ProFTPd servers that can't
 			 * even obey RFC 2389.
 			 */
-	while (*fline && isspace((int)*fline))
+	while (*fline && isspace((unsigned char)*fline))
 		fline++;
 
 	if (strcasecmp(fline, "MDTM") == 0)
@@ -202,14 +202,14 @@ getremoteinfo(void)
 			/* determine remote system type */
 	if (command("SYST") == COMPLETE) {
 		if (overbose) {
-			int os_len = strcspn(reply_string + 4, " \r\n\t");
+			off_t os_len = strcspn(reply_string + 4, " \r\n\t");
 			if (os_len > 1 && reply_string[4 + os_len - 1] == '.')
 				os_len--;
 			fprintf(ttyout, "Remote system type is %.*s.\n",
-			    os_len, reply_string + 4);
+			    (int)os_len, reply_string + 4);
 		}
 		/*
-		 * Decide whether we should default to bninary.
+		 * Decide whether we should default to binary.
 		 * Traditionally checked for "215 UNIX Type: L8", but
 		 * some printers report "Linux" ! so be more forgiving.
 		 * In reality we probably almost never want text any more.
@@ -311,7 +311,7 @@ cleanuppeer(void)
  * Top-level signal handler for interrupted commands.
  */
 void
-intr(int signo)
+intr(int signo __unused)
 {
 
 	sigint_raised = 1;
@@ -620,7 +620,7 @@ remglob(char *argv[], int doswitch, const char **errbuf)
  * return value. Can't control multiple values being expanded from the
  * expression, we return only the first.
  * Returns NULL on error, or a pointer to a buffer containing the filename
- * that's the caller's responsiblity to free(3) when finished with.
+ * that's the caller's responsibility to free(3) when finished with.
  */
 char *
 globulize(const char *pattern)
@@ -731,7 +731,7 @@ remotemodtime(const char *file, int noisy)
 			*frac++ = '\0';
 		if (strlen(timestr) == 15 && strncmp(timestr, "191", 3) == 0) {
 			/*
-			 * XXX:	Workaround for lame ftpd's that return
+			 * XXX:	Workaround for buggy ftp servers that return
 			 *	`19100' instead of `2000'
 			 */
 			fprintf(ttyout,
@@ -949,7 +949,7 @@ list_vertical(StringList *sl)
  * Update the global ttywidth value, using TIOCGWINSZ.
  */
 void
-setttywidth(int a)
+setttywidth(int a __unused)
 {
 	struct winsize winsize;
 	int oerrno = errno;
@@ -1072,7 +1072,7 @@ strsuftoi(const char *arg)
 	if (val < 0 || val > INT_MAX)
 		return (-1);
 
-	return (val);
+	return (int)(val);
 }
 
 /*
@@ -1314,7 +1314,7 @@ get_line(FILE *stream, char *buf, size_t buflen, const char **errormsg)
 	int	rv, ch;
 	size_t	len;
 
-	if (fgets(buf, buflen, stream) == NULL) {
+	if (fgets(buf, (int)buflen, stream) == NULL) {
 		if (feof(stream)) {	/* EOF */
 			rv = -2;
 			if (errormsg)
@@ -1340,7 +1340,7 @@ get_line(FILE *stream, char *buf, size_t buflen, const char **errormsg)
 	}
 	if (errormsg)
 		*errormsg = NULL;
-	return len;
+	return (int)len;
 }
 
 /*
@@ -1431,7 +1431,8 @@ ftp_connect(int sock, const struct sockaddr *name, socklen_t namelen, int pe)
 			if (quit_time > 0) {	/* determine timeout */
 				(void)gettimeofday(&now, NULL);
 				timersub(&endtime, &now, &td);
-				timeout = td.tv_sec * 1000 + td.tv_usec/1000;
+				timeout = (int)(td.tv_sec * 1000
+				    + td.tv_usec / 1000);
 				if (timeout < 0)
 					timeout = 0;
 			} else {
@@ -1439,8 +1440,8 @@ ftp_connect(int sock, const struct sockaddr *name, socklen_t namelen, int pe)
 			}
 			pfd[0].revents = 0;
 			rv = ftp_poll(pfd, 1, timeout);
-						/* loop until poll ! EINTR */
-		} while (rv == -1 && errno == EINTR);
+					/* loop until poll !EINTR && !EAGAIN */
+		} while (rv == -1 && (errno == EINTR || errno == EAGAIN));
 
 		if (rv == 0) {			/* poll (connect) timed out */
 			errno = ETIMEDOUT;
@@ -1493,6 +1494,26 @@ int
 ftp_poll(struct pollfd *fds, int nfds, int timeout)
 {
 	return poll(fds, nfds, timeout);
+}
+
+/*
+ * Evaluate a "boolean" string, accept only "1" as true and "0" as false
+ * Anything else returns the default value.
+ * Warn about an invalid value that isn't empty.
+ */
+int
+ftp_truthy(const char *name, const char *str, int defvalue)
+{
+
+	if (strcmp(str, "1") == 0)
+		return 1;
+	else if (strcmp(str, "0") == 0)
+		return 0;
+
+	if (*str)
+		warn("Option %s must be boolean (1 or 0)\n", name);
+
+	return defvalue;
 }
 
 #ifndef SMALL

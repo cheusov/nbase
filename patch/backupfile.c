@@ -1,7 +1,7 @@
 /*
  * $OpenBSD: backupfile.c,v 1.19 2006/03/11 19:41:30 otto Exp $
  * $DragonFly: src/usr.bin/patch/backupfile.c,v 1.5 2008/08/11 00:05:06 joerg Exp $
- * $NetBSD: backupfile.c,v 1.15.26.1 2021/02/26 13:29:16 martin Exp $
+ * $NetBSD: backupfile.c,v 1.16 2021/02/19 17:46:53 nia Exp $
  */
 
 /*
@@ -22,7 +22,7 @@
  */
 
 #include <sys/cdefs.h>
-__RCSID("$NetBSD: backupfile.c,v 1.15.26.1 2021/02/26 13:29:16 martin Exp $");
+__RCSID("$NetBSD: backupfile.c,v 1.16 2021/02/19 17:46:53 nia Exp $");
 
 #include <ctype.h>
 #include <dirent.h>

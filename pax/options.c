@@ -1,4 +1,4 @@
-/*	$NetBSD: options.c,v 1.118.18.1 2021/04/30 14:07:02 martin Exp $	*/
+/*	$NetBSD: options.c,v 1.119 2020/04/03 16:13:32 joerg Exp $	*/
 
 /*-
  * Copyright (c) 1992 Keith Muller.
@@ -42,7 +42,7 @@
 #if 0
 static char sccsid[] = "@(#)options.c	8.2 (Berkeley) 4/18/94";
 #else
-__RCSID("$NetBSD: options.c,v 1.118.18.1 2021/04/30 14:07:02 martin Exp $");
+__RCSID("$NetBSD: options.c,v 1.119 2020/04/03 16:13:32 joerg Exp $");
 #endif
 #endif /* not lint */
 

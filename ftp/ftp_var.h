@@ -1,4 +1,4 @@
-/*	$NetBSD: ftp_var.h,v 1.85 2017/11/20 21:11:36 kre Exp $	*/
+/*	$NetBSD: ftp_var.h,v 1.86.2.1 2024/10/13 16:06:36 martin Exp $	*/
 
 /*-
  * Copyright (c) 1996-2009 The NetBSD Foundation, Inc.
@@ -165,11 +165,19 @@ enum {
 	FEAT_max
 };
 
+/*
+ * Custom HTTP headers
+ */
+struct entry {
+	SLIST_ENTRY(entry)	entries;
+	const char		*header;
+};
+SLIST_HEAD(http_headers, entry);
 
 /*
  * Global defines
  */
-#define	FTPBUFLEN	(4 * MAXPATHLEN)
+#define	FTPBUFLEN	(16 * 1024)
 #define	MAX_IN_PORT_T	0xffffU
 
 #define	HASHBYTES	1024	/* default mark for `hash' command */
@@ -320,9 +328,11 @@ GLOBAL	FILE	*cin;
 GLOBAL	FILE	*cout;
 GLOBAL	int	 data;
 
-extern	struct cmd	cmdtab[];
-extern	struct option	optiontab[];
+extern	struct cmd		cmdtab[];
+extern	struct option		optiontab[];
+extern	struct http_headers	custom_headers;
 
+extern	size_t ftp_buflen;
 
 #define	EMPTYSTRING(x)	((x) == NULL || (*(x) == '\0'))
 #define	FREEPTR(x)	if ((x) != NULL) { free(x); (x) = NULL; }
@@ -341,7 +351,7 @@ extern	struct option	optiontab[];
 #define DPRINTF(...)	(void)0
 #define DWARN(...)	(void)0
 #else
-#define DWFTP(a)	do a; while (/*CONSTCOND*/0)
+#define DWFTP(a)	do a; while (0)
 #define DPRINTF(...)	DWFTP(if (ftp_debug) (void)fprintf(ttyout, __VA_ARGS__))
 #define DWARN(...)	DWFTP(if (ftp_debug) warn(__VA_ARGS__))
 #endif

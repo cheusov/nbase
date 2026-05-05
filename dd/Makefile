@@ -1,11 +1,11 @@
 PROG =	dd
 MAN  =	dd.1
-SRCS =	args.c conv.c dd.c misc.c position.c    dd_hostops.c
+SRCS =	args.c conv.c dd.c dd_swab.c misc.c position.c    dd_hostops.c
 
 #.ifdef SMALLPROG
 CPPFLAGS+=	-DNO_CONV -DNO_MSGFMT -DNO_IOFLAG -DSMALL
 #.else
-#CPPFLAGS+=	-D_NETBSD_SOURCE -D_INCOMPLETE_XOPEN_C063
+#CPPFLAGS+=	-D_NETBSD_SOURCE
 #SRCS+=		conv_tab.c
 #.ifdef CRUNCHEDPROG
 #CPPFLAGS+=	-DSMALL

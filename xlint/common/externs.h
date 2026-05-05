@@ -1,4 +1,4 @@
-/*	$NetBSD: externs.h,v 1.6 2016/08/19 10:18:11 christos Exp $	*/
+/*	$NetBSD: externs.h,v 1.24 2021/09/04 14:48:27 rillig Exp $	*/
 
 /*
  * Copyright (c) 1994, 1995 Jochen Pohl
@@ -32,11 +32,6 @@
  */
 
 /*
- * main[12].c
- */
-extern	int	pflag;
-
-/*
  * inittyp.c
  */
 extern	void	inittyp(void);
@@ -44,32 +39,29 @@ extern	void	inittyp(void);
 /*
  * tyname.c
  */
-extern	const	char *tyname(char *, size_t, const type_t *);
-extern	int	sametype(const type_t *, const type_t *);
-extern	const	char *basictyname(tspec_t);
+extern	const char *type_name(const type_t *);
+extern	const	char *tspec_name(tspec_t);
 
 /*
  * mem.c
  */
+extern	size_t	mem_block_size(void);
 extern	void	*xmalloc(size_t);
 extern	void	*xcalloc(size_t, size_t);
 extern	void	*xrealloc(void *, size_t);
 extern	char	*xstrdup(const char *);
-extern	void	nomem(void);
-extern	void	*xmapalloc(size_t);
+extern  char	*xasprintf(const char *, ...) __printflike(1, 2);
 
 /*
  * emit.c
  */
-extern	ob_t	ob;
-
+#if defined(IS_LINT1) || defined(IS_LINT2)
 extern	void	outopen(const char *);
 extern	void	outclose(void);
 extern	void	outclr(void);
-extern	void	outchar(int);
-extern	void	outqchar(int);
+extern	void	outchar(char);
 extern	void	outstrg(const char *);
 extern	void	outint(int);
-#define outname(a)	outname1(__FILE__, __LINE__, a);
-extern	void	outname1(const char *, size_t, const char *);
+extern	void	outname(const char *);
 extern	void	outsrc(const char *);
+#endif

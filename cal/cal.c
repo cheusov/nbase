@@ -1,4 +1,4 @@
-/*	$NetBSD: cal.c,v 1.29.18.1 2020/06/30 18:41:07 martin Exp $	*/
+/*	$NetBSD: cal.c,v 1.30 2020/06/29 14:01:14 kim Exp $	*/
 
 /*
  * Copyright (c) 1989, 1993, 1994
@@ -42,7 +42,7 @@ __COPYRIGHT("@(#) Copyright (c) 1989, 1993, 1994\
 #if 0
 static char sccsid[] = "@(#)cal.c	8.4 (Berkeley) 4/2/94";
 #else
-__RCSID("$NetBSD: cal.c,v 1.29.18.1 2020/06/30 18:41:07 martin Exp $");
+__RCSID("$NetBSD: cal.c,v 1.30 2020/06/29 14:01:14 kim Exp $");
 #endif
 #endif /* not lint */
 

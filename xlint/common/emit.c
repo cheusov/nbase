@@ -1,4 +1,4 @@
-/*	$NetBSD: emit.c,v 1.6 2014/04/17 18:52:03 christos Exp $	*/
+/*	$NetBSD: emit.c,v 1.17 2022/05/20 21:18:54 rillig Exp $	*/
 
 /*
  * Copyright (c) 1994, 1995 Jochen Pohl
@@ -36,11 +36,10 @@
 #endif
 
 #include <sys/cdefs.h>
-#if defined(__RCSID) && !defined(lint)
-__RCSID("$NetBSD: emit.c,v 1.6 2014/04/17 18:52:03 christos Exp $");
+#if defined(__RCSID)
+__RCSID("$NetBSD: emit.c,v 1.17 2022/05/20 21:18:54 rillig Exp $");
 #endif
 
-#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -51,7 +50,7 @@ static	const	char *loname;
 static	FILE	*lout;
 
 /* output buffer data */
-ob_t	ob;
+static	ob_t	ob;
 
 static	void	outxbuf(void);
 
@@ -71,7 +70,7 @@ outopen(const char *name)
 
 	/* Create output buffer */
 	ob.o_len = 1024;
-	ob.o_end = (ob.o_buf = ob.o_nxt = xmalloc(ob.o_len)) + ob.o_len;
+	ob.o_end = (ob.o_buf = ob.o_next = xmalloc(ob.o_len)) + ob.o_len;
 }
 
 /*
@@ -94,10 +93,10 @@ outxbuf(void)
 {
 	ptrdiff_t coffs;
 
-	coffs = ob.o_nxt - ob.o_buf;
+	coffs = ob.o_next - ob.o_buf;
 	ob.o_len *= 2;
 	ob.o_end = (ob.o_buf = xrealloc(ob.o_buf, ob.o_len)) + ob.o_len;
-	ob.o_nxt = ob.o_buf + coffs;
+	ob.o_next = ob.o_buf + coffs;
 }
 
 /*
@@ -109,14 +108,14 @@ outclr(void)
 {
 	size_t	sz;
 
-	if (ob.o_buf != ob.o_nxt) {
+	if (ob.o_buf != ob.o_next) {
 		outchar('\n');
-		sz = ob.o_nxt - ob.o_buf;
+		sz = ob.o_next - ob.o_buf;
 		if (sz > ob.o_len)
 			errx(1, "internal error: outclr() 1");
 		if (fwrite(ob.o_buf, sz, 1, lout) != 1)
 			err(1, "cannot write to %s", loname);
-		ob.o_nxt = ob.o_buf;
+		ob.o_next = ob.o_buf;
 	}
 }
 
@@ -124,67 +123,16 @@ outclr(void)
  * write a character to the output buffer
  */
 void
-outchar(int c)
+outchar(char c)
 {
 
-	if (ob.o_nxt == ob.o_end)
+	if (ob.o_next == ob.o_end)
 		outxbuf();
-	*ob.o_nxt++ = (char)c;
+	*ob.o_next++ = c;
 }
 
 /*
- * write a character to the output buffer, qouted if necessary
- */
-void
-outqchar(int c)
-{
-
-	if (isprint(c) && c != '\\' && c != '"' && c != '\'') {
-		outchar(c);
-	} else {
-		outchar('\\');
-		switch (c) {
-		case '\\':
-			outchar('\\');
-			break;
-		case '"':
-			outchar('"');
-			break;
-		case '\'':
-			outchar('\'');
-			break;
-		case '\b':
-			outchar('b');
-			break;
-		case '\t':
-			outchar('t');
-			break;
-		case '\n':
-			outchar('n');
-			break;
-		case '\f':
-			outchar('f');
-			break;
-		case '\r':
-			outchar('r');
-			break;
-		case '\v':
-			outchar('v');
-			break;
-		case '\a':
-			outchar('a');
-			break;
-		default:
-			outchar((((u_int)c >> 6) & 07) + '0');
-			outchar((((u_int)c >> 3) & 07) + '0');
-			outchar((c & 07) + '0');
-			break;
-		}
-	}
-}
-
-/*
- * write a strint to the output buffer
+ * write a string to the output buffer
  * the string must not contain any characters which
  * should be quoted
  */
@@ -193,41 +141,31 @@ outstrg(const char *s)
 {
 
 	while (*s != '\0') {
-		if (ob.o_nxt == ob.o_end)
+		if (ob.o_next == ob.o_end)
 			outxbuf();
-		*ob.o_nxt++ = *s++;
+		*ob.o_next++ = *s++;
 	}
 }
 
-/*
- * write an integer value to toe output buffer
- */
+/* write an integer value to the output buffer */
 void
 outint(int i)
 {
 
-	if ((size_t)(ob.o_end - ob.o_nxt) < 3 * sizeof (int))
+	if ((size_t)(ob.o_end - ob.o_next) < 3 * sizeof(int))
 		outxbuf();
-	ob.o_nxt += sprintf(ob.o_nxt, "%d", i);
+	ob.o_next += sprintf(ob.o_next, "%d", i);
 }
 
-/*
- * write the name of a symbol to the output buffer
- * the name is preceded by its length
- */
+/* write a name to the output buffer, preceded by its length */
 void
-outname1(const char *file, size_t line, const char *name)
+outname(const char *name)
 {
-
-	if (name == NULL)
-		errx(1, "%s, %zu: internal error: outname(NULL)", file, line);
 	outint((int)strlen(name));
 	outstrg(name);
 }
 
-/*
- * write the name of the .c source
- */
+/* write the name of the .c source */
 void
 outsrc(const char *name)
 {

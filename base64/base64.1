@@ -1,4 +1,4 @@
-.\"	$NetBSD: base64.1,v 1.2 2018/07/24 19:08:22 wiz Exp $
+.\"	$NetBSD: base64.1,v 1.4 2021/08/28 10:29:15 christos Exp $
 .\"
 .\" Copyright (c) 2018 The NetBSD Foundation, Inc.
 .\" All rights reserved.
@@ -28,7 +28,7 @@
 .\" POSSIBILITY OF SUCH DAMAGE.
 .\"
 .\"
-.Dd July 24, 2018
+.Dd August 28, 2021
 .Dt BASE64 1
 .Os
 .Sh NAME
@@ -50,12 +50,13 @@ The following options are available:
 .It Fl d
 Decode the input instead of encoding it.
 .It Fl i
-Ignore whitespace characters when decoding.
+Ignore non-base64 characters when decoding. (not implemented)
 .It Fl w Ar wrap
 Wrap lines longer than
 .Ar wrap
 characters using a newline.
 The default number of characters is 76.
+0 disables wrapping.
 .El
 .Sh EXIT STATUS
 .Nm

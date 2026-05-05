@@ -1,4 +1,4 @@
-/*	$NetBSD: join.c,v 1.31 2011/09/04 20:27:52 joerg Exp $	*/
+/*	$NetBSD: join.c,v 1.34 2021/11/02 10:05:49 nia Exp $	*/
 
 /*-
  * Copyright (c) 1991 The Regents of the University of California.
@@ -47,7 +47,7 @@ __COPYRIGHT("@(#) Copyright (c) 1991\
 #if 0
 static char sccsid[] = "from: @(#)join.c	5.1 (Berkeley) 11/18/91";
 #else
-__RCSID("$NetBSD: join.c,v 1.31 2011/09/04 20:27:52 joerg Exp $");
+__RCSID("$NetBSD: join.c,v 1.34 2021/11/02 10:05:49 nia Exp $");
 #endif
 #endif /* not lint */
 
@@ -95,8 +95,8 @@ typedef struct {
 	u_long setalloc;	/* set allocated count */
 } INPUT;
 
-static INPUT input1 = { NULL, 0, 0, 1, NULL, (u_long)-1, 0, 0, },
-      input2 = { NULL, 0, 0, 2, NULL, (u_long)-1, 0, 0, };
+static INPUT input1 = { NULL, 0, 0, 1, NULL, (u_long)-1, 0, 0, };
+static INPUT input2 = { NULL, 0, 0, 2, NULL, (u_long)-1, 0, 0, };
 
 typedef struct {
 	u_long	fileno;		/* file number */
@@ -307,7 +307,6 @@ slurp(INPUT *F)
 {
 	LINE *lp;
 	LINE tmp;
-	LINE *nline;
 	size_t len;
 	u_long cnt;
 	char *bp, *fieldp;
@@ -329,10 +328,8 @@ slurp(INPUT *F)
 				nsize = 64;
 			else
 				nsize = F->setalloc << 1;
-			if ((nline = realloc(F->set,
-			    nsize * sizeof(LINE))) == NULL)
+			if (reallocarr(&F->set, nsize, sizeof(LINE)) != 0)
 				enomem();
-			F->set = nline;
 			F->setalloc = nsize;
 			memset(F->set + cnt, 0,
 			    (F->setalloc - cnt) * sizeof(LINE));
@@ -385,16 +382,13 @@ slurp(INPUT *F)
 			if (spans && *fieldp == '\0')
 				continue;
 			if (lp->fieldcnt == lp->fieldalloc) {
-				char **n;
-
 				if (lp->fieldalloc == 0)
 					nsize = 16;
 				else
 					nsize = lp->fieldalloc << 1;
-				if ((n = realloc(lp->fields,
-				    nsize * sizeof(char *))) == NULL)
+				if (reallocarr(&lp->fields,
+				    nsize, sizeof(char *)) != 0)
 					enomem();
-				lp->fields = n;
 				lp->fieldalloc = nsize;
 			}
 			lp->fields[lp->fieldcnt++] = fieldp;
@@ -524,7 +518,6 @@ fieldarg(char *option)
 {
 	u_long fieldno;
 	char *end, *token;
-	OLIST *n;
 
 	while ((token = strsep(&option, ", \t")) != NULL) {
 		if (*token == '\0')
@@ -537,10 +530,9 @@ fieldarg(char *option)
 		if (fieldno == 0)
 			errx(1, "field numbers are 1 based");
 		if (olistcnt == olistalloc) {
-			if ((n = realloc(olist,
-			    (olistalloc + 50) * sizeof(OLIST))) == NULL)
+			if (reallocarr(&olist,
+			    olistalloc + 50, sizeof(OLIST)) != 0)
 				enomem();
-			olist = n;
 			olistalloc += 50;
 		}
 		olist[olistcnt].fileno = token[0] - '0';
@@ -595,7 +587,7 @@ obsolete(char **argv)
 			case '\0':
 				break;
 			default:
-jbad:				warnx("illegal option -- %s", ap);
+jbad:			warnx("illegal option -- %s", ap);
 				usage();
 				exit(1);
 			}

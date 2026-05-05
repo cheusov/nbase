@@ -1,4 +1,4 @@
-/*	$NetBSD: db.c,v 1.26 2012/02/17 11:37:33 apb Exp $	*/
+/*	$NetBSD: db.c,v 1.28 2022/08/10 00:28:00 charlotte Exp $	*/
 
 /*-
  * Copyright (c) 2002-2009 The NetBSD Foundation, Inc.
@@ -36,7 +36,7 @@
 #include <sys/cdefs.h>
 #ifndef lint
 #ifdef __RCSID
-__RCSID("$NetBSD: db.c,v 1.26 2012/02/17 11:37:33 apb Exp $");
+__RCSID("$NetBSD: db.c,v 1.28 2022/08/10 00:28:00 charlotte Exp $");
 #endif /* __RCSID */
 #endif /* not lint */
 
@@ -140,7 +140,7 @@ main(int argc, char *argv[])
 		case 'E':
 			if (! optarg[0] || optarg[1])
 				goto badendian;
-			switch (toupper((int)optarg[0])) {
+			switch (toupper((unsigned char)optarg[0])) {
 			case 'B':
 				flags |= F_ENDIAN_BIG;
 				break;
@@ -442,8 +442,8 @@ db_makekey(DBT *key, char *keystr, int downcase, int decode)
 	key->size = klen + (flags & F_INCLUDE_NUL ? 0 : 1);
 	if (downcase && (flags & F_IGNORECASE)) {
 		for (p = ks; *p; p++)
-			if (isupper((int)*p))
-				*p = tolower((int)*p);
+			if (isupper((unsigned char)*p))
+				*p = tolower((unsigned char)*p);
 	}
 }
 
@@ -706,7 +706,6 @@ parse_encode_option(char **arg)
 				break;
 			default:
 				return (0);
-				break;
 		}
 	}
 	return (r);
@@ -743,7 +742,7 @@ usage(void)
 "   -N           don't NUL terminate key\n"
 "   -O outsep    output field separator string  [default: a tab]\n"
 "   -P pagesize  database page size  [default: 4096]\n"
-"   -q           quiet operation (missing keys aren't errors)\n"
+"   -q           quiet operation\n"
 "   -R           replace existing keys\n"
 "   -S visitem   items to strvis(3) encode: 'k'ey, 'v'alue, 'b'oth\n"
 "   -T visspec   options to control -S and -U; like vis(1) options\n"

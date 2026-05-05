@@ -44,6 +44,8 @@
 05/09   NetBSD/acorn26 port started, 2000
 05/12   NetBSD 1.4 released, 1999
 05/12   NetBSD/hp300 port started, 1993
+05/12	NetBSD 9.2 released, 2021
+05/13   NetBSD/riscv port started, 2023
 05/14   NetBSD/cesfic port started, 2001
 05/15   NetBSD/macppc port started, 1998
 05/20   NetBSD 1.2.1 released, 1997
@@ -75,6 +77,7 @@
 07/25   NetBSD/mvme68k port started, 1995
 08/02   NetBSD 5.0.1 released, 2009
 08/02   NetBSD/vax port started, 1994
+08/04   NetBSD 9.3 released, 2022
 08/12   NetBSD/mipsco port started, 2000
 08/20   pkgsrc forked from FreeBSD Ports, 1997
 08/22   NetBSD 6.1.1 released, 2013
@@ -103,6 +106,7 @@
 10/14   NetBSD/bebox port started, 1997
 10/16   NetBSD/playstation2 port started, 2001
 10/17   NetBSD 6.0 released, 2012
+10/18	NetBSD 9.1 released, 2020
 10/21   NetBSD 7.0.2 released, 2016
 10/26   NetBSD 1.0 released, 1994
 10/30   pkgsrc/Darwin support added, 2001

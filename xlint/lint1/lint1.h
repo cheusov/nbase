@@ -1,4 +1,4 @@
-/* $NetBSD: lint1.h,v 1.31 2019/03/04 17:45:16 christos Exp $ */
+/* $NetBSD: lint1.h,v 1.158 2022/10/01 09:42:40 rillig Exp $ */
 
 /*
  * Copyright (c) 1996 Christopher G. Demetriou.  All Rights Reserved.
@@ -33,63 +33,48 @@
  */
 
 #include "lint.h"
+#include "err-msgs.h"
 #include "op.h"
 
-/*
- * XXX - Super conservative so that works for most systems, but we should
- * not depend on the host settings but the target settings in determining
- * the alignment. The only valid use for this is in mem1.c; uses in decl.c
- * are bogus.
- */
-#ifndef WORST_ALIGN
-#ifdef _LP64
-# define AVAL	15
-#else
-# define AVAL	7
-#endif
-#define WORST_ALIGN(x) (((x) + AVAL) & ~AVAL)
-#endif
-
-#define LWARN_BAD	-3
-#define LWARN_ALL	-2
-#define LWARN_NONE	-1
+/* See saved_lwarn in cgram.y. */
+#define LWARN_ALL	(-2)
+#define LWARN_NONE	(-1)
 
 /*
  * Describes the position of a declaration or anything else.
+ *
+ * FIXME: Just a single file:lineno pair is not enough to accurately describe
+ *  the position of a symbol.  The whole inclusion path at that point must be
+ *  stored as well.  This makes a difference for symbols from included
+ *  headers, see print_stack_trace.
  */
 typedef struct {
-	int	p_line;
 	const	char *p_file;
+	int	p_line;
 	int	p_uniq;			/* uniquifier */
 } pos_t;
 
 /* Copies curr_pos, keeping things unique. */
-#define UNIQUE_CURR_POS(pos)						\
-    do {								\
-    	STRUCT_ASSIGN((pos), curr_pos);					\
-	curr_pos.p_uniq++;						\
-	if (curr_pos.p_file == csrc_pos.p_file)				\
-	    csrc_pos.p_uniq++;						\
-    } while (0)
+#define	UNIQUE_CURR_POS(pos)						\
+	do {								\
+		(pos) = curr_pos;					\
+		curr_pos.p_uniq++;					\
+		if (curr_pos.p_file == csrc_pos.p_file)			\
+			csrc_pos.p_uniq++;				\
+	} while (false)
 
 /*
- * Strings cannot be referenced to simply by a pointer to its first
+ * Strings cannot be referenced simply by a pointer to their first
  * char. This is because strings can contain NUL characters other than the
  * trailing NUL.
  *
  * Strings are stored with a trailing NUL.
  */
 typedef	struct strg {
-	tspec_t	st_tspec;		/* CHAR or WCHAR */
-	size_t	st_len;			/* length without trailing NUL */
-	union {
-		u_char	*_st_cp;
-		wchar_t	*_st_wcp;
-	} st_u;
+	bool	st_char;	/* string doesn't have an 'L' prefix */
+	size_t	st_len;		/* length without trailing NUL */
+	void	*st_mem;	/* char[] for st_char, or wchar_t[] */
 } strg_t;
-
-#define st_cp	st_u._st_cp
-#define	st_wcp	st_u._st_wcp
 
 /*
  * qualifiers (only for lex/yacc interface)
@@ -98,13 +83,16 @@ typedef enum {
 	CONST, VOLATILE, RESTRICT, THREAD
 } tqual_t;
 
-/*
- * Integer and floating point values are stored in this structure
- */
+/* An integer or floating-point value. */
 typedef struct {
 	tspec_t	v_tspec;
-	int	v_ansiu;		/* set if an integer constant is
-					   unsigned in ANSI C */
+	/*
+	 * Set if an integer constant is unsigned only in C90 and later, but
+	 * not in traditional C.
+	 *
+	 * See the operators table in ops.def, columns "l r".
+	 */
+	bool	v_unsigned_since_c90;
 	union {
 		int64_t	_v_quad;	/* integers */
 		ldbl_t	_v_ldbl;	/* floats */
@@ -115,7 +103,7 @@ typedef struct {
 #define v_ldbl	v_u._v_ldbl
 
 /*
- * Structures of type str_t uniqely identify structures. This can't
+ * Structures of type struct_or_union uniquely identify structures. This can't
  * be done in structures of type type_t, because these are copied
  * if they must be modified. So it would not be possible to check
  * if two structures are identical by comparing the pointers to
@@ -125,56 +113,67 @@ typedef struct {
  * the structure type in pass 2.
  */
 typedef	struct {
-	u_int	size;		/* size in bit */
-	u_int	align : 15;	/* alignment in bit */
-	u_int	sincompl : 1;	/* set if incomplete type */
-	struct	sym *memb;	/* list of members */
-	struct	sym *stag;	/* symbol table entry of tag */
-	struct	sym *stdef;	/* symbol table entry of first typename */
-} str_t;
+	unsigned int sou_size_in_bits;
+	unsigned short sou_align_in_bits;
+	bool	sou_incomplete:1;
+	struct	sym *sou_first_member;
+	struct	sym *sou_tag;
+	struct	sym *sou_first_typedef;
+} struct_or_union;
 
 /*
  * same as above for enums
  */
 typedef	struct {
-	u_int	eincompl : 1;	/* incomplete enum type */
-	struct	sym *elem;	/* list of enumerators */
-	struct	sym *etag;	/* symbol table entry of tag */
-	struct	sym *etdef;	/* symbol table entry of first typename */
-} tenum_t;
+	bool	en_incomplete:1;
+	struct	sym *en_first_enumerator;
+	struct	sym *en_tag;
+	struct	sym *en_first_typedef;
+} enumeration;
 
 /*
- * Types are represented by concatenation of structures of type type_t
- * via t_subt.
+ * The type of an expression or object. Complex types are formed via t_subt
+ * (for arrays, pointers and functions), as well as t_str.
  */
-struct type {
+struct lint1_type {
 	tspec_t	t_tspec;	/* type specifier */
-	u_int	t_aincompl : 1;	/* incomplete array type */
-	u_int	t_const : 1;	/* const modifier */
-	u_int	t_volatile : 1;	/* volatile modifier */
-	u_int	t_proto : 1;	/* function prototype (t_args valid) */
-	u_int	t_vararg : 1;	/* prototype with ... */
-	u_int	t_typedef : 1;	/* type defined with typedef */
-	u_int	t_isfield : 1;	/* type is bitfield */
-	u_int	t_isenum : 1;	/* type is (or was) enum (t_enum valid) */
-	u_int	t_ispacked : 1;	/* type is packed */
+	bool	t_incomplete_array:1;
+	bool	t_const:1;	/* const modifier */
+	bool	t_volatile:1;	/* volatile modifier */
+	bool	t_proto:1;	/* function prototype (t_args valid) */
+	bool	t_vararg:1;	/* prototype with '...' */
+	bool	t_typedef:1;	/* type defined with typedef */
+	bool	t_typeof:1;	/* type defined with GCC's __typeof__ */
+	bool	t_bitfield:1;
+	/*
+	 * Either the type is currently an enum (having t_tspec ENUM), or
+	 * it is an integer type (typically INT) that has been implicitly
+	 * converted from an enum type.  In both cases, t_enum is valid.
+	 *
+	 * The information about a former enum type is retained to allow
+	 * type checks in expressions such as ((var1 & 0x0001) == var2), to
+	 * detect when var1 and var2 are from incompatible enum types.
+	 */
+	bool	t_is_enum:1;
+	bool	t_packed:1;
 	union {
-		int	_t_dim;		/* dimension */
-		str_t	*_t_str;	/* struct/union tag */
-		tenum_t	*_t_enum;	/* enum tag */
+		int	_t_dim;		/* dimension (if ARRAY) */
+		struct_or_union	*_t_str;
+		enumeration	*_t_enum;
 		struct	sym *_t_args;	/* arguments (if t_proto) */
 	} t_u;
 	struct {
-		u_int	_t_flen : 8;	/* length of bit-field */
-		u_int	_t_foffs : 24;	/* offset of bit-field */
+		unsigned int	_t_flen:8;	/* length of bit-field */
+		unsigned int	_t_foffs:24;	/* offset of bit-field */
 	} t_b;
-	struct	type *t_subt;	/* element type (arrays), return value
-				   (functions), or type pointer points to */
+	struct	lint1_type *t_subt; /* element type (if ARRAY),
+				 * return value (if FUNC),
+				 * target type (if PTR) */
 };
 
 #define	t_dim	t_u._t_dim
+/* TODO: rename t_str to t_sou, to avoid confusing it with strings. */
 #define	t_str	t_u._t_str
-#define	t_field	t_u._t_field
 #define	t_enum	t_u._t_enum
 #define	t_args	t_u._t_args
 #define	t_flen	t_b._t_flen
@@ -185,31 +184,29 @@ struct type {
  */
 typedef	enum {
 	FVFT,		/* variables, functions, type names, enums */
-	FMOS,		/* members of structs or unions */
+	FMEMBER,	/* members of structs or unions */
 	FTAG,		/* tags */
-	FLAB		/* labels */
+	FLABEL		/* labels */
 } symt_t;
 
 /*
- * storage classes
+ * storage classes and related things
  */
 typedef enum {
 	NOSCL,
-	EXTERN,		/* external symbols (indep. of decl_t) */
+	EXTERN,		/* external symbols (independent of decl_t) */
 	STATIC,		/* static symbols (local and global) */
 	AUTO,		/* automatic symbols (except register) */
 	REG,		/* register */
 	TYPEDEF,	/* typedef */
-	STRTAG,
-	UNIONTAG,
-	ENUMTAG,
+	STRUCT_TAG,
+	UNION_TAG,
+	ENUM_TAG,
 	MOS,		/* member of struct */
 	MOU,		/* member of union */
-	ENUMCON,	/* enumerator */
+	BOOL_CONST,
+	ENUM_CONST,
 	ABSTRACT,	/* abstract symbol (sizeof, casts, unnamed argument) */
-	ARG,		/* argument */
-	PARG,		/* used in declaration stack during prototype
-			   declaration */
 	INLINE		/* only used by the parser */
 } scl_t;
 
@@ -217,65 +214,67 @@ typedef enum {
  * symbol table entry
  */
 typedef	struct sym {
-	const	char *s_name;	/* name */
+	const	char *s_name;
 	const	char *s_rename;	/* renamed symbol's given name */
-	pos_t	s_dpos;		/* position of last (prototype)definition,
-				   prototypedeclaration, no-prototype-def.,
+	pos_t	s_def_pos;	/* position of last (prototype) definition,
+				   prototype declaration, no-prototype-def.,
 				   tentative definition or declaration,
 				   in this order */
-	pos_t	s_spos;		/* position of first initialisation */
-	pos_t	s_upos;		/* position of first use */
+	pos_t	s_set_pos;	/* position of first initialization */
+	pos_t	s_use_pos;	/* position of first use */
 	symt_t	s_kind;		/* type of symbol */
-	void   *s_keyw;		/* keyword */
-	u_int	s_field : 1;	/* bit-field */
-	u_int	s_set : 1;	/* variable set, label defined */
-	u_int	s_used : 1;	/* variable/label used */
-	u_int	s_arg : 1;	/* symbol is function argument */
-	u_int	s_reg : 1;	/* symbol is register variable */
-	u_int	s_defarg : 1;	/* undefined symbol in old style function
+	const struct keyword *s_keyword;
+	bool	s_bitfield:1;
+	bool	s_set:1;	/* variable set, label defined */
+	bool	s_used:1;	/* variable/label used */
+	bool	s_arg:1;	/* symbol is function argument */
+	bool	s_register:1;	/* symbol is register variable */
+	bool	s_defarg:1;	/* undefined symbol in old-style function
 				   definition */
-	u_int	s_rimpl : 1;	/* return value of function implicit decl. */
-	u_int	s_osdef : 1;	/* symbol stems from old style function def. */
-	u_int	s_inline : 1;	/* true if this is a inline function */
-	struct	sym *s_xsym;	/* for local declared external symbols pointer
-				   to external symbol with same name */
+	bool	s_return_type_implicit_int:1;
+	bool	s_osdef:1;	/* symbol stems from old-style function def. */
+	bool	s_inline:1;	/* true if this is an inline function */
+	struct	sym *s_ext_sym;	/* for locally declared external symbols, the
+				 * pointer to the external symbol with the
+				 * same name */
 	def_t	s_def;		/* declared, tentative defined, defined */
 	scl_t	s_scl;		/* storage class */
-	int	s_blklev;	/* level of declaration, -1 if not in symbol
+	int	s_block_level;	/* level of declaration, -1 if not in symbol
 				   table */
-	type_t	*s_type;	/* type */
-	val_t	s_value;	/* value (if enumcon) */
+	type_t	*s_type;
 	union {
-		str_t	*_s_st;	/* tag, if it is a struct/union member */
-		tenum_t	*_s_et;	/* tag, if it is a enumerator */
-		tspec_t	_s_tsp;	/* type (only for keywords) */
-		tqual_t	_s_tqu;	/* qualifier (only for keywords) */
-		struct	sym *_s_args; /* arguments in old style function
-					 definitions */
+		bool s_bool_constant;
+		int s_enum_constant;	/* XXX: should be TARG_INT */
+		struct {
+			/* XXX: what is the difference to s_type->t_str? */
+			struct_or_union	*sm_sou_type;
+			unsigned int sm_offset_in_bits;
+		} s_member;
+		struct {
+			int sk_token;
+			tspec_t	sk_tspec;	/* only for types */
+			tqual_t	sk_qualifier;	/* only for qualifiers */
+		} s_keyword;
+		struct	sym *s_old_style_args;	/* arguments in an old-style
+						 * function definition */
 	} u;
-	struct	sym *s_link;	/* next symbol with same hash value */
-	struct	sym **s_rlink;	/* pointer to s_link of prev. symbol */
-	struct	sym *s_nxt;	/* next struct/union member, enumerator,
+	struct	sym *s_symtab_next;	/* next symbol with same hash value */
+	struct	sym **s_symtab_ref;	/* pointer to s_symtab_next of the
+					 * previous symbol */
+	struct	sym *s_next;	/* next struct/union member, enumerator,
 				   argument */
-	struct	sym *s_dlnxt; 	/* next symbol declared on same level */
+	struct	sym *s_level_next;	/* next symbol declared on the same
+					 * level */
 } sym_t;
 
-#define	s_styp	u._s_st
-#define	s_etyp	u._s_et
-#define	s_tspec	u._s_tsp
-#define	s_tqual	u._s_tqu
-#define	s_args	u._s_args
-
 /*
- * Used to keep some informations about symbols before they are entered
+ * Used to keep some information about symbols before they are entered
  * into the symbol table.
  */
 typedef	struct sbuf {
 	const	char *sb_name;		/* name of symbol */
 	size_t	sb_len;			/* length (without '\0') */
-	int	sb_hash;		/* hash value */
 	sym_t	*sb_sym;		/* symbol table entry */
-	struct	sbuf *sb_nxt;		/* for freelist */
 } sbuf_t;
 
 
@@ -285,9 +284,15 @@ typedef	struct sbuf {
 typedef	struct tnode {
 	op_t	tn_op;		/* operator */
 	type_t	*tn_type;	/* type */
-	u_int	tn_lvalue : 1;	/* node is lvalue */
-	u_int	tn_cast : 1;	/* if tn_op == CVT its an explicit cast */
-	u_int	tn_parn : 1;	/* node parenthesized */
+	bool	tn_lvalue:1;	/* node is lvalue */
+	bool	tn_cast:1;	/* if tn_op == CVT, it's an explicit cast */
+	bool	tn_parenthesized:1;
+	bool	tn_sys:1;	/* in strict bool mode, allow mixture between
+				 * bool and scalar, for code from system
+				 * headers that may be a mixture between
+				 * scalar types and bool
+				 */
+	bool	tn_system_dependent:1; /* depends on sizeof or offsetof */
 	union {
 		struct {
 			struct	tnode *_tn_left;	/* (left) operand */
@@ -295,152 +300,289 @@ typedef	struct tnode {
 		} tn_s;
 		sym_t	*_tn_sym;	/* symbol if op == NAME */
 		val_t	*_tn_val;	/* value if op == CON */
-		strg_t	*_tn_strg;	/* string if op == STRING */
+		strg_t	*_tn_string;	/* string if op == STRING */
 	} tn_u;
 } tnode_t;
 
-#define	tn_left	tn_u.tn_s._tn_left
-#define tn_right tn_u.tn_s._tn_right
-#define tn_sym	tn_u._tn_sym
-#define	tn_val	tn_u._tn_val
-#define	tn_strg	tn_u._tn_strg
+#define	tn_left		tn_u.tn_s._tn_left
+#define tn_right	tn_u.tn_s._tn_right
+#define tn_sym		tn_u._tn_sym
+#define	tn_val		tn_u._tn_val
+#define	tn_string	tn_u._tn_string
+
+struct generic_association {
+	type_t *ga_arg;		/* NULL means default or error */
+	tnode_t *ga_result;	/* NULL means error */
+	struct generic_association *ga_prev;
+};
+
+struct array_size {
+	bool has_dim;
+	int dim;
+};
+
+typedef enum declaration_kind {
+	DK_EXTERN,		/* global variable or function */
+	DK_MOS,			/* struct member */
+	DK_MOU,			/* union member */
+	DK_ENUM_CONST,		/* enum constant */
+	DK_OLD_STYLE_ARG,	/* argument in an old-style function
+				 * definition */
+	DK_PROTO_ARG,		/* argument in a prototype function
+				 * definition */
+	DK_AUTO,		/* local symbol */
+	DK_ABSTRACT		/* abstract declaration; type name */
+} declaration_kind;
 
 /*
- * For nested declarations a stack exists, which holds all information
- * needed for the current level. dcs points to the top element of this
+ * For nested declarations there is a stack that holds all information
+ * needed for the current level. dcs points to the innermost element of this
  * stack.
- *
- * ctx describes the context of the current declaration. Its value is
- * one of
- *	EXTERN	global declarations
- *	MOS oder MOU declarations of struct or union members
- *	ENUMCON	declarations of enums
- *	ARG	declaration of arguments in old style function definitions
- *	PARG	declaration of arguments in function prototypes
- *	AUTO	declaration of local symbols
- *	ABSTRACT abstract declarations (sizeof, casts)
- *
  */
 typedef	struct dinfo {
-	tspec_t	d_atyp;		/* VOID, CHAR, INT, or COMPLEX */
-	tspec_t	d_cmod;		/* FLOAT, or DOUBLE */
-	tspec_t	d_smod;		/* SIGNED or UNSIGN */
-	tspec_t	d_lmod;		/* SHORT, LONG or QUAD */
+	declaration_kind d_kind;
+	tspec_t	d_abstract_type;/* VOID, BOOL, CHAR, INT or COMPLEX */
+	tspec_t	d_complex_mod;	/* FLOAT or DOUBLE */
+	tspec_t	d_sign_mod;	/* SIGNED or UNSIGN */
+	tspec_t	d_rank_mod;	/* SHORT, LONG or QUAD */
 	scl_t	d_scl;		/* storage class */
-	type_t	*d_type;	/* after deftyp() pointer to the type used
+	type_t	*d_type;	/* after dcs_end_type pointer to the type used
 				   for all declarators */
-	sym_t	*d_rdcsym;	/* redeclared symbol */
-	int	d_offset;	/* offset of next structure member */
-	int	d_stralign;	/* alignment required for current structure */
-	scl_t	d_ctx;		/* context of declaration */
-	u_int	d_const : 1;	/* const in declaration specifiers */
-	u_int	d_volatile : 1;	/* volatile in declaration specifiers */
-	u_int	d_inline : 1;	/* inline in declaration specifiers */
-	u_int	d_mscl : 1;	/* multiple storage classes */
-	u_int	d_terr : 1;	/* invalid type combination */
-	u_int	d_nedecl : 1;	/* 1 if at least a tag is declared */
-	u_int	d_vararg : 1;	/* ... in in current function decl. */
-	u_int	d_proto : 1;	/* current funct. decl. is prototype */
-	u_int	d_notyp : 1;	/* set if no type specifier was present */
-	u_int	d_asm : 1;	/* set if d_ctx == AUTO and asm() present */
-	u_int	d_ispacked : 1;	/* packed */
-	u_int	d_used : 1;	/* used */
+	sym_t	*d_redeclared_symbol;
+	unsigned int d_offset_in_bits; /* offset of next structure member */
+	unsigned short d_sou_align_in_bits; /* alignment required for current
+				 * structure */
+	bool	d_const:1;	/* const in declaration specifiers */
+	bool	d_volatile:1;	/* volatile in declaration specifiers */
+	bool	d_inline:1;	/* inline in declaration specifiers */
+	bool	d_multiple_storage_classes:1; /* reported in dcs_end_type */
+	bool	d_invalid_type_combination:1;
+	bool	d_nonempty_decl:1; /* if at least one tag is declared
+				 * ... in the current function decl. */
+	bool	d_vararg:1;
+	bool	d_proto:1;	/* current function decl. is prototype */
+	bool	d_notyp:1;	/* set if no type specifier was present */
+	bool	d_asm:1;	/* set if d_ctx == AUTO and asm() present */
+	bool	d_packed:1;
+	bool	d_used:1;
 	type_t	*d_tagtyp;	/* tag during member declaration */
-	sym_t	*d_fargs;	/* list of arguments during function def. */
-	pos_t	d_fdpos;	/* position of function definition */
+	sym_t	*d_func_args;	/* list of arguments during function def. */
+	pos_t	d_func_def_pos;	/* position of function definition */
 	sym_t	*d_dlsyms;	/* first symbol declared at this level */
-	sym_t	**d_ldlsym;	/* points to s_dlnxt in last symbol decl.
-				   at this level */
-	sym_t	*d_fpsyms;	/* symbols defined in prototype */
-	struct	dinfo *d_nxt;	/* next level */
+	sym_t	**d_ldlsym;	/* points to s_level_next in the last symbol
+				   declaration at this level */
+	sym_t	*d_func_proto_syms; /* symbols defined in prototype */
+	struct dinfo *d_enclosing; /* the enclosing declaration level */
 } dinfo_t;
 
-/*
- * Type of stack which is used for initialisation of aggregate types.
- */
-typedef	struct	istk {
-	type_t	*i_type;		/* type of initialisation */
-	type_t	*i_subt;		/* type of next level */
-	u_int	i_brace : 1;		/* need } for pop */
-	u_int	i_nolimit : 1;		/* incomplete array type */
-	u_int	i_namedmem : 1;		/* has c9x named members */
-	sym_t	*i_mem;			/* next structure member */
-	int	i_cnt;			/* # of remaining elements */
-	struct	istk *i_nxt;		/* previous level */
-} istk_t;
+/* One level of pointer indirection in declarators, including qualifiers. */
+typedef	struct qual_ptr {
+	bool	p_const: 1;
+	bool	p_volatile: 1;
+	bool	p_pointer: 1;
+	struct	qual_ptr *p_next;
+} qual_ptr;
 
 /*
- * Used to collect information about pointers and qualifiers in
- * declarators.
+ * The values of the 'case' labels, linked via cl_next in reverse order of
+ * appearance in the code, that is from bottom to top.
  */
-typedef	struct pqinf {
-	int	p_pcnt;			/* number of asterisks */
-	u_int	p_const : 1;
-	u_int	p_volatile : 1;
-	struct	pqinf *p_nxt;
-} pqinf_t;
-
-/*
- * Case values are stored in a list of type clst_t.
- */
-typedef	struct clst {
+typedef	struct case_label {
 	val_t	cl_val;
-	struct	clst *cl_nxt;
-} clst_t;
+	struct case_label *cl_next;
+} case_label_t;
+
+typedef enum {
+	CS_DO_WHILE,
+	CS_FOR,
+	CS_FUNCTION_BODY,
+	CS_IF,
+	CS_SWITCH,
+	CS_WHILE
+} control_statement_kind;
 
 /*
- * Used to keep informations about nested control statements.
+ * Used to keep information about nested control statements.
  */
-typedef struct cstk {
-	int	c_env;			/* type of statement (T_IF, ...) */
-	u_int	c_loop : 1;		/* continue && break are valid */
-	u_int	c_switch : 1;		/* case && break are valid */
-	u_int	c_break : 1;		/* loop/switch has break */
-	u_int	c_cont : 1;		/* loop has continue */
-	u_int	c_default : 1;		/* switch has default */
-	u_int	c_infinite : 1;		/* break condition always false
-					   (for (;;), while (1)) */
-	u_int	c_rchif : 1;		/* end of if-branch reached */
-	u_int	c_noretval : 1;		/* had "return;" */
-	u_int	c_retval : 1;		/* had "return (e);" */
-	type_t	*c_swtype;		/* type of switch expression */
-	clst_t	*c_clst;		/* list of case values */
-	struct	mbl *c_fexprm;		/* saved memory for end of loop
-					   expression in for() */
-	tnode_t	*c_f3expr;		/* end of loop expr in for() */
-	pos_t	c_fpos;			/* position of end of loop expr */
-	pos_t	c_cfpos;	        /* same for csrc_pos */
-	struct	cstk *c_nxt;		/* outer control statement */
-} cstk_t;
+typedef struct control_statement {
+	control_statement_kind c_kind;	/* to ensure proper nesting */
+	bool	c_loop:1;		/* 'continue' and 'break' are valid */
+	bool	c_switch:1;		/* 'case' and 'break' are valid */
+	bool	c_break:1;		/* the loop/switch has a reachable
+					 * 'break' statement */
+	bool	c_continue:1;		/* the loop has a reachable 'continue'
+					 * statement */
+	bool	c_default:1;		/* the switch has a 'default' label */
+	bool	c_maybe_endless:1;	/* the controlling expression is
+					 * always true (as in 'for (;;)' or
+					 * 'while (1)'), there may be break
+					 * statements though */
+	bool	c_always_then:1;
+	bool	c_reached_end_of_then:1;
+	bool	c_had_return_noval:1;	/* had "return;" */
+	bool	c_had_return_value:1;	/* had "return expr;" */
+
+	type_t	*c_switch_type;		/* type of switch expression */
+	tnode_t	*c_switch_expr;
+	case_label_t *c_case_labels;	/* list of case values */
+
+	struct	memory_block *c_for_expr3_mem; /* saved memory for end of loop
+					 * expression in for() */
+	tnode_t	*c_for_expr3;		/* end of loop expr in for() */
+	pos_t	c_for_expr3_pos;	/* position of end of loop expr */
+	pos_t	c_for_expr3_csrc_pos;	/* same for csrc_pos */
+
+	struct control_statement *c_surrounding;
+} control_statement;
 
 typedef struct {
-	size_t lo;
-	size_t hi;
+	size_t lo;			/* inclusive */
+	size_t hi;			/* inclusive */
 } range_t;
 
 #include "externs1.h"
 
-#define	ERR_SETSIZE	1024
-#define __NERRBITS (sizeof(unsigned int))
+#define INTERNAL_ERROR(fmt, args...) \
+	internal_error(__FILE__, __LINE__, fmt, ##args)
 
-typedef	struct err_set {
-	unsigned int	errs_bits[(ERR_SETSIZE + __NERRBITS-1) / __NERRBITS];
-} err_set;
+#define lint_assert(cond)						\
+	do {								\
+		if (!(cond))						\
+			assert_failed(__FILE__, __LINE__, __func__, #cond); \
+	} while (false)
 
-#define	ERR_SET(n, p)	\
-    ((p)->errs_bits[(n)/__NERRBITS] |= (1 << ((n) % __NERRBITS)))
-#define	ERR_CLR(n, p)	\
-    ((p)->errs_bits[(n)/__NERRBITS] &= ~(1 << ((n) % __NERRBITS)))
-#define	ERR_ISSET(n, p)	\
-    ((p)->errs_bits[(n)/__NERRBITS] & (1 << ((n) % __NERRBITS)))
-#define	ERR_ZERO(p)	(void)memset((p), 0, sizeof(*(p)))
+#ifdef DEBUG
+#  include "err-msgs.h"
 
-#define LERROR(fmt, args...)	lerror(__FILE__, __LINE__, fmt, ##args)
+/* ARGSUSED */
+static inline void __attribute__((format(printf, 1, 2)))
+check_printf(const char *fmt, ...)
+{
+}
 
-#ifdef BLKDEBUG
-#define ZERO	0xa5
-#else
-#define	ZERO	0
+#  define wrap_check_printf_at(func, msgid, pos, args...)		\
+	do {								\
+		check_printf(__CONCAT(MSG_, msgid), ##args);		\
+		(func)(msgid, pos, ##args);				\
+	} while (false)
+
+#  define error_at(msgid, pos, args...) \
+	wrap_check_printf_at(error_at, msgid, pos, ##args)
+#  define warning_at(msgid, pos, args...) \
+	wrap_check_printf_at(warning_at, msgid, pos, ##args)
+#  define message_at(msgid, pos, args...) \
+	wrap_check_printf_at(message_at, msgid, pos, ##args)
+
+#  define wrap_check_printf(func, msgid, args...)			\
+	({								\
+		debug_step("%s:%d: %s", __FILE__, __LINE__, __func__);	\
+		check_printf(__CONCAT(MSG_, msgid), ##args);		\
+		(func)(msgid, ##args);					\
+		/* LINTED 129 */					\
+	})
+
+#  define error(msgid, args...) wrap_check_printf(error, msgid, ##args)
+#  define warning(msgid, args...) wrap_check_printf(warning, msgid, ##args)
+#  define gnuism(msgid, args...) wrap_check_printf(gnuism, msgid, ##args)
+#  define c99ism(msgid, args...) wrap_check_printf(c99ism, msgid, ##args)
+#  define c11ism(msgid, args...) wrap_check_printf(c11ism, msgid, ##args)
 #endif
 
-extern err_set	msgset;
+#ifdef DEBUG
+#  define query_message(query_id, args...)				\
+	do {								\
+		debug_step("%s:%d: %s", __FILE__, __LINE__, __func__);	\
+		check_printf(__CONCAT(MSG_Q, query_id), ##args);	\
+		(query_message)(query_id, ##args);			\
+	} while (false)
+#else
+#  define query_message(...)						\
+	do {								\
+		if (any_query_enabled)					\
+			(query_message)(__VA_ARGS__);			\
+	} while (false)
+#endif
+
+static inline bool
+is_nonzero_val(const val_t *val)
+{
+	return is_floating(val->v_tspec)
+	    ? val->v_ldbl != 0.0
+	    : val->v_quad != 0;
+}
+
+static inline bool
+constant_is_nonzero(const tnode_t *tn)
+{
+	lint_assert(tn->tn_op == CON);
+	lint_assert(tn->tn_type->t_tspec == tn->tn_val->v_tspec);
+	return is_nonzero_val(tn->tn_val);
+}
+
+static inline bool
+is_zero(const tnode_t *tn)
+{
+	return tn != NULL && tn->tn_op == CON && !is_nonzero_val(tn->tn_val);
+}
+
+static inline bool
+is_nonzero(const tnode_t *tn)
+{
+	return tn != NULL && tn->tn_op == CON && is_nonzero_val(tn->tn_val);
+}
+
+static inline bool
+is_binary(const tnode_t *tn)
+{
+	return modtab[tn->tn_op].m_binary;
+}
+
+static inline uint64_t
+bit(unsigned i)
+{
+	/*
+	 * TODO: Add proper support for INT128.
+	 * This involves changing val_t to 128 bits.
+	 */
+	if (i >= 64)
+		return 0;	/* XXX: not correct for INT128 and UINT128 */
+
+	lint_assert(i < 64);
+	return (uint64_t)1 << i;
+}
+
+static inline bool
+msb(int64_t q, tspec_t t)
+{
+	return (q & bit((unsigned int)size_in_bits(t) - 1)) != 0;
+}
+
+static inline uint64_t
+value_bits(unsigned bitsize)
+{
+	lint_assert(bitsize > 0);
+
+	/* for long double (80 or 128), double _Complex (128) */
+	/*
+	 * XXX: double _Complex does not have 128 bits of precision,
+	 * therefore it should never be necessary to query the value bits
+	 * of such a type; see d_c99_complex_split.c to trigger this case.
+	 */
+	if (bitsize >= 64)
+		return ~((uint64_t)0);
+
+	return ~(~(uint64_t)0 << bitsize);
+}
+
+/* C99 6.7.8p7 */
+static inline bool
+is_struct_or_union(tspec_t t)
+{
+	return t == STRUCT || t == UNION;
+}
+
+static inline bool
+is_member(const sym_t *sym)
+{
+	return sym->s_scl == MOS || sym->s_scl == MOU;
+}

@@ -1,7 +1,8 @@
-/*	$NetBSD: init.c,v 1.27 2015/07/28 17:55:13 christos Exp $	*/
+/*	$NetBSD: init.c,v 1.237 2022/08/28 12:04:47 rillig Exp $	*/
 
 /*
  * Copyright (c) 1994, 1995 Jochen Pohl
+ * Copyright (c) 2021 Roland Illig
  * All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,649 +37,1088 @@
 #endif
 
 #include <sys/cdefs.h>
-#if defined(__RCSID) && !defined(lint)
-__RCSID("$NetBSD: init.c,v 1.27 2015/07/28 17:55:13 christos Exp $");
+#if defined(__RCSID)
+__RCSID("$NetBSD: init.c,v 1.237 2022/08/28 12:04:47 rillig Exp $");
 #endif
 
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 #include "lint1.h"
 
-/*
- * initerr is set as soon as a fatal error occurred in an initialisation.
- * The effect is that the rest of the initialisation is ignored (parsed
- * by yacc, expression trees built, but no initialisation takes place).
- */
-int	initerr;
-
-/* Pointer to the symbol which is to be initialized. */
-sym_t	*initsym;
-
-/* Points to the top element of the initialisation stack. */
-istk_t	*initstk;
-
-typedef struct namlist {
-	const char *n_name;
-	struct namlist *n_prev;
-	struct namlist *n_next;
-} namlist_t;
-
-/* Points to a c9x named member; */
-namlist_t	*namedmem = NULL;
-
-
-static	void	popi2(void);
-static	void	popinit(int);
-static	void	pushinit(void);
-static	void	testinit(void);
-static	void	nextinit(int);
-static	int	strginit(tnode_t *);
-static	void	memberpop(void);
-
-#ifndef DEBUG
-#define DPRINTF(a)
-#else
-#define DPRINTF(a) printf a
-#endif
-
-void
-memberpush(sb)
-	sbuf_t *sb;
-{
-	namlist_t *nam = xcalloc(1, sizeof (namlist_t)); 
-	nam->n_name = sb->sb_name;
-	DPRINTF(("%s: %s %p\n", __func__, nam->n_name, nam));
-	if (namedmem == NULL) {
-		nam->n_prev = nam->n_next = nam;
-		namedmem = nam;
-	} else {
-		namedmem->n_prev->n_next = nam;
-		nam->n_prev = namedmem->n_prev;
-		nam->n_next = namedmem;
-		namedmem->n_prev = nam;
-	}
-}
-
-static void
-memberpop(void)
-{
-	DPRINTF(("%s: %s %p\n", __func__, namedmem->n_name, namedmem));
-	if (namedmem->n_next == namedmem) {
-		free(namedmem);
-		namedmem = NULL;
-	} else {
-		namlist_t *nam = namedmem;
-		namedmem = namedmem->n_next;
-		namedmem->n_next = nam->n_next;
-		namedmem->n_prev = nam->n_prev;
-		free(nam);
-	}
-}
-
 
 /*
- * Initialize the initialisation stack by putting an entry for the variable
- * which is to be initialized on it.
+ * Initialization of global or local objects, like in:
+ *
+ *	int number = 12345;
+ *	int number_with_braces = { 12345 };
+ *	int array_of_unknown_size[] = { 111, 222, 333 };
+ *	struct { int x, y; } point = { .y = 4, .x = 3 };
+ *
+ * During an initialization, the grammar parser calls these functions:
+ *
+ *	begin_initialization
+ *		init_lbrace			for each '{'
+ *		add_designator_member		for each '.member' before '='
+ *		add_designator_subscript	for each '[123]' before '='
+ *		init_expr			for each expression
+ *		init_rbrace			for each '}'
+ *	end_initialization
+ *
+ * Each '{' begins a new brace level, each '}' ends the current brace level.
+ * Each brace level has an associated "current object", which is the starting
+ * point for resolving the optional designations such as '.member[3]'.
+ *
+ * See also:
+ *	C99 6.7.8 "Initialization"
+ *	C11 6.7.9 "Initialization"
+ *	d_c99_init.c for more examples
  */
-void
-prepinit(void)
-{
-	istk_t	*istk;
 
-	if (initerr)
-		return;
 
-	/* free memory used in last initialisation */
-	while ((istk = initstk) != NULL) {
-		initstk = istk->i_nxt;
-		free(istk);
-	}
+typedef enum designator_kind {
+	DK_STRUCT,		/* .member */
+	DK_UNION,		/* .member */
+	DK_ARRAY,		/* [subscript] */
+	/* TODO: actually necessary? */
+	DK_SCALAR		/* no textual representation, not generated
+				 * by the parser */
+} designator_kind;
+
+/*
+ * A single component on the path from the "current object" of a brace level
+ * to the sub-object that is initialized by an expression.
+ *
+ * C99 6.7.8p6, 6.7.8p7
+ */
+typedef struct designator {
+	designator_kind	dr_kind;
+	const sym_t	*dr_member;	/* for DK_STRUCT and DK_UNION */
+	size_t		dr_subscript;	/* for DK_ARRAY */
+	bool		dr_done;
+} designator;
+
+/*
+ * The path from the "current object" of a brace level to the sub-object that
+ * is initialized by an expression.  Examples for designations are '.member'
+ * or '.member[123].member.member[1][1]'.
+ *
+ * C99 6.7.8p6, 6.7.8p7
+ */
+typedef struct designation {
+	designator	*dn_items;
+	size_t		dn_len;
+	size_t		dn_cap;
+} designation;
+
+/*
+ * Everything that happens between a '{' and the corresponding '}', as part
+ * of an initialization.
+ *
+ * Each brace level has a "current object".   For the outermost brace level,
+ * it is the same as the object to be initialized.  Each nested '{' begins a
+ * nested brace level, for the sub-object pointed to by the designator of the
+ * outer brace level.
+ *
+ * C99 6.7.8p17
+ */
+typedef struct brace_level {
+	/* The type of the "current object". */
+	const type_t	*bl_type;
 
 	/*
-	 * If the type which is to be initialized is an incomplete type,
-	 * it must be duplicated.
+	 * The path from the "current object" to the sub-object that is
+	 * initialized by the next expression.
+	 *
+	 * Initially, the designation is empty.  Before handling an
+	 * expression, the designation is updated to point to the
+	 * corresponding sub-object to be initialized.  After handling an
+	 * expression, the designation is marked as done.  It is later
+	 * advanced as necessary.
 	 */
-	if (initsym->s_type->t_tspec == ARRAY && incompl(initsym->s_type))
-		initsym->s_type = duptyp(initsym->s_type);
+	designation	bl_designation;
 
-	istk = initstk = xcalloc(1, sizeof (istk_t));
-	istk->i_subt = initsym->s_type;
-	istk->i_cnt = 1;
+	struct brace_level *bl_enclosing;
+} brace_level;
 
+/*
+ * An ongoing initialization.
+ *
+ * In most cases there is only ever a single initialization at a time.  See
+ * pointer_to_compound_literal in msg_171.c for a real-life counterexample.
+ */
+typedef struct initialization {
+	/* The symbol that is to be initialized. */
+	sym_t		*in_sym;
+
+	/* The innermost brace level. */
+	brace_level	*in_brace_level;
+
+	/*
+	 * The maximum subscript that has ever been seen for an array of
+	 * unknown size, which can only occur at the outermost brace level.
+	 */
+	size_t		in_max_subscript;
+
+	/*
+	 * Is set when a structural error occurred in the initialization.
+	 * If set, the rest of the initialization is still parsed, but the
+	 * initialization assignments are not checked.
+	 */
+	bool		in_err;
+
+	struct initialization *in_enclosing;
+} initialization;
+
+
+static void *
+unconst_cast(const void *p)
+{
+	void *r;
+
+	memcpy(&r, &p, sizeof(r));
+	return r;
+}
+
+static bool
+has_automatic_storage_duration(const sym_t *sym)
+{
+
+	return sym->s_scl == AUTO || sym->s_scl == REG;
+}
+
+/*
+ * Test whether rn is a string literal that can initialize ltp.
+ *
+ * See also:
+ *	C99 6.7.8p14		for plain character strings
+ *	C99 6.7.8p15		for wide character strings
+ */
+static bool
+can_init_character_array(const type_t *ltp, const tnode_t *rn)
+{
+	tspec_t lst, rst;
+
+	if (!(ltp != NULL && ltp->t_tspec == ARRAY && rn->tn_op == STRING))
+		return false;
+
+	lst = ltp->t_subt->t_tspec;
+	rst = rn->tn_type->t_subt->t_tspec;
+
+	return rst == CHAR
+	    ? lst == CHAR || lst == UCHAR || lst == SCHAR
+	    : lst == WCHAR;
+}
+
+/* C99 6.7.8p9 */
+static const sym_t *
+skip_unnamed(const sym_t *m)
+{
+
+	while (m != NULL && m->s_name == unnamed)
+		m = m->s_next;
+	return m;
+}
+
+static const sym_t *
+first_named_member(const type_t *tp)
+{
+
+	lint_assert(is_struct_or_union(tp->t_tspec));
+	return skip_unnamed(tp->t_str->sou_first_member);
+}
+
+static const sym_t *
+look_up_member(const type_t *tp, const char *name)
+{
+	const sym_t *m;
+
+	lint_assert(is_struct_or_union(tp->t_tspec));
+	for (m = tp->t_str->sou_first_member; m != NULL; m = m->s_next)
+		if (strcmp(m->s_name, name) == 0)
+			return m;
+	return NULL;
+}
+
+/*
+ * C99 6.7.8p22 says that the type of an array of unknown size becomes known
+ * at the end of its initializer list.
+ */
+static void
+update_type_of_array_of_unknown_size(sym_t *sym, size_t size)
+{
+	type_t *tp;
+
+	tp = block_dup_type(sym->s_type);
+	tp->t_dim = (int)size;
+	tp->t_incomplete_array = false;
+	sym->s_type = tp;
+	debug_step("completed array type is '%s'", type_name(sym->s_type));
+}
+
+
+/* In traditional C, bit-fields can be initialized only by integer constants. */
+static void
+check_bit_field_init(const tnode_t *ln, tspec_t lt, tspec_t rt)
+{
+
+	if (!allow_c90 &&
+	    is_integer(lt) &&
+	    ln->tn_type->t_bitfield &&
+	    !is_integer(rt)) {
+		/* bit-field initialization is illegal in traditional C */
+		warning(186);
+	}
 }
 
 static void
-popi2(void)
+check_non_constant_initializer(const tnode_t *tn, const sym_t *sym)
 {
-#ifdef DEBUG
-	char	buf[64];
-#endif
-	istk_t	*istk;
-	sym_t	*m;
+	const sym_t *unused_sym;
+	ptrdiff_t unused_offs;
 
-	DPRINTF(("%s+(%s): brace=%d count=%d namedmem %d\n", __func__,
-	    tyname(buf, sizeof(buf),
-	    initstk->i_type ? initstk->i_type : initstk->i_subt),
-	    initstk->i_brace, initstk->i_cnt, initstk->i_namedmem));
-	initstk = (istk = initstk)->i_nxt;
-	free(istk);
-
-	istk = initstk;
-	if (istk == NULL)
-		LERROR("popi2()");
-
-	DPRINTF(("%s-(%s): brace=%d count=%d namedmem %d\n", __func__,
-	    tyname(buf, sizeof(buf),
-	    initstk->i_type ? initstk->i_type : initstk->i_subt),
-	    initstk->i_brace, initstk->i_cnt, initstk->i_namedmem));
-
-	istk->i_cnt--;
-	if (istk->i_cnt < 0)
-		LERROR("popi2()");
-
-	DPRINTF(("%s(): %d %s\n", __func__, istk->i_cnt,
-	    namedmem ? namedmem->n_name : "*null*"));
-	if (istk->i_cnt >= 0 && namedmem != NULL) {
-		DPRINTF(("%s(): %d %s %s\n", __func__, istk->i_cnt,
-		    tyname(buf, sizeof(buf), istk->i_type), namedmem->n_name));
-		for (m = istk->i_type->t_str->memb; m != NULL; m = m->s_nxt) {
-			DPRINTF(("%s(): pop [%s %s]\n", __func__,
-			    namedmem->n_name, m->s_name));
-			if (m->s_field && m->s_name == unnamed)
-				continue;
-			if (strcmp(m->s_name, namedmem->n_name) == 0) {
-				istk->i_subt = m->s_type;
-				istk->i_cnt++;
-				memberpop();
-				return;
-			}
-		}
-		error(101, namedmem->n_name);
-		DPRINTF(("%s(): namedmem %s\n", __func__, namedmem->n_name));
-		memberpop();
-		istk->i_namedmem = 1;
+	if (tn == NULL || tn->tn_op == CON)
 		return;
-	}
-	/*
-	 * If the removed element was a structure member, we must go
-	 * to the next structure member.
-	 */
-	if (istk->i_cnt > 0 && istk->i_type->t_tspec == STRUCT &&
-	    !istk->i_namedmem) {
-		do {
-			m = istk->i_mem = istk->i_mem->s_nxt;
-			if (m == NULL)
-				LERROR("popi2()");
-			DPRINTF(("%s(): pop %s\n", __func__, m->s_name));
-		} while (m->s_field && m->s_name == unnamed);
-		istk->i_subt = m->s_type;
-	}
-}
 
-static void
-popinit(int brace)
-{
-	DPRINTF(("%s(%d)\n", __func__, brace));
+	if (constant_addr(tn, &unused_sym, &unused_offs))
+		return;
 
-	if (brace) {
-		/*
-		 * Take all entries, including the first which requires
-		 * a closing brace, from the stack.
-		 */
-		DPRINTF(("%s: brace\n", __func__));
-		do {
-			brace = initstk->i_brace;
-			DPRINTF(("%s: loop brace %d\n", __func__, brace));
-			popi2();
-		} while (!brace);
-		DPRINTF(("%s: brace done\n", __func__));
+	if (has_automatic_storage_duration(sym)) {
+		/* non-constant initializer */
+		c99ism(177);
 	} else {
-		/*
-		 * Take all entries which cannot be used for further
-		 * initializers from the stack, but do this only if
-		 * they do not require a closing brace.
-		 */
-		DPRINTF(("%s: no brace\n", __func__));
-		while (!initstk->i_brace &&
-		       initstk->i_cnt == 0 && !initstk->i_nolimit) {
-			popi2();
-		}
-		DPRINTF(("%s: no brace done\n", __func__));
+		/* non-constant initializer */
+		error(177);
 	}
 }
 
 static void
-pushinit(void)
+check_trad_no_auto_aggregate(const sym_t *sym)
 {
-#ifdef DEBUG
-	char	buf[64];
-#endif
-	istk_t	*istk, *inxt;
-	int	cnt;
-	sym_t	*m;
 
-	istk = initstk;
-
-	/* Extend an incomplete array type by one element */
-	if (istk->i_cnt == 0) {
-		DPRINTF(("%s(extend) %s\n", __func__, tyname(buf, sizeof(buf),
-		    istk->i_type)));
-		/*
-		 * Inside of other aggregate types must not be an incomplete
-		 * type.
-		 */
-		if (istk->i_nxt->i_nxt != NULL)
-			LERROR("pushinit()");
-		istk->i_cnt = 1;
-		if (istk->i_type->t_tspec != ARRAY)
-			LERROR("pushinit()");
-		istk->i_type->t_dim++;
-		/* from now its an complete type */
-		setcompl(istk->i_type, 0);
-	}
-
-	if (istk->i_cnt <= 0)
-		LERROR("pushinit()");
-	if (istk->i_type != NULL && issclt(istk->i_type->t_tspec))
-		LERROR("pushinit()");
-
-	initstk = xcalloc(1, sizeof (istk_t));
-	initstk->i_nxt = istk;
-	initstk->i_type = istk->i_subt;
-	if (initstk->i_type->t_tspec == FUNC)
-		LERROR("pushinit()");
-
-again:
-	istk = initstk;
-
-	DPRINTF(("%s(%s)\n", __func__, tyname(buf, sizeof(buf), istk->i_type)));
-	switch (istk->i_type->t_tspec) {
-	case ARRAY:
-		if (namedmem) {
-			DPRINTF(("%s: ARRAY %s brace=%d\n", __func__,
-			    namedmem->n_name, istk->i_brace));
-			goto pop;
-		} else if (istk->i_nxt->i_namedmem) {
-			istk->i_brace = 1;
-			DPRINTF(("%s ARRAY brace=%d, namedmem=%d\n", __func__,
-			    istk->i_brace, istk->i_nxt->i_namedmem));
-		}
-
-		if (incompl(istk->i_type) && istk->i_nxt->i_nxt != NULL) {
-			/* initialisation of an incomplete type */
-			error(175);
-			initerr = 1;
-			return;
-		}
-		istk->i_subt = istk->i_type->t_subt;
-		istk->i_nolimit = incompl(istk->i_type);
-		istk->i_cnt = istk->i_type->t_dim;
-		DPRINTF(("%s: elements array %s[%d] %s\n", __func__,
-		    tyname(buf, sizeof(buf), istk->i_subt), istk->i_cnt,
-		    namedmem ? namedmem->n_name : "*none*"));
-		break;
-	case UNION:
-		if (tflag)
-			/* initialisation of union is illegal in trad. C */
-			warning(238);
-		/* FALLTHROUGH */
-	case STRUCT:
-		if (incompl(istk->i_type)) {
-			/* initialisation of an incomplete type */
-			error(175);
-			initerr = 1;
-			return;
-		}
-		cnt = 0;
-		DPRINTF(("%s: 2. member lookup %s %s i_namedmem=%d\n", __func__,
-		    tyname(buf, sizeof(buf), istk->i_type),
-		    namedmem ? namedmem->n_name : "*none*", istk->i_namedmem));
-		for (m = istk->i_type->t_str->memb; m != NULL; m = m->s_nxt) {
-			if (m->s_field && m->s_name == unnamed)
-				continue;
-			if (namedmem != NULL) {
-				DPRINTF(("%s():[member:%s, looking:%s]\n",
-				    __func__, m->s_name, namedmem->n_name));
-				if (strcmp(m->s_name, namedmem->n_name) == 0) {
-					cnt++;
-					break;
-				} else
-					continue;
-			}
-			if (++cnt == 1) {
-				istk->i_mem = m;
-				istk->i_subt = m->s_type;
-			}
-		}
-		if (namedmem != NULL) {
-			if (m == NULL) {
-				DPRINTF(("%s(): struct pop\n", __func__));
-				goto pop;
-			} 
-			istk->i_mem = m;
-			istk->i_subt = m->s_type;
-			istk->i_namedmem = 1;
-			DPRINTF(("%s(): namedmem %s\n", __func__,
-			    namedmem->n_name));
-			memberpop();
-			cnt = istk->i_type->t_tspec == STRUCT ? 2 : 1;
-		}
-		istk->i_brace = 1;
-		DPRINTF(("%s(): %s brace=%d\n", __func__,
-		    tyname(buf, sizeof(buf),
-		    istk->i_type ? istk->i_type : istk->i_subt),
-		    istk->i_brace));
-		if (cnt == 0) {
-			/* cannot init. struct/union with no named member */
-			error(179);
-			initerr = 1;
-			return;
-		}
-		istk->i_cnt = istk->i_type->t_tspec == STRUCT ? cnt : 1;
-		break;
-	default:
-		if (namedmem) {
-			DPRINTF(("%s(): pop\n", __func__));
-	pop:
-			inxt = initstk->i_nxt;
-			free(istk);
-			initstk = inxt;
-			goto again;
-		}
-		istk->i_cnt = 1;
-		break;
+	if (has_automatic_storage_duration(sym) &&
+	    !is_scalar(sym->s_type->t_tspec)) {
+		/* no automatic aggregate initialization in traditional C */
+		warning(188);
 	}
 }
 
 static void
-testinit(void)
+check_init_expr(const type_t *ltp, sym_t *lsym, tnode_t *rn)
 {
-	istk_t	*istk;
+	tnode_t *ln;
+	type_t *lutp;
+	tspec_t lt, rt;
+	struct memory_block *tmem;
 
-	istk = initstk;
+	lutp = expr_unqualified_type(ltp);
 
-	/*
-	 * If a closing brace is expected we have at least one initializer
-	 * too much.
-	 */
-	if (istk->i_cnt == 0 && !istk->i_nolimit && !istk->i_namedmem) {
-		switch (istk->i_type->t_tspec) {
-		case ARRAY:
-			/* too many array initializers */
-			error(173, istk->i_type->t_dim);
-			break;
-		case STRUCT:
-		case UNION:
-			/* too many struct/union initializers */
-			error(172);
-			break;
-		default:
-			/* too many initializers */
-			error(174);
-			break;
-		}
-		initerr = 1;
-	}
-}
-
-static void
-nextinit(int brace)
-{
-	char buf[64];
-
-	DPRINTF(("%s(%d)\n", __func__, brace));
-	if (!brace) {
-		if (initstk->i_type == NULL &&
-		    !issclt(initstk->i_subt->t_tspec)) {
-			/* {}-enclosed initializer required */
-			error(181);
-		}
-		/*
-		 * Make sure an entry with a scalar type is at the top
-		 * of the stack.
-		 */
-		if (!initerr)
-			testinit();
-		while (!initerr && (initstk->i_type == NULL ||
-				    !issclt(initstk->i_type->t_tspec))) {
-			if (!initerr)
-				pushinit();
-		}
-	} else {
-		if (initstk->i_type != NULL &&
-		    issclt(initstk->i_type->t_tspec)) {
-			/* invalid initializer */
-			error(176, tyname(buf, sizeof(buf), initstk->i_type));
-			initerr = 1;
-		}
-		if (!initerr)
-			testinit();
-		if (!initerr)
-			pushinit();
-		if (!initerr) {
-			initstk->i_brace = 1;
-			DPRINTF(("%s(): %p %s brace=%d\n", __func__,
-			    namedmem, tyname(buf, sizeof(buf),
-			    initstk->i_type ? initstk->i_type :
-			    initstk->i_subt), initstk->i_brace));
-		}
-	}
-}
-
-void
-initlbr(void)
-{
-	DPRINTF(("%s\n", __func__));
-
-	if (initerr)
-		return;
-
-	if ((initsym->s_scl == AUTO || initsym->s_scl == REG) &&
-	    initstk->i_nxt == NULL) {
-		if (tflag && !issclt(initstk->i_subt->t_tspec))
-			/* no automatic aggregate initialization in trad. C*/
-			warning(188);
-	}
-
-	/*
-	 * Remove all entries which cannot be used for further initializers
-	 * and do not expect a closing brace.
-	 */
-	popinit(0);
-
-	nextinit(1);
-}
-
-void
-initrbr(void)
-{
-	DPRINTF(("%s\n", __func__));
-
-	if (initerr)
-		return;
-
-	popinit(1);
-}
-
-void
-mkinit(tnode_t *tn)
-{
-	ptrdiff_t offs;
-	sym_t	*sym;
-	tspec_t	lt, rt;
-	tnode_t	*ln;
-	struct	mbl *tmem;
-	scl_t	sc;
-#ifdef DEBUG
-	char	buf[64], sbuf[64];
-#endif
-
-	DPRINTF(("%s(%s %s)\n", __func__, tyname(buf, sizeof(buf), tn->tn_type),
-	    prtnode(sbuf, sizeof(sbuf), tn)));
-	if (initerr || tn == NULL)
-		return;
-
-	sc = initsym->s_scl;
-
-	/*
-	 * Do not test for automatic aggregate initialisation. If the
-	 * initializer starts with a brace we have the warning already.
-	 * If not, an error will be printed that the initializer must
-	 * be enclosed by braces.
-	 */
-
-	/*
-	 * Local initialisation of non-array-types with only one expression
-	 * without braces is done by ASSIGN
-	 */
-	if ((sc == AUTO || sc == REG) &&
-	    initsym->s_type->t_tspec != ARRAY && initstk->i_nxt == NULL) {
-		ln = getnnode(initsym, 0);
-		ln->tn_type = tduptyp(ln->tn_type);
-		ln->tn_type->t_const = 0;
-		tn = build(ASSIGN, ln, tn);
-		expr(tn, 0, 0, 0);
-		return;
-	}
-
-	/*
-	 * Remove all entries which cannot be used for further initializers
-	 * and do not require a closing brace.
-	 */
-	popinit(0);
-
-	/* Initialisations by strings are done in strginit(). */
-	if (strginit(tn))
-		return;
-
-	nextinit(0);
-	if (initerr || tn == NULL)
-		return;
-
-	initstk->i_cnt--;
-	DPRINTF(("%s() cnt=%d tn=%p\n", __func__, initstk->i_cnt, tn));
 	/* Create a temporary node for the left side. */
-	ln = tgetblk(sizeof (tnode_t));
+	ln = expr_zero_alloc(sizeof(*ln));
 	ln->tn_op = NAME;
-	ln->tn_type = tduptyp(initstk->i_type);
-	ln->tn_type->t_const = 0;
-	ln->tn_lvalue = 1;
-	ln->tn_sym = initsym;		/* better than nothing */
+	ln->tn_type = lutp;
+	ln->tn_lvalue = true;
+	ln->tn_sym = lsym;
 
-	tn = cconv(tn);
+	rn = cconv(rn);
 
 	lt = ln->tn_type->t_tspec;
-	rt = tn->tn_type->t_tspec;
+	rt = rn->tn_type->t_tspec;
 
-	if (!issclt(lt))
-		LERROR("mkinit()");
-
-	if (!typeok(INIT, 0, ln, tn))
+	debug_step("typeok '%s', '%s'",
+	    type_name(ln->tn_type), type_name(rn->tn_type));
+	if (!typeok(INIT, 0, ln, rn))
 		return;
 
 	/*
-	 * Store the tree memory. This is nessesary because otherwise
+	 * Preserve the tree memory. This is necessary because otherwise
 	 * expr() would free it.
 	 */
-	tmem = tsave();
-	expr(tn, 1, 0, 1);
-	trestor(tmem);
+	tmem = expr_save_memory();
+	expr(rn, true, false, true, false);
+	expr_restore_memory(tmem);
 
-	if (isityp(lt) && ln->tn_type->t_isfield && !isityp(rt)) {
-		/*
-		 * Bit-fields can be initialized in trad. C only by integer
-		 * constants.
-		 */
-		if (tflag)
-			/* bit-field initialisation is illegal in trad. C */
-			warning(186);
-	}
+	check_bit_field_init(ln, lt, rt);
 
-	if (lt != rt || (initstk->i_type->t_isfield && tn->tn_op == CON))
-		tn = convert(INIT, 0, initstk->i_type, tn);
+	/*
+	 * XXX: Is it correct to do this conversion _after_ the typeok above?
+	 */
+	if (lt != rt || (ltp->t_bitfield && rn->tn_op == CON))
+		rn = convert(INIT, 0, unconst_cast(ltp), rn);
 
-	if (tn != NULL && tn->tn_op != CON) {
-		sym = NULL;
-		offs = 0;
-		if (conaddr(tn, &sym, &offs) == -1) {
-			if (sc == AUTO || sc == REG) {
-				/* non-constant initializer */
-				(void)c99ism(177);
-			} else {
-				/* non-constant initializer */
-				error(177);
-			}
+	check_non_constant_initializer(rn, lsym);
+}
+
+
+static const type_t *
+designator_type(const designator *dr, const type_t *tp)
+{
+	switch (tp->t_tspec) {
+	case STRUCT:
+	case UNION:
+		if (dr->dr_kind != DK_STRUCT && dr->dr_kind != DK_UNION) {
+			const sym_t *fmem = first_named_member(tp);
+			/* syntax error '%s' */
+			error(249, "designator '[...]' is only for arrays");
+			return fmem != NULL ? fmem->s_type : NULL;
 		}
+
+		lint_assert(dr->dr_member != NULL);
+		return dr->dr_member->s_type;
+	case ARRAY:
+		if (dr->dr_kind != DK_ARRAY) {
+			/* syntax error '%s' */
+			error(249,
+			    "designator '.member' is only for struct/union");
+		}
+		if (!tp->t_incomplete_array)
+			lint_assert(dr->dr_subscript < (size_t)tp->t_dim);
+		return tp->t_subt;
+	default:
+		if (dr->dr_kind != DK_SCALAR) {
+			/* syntax error '%s' */
+			error(249, "scalar type cannot use designator");
+		}
+		return tp;
 	}
 }
 
 
-static int
-strginit(tnode_t *tn)
+#ifdef DEBUG
+static void
+designator_debug(const designator *dr)
 {
-	tspec_t	t;
-	istk_t	*istk;
-	int	len;
-	strg_t	*strg;
+
+	if (dr->dr_kind == DK_STRUCT || dr->dr_kind == DK_UNION) {
+		lint_assert(dr->dr_subscript == 0);
+		debug_printf(".%s",
+		    dr->dr_member != NULL
+			? dr->dr_member->s_name
+			: "<end>");
+	} else if (dr->dr_kind == DK_ARRAY) {
+		lint_assert(dr->dr_member == NULL);
+		debug_printf("[%zu]", dr->dr_subscript);
+	} else {
+		lint_assert(dr->dr_member == NULL);
+		lint_assert(dr->dr_subscript == 0);
+		debug_printf("<scalar>");
+	}
+
+	if (dr->dr_done)
+		debug_printf(" (done)");
+}
+
+static void
+designation_debug(const designation *dn)
+{
+	size_t i;
+
+	if (dn->dn_len == 0) {
+		debug_step("designation: (empty)");
+		return;
+	}
+
+	debug_print_indent();
+	debug_printf("designation: ");
+	for (i = 0; i < dn->dn_len; i++)
+		designator_debug(dn->dn_items + i);
+	debug_printf("\n");
+}
+#else
+#define designation_debug(dn) do { } while (false)
+#endif
+
+static designator *
+designation_last(designation *dn)
+{
+
+	lint_assert(dn->dn_len > 0);
+	return &dn->dn_items[dn->dn_len - 1];
+}
+
+static void
+designation_push(designation *dn, designator_kind kind,
+		 const sym_t *member, size_t subscript)
+{
+	designator *dr;
+
+	if (dn->dn_len == dn->dn_cap) {
+		dn->dn_cap += 4;
+		dn->dn_items = xrealloc(dn->dn_items,
+		    dn->dn_cap * sizeof(dn->dn_items[0]));
+	}
+
+	dr = &dn->dn_items[dn->dn_len++];
+	dr->dr_kind = kind;
+	dr->dr_member = member;
+	dr->dr_subscript = subscript;
+	dr->dr_done = false;
+	designation_debug(dn);
+}
+
+/*
+ * Extend the designation as appropriate for the given type.
+ *
+ * C11 6.7.9p17
+ */
+static bool
+designation_descend(designation *dn, const type_t *tp)
+{
+
+	if (is_struct_or_union(tp->t_tspec)) {
+		const sym_t *member = first_named_member(tp);
+		if (member == NULL)
+			return false;
+		designation_push(dn,
+		    tp->t_tspec == STRUCT ? DK_STRUCT : DK_UNION, member, 0);
+	} else if (tp->t_tspec == ARRAY)
+		designation_push(dn, DK_ARRAY, NULL, 0);
+	else
+		designation_push(dn, DK_SCALAR, NULL, 0);
+	return true;
+}
+
+/*
+ * Starting at the type of the current object, resolve the type of the
+ * sub-object by following each designator in the list.
+ *
+ * C99 6.7.8p18
+ */
+static const type_t *
+designation_type(const designation *dn, const type_t *tp)
+{
+	size_t i;
+
+	for (i = 0; i < dn->dn_len && tp != NULL; i++)
+		tp = designator_type(dn->dn_items + i, tp);
+	return tp;
+}
+
+static const type_t *
+designation_parent_type(const designation *dn, const type_t *tp)
+{
+	size_t i;
+
+	for (i = 0; i + 1 < dn->dn_len && tp != NULL; i++)
+		tp = designator_type(dn->dn_items + i, tp);
+	return tp;
+}
+
+
+static brace_level *
+brace_level_new(const type_t *tp, brace_level *enclosing)
+{
+	brace_level *bl;
+
+	bl = xcalloc(1, sizeof(*bl));
+	bl->bl_type = tp;
+	bl->bl_enclosing = enclosing;
+
+	return bl;
+}
+
+static void
+brace_level_free(brace_level *bl)
+{
+
+	free(bl->bl_designation.dn_items);
+	free(bl);
+}
+
+#ifdef DEBUG
+static void
+brace_level_debug(const brace_level *bl)
+{
+
+	lint_assert(bl->bl_type != NULL);
+
+	debug_printf("type '%s'\n", type_name(bl->bl_type));
+	debug_indent_inc();
+	designation_debug(&bl->bl_designation);
+	debug_indent_dec();
+}
+#else
+#define brace_level_debug(level) do { } while (false)
+#endif
+
+/* Return the type of the sub-object that is currently being initialized. */
+static const type_t *
+brace_level_sub_type(const brace_level *bl)
+{
+
+	return designation_type(&bl->bl_designation, bl->bl_type);
+}
+
+/*
+ * After initializing a sub-object, advance the designation to point after
+ * the sub-object that has just been initialized.
+ *
+ * C99 6.7.8p17
+ * C11 6.7.9p17
+ */
+static void
+brace_level_advance(brace_level *bl, size_t *max_subscript)
+{
+	const type_t *tp;
+	designation *dn;
+	designator *dr;
+
+	debug_enter();
+	dn = &bl->bl_designation;
+	tp = designation_parent_type(dn, bl->bl_type);
+
+	if (bl->bl_designation.dn_len == 0)
+		(void)designation_descend(dn, bl->bl_type);
+	dr = designation_last(dn);
+	/* TODO: try to switch on dr->dr_kind instead */
+	switch (tp->t_tspec) {
+	case STRUCT:
+		lint_assert(dr->dr_member != NULL);
+		dr->dr_member = skip_unnamed(dr->dr_member->s_next);
+		if (dr->dr_member == NULL)
+			dr->dr_done = true;
+		break;
+	case UNION:
+		dr->dr_member = NULL;
+		dr->dr_done = true;
+		break;
+	case ARRAY:
+		dr->dr_subscript++;
+		if (tp->t_incomplete_array &&
+		    dr->dr_subscript > *max_subscript)
+			*max_subscript = dr->dr_subscript;
+		if (!tp->t_incomplete_array &&
+		    dr->dr_subscript >= (size_t)tp->t_dim)
+			dr->dr_done = true;
+		break;
+	default:
+		dr->dr_done = true;
+		break;
+	}
+	designation_debug(dn);
+	debug_leave();
+}
+
+static void
+warn_too_many_initializers(designator_kind kind, const type_t *tp)
+{
+
+	if (kind == DK_STRUCT || kind == DK_UNION) {
+		/* too many struct/union initializers */
+		error(172);
+	} else if (kind == DK_ARRAY) {
+		lint_assert(tp->t_tspec == ARRAY);
+		lint_assert(!tp->t_incomplete_array);
+		/* too many array initializers, expected %d */
+		error(173, tp->t_dim);
+	} else {
+		/* too many initializers */
+		error(174);
+	}
+
+}
+
+static bool
+brace_level_pop_done(brace_level *bl, size_t *max_subscript)
+{
+	designation *dn = &bl->bl_designation;
+	designator_kind dr_kind = designation_last(dn)->dr_kind;
+	const type_t *sub_type = designation_parent_type(dn, bl->bl_type);
+
+	while (designation_last(dn)->dr_done) {
+		dn->dn_len--;
+		designation_debug(dn);
+		if (dn->dn_len == 0) {
+			warn_too_many_initializers(dr_kind, sub_type);
+			return false;
+		}
+		brace_level_advance(bl, max_subscript);
+	}
+	return true;
+}
+
+static void
+brace_level_pop_final(brace_level *bl, size_t *max_subscript)
+{
+	designation *dn = &bl->bl_designation;
+
+	while (dn->dn_len > 0 && designation_last(dn)->dr_done) {
+		dn->dn_len--;
+		designation_debug(dn);
+		if (dn->dn_len == 0)
+			return;
+		brace_level_advance(bl, max_subscript);
+	}
+}
+
+/*
+ * Make the designation point to the sub-object to be initialized next.
+ * Initially or after a previous expression, the designation is not advanced
+ * yet since the place to stop depends on the next expression, especially for
+ * string literals.
+ */
+static bool
+brace_level_goto(brace_level *bl, const tnode_t *rn, size_t *max_subscript)
+{
+	const type_t *ltp;
+	designation *dn;
+
+	dn = &bl->bl_designation;
+	if (dn->dn_len == 0 && can_init_character_array(bl->bl_type, rn))
+		return true;
+	if (dn->dn_len == 0 && !designation_descend(dn, bl->bl_type))
+		return false;
+
+again:
+	if (!brace_level_pop_done(bl, max_subscript))
+		return false;
+
+	ltp = brace_level_sub_type(bl);
+	if (types_compatible(ltp, rn->tn_type, true, false, NULL))
+		return true;
+
+	if (is_struct_or_union(ltp->t_tspec) || ltp->t_tspec == ARRAY) {
+		if (can_init_character_array(ltp, rn))
+			return true;
+		if (!designation_descend(dn, ltp))
+			return false;
+		goto again;
+	}
+
+	return true;
+}
+
+
+static initialization *
+initialization_new(sym_t *sym, initialization *enclosing)
+{
+	initialization *in;
+
+	in = xcalloc(1, sizeof(*in));
+	in->in_sym = sym;
+	in->in_enclosing = enclosing;
+
+	return in;
+}
+
+static void
+initialization_free(initialization *in)
+{
+	brace_level *bl, *next;
+
+	/* TODO: lint_assert(in->in_brace_level == NULL) */
+	for (bl = in->in_brace_level; bl != NULL; bl = next) {
+		next = bl->bl_enclosing;
+		brace_level_free(bl);
+	}
+
+	free(in);
+}
+
+#ifdef DEBUG
+static void
+initialization_debug(const initialization *in)
+{
+	size_t i;
+	const brace_level *bl;
+
+	if (in->in_err)
+		debug_step("initialization error");
+	if (in->in_brace_level == NULL) {
+		debug_step("no brace level");
+		return;
+	}
+
+	i = 0;
+	for (bl = in->in_brace_level; bl != NULL; bl = bl->bl_enclosing) {
+		debug_print_indent();
+		debug_printf("brace level %zu: ", i);
+		brace_level_debug(bl);
+		i++;
+	}
+}
+#else
+#define initialization_debug(in) do { } while (false)
+#endif
+
+/*
+ * Return the type of the object or sub-object that is currently being
+ * initialized.
+ */
+static const type_t *
+initialization_sub_type(initialization *in)
+{
+	const type_t *tp;
+
+	if (in->in_brace_level == NULL)
+		return in->in_sym->s_type;
+
+	tp = brace_level_sub_type(in->in_brace_level);
+	if (tp == NULL)
+		in->in_err = true;
+	return tp;
+}
+
+static void
+initialization_lbrace(initialization *in)
+{
+	const type_t *tp;
+	brace_level *outer_bl;
+
+	if (in->in_err)
+		return;
+
+	debug_enter();
+
+	tp = initialization_sub_type(in);
+	if (tp == NULL)
+		goto done;
+
+	outer_bl = in->in_brace_level;
+	if (!allow_c90 && outer_bl == NULL)
+		check_trad_no_auto_aggregate(in->in_sym);
+
+	if (!allow_c90 && tp->t_tspec == UNION) {
+		/* initialization of union is illegal in traditional C */
+		warning(238);
+	}
+
+	if (is_struct_or_union(tp->t_tspec) && tp->t_str->sou_incomplete) {
+		/* initialization of incomplete type '%s' */
+		error(175, type_name(tp));
+		in->in_err = true;
+		goto done;
+	}
+
+	if (outer_bl != NULL && outer_bl->bl_designation.dn_len == 0) {
+		designation *dn = &outer_bl->bl_designation;
+		(void)designation_descend(dn, outer_bl->bl_type);
+		tp = designation_type(dn, outer_bl->bl_type);
+	}
+
+	in->in_brace_level = brace_level_new(tp, outer_bl);
+	if (is_struct_or_union(tp->t_tspec) &&
+	    first_named_member(tp) == NULL) {
+		/* cannot initialize struct/union with no named member */
+		error(179);
+		in->in_err = true;
+	}
+
+done:
+	initialization_debug(in);
+	debug_leave();
+}
+
+static void
+initialization_rbrace(initialization *in)
+{
+	brace_level *inner_bl, *outer_bl;
+
+	debug_enter();
+
+	if (in->in_brace_level != NULL)
+		brace_level_pop_final(in->in_brace_level,
+		    &in->in_max_subscript);
+
+	/* C99 6.7.8p22 */
+	if (in->in_sym->s_type->t_incomplete_array &&
+	    in->in_brace_level->bl_enclosing == NULL) {
+
+		/* prevent "empty array declaration for '%s' [190]" */
+		size_t dim = in->in_max_subscript;
+		if (dim == 0 && in->in_err)
+			dim = 1;
+
+		update_type_of_array_of_unknown_size(in->in_sym, dim);
+	}
+
+	if (in->in_err)
+		goto done;
+
+	inner_bl = in->in_brace_level;
+	outer_bl = inner_bl->bl_enclosing;
+	in->in_brace_level = outer_bl;
+	brace_level_free(inner_bl);
+
+	if (outer_bl != NULL)
+		brace_level_advance(outer_bl, &in->in_max_subscript);
+
+done:
+	initialization_debug(in);
+	debug_leave();
+}
+
+static void
+initialization_add_designator_member(initialization *in, const char *name)
+{
+	brace_level *bl;
+	const type_t *tp;
+	const sym_t *member;
+
+	if (in->in_err)
+		return;
+
+	bl = in->in_brace_level;
+	lint_assert(bl != NULL);
+
+	tp = brace_level_sub_type(bl);
+	if (is_struct_or_union(tp->t_tspec))
+		goto proceed;
+	else if (tp->t_tspec == ARRAY) {
+		/* syntax error '%s' */
+		error(249, "designator '.member' is only for struct/union");
+		in->in_err = true;
+		return;
+	} else {
+		/* syntax error '%s' */
+		error(249, "scalar type cannot use designator");
+		in->in_err = true;
+		return;
+	}
+
+proceed:
+	member = look_up_member(tp, name);
+	if (member == NULL) {
+		/* type '%s' does not have member '%s' */
+		error(101, type_name(tp), name);
+		in->in_err = true;
+		return;
+	}
+
+	designation_push(&bl->bl_designation,
+	    tp->t_tspec == STRUCT ? DK_STRUCT : DK_UNION, member, 0);
+}
+
+static void
+initialization_add_designator_subscript(initialization *in, size_t subscript)
+{
+	brace_level *bl;
+	const type_t *tp;
+
+	if (in->in_err)
+		return;
+
+	bl = in->in_brace_level;
+	lint_assert(bl != NULL);
+
+	tp = brace_level_sub_type(bl);
+	if (tp->t_tspec != ARRAY) {
+		/* syntax error '%s' */
+		error(249, "designator '[...]' is only for arrays");
+		in->in_err = true;
+		return;
+	}
+
+	if (!tp->t_incomplete_array && subscript >= (size_t)tp->t_dim) {
+		/* array subscript cannot be > %d: %ld */
+		error(168, tp->t_dim - 1, (long)subscript);
+		subscript = 0;	/* suppress further errors */
+	}
+
+	if (tp->t_incomplete_array && subscript > in->in_max_subscript)
+		in->in_max_subscript = subscript;
+
+	designation_push(&bl->bl_designation, DK_ARRAY, NULL, subscript);
+}
+
+/*
+ * Initialize an object with automatic storage duration that has an
+ * initializer expression without braces.
+ */
+static bool
+initialization_expr_using_op(initialization *in, tnode_t *rn)
+{
+	tnode_t *ln, *tn;
+
+	if (!has_automatic_storage_duration(in->in_sym))
+		return false;
+	if (in->in_brace_level != NULL)
+		return false;
+	if (in->in_sym->s_type->t_tspec == ARRAY)
+		return false;
+
+	debug_step("handing over to INIT");
+
+	ln = build_name(in->in_sym, false);
+	ln->tn_type = expr_unqualified_type(ln->tn_type);
+
+	tn = build_binary(ln, INIT, false /* XXX */, rn);
+	expr(tn, false, false, false, false);
+
+	return true;
+}
+
+/* Initialize a character array or wchar_t array with a string literal. */
+static bool
+initialization_init_array_from_string(initialization *in, tnode_t *tn)
+{
+	brace_level *bl;
+	const type_t *tp;
+	size_t len;
 
 	if (tn->tn_op != STRING)
-		return (0);
+		return false;
 
-	istk = initstk;
-	strg = tn->tn_strg;
+	tp = initialization_sub_type(in);
 
-	/*
-	 * Check if we have an array type which can be initialized by
-	 * the string.
-	 */
-	if (istk->i_subt != NULL && istk->i_subt->t_tspec == ARRAY) {
-		DPRINTF(("%s: subt array\n", __func__));
-		t = istk->i_subt->t_subt->t_tspec;
-		if (!((strg->st_tspec == CHAR &&
-		       (t == CHAR || t == UCHAR || t == SCHAR)) ||
-		      (strg->st_tspec == WCHAR && t == WCHAR))) {
-			return (0);
-		}
-		/* Put the array at top of stack */
-		pushinit();
-		istk = initstk;
-	} else if (istk->i_type != NULL && istk->i_type->t_tspec == ARRAY) {
-		DPRINTF(("%s: type array\n", __func__));
-		t = istk->i_type->t_subt->t_tspec;
-		if (!((strg->st_tspec == CHAR &&
-		       (t == CHAR || t == UCHAR || t == SCHAR)) ||
-		      (strg->st_tspec == WCHAR && t == WCHAR))) {
-			return (0);
-		}
-		/*
-		 * If the array is already partly initialized, we are
-		 * wrong here.
-		 */
-		if (istk->i_cnt != istk->i_type->t_dim)
-			return (0);
-	} else {
-		return (0);
+	if (!can_init_character_array(tp, tn))
+		return false;
+
+	len = tn->tn_string->st_len;
+	if (!tp->t_incomplete_array && (size_t)tp->t_dim < len) {
+		/* string literal too long (%lu) for target array (%lu) */
+		warning(187, (unsigned long)len, (unsigned long)tp->t_dim);
 	}
 
-	/* Get length without trailing NUL character. */
-	len = strg->st_len;
+	bl = in->in_brace_level;
+	if (bl != NULL && bl->bl_designation.dn_len == 0)
+		(void)designation_descend(&bl->bl_designation, bl->bl_type);
+	if (bl != NULL)
+		brace_level_advance(bl, &in->in_max_subscript);
 
-	if (istk->i_nolimit) {
-		istk->i_nolimit = 0;
-		istk->i_type->t_dim = len + 1;
-		/* from now complete type */
-		setcompl(istk->i_type, 0);
-	} else {
-		if (istk->i_type->t_dim < len) {
-			/* non-null byte ignored in string initializer */
-			warning(187);
-		}
+	if (tp->t_incomplete_array)
+		update_type_of_array_of_unknown_size(in->in_sym, len + 1);
+
+	return true;
+}
+
+/*
+ * Initialize a single sub-object as part of the currently ongoing
+ * initialization.
+ */
+static void
+initialization_expr(initialization *in, tnode_t *tn)
+{
+	brace_level *bl;
+	const type_t *tp;
+
+	if (in->in_err || tn == NULL)
+		return;
+
+	debug_enter();
+
+	bl = in->in_brace_level;
+	if (bl != NULL && !brace_level_goto(bl, tn, &in->in_max_subscript)) {
+		in->in_err = true;
+		goto done;
+	}
+	if (initialization_expr_using_op(in, tn))
+		goto done;
+	if (initialization_init_array_from_string(in, tn))
+		goto done;
+	if (in->in_err)
+		goto done;
+
+	tp = initialization_sub_type(in);
+	if (tp == NULL)
+		goto done;
+
+	if (bl == NULL && !is_scalar(tp->t_tspec)) {
+		/* {}-enclosed initializer required */
+		error(181);
+		goto done;
 	}
 
-	/* In every case the array is initialized completely. */
-	istk->i_cnt = 0;
+	debug_step("expecting '%s', expression has '%s'",
+	    type_name(tp), type_name(tn->tn_type));
+	check_init_expr(tp, in->in_sym, tn);
+	if (bl != NULL)
+		brace_level_advance(bl, &in->in_max_subscript);
 
-	return (1);
+done:
+	initialization_debug(in);
+	debug_leave();
+}
+
+
+static initialization *init;
+
+
+static initialization *
+current_init(void)
+{
+
+	lint_assert(init != NULL);
+	return init;
+}
+
+sym_t **
+current_initsym(void)
+{
+
+	return &current_init()->in_sym;
+}
+
+void
+begin_initialization(sym_t *sym)
+{
+
+	debug_step("begin initialization of '%s'", type_name(sym->s_type));
+	debug_indent_inc();
+
+	init = initialization_new(sym, init);
+}
+
+void
+end_initialization(void)
+{
+	initialization *in;
+
+	in = init;
+	init = in->in_enclosing;
+	initialization_free(in);
+
+	debug_indent_dec();
+	debug_step("end initialization");
+}
+
+void
+begin_designation(void)
+{
+	initialization *in;
+	brace_level *bl;
+
+	in = current_init();
+	if (in->in_err)
+		return;
+
+	bl = in->in_brace_level;
+	lint_assert(bl != NULL);
+	bl->bl_designation.dn_len = 0;
+	designation_debug(&bl->bl_designation);
+}
+
+void
+add_designator_member(sbuf_t *sb)
+{
+
+	initialization_add_designator_member(current_init(), sb->sb_name);
+}
+
+void
+add_designator_subscript(range_t range)
+{
+
+	initialization_add_designator_subscript(current_init(), range.hi);
+}
+
+void
+init_lbrace(void)
+{
+
+	initialization_lbrace(current_init());
+}
+
+void
+init_expr(tnode_t *tn)
+{
+
+	initialization_expr(current_init(), tn);
+}
+
+void
+init_rbrace(void)
+{
+
+	initialization_rbrace(current_init());
 }

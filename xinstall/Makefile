@@ -1,8 +1,8 @@
 PROG =	xinstall
-SRCS =	xinstall.c metachar.c
+SRCS =	xinstall.c
 MAN  =	install.1
 
-.PATH:		${.CURDIR}/../mtree ${.CURDIR}/../make
+.PATH:		${.CURDIR}/../mtree
 .NOPATH:	fake_getid.o getid.o
 
 CPPFLAGS +=	-I${.CURDIR}/../mtree -I${.CURDIR}/../make -I${.CURDIR}

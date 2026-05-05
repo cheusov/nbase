@@ -1,9 +1,9 @@
-/*	$NetBSD: targparam.h,v 1.2 2012/03/27 19:24:02 christos Exp $	*/
+/*	$NetBSD: targparam.h,v 1.6 2021/06/27 08:43:49 rillig Exp $	*/
 
 /*
  * Copyright (c) 1994, 1995 Jochen Pohl
  * All Rights Reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -37,18 +37,17 @@
 #include "uchar.h"
 #include "lp64.h"
 
-/*    
- * Should be set to 1 if the difference of two pointers is of type long
+/*
+ * Should be set to LONG if the difference of two pointers is of type long
  * or the value of sizeof is of type unsigned long.  Note this MUST be
  * kept in sync with the compiler!
- */     
+ */
+#define	PTRDIFF_TSPEC		LONG
+#define	SIZEOF_TSPEC		ULONG
+#define	INTPTR_TSPEC		LONG
 
-#define	PTRDIFF_IS_LONG		1
-#define	SIZEOF_IS_ULONG		1
-#define	INTPTR_IS_LONG		1
+#define	FLOAT_SIZE		32
+#define	DOUBLE_SIZE		64
+#define	LDOUBLE_SIZE		64
 
-#define	FLOAT_SIZE		(4 * CHAR_BIT)
-#define	DOUBLE_SIZE		(8 * CHAR_BIT)
-#define	LDOUBLE_SIZE		(8 * CHAR_BIT)
-
-#define	ENUM_SIZE		(4 * CHAR_BIT)
+#define	ENUM_SIZE		32

@@ -1,5 +1,5 @@
 %{
-/*	$NetBSD: fgen.l,v 1.37 2016/03/08 20:13:44 christos Exp $	*/
+/*	$NetBSD: fgen.l,v 1.40 2022/01/17 20:38:49 andvar Exp $	*/
 /* FLEX input for FORTH input file scanner */
 /*  
  * Copyright (c) 1998 Eduardo Horvath.
@@ -42,7 +42,7 @@
 #endif
 
 #if defined(__RCSID) && !defined(lint)
-__RCSID("$NetBSD: fgen.l,v 1.37 2016/03/08 20:13:44 christos Exp $");
+__RCSID("$NetBSD: fgen.l,v 1.40 2022/01/17 20:38:49 andvar Exp $");
 #endif
 
 %}
@@ -103,7 +103,7 @@ static int parse_stack_ptr = 0;
 
 static void	token_err(int, const char *, const char *, const char *, ...)
     __printflike(4, 5) __dead;
-YY_DECL;
+static YY_DECL;
 
 static int debug = 0;
 #define ASSERT if (debug) assert
@@ -1077,7 +1077,7 @@ main(int argc, char *argv[])
 
 /*
  * Tokenize one file.  This is a separate function so it can
- * be called recursively to parse mutiple levels of include files.
+ * be called recursively to parse multiple levels of include files.
  */
 
 static void
@@ -2047,8 +2047,8 @@ tokenize(YY_BUFFER_STATE yinput)
 				emit("execute");
 #else
 				token_err(yylineno, infile, yytext,
-					"undefined token `%s'\n",
-					token->text);
+					"%s: undefined token `%s'\n",
+					__func__, token->text);
 #endif
 			}
 			break;

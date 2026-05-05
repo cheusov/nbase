@@ -1,4 +1,4 @@
-/* $NetBSD: kill.c,v 1.30 2018/12/12 20:22:43 kre Exp $ */
+/* $NetBSD: kill.c,v 1.33 2022/05/16 10:53:14 kre Exp $ */
 
 /*
  * Copyright (c) 1988, 1993, 1994
@@ -45,7 +45,7 @@ __COPYRIGHT("@(#) Copyright (c) 1988, 1993, 1994\
 #if 0
 static char sccsid[] = "@(#)kill.c	8.4 (Berkeley) 4/28/95";
 #else
-__RCSID("$NetBSD: kill.c,v 1.30 2018/12/12 20:22:43 kre Exp $");
+__RCSID("$NetBSD: kill.c,v 1.33 2022/05/16 10:53:14 kre Exp $");
 #endif
 #endif /* not lint */
 
@@ -71,7 +71,7 @@ int killcmd(int, char *argv[]);
 __dead static void nosig(const char *);
 void printsignals(FILE *, int);
 static int signum(const char *);
-static pid_t processnum(const char *);
+static int processnum(const char *, pid_t *);
 __dead static void usage(void);
 
 int
@@ -182,22 +182,23 @@ main(int argc, char *argv[])
 	for (errors = 0; argc; argc--, argv++) {
 #ifdef SHELL
 		extern int getjobpgrp(const char *);
+
 		if (*argv[0] == '%') {
 			pid = getjobpgrp(*argv);
 			if (pid == 0) {
-				warnx("illegal job id: %s", *argv);
+				warnx("bad job id: %s", *argv);
 				errors = 1;
 				continue;
 			}
 		} else 
 #endif
-			if ((pid = processnum(*argv)) == (pid_t)-1) {
+			if (processnum(*argv, &pid) != 0) {
 				errors = 1;
 				continue;
 			}
 
 		if (kill(pid, numsig) == -1) {
-			warn("%s", *argv);
+			warn("%s %s", pid < -1 ? "pgrp" : "pid", *argv);
 			errors = 1;
 		}
 #ifdef SHELL
@@ -225,28 +226,30 @@ signum(const char *sn)
 
 	/* check for correctly parsed number */
 	if (*ep || n <= INT_MIN || n >= INT_MAX )
-		errx(EXIT_FAILURE, "illegal signal number: %s", sn);
+		errx(EXIT_FAILURE, "bad signal number: %s", sn);
 		/* NOTREACHED */
 
 	return (int)n;
 }
 
-static pid_t
-processnum(const char *s)
+static int
+processnum(const char *s, pid_t *pid)
 {
 	intmax_t n;
 	char *ep;
 
+	errno = 0;
 	n = strtoimax(s, &ep, 10);
 
 	/* check for correctly parsed number */
-	if (*ep || n == INTMAX_MIN || n == INTMAX_MAX || (pid_t)n != n ||
-	    n == -1) {
-		warnx("illegal process%s id: %s", (n < 0 ? " group" : ""), s);
-		n = -1;
+	if (ep == s || *ep || n == INTMAX_MIN || n == INTMAX_MAX ||
+	    (pid_t)n != n || errno != 0) {
+		warnx("bad process%s id: '%s'", (n < 0 ? " group" : ""), s);
+		return -1;
 	}
 
-	return (pid_t)n;
+	*pid = (pid_t)n;
+	return 0;
 }
 
 static void
@@ -272,7 +275,9 @@ printsignals(FILE *fp, int len)
 	int nl, pad;
 	const char *name;
 	int termwidth = 80;
+	int posix;
 
+	posix = getenv("POSIXLY_CORRECT") != 0;
 	if ((name = getenv("COLUMNS")) != 0)
 		termwidth = atoi(name);
 	else if (isatty(fileno(fp))) {
@@ -283,6 +288,8 @@ printsignals(FILE *fp, int len)
 	}
 
 	pad = (len | 7) + 1 - len;
+	if (posix && pad)
+		pad = 1;
 
 	for (sig = 0; (sig = signalnext(sig)) != 0; ) {
 		name = signalname(sig);
@@ -302,6 +309,8 @@ printsignals(FILE *fp, int len)
 
 		len += nl + pad;
 		pad = (nl | 7) + 1 - nl;
+		if (posix && pad)
+			pad = 1;
 
 		fprintf(fp, "%s", name);
 	}

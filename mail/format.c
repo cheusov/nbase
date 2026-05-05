@@ -1,4 +1,4 @@
-/*	$NetBSD: format.c,v 1.15 2009/04/11 14:22:32 christos Exp $	*/
+/*	$NetBSD: format.c,v 1.17 2022/08/07 10:12:19 andvar Exp $	*/
 
 /*-
  * Copyright (c) 2006 The NetBSD Foundation, Inc.
@@ -31,7 +31,7 @@
 
 #include <sys/cdefs.h>
 #ifndef __lint__
-__RCSID("$NetBSD: format.c,v 1.15 2009/04/11 14:22:32 christos Exp $");
+__RCSID("$NetBSD: format.c,v 1.17 2022/08/07 10:12:19 andvar Exp $");
 #endif /* not __lint__ */
 
 #include <time.h>
@@ -579,10 +579,10 @@ date_to_tm(char *date, struct tm *tm)
 	 */
 
 	/* Check for an optional 'day-of-week' */
-	if ((tail = strptime(date, " %a,", &tmp_tm)) == NULL) {
+	if ((tail = strptime(date, " %a,", &tmp_tm)) == NULL)
 		tail = date;
+	else
 		tm->tm_wday = tmp_tm.tm_wday;
-	}
 
 	/* Get the required 'day' and 'month' */
 	if ((tail = strptime(tail, " %d %b", &tmp_tm)) == NULL)
@@ -726,7 +726,7 @@ dateof(struct tm *tm, struct message *mp, int use_hl_date)
 	 * the "Date:" field.
 	 *
 	 * NOTE: The range for the time is 00:00 to 23:60 (to allow
-	 * for a leep second), but I have seen this violated making
+	 * for a leap second), but I have seen this violated making
 	 * strptime() fail, e.g.,
 	 *
 	 *   Date: Tue, 24 Oct 2006 24:07:58 +0400

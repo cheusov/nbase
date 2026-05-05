@@ -1,4 +1,4 @@
-/*	$NetBSD: mem1.c,v 1.18 2016/12/24 17:43:45 christos Exp $	*/
+/*	$NetBSD: mem1.c,v 1.63 2022/05/20 21:18:55 rillig Exp $	*/
 
 /*
  * Copyright (c) 1994, 1995 Jochen Pohl
@@ -36,329 +36,275 @@
 #endif
 
 #include <sys/cdefs.h>
-#if defined(__RCSID) && !defined(lint)
-__RCSID("$NetBSD: mem1.c,v 1.18 2016/12/24 17:43:45 christos Exp $");
+#if defined(__RCSID)
+__RCSID("$NetBSD: mem1.c,v 1.63 2022/05/20 21:18:55 rillig Exp $");
 #endif
 
-#include <sys/types.h>
 #include <sys/param.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 #include "lint1.h"
 
 /*
- * Filenames allocated by fnalloc() and fnnalloc() are shared.
+ * Filenames allocated by record_filename are shared and have unlimited
+ * lifetime.
  */
-typedef struct fn {
-	char	*fn_name;
+struct filename {
+	const char *fn_name;
 	size_t	fn_len;
 	int	fn_id;
-	struct	fn *fn_nxt;
-} fn_t;
+	struct	filename *fn_next;
+};
 
-static	fn_t	*fnames;
+static struct filename *filenames;	/* null-terminated array */
+static int next_filename_id;
 
-static	fn_t	*srchfn(const char *, size_t);
-
-/*
- * Look for a Filename of length l.
- */
-static fn_t *
-srchfn(const char *s, size_t len)
+/* Find the given filename, or return NULL. */
+static const struct filename *
+search_filename(const char *s, size_t len)
 {
-	fn_t	*fn;
+	const struct filename *fn;
 
-	for (fn = fnames; fn != NULL; fn = fn->fn_nxt) {
+	for (fn = filenames; fn != NULL; fn = fn->fn_next) {
 		if (fn->fn_len == len && memcmp(fn->fn_name, s, len) == 0)
 			break;
 	}
-	return (fn);
+	return fn;
 }
 
-/*
- * Return a shared string for filename s.
- */
-const char *
-fnalloc(const char *s)
-{
-
-	return (s != NULL ? fnnalloc(s, strlen(s)) : NULL);
-}
-
-struct repl {
-	char *orig;
-	char *repl;
-	size_t len;
-	struct repl *next;
+struct filename_replacement {
+	const char *orig;
+	size_t orig_len;
+	const char *repl;
+	const struct filename_replacement *next;
 };
 
-struct repl *replist;
+static struct filename_replacement *filename_replacements;
 
 void
-fnaddreplsrcdir(char *arg)
+add_directory_replacement(char *arg)
 {
-	struct repl *r = xmalloc(sizeof(*r));
-	
-	r->orig = arg;
-	if ((r->repl = strchr(arg, '=')) == NULL) 
+	struct filename_replacement *r = xmalloc(sizeof(*r));
+
+	char *sep = strchr(arg, '=');
+	if (sep == NULL)
 		err(1, "Bad replacement directory spec `%s'", arg);
-	r->len = r->repl - r->orig;
-	*(r->repl)++ = '\0';
-	if (replist == NULL) {
-		r->next = NULL;
-	} else
-		r->next = replist;
-	replist = r;
+	*sep = '\0';
+
+	r->orig = arg;
+	r->orig_len = sep - arg;
+	r->repl = sep + 1;
+	r->next = filename_replacements;
+	filename_replacements = r;
 }
 
 const char *
-fnxform(const char *name, size_t len)
+transform_filename(const char *name, size_t len)
 {
 	static char buf[MAXPATHLEN];
-	struct repl *r;
+	const struct filename_replacement *r;
 
-	for (r = replist; r; r = r->next)
-		if (r->len < len && memcmp(name, r->orig, r->len) == 0)
+	for (r = filename_replacements; r != NULL; r = r->next)
+		if (r->orig_len < len &&
+		    memcmp(name, r->orig, r->orig_len) == 0)
 			break;
 	if (r == NULL)
 		return name;
-	snprintf(buf, sizeof(buf), "%s%s", r->repl, name + r->len);
+	(void)snprintf(buf, sizeof(buf), "%s%s", r->repl, name + r->orig_len);
 	return buf;
 }
 
-const char *
-fnnalloc(const char *s, size_t len)
-{
-	fn_t	*fn;
-
-	static	int	nxt_id = 0;
-
-	if (s == NULL)
-		return (NULL);
-
-	if ((fn = srchfn(s, len)) == NULL) {
-		fn = xmalloc(sizeof (fn_t));
-		/* Do not used strdup() because string is not NUL-terminated.*/
-		fn->fn_name = xmalloc(len + 1);
-		(void)memcpy(fn->fn_name, s, len);
-		fn->fn_name[len] = '\0';
-		fn->fn_len = len;
-		fn->fn_id = nxt_id++;
-		fn->fn_nxt = fnames;
-		fnames = fn;
-		/* Write id of this filename to the output file. */
-		outclr();
-		outint(fn->fn_id);
-		outchar('s');
-		outstrg(fnxform(fn->fn_name, fn->fn_len));
-	}
-	return (fn->fn_name);
-}
-
 /*
- * Get id of a filename.
+ * Return a copy of the filename s with unlimited lifetime.
+ * If the filename is new, write it to the output file.
  */
-int
-getfnid(const char *s)
+const char *
+record_filename(const char *s, size_t slen)
 {
-	fn_t	*fn;
+	const struct filename *existing_fn;
+	struct filename *fn;
+	char *name;
 
-	if (s == NULL || (fn = srchfn(s, strlen(s))) == NULL)
-		return (-1);
-	return (fn->fn_id);
+	if ((existing_fn = search_filename(s, slen)) != NULL)
+		return existing_fn->fn_name;
+
+	name = xmalloc(slen + 1);
+	(void)memcpy(name, s, slen);
+	name[slen] = '\0';
+
+	fn = xmalloc(sizeof(*fn));
+	fn->fn_name = name;
+	fn->fn_len = slen;
+	fn->fn_id = next_filename_id++;
+	fn->fn_next = filenames;
+	filenames = fn;
+
+	/* Write the ID of this filename to the output file. */
+	outclr();
+	outint(fn->fn_id);
+	outchar('s');
+	outstrg(transform_filename(fn->fn_name, fn->fn_len));
+
+	return fn->fn_name;
+}
+
+/* Get the ID of a filename. */
+int
+get_filename_id(const char *s)
+{
+	const struct filename *fn;
+
+	if (s == NULL || (fn = search_filename(s, strlen(s))) == NULL)
+		return -1;
+	return fn->fn_id;
 }
 
 /*
- * Memory for declarations and other things which must be available
+ * Memory for declarations and other things that must be available
  * until the end of a block (or the end of the translation unit)
- * are associated with the level (mblklev) of the block (or with 0).
+ * is associated with the corresponding mem_block_level, which may be 0.
  * Because this memory is allocated in large blocks associated with
  * a given level it can be freed easily at the end of a block.
  */
-#define	ML_INC	((size_t)32)		/* Increment for length of *mblks */
-
-typedef struct mbl {
-	void	*blk;			/* beginning of memory block */
-	void	*ffree;			/* first free byte */
+typedef struct memory_block {
+	void	*start;			/* beginning of memory block */
+	void	*first_free;		/* first free byte */
 	size_t	nfree;			/* # of free bytes */
-	size_t	size;			/* total size of memory block */
-	struct	mbl *nxt;		/* next block */
-} mbl_t;
+	struct	memory_block *next;
+} memory_block;
 
-/*
- * Array of pointers to lists of memory blocks. mblklev is used as
- * index into this array.
- */
-static	mbl_t	**mblks;
 
-/* number of elements in *mblks */
-static	size_t	nmblks;
+static	size_t	mblk_size;	/* size of newly allocated memory blocks */
 
-/* free list for memory blocks */
-static	mbl_t	*frmblks;
+/* Array of lists of memory blocks, indexed by mem_block_level. */
+static	memory_block	**mblks;
+static	size_t	nmblks;		/* number of elements in *mblks */
+#define	ML_INC	((size_t)32)	/* Increment for length of *mblks */
 
-/* length of new allocated memory blocks */
-static	size_t	mblklen;
 
-static	void	*xgetblk(mbl_t **, size_t);
-static	void	xfreeblk(mbl_t **);
-static	mbl_t	*xnewblk(void);
-
-static mbl_t *
-xnewblk(void)
-{
-	mbl_t	*mb = xmalloc(sizeof (mbl_t));
-
-	/* use mmap instead of malloc to avoid malloc's size overhead */
-	mb->blk = xmapalloc(mblklen);
-	mb->size = mblklen;
-
-	return (mb);
-}
-
-/*
- * Allocate new memory. If the first block of the list has not enough
- * free space, or there is no first block, get a new block. The new
- * block is taken from the free list or, if there is no block on the
- * free list, is allocated using xnewblk(). If a new block is allocated
- * it is initialized with zero. Blocks taken from the free list are
- * zero'd in xfreeblk().
- */
+/* Allocate new memory, initialized with zero. */
 static void *
-xgetblk(mbl_t **mbp, size_t s)
+xgetblk(memory_block **mbp, size_t s)
 {
-	mbl_t	*mb;
+	memory_block	*mb;
 	void	*p;
-	size_t	t = 0;
 
-	s = WORST_ALIGN(s);
+	size_t worst_align = 2 * sizeof(long) - 1;
+	s = (s + worst_align) & ~worst_align;
+
 	if ((mb = *mbp) == NULL || mb->nfree < s) {
-		if ((mb = frmblks) == NULL || mb->size < s) {
-			if (s > mblklen) {
-				t = mblklen;
-				mblklen = s;
-			}
-			mb = xnewblk();
-#ifndef BLKDEBUG
-			(void)memset(mb->blk, 0, mb->size);
-#endif
-			if (t)
-				mblklen = t;
-		} else {
-			frmblks = mb->nxt;
-		}
-		mb->ffree = mb->blk;
-		mb->nfree = mb->size;
-		mb->nxt = *mbp;
+		size_t block_size = s > mblk_size ? s : mblk_size;
+		mb = xmalloc(sizeof(*mb));
+		mb->start = xmalloc(block_size);
+		mb->first_free = mb->start;
+		mb->nfree = block_size;
+		mb->next = *mbp;
 		*mbp = mb;
 	}
-	p = mb->ffree;
-	mb->ffree = (char *)mb->ffree + s;
+
+	p = mb->first_free;
+	mb->first_free = (char *)mb->first_free + s;
 	mb->nfree -= s;
-#ifdef BLKDEBUG
 	(void)memset(p, 0, s);
-#endif
-	return (p);
+	return p;
 }
 
-/*
- * Move all blocks from list *fmbp to free list. For each block, set all
- * used memory to zero.
- */
+/* Free all blocks from list *fmbp. */
 static void
-xfreeblk(mbl_t **fmbp)
+xfreeblk(memory_block **fmbp)
 {
-	mbl_t	*mb;
+	memory_block	*mb;
 
 	while ((mb = *fmbp) != NULL) {
-		*fmbp = mb->nxt;
-		mb->nxt = frmblks;
-		frmblks = mb;
-		(void)memset(mb->blk, ZERO, mb->size - mb->nfree);
+		*fmbp = mb->next;
+		free(mb);
 	}
 }
 
 void
 initmem(void)
 {
-	int	pgsz;
 
-	pgsz = getpagesize();
-	mblklen = ((MBLKSIZ + pgsz - 1) / pgsz) * pgsz;
-
-	mblks = xcalloc(nmblks = ML_INC, sizeof (mbl_t *));
+	mblk_size = mem_block_size();
+	mblks = xcalloc(nmblks = ML_INC, sizeof(*mblks));
 }
 
 
-/*
- * Allocate memory associated with level l.
- */
+/* Allocate memory associated with level l, initialized with zero. */
 void *
-getlblk(size_t l, size_t s)
+level_zero_alloc(size_t l, size_t s)
 {
 
 	while (l >= nmblks) {
-		mblks = xrealloc(mblks, (nmblks + ML_INC) * sizeof (mbl_t *));
-		(void)memset(&mblks[nmblks], 0, ML_INC * sizeof (mbl_t *));
+		mblks = xrealloc(mblks, (nmblks + ML_INC) * sizeof(*mblks));
+		(void)memset(&mblks[nmblks], 0, ML_INC * sizeof(*mblks));
 		nmblks += ML_INC;
 	}
-	return (xgetblk(&mblks[l], s));
+	return xgetblk(&mblks[l], s);
 }
 
+/* Allocate memory that is freed at the end of the current block. */
 void *
-getblk(size_t s)
+block_zero_alloc(size_t s)
 {
 
-	return (getlblk(mblklev, s));
-}
-
-/*
- * Free all memory associated with level l.
- */
-void
-freelblk(int l)
-{
-
-	xfreeblk(&mblks[l]);
+	return level_zero_alloc(mem_block_level, s);
 }
 
 void
-freeblk(void)
+level_free_all(size_t level)
 {
 
-	freelblk(mblklev);
+	xfreeblk(&mblks[level]);
 }
 
-/*
- * tgetblk() returns memory which is associated with the current
- * expression.
- */
-static	mbl_t	*tmblk;
 
+static	memory_block	*tmblk;
+
+/* Allocate memory that is freed at the end of the current expression. */
 void *
-tgetblk(size_t s)
+expr_zero_alloc(size_t s)
 {
 
-	return (xgetblk(&tmblk, s));
+	return xgetblk(&tmblk, s);
+}
+
+static bool
+str_endswith(const char *haystack, const char *needle)
+{
+	size_t hlen = strlen(haystack);
+	size_t nlen = strlen(needle);
+
+	return nlen <= hlen &&
+	       memcmp(haystack + hlen - nlen, needle, nlen) == 0;
 }
 
 /*
- * Get memory for a new tree node.
+ * Return a freshly allocated tree node that is freed at the end of the
+ * current expression.
+ *
+ * The node records whether it comes from a system file, which makes strict
+ * bool mode less restrictive.
  */
 tnode_t *
-getnode(void)
+expr_alloc_tnode(void)
 {
-
-	return (tgetblk(sizeof (tnode_t)));
+	tnode_t *tn = expr_zero_alloc(sizeof(*tn));
+	/*
+	 * files named *.c that are different from the main translation unit
+	 * typically contain generated code that cannot be influenced, such
+	 * as a flex lexer or a yacc parser.
+	 */
+	tn->tn_sys = in_system_header ||
+		     (curr_pos.p_file != csrc_pos.p_file &&
+		      str_endswith(curr_pos.p_file, ".c"));
+	return tn;
 }
 
-/*
- * Free all memory which is allocated by the current expression.
- */
+/* Free all memory which is allocated by the current expression. */
 void
-tfreeblk(void)
+expr_free_all(void)
 {
 
 	xfreeblk(&tmblk);
@@ -366,31 +312,31 @@ tfreeblk(void)
 
 /*
  * Save the memory which is used by the current expression. This memory
- * is not freed by the next tfreeblk() call. The pointer returned can be
+ * is not freed by the next expr_free_all() call. The pointer returned can be
  * used to restore the memory.
  */
-mbl_t *
-tsave(void)
+memory_block *
+expr_save_memory(void)
 {
-	mbl_t	*tmem;
+	memory_block	*tmem;
 
 	tmem = tmblk;
 	tmblk = NULL;
-	return (tmem);
+	return tmem;
 }
 
 /*
- * Free all memory used for the current expression and the memory used
- * be a previous expression and saved by tsave(). The next call to
- * tfreeblk() frees the restored memory.
+ * Free all memory used for the current expression and restore the memory used
+ * by a previous expression and saved by expr_save_memory(). The next call to
+ * expr_free_all() frees the restored memory.
  */
 void
-trestor(mbl_t *tmem)
+expr_restore_memory(memory_block *tmem)
 {
 
-	tfreeblk();
+	expr_free_all();
 	if (tmblk != NULL) {
-		free(tmblk->blk);
+		free(tmblk->start);
 		free(tmblk);
 	}
 	tmblk = tmem;

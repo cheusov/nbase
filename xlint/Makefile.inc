@@ -1,3 +1,5 @@
+#	$NetBSD: Makefile.inc,v 1.23 2022/04/10 13:21:34 martin Exp $
+
 .include <bsd.own.mk>
 
 .PATH:		${.CURDIR}/../common
@@ -15,6 +17,14 @@ ARCHSUBDIR=	${MACHINE_CPU}
 CPPFLAGS+=	-I${.CURDIR}/../arch/${ARCHSUBDIR}
 CPPFLAGS+=	-I${.CURDIR}/../common
 
+CLEANFILES+=	*.gcno *.gcda *.gcov
+
+.if ${MACHINE_CPU} != "alpha"
+CFLAGS+=	${ACTIVE_CC:Mgcc:%=-ftrapv}
+.endif
+
 .if exists(${.CURDIR}/../../Makefile.inc)
 .include "${.CURDIR}/../../Makefile.inc"
 .endif
+
+LINTFLAGS+=	-w	# treat warnings as errors

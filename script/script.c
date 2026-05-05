@@ -1,4 +1,4 @@
-/*	$NetBSD: script.c,v 1.21 2011/09/06 18:29:56 joerg Exp $	*/
+/*	$NetBSD: script.c,v 1.33 2022/02/13 19:40:14 christos Exp $	*/
 
 /*
  * Copyright (c) 1980, 1992, 1993
@@ -39,7 +39,7 @@ __COPYRIGHT("@(#) Copyright (c) 1980, 1992, 1993\
 #if 0
 static char sccsid[] = "@(#)script.c	8.1 (Berkeley) 6/6/93";
 #endif
-__RCSID("$NetBSD: script.c,v 1.21 2011/09/06 18:29:56 joerg Exp $");
+__RCSID("$NetBSD: script.c,v 1.33 2022/02/13 19:40:14 christos Exp $");
 #endif /* not lint */
 
 #include <sys/types.h>
@@ -89,17 +89,22 @@ struct stamp {
 static FILE	*fscript;
 static int	master, slave;
 static int	child, subchild;
-static int	outcc;
+static size_t	outcc;
 static int	usesleep, rawout;
 static int	quiet, flush;
 static const char *fname;
 
+static volatile	sig_atomic_t die = 0;	/* exit if 1 */
+static int	cstat = EXIT_SUCCESS;	/* cmd. exit status */
+static int	eflag;
+static int	isterm;
 static struct	termios tt;
 
-__dead static void	done(void);
-__dead static void	dooutput(void);
+__dead static void	done(int);
 __dead static void	doshell(const char *);
 __dead static void	fail(void);
+static sig_t	xsignal(int, sig_t);
+__dead static void	dooutput(void);
 static void	finish(int);
 static void	scriptflush(int);
 static void	record(FILE *, char *, size_t, int);
@@ -109,7 +114,8 @@ __dead static void	playback(FILE *);
 int
 main(int argc, char *argv[])
 {
-	int cc;
+	ssize_t scc;
+	size_t cc;
 	struct termios rtt;
 	struct winsize win;
 	int aflg, pflg, ch;
@@ -123,7 +129,7 @@ main(int argc, char *argv[])
 	quiet = 0;
 	flush = 0;
 	command = NULL;
-	while ((ch = getopt(argc, argv, "ac:dfpqr")) != -1)
+	while ((ch = getopt(argc, argv, "ac:defpqr")) != -1)
 		switch(ch) {
 		case 'a':
 			aflg = 1;
@@ -133,6 +139,9 @@ main(int argc, char *argv[])
 			break;
 		case 'd':
 			usesleep = 0;
+			break;
+		case 'e':
+			eflag = 1;
 			break;
 		case 'f':
 			flush = 1;
@@ -149,9 +158,9 @@ main(int argc, char *argv[])
 		case '?':
 		default:
 			(void)fprintf(stderr,
-			    "Usage: %s [-c <command>][-adfpqr] [file]\n",
+			    "Usage: %s [-c <command>][-adefpqr] [file]\n",
 			    getprogname());
-			exit(1);
+			exit(EXIT_FAILURE);
 		}
 	argc -= optind;
 	argv += optind;
@@ -162,32 +171,42 @@ main(int argc, char *argv[])
 		fname = "typescript";
 
 	if ((fscript = fopen(fname, pflg ? "r" : aflg ? "a" : "w")) == NULL)
-		err(1, "fopen %s", fname);
+		err(EXIT_FAILURE, "fopen %s", fname);
 
 	if (pflg)
 		playback(fscript);
 
-	(void)tcgetattr(STDIN_FILENO, &tt);
-	(void)ioctl(STDIN_FILENO, TIOCGWINSZ, &win);
-	if (openpty(&master, &slave, NULL, &tt, &win) == -1)
-		err(1, "openpty");
+	if (tcgetattr(STDIN_FILENO, &tt) == -1 ||
+	    ioctl(STDIN_FILENO, TIOCGWINSZ, &win) == -1) {
+		if (errno != ENOTTY) /* For debugger. */
+			err(EXIT_FAILURE, "tcgetattr/ioctl");
+		if (openpty(&master, &slave, NULL, NULL, NULL) == -1)
+			err(EXIT_FAILURE, "openpty");
+	} else {
+		if (openpty(&master, &slave, NULL, &tt, &win) == -1)
+			err(EXIT_FAILURE, "openpty");
+		isterm = 1;
+	}
 
 	if (!quiet)
 		(void)printf("Script started, output file is %s\n", fname);
-	rtt = tt;
-	cfmakeraw(&rtt);
-	rtt.c_lflag &= ~ECHO;
-	(void)tcsetattr(STDIN_FILENO, TCSAFLUSH, &rtt);
 
-	(void)signal(SIGCHLD, finish);
+	if (isterm) {
+		rtt = tt;
+		cfmakeraw(&rtt);
+		rtt.c_lflag &= ~ECHO;
+		(void)tcsetattr(STDIN_FILENO, TCSAFLUSH, &rtt);
+	}
+
+	(void)xsignal(SIGCHLD, finish);
 	child = fork();
-	if (child < 0) {
+	if (child == -1) {
 		warn("fork");
 		fail();
 	}
 	if (child == 0) {
 		subchild = child = fork();
-		if (child < 0) {
+		if (child == -1) {
 			warn("fork");
 			fail();
 		}
@@ -199,35 +218,64 @@ main(int argc, char *argv[])
 
 	if (!rawout)
 		(void)fclose(fscript);
-	while ((cc = read(STDIN_FILENO, ibuf, BUFSIZ)) > 0) {
+	while (!die && (scc = read(STDIN_FILENO, ibuf, BUFSIZ)) > 0) {
+		cc = (size_t)scc;
 		if (rawout)
 			record(fscript, ibuf, cc, 'i');
 		(void)write(master, ibuf, cc);
 	}
-	done();
-	/* NOTREACHED */
-	return (0);
+	done(cstat);
+}
+
+/**
+ * wrapper around sigaction() because we want POSIX semantics:
+ * no auto-restarting of interrupted slow syscalls.
+ */
+static sig_t
+xsignal(int signo, sig_t handler)
+{
+	struct sigaction sa, osa;
+
+	sa.sa_handler = handler;
+	sa.sa_flags = 0;
+	sigemptyset(&sa.sa_mask);
+	if (sigaction(signo, &sa, &osa) == -1)
+		return SIG_ERR;
+	return osa.sa_handler;
+}
+
+static int
+getshellstatus(int status)
+{
+	if (WIFEXITED(status))
+		return WEXITSTATUS(status);
+	if (WIFSIGNALED(status))
+		return 128 + WTERMSIG(status);
+	return EXIT_FAILURE;
 }
 
 static void
 finish(int signo)
 {
-	int die, pid, status;
+	int pid, status;
 
 	die = 0;
-	while ((pid = wait3(&status, WNOHANG, 0)) > 0)
-		if (pid == child)
+	while ((pid = wait(&status)) > 0)
+		if (pid == child) {
 			die = 1;
+		}
 
-	if (die)
-		done();
+	if (!die)
+		return;
+	done(eflag ? getshellstatus(status) : EXIT_SUCCESS);
 }
 
 static void
 dooutput(void)
 {
 	struct itimerval value;
-	int cc;
+	ssize_t scc;
+	size_t cc;
 	time_t tvec;
 	char obuf[BUFSIZ];
 
@@ -244,10 +292,11 @@ dooutput(void)
 	value.it_value = value.it_interval;
 	(void)setitimer(ITIMER_REAL, &value, NULL);
 	for (;;) {
-		cc = read(master, obuf, sizeof (obuf));
-		if (cc <= 0)
+		scc = read(master, obuf, sizeof(obuf));
+		if (scc <= 0)
 			break;
-		(void)write(1, obuf, cc);
+		cc = (size_t)scc;
+		(void)write(STDOUT_FILENO, obuf, cc);
 		if (rawout)
 			record(fscript, obuf, cc, 'o');
 		else
@@ -256,7 +305,7 @@ dooutput(void)
 		if (flush)
 			(void)fflush(fscript);
 	}
-	done();
+	done(cstat);
 }
 
 static void
@@ -283,8 +332,11 @@ doshell(const char *command)
 		execl(shell, shell, "-i", NULL);
 		warn("execl `%s'", shell);
 	} else {
-		if (system(command) == -1)
+		int ret = system(command);
+		if (ret == -1)
 			warn("system `%s'", command);
+		else
+			exit(eflag ? getshellstatus(ret) : EXIT_FAILURE);
 	}
 
 	fail();
@@ -295,11 +347,11 @@ fail(void)
 {
 
 	(void)kill(0, SIGTERM);
-	done();
+	done(EXIT_FAILURE);
 }
 
 static void
-done(void)
+done(int status)
 {
 	time_t tvec;
 
@@ -313,11 +365,12 @@ done(void)
 		(void)fclose(fscript);
 		(void)close(master);
 	} else {
-		(void)tcsetattr(STDIN_FILENO, TCSAFLUSH, &tt);
+		if (isterm)
+			(void)tcsetattr(STDIN_FILENO, TCSAFLUSH, &tt);
 		if (!quiet)
 			(void)printf("Script done, output file is %s\n", fname);
 	}
-	exit(0);
+	exit(status);
 }
 
 static void
@@ -337,7 +390,7 @@ record(FILE *fp, char *buf, size_t cc, int direction)
 	iov[1].iov_len = cc;
 	iov[1].iov_base = buf;
 	if (writev(fileno(fp), &iov[0], 2) == -1)
-		err(1, "writev");
+		err(EXIT_FAILURE, "writev");
 }
 
 static void
@@ -347,13 +400,13 @@ consume(FILE *fp, off_t len, char *buf, int reg)
 
 	if (reg) {
 		if (fseeko(fp, len, SEEK_CUR) == -1)
-			err(1, NULL);
+			err(EXIT_FAILURE, NULL);
 	}
 	else {
 		while (len > 0) {
 			l = MIN(DEF_BUF, len);
 			if (fread(buf, sizeof(char), l, fp) != l)
-				err(1, "cannot read buffer");
+				err(EXIT_FAILURE, "cannot read buffer");
 			len -= l;
 		}
 	}
@@ -369,6 +422,32 @@ consume(FILE *fp, off_t len, char *buf, int reg)
 } while (0/*CONSTCOND*/)
 
 static void
+termset(void)
+{
+	struct termios traw;
+
+	if (tcgetattr(STDOUT_FILENO, &tt) == -1) {
+		if (errno != ENOTTY) /* For debugger. */
+			err(EXIT_FAILURE, "tcgetattr");
+		return;
+	}
+	isterm = 1;
+	traw = tt;
+	cfmakeraw(&traw);
+	traw.c_lflag |= ISIG;
+        (void)tcsetattr(STDOUT_FILENO, TCSANOW, &traw);
+}
+
+static void
+termreset(void)
+{
+	if (isterm)
+		(void)tcsetattr(STDOUT_FILENO, TCSADRAIN, &tt);
+
+	isterm = 0;
+}
+
+static void
 playback(FILE *fp)
 {
 	struct timespec tsi, tso;
@@ -381,14 +460,14 @@ playback(FILE *fp)
 	int reg;
 
 	if (fstat(fileno(fp), &pst) == -1)
-		err(1, "fstat failed");	
+		err(EXIT_FAILURE, "fstat failed");
 
 	reg = S_ISREG(pst.st_mode);
 
 	for (nread = 0; !reg || nread < pst.st_size; nread += save_len) {
 		if (fread(&stamp, sizeof(stamp), 1, fp) != 1) {
 			if (reg)
-				err(1, "reading playback header");
+				err(EXIT_FAILURE, "reading playback header");
 			else
 				break;
 		}
@@ -397,7 +476,7 @@ playback(FILE *fp)
 
 		if (reg && stamp.scr_len >
 		    (uint64_t)(pst.st_size - save_len) - nread)
-			errx(1, "invalid stamp");
+			errx(EXIT_FAILURE, "invalid stamp");
 
 		save_len += stamp.scr_len;
 		tclock = stamp.scr_sec;
@@ -411,8 +490,11 @@ playback(FILE *fp)
 				ctime(&tclock));
 			tsi = tso;
 			(void)consume(fp, stamp.scr_len, buf, reg);
+			termset();
+			atexit(termreset);
 			break;
 		case 'e':
+			termreset();
 			if (!quiet)
 				(void)printf("\nScript done on %s",
 				    ctime(&tclock));
@@ -435,16 +517,17 @@ playback(FILE *fp)
 			while (stamp.scr_len > 0) {
 				l = MIN(DEF_BUF, stamp.scr_len);
 				if (fread(buf, sizeof(char), l, fp) != l)
-					err(1, "cannot read buffer");
+					err(EXIT_FAILURE, "cannot read buffer");
 
 				(void)write(STDOUT_FILENO, buf, l);
 				stamp.scr_len -= l;
 			}
 			break;
 		default:
-			errx(1, "invalid direction");
+			errx(EXIT_FAILURE, "invalid direction %u",
+			    stamp.scr_direction);
 		}
 	}
 	(void)fclose(fp);
-	exit(0);
+	exit(EXIT_SUCCESS);
 }

@@ -1,4 +1,4 @@
-/*	$NetBSD: pathnames.h,v 1.4 2001/08/14 10:18:29 tv Exp $	*/
+/*	$NetBSD: pathnames.h,v 1.7 2021/08/09 20:52:24 rillig Exp $	*/
 
 /*
  * Copyright (c) 1994, 1995 Jochen Pohl
@@ -36,8 +36,10 @@
 #define	PATH_LIBEXEC		"/usr/libexec"
 #endif
 
-/* directory where cc(1) resides */
-#define	PATH_USRBIN		"/usr/bin"
-
 /* default library search path */
+#ifndef PATH_LINTLIB
 #define PATH_LINTLIB		"/usr/libdata/lint"
+#endif
+
+/* overridden system headers */
+#define PATH_STRICT_BOOL_INCLUDE PATH_LINTLIB "/strict-bool"

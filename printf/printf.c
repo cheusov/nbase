@@ -1,4 +1,4 @@
-/*	$NetBSD: printf.c,v 1.50 2019/07/22 17:34:31 kre Exp $	*/
+/*	$NetBSD: printf.c,v 1.54 2021/05/20 02:01:07 christos Exp $	*/
 
 /*
  * Copyright (c) 1989, 1993
@@ -41,7 +41,7 @@ __COPYRIGHT("@(#) Copyright (c) 1989, 1993\
 #if 0
 static char sccsid[] = "@(#)printf.c	8.2 (Berkeley) 3/22/95";
 #else
-__RCSID("$NetBSD: printf.c,v 1.50 2019/07/22 17:34:31 kre Exp $");
+__RCSID("$NetBSD: printf.c,v 1.54 2021/05/20 02:01:07 christos Exp $");
 #endif
 #endif /* not lint */
 
@@ -77,6 +77,7 @@ static int	 getwidth(void);
 static intmax_t	 getintmax(void);
 static char	*getstr(void);
 static char	*mklong(const char *, char);
+static intmax_t	 wide_char(const char *);
 static void      check_conversion(const char *, const char *);
 static void	 usage(void);
 
@@ -121,6 +122,10 @@ static char  **gargv;
 		error = asprintf(cpp, f, func); \
 }
 
+#define isodigit(c)	((c) >= '0' && (c) <= '7')
+#define octtobin(c)	((c) - '0')
+#define check(c, a)	(c) >= (a) && (c) <= (a) + 5 ? (c) - (a) + 10
+#define hextobin(c)	(check(c, 'a') : check(c, 'A') : (c) - '0')
 #ifdef main
 int main(int, char *[]);
 #endif
@@ -140,6 +145,7 @@ main(int argc, char *argv[])
 #endif
 
 	rval = 0;	/* clear for builtin versions (avoid holdover) */
+	clearerr(stdout);	/* for the builtin version */
 
 	/*
 	 * printf does not comply with Posix XBD 12.2 - there are no opts,
@@ -371,10 +377,16 @@ main(int argc, char *argv[])
 			*fmt = nextch;
 			/* escape if a \c was encountered */
 			if (rval & 0x100)
-				return rval & ~0x100;
+				goto done;
 		}
 	} while (gargv != argv && *gargv);
 
+  done:
+	(void)fflush(stdout);
+	if (ferror(stdout)) {
+		clearerr(stdout);
+		err(1, "write error");
+	}
 	return rval & ~0x100;
   out:
 	warn("print failed");
@@ -485,9 +497,9 @@ conv_escape_str(char *str, void (*do_putchar)(int), int quiet)
 static char *
 conv_escape(char *str, char *conv_ch, int quiet)
 {
-	char value;
-	char ch;
-	char num_buf[4], *num_end;
+	int value = 0;
+	char ch, *begin;
+	int c;
 
 	ch = *str++;
 
@@ -502,13 +514,11 @@ conv_escape(char *str, char *conv_ch, int quiet)
 
 	case '0': case '1': case '2': case '3':
 	case '4': case '5': case '6': case '7':
-		num_buf[0] = ch;
-		ch = str[0];
-		num_buf[1] = ch;
-		num_buf[2] = (char)(ch != '\0' ? str[1] : '\0');
-		num_buf[3] = '\0';
-		value = (char)strtoul(num_buf, &num_end, 8);
-		str += num_end  - (num_buf + 1);
+		str--;
+		for (c = 3; c-- && isodigit(*str); str++) {
+			value <<= 3;
+			value += octtobin(*str);
+		}
 		break;
 
 	case 'x':
@@ -518,12 +528,17 @@ conv_escape(char *str, char *conv_ch, int quiet)
 		 * way to detect the end of the constant.
 		 * Supporting 2 byte constants is a compromise.
 		 */
-		ch = str[0];
-		num_buf[0] = ch;
-		num_buf[1] = (char)(ch != '\0' ? str[1] : '\0');
-		num_buf[2] = '\0';
-		value = (char)strtoul(num_buf, &num_end, 16);
-		str += num_end - num_buf;
+		begin = str;
+		for (c = 2; c-- && isxdigit((unsigned char)*str); str++) {
+			value <<= 4;
+			value += hextobin(*str);
+		}
+		if (str == begin) {
+			if (!quiet)
+				warnx("\\x%s: missing hexadecimal number "
+				    "in escape", begin);
+			rval = 1;
+		}
 		break;
 
 	case '\\':	value = '\\';	break;	/* backslash */
@@ -547,7 +562,7 @@ conv_escape(char *str, char *conv_ch, int quiet)
 		break;
 	}
 
-	*conv_ch = value;
+	*conv_ch = (char)value;
 	return str;
 }
 
@@ -624,8 +639,9 @@ mklong(const char *str, char ch)
 
 	len = strlen(str) + 2;
 	if (len > sizeof copy) {
-		warnx("format %s too complex", str);
+		warnx("format \"%s\" too complex", str);
 		len = 4;
+		rval = 1;
 	}
 	(void)memmove(copy, str, len - 3);
 	copy[len - 3] = 'j';
@@ -687,7 +703,7 @@ getintmax(void)
 	gargv++;
 
 	if (*cp == '\"' || *cp == '\'')
-		return *(cp + 1);
+		return wide_char(cp);
 
 	errno = 0;
 	val = strtoimax(cp, &ep, 0);
@@ -704,13 +720,38 @@ getdouble(void)
 	if (!*gargv)
 		return 0.0;
 
-	if (**gargv == '\"' || **gargv == '\'')
-		return (double) *((*gargv++)+1);
+	/* This is a NetBSD extension, not required by POSIX (it is useless) */
+	if (*(ep = *gargv) == '\"' || *ep == '\'')
+		return (double)wide_char(ep);
 
 	errno = 0;
 	val = strtod(*gargv, &ep);
 	check_conversion(*gargv++, ep);
 	return val;
+}
+
+/*
+ * XXX This is just a placeholder for a later version which
+ *     will do mbtowc() on p+1 (and after checking that all of the
+ *     string has been consumed) return that value.
+ *
+ * This (mbtowc) behaviour is required by POSIX (as is the check
+ * that the whole arg is consumed).
+ *
+ * What follows is actually correct if we assume that LC_CTYPE=C
+ * (or something else similar that is a single byte charset).
+ */
+static intmax_t
+wide_char(const char *p)
+{
+	intmax_t ch = (intmax_t)(unsigned char)p[1];
+
+	if (ch != 0 && p[2] != '\0') {
+		warnx("%s: not completely converted", p);
+		rval = 1;
+	}
+
+	return ch;
 }
 
 static void

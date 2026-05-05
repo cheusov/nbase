@@ -1,4 +1,4 @@
-/* $NetBSD: mkdep.c,v 1.45 2018/05/23 21:20:20 joerg Exp $ */
+/* $NetBSD: mkdep.c,v 1.47 2021/08/20 05:45:19 rillig Exp $ */
 
 /*-
  * Copyright (c) 1999 The NetBSD Foundation, Inc.
@@ -37,7 +37,7 @@
 #if !defined(lint)
 __COPYRIGHT("@(#) Copyright (c) 1999 The NetBSD Foundation, Inc.\
  All rights reserved.");
-__RCSID("$NetBSD: mkdep.c,v 1.45 2018/05/23 21:20:20 joerg Exp $");
+__RCSID("$NetBSD: mkdep.c,v 1.47 2021/08/20 05:45:19 rillig Exp $");
 #endif /* not lint */
 
 #include <sys/mman.h>
@@ -100,7 +100,8 @@ usage(void)
 static int
 run_cc(int argc, char **argv, const char **fname)
 {
-	const char *CC, *tmpdir;
+	const char *CC;
+	const char *tmpdir;
 	char * volatile pathname;
 	static char tmpfilename[MAXPATHLEN];
 	char **args;

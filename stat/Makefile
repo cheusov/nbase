@@ -1,8 +1,7 @@
 PROG =	stat
-MAN  =	stat.1
+MAN  =	stat.1 readlink.1
 
 LINKS  =	${BINDIR}/stat ${BINDIR}/readlink
-MLINKS =	stat.1 readlink.1
 
 .include <bsd.own.mk>
 

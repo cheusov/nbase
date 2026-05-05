@@ -1,4 +1,4 @@
-PROG =	ls
+#	$NetBSD: Makefile,v 1.15 2020/05/17 23:34:11 christos Exp $
 MAN  =	ls.1
 SRCS =	cmp.c ls.c main.c print.c util.c
 
@@ -7,6 +7,10 @@ CPPFLAGS +=	-DHAVE_NBTOOL_CONFIG_H -I.
 MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 
 .include <mkc.init.mk>
+.ifdef SMALLPROG
+CPPFLAGS+= -DSMALL
+.endif
+
 
 CFLAGS.check   +=	-Wno-error=return-type
 

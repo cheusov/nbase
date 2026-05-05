@@ -1,4 +1,4 @@
-/*	$NetBSD: op.h,v 1.6 2011/02/05 17:14:14 christos Exp $	*/
+/*	$NetBSD: op.h,v 1.20 2022/06/15 18:29:21 rillig Exp $	*/
 
 /*
  * Copyright (c) 1994, 1995 Jochen Pohl
@@ -31,31 +31,44 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <stdbool.h>
+
 /*
- * Various information about operators
+ * Various information about operators; see ops.def.
  */
 typedef	struct {
-	u_int	m_binary : 1;	/* binary op. */
-	u_int	m_logop : 1;	/* logical op., result is int */
-	u_int	m_rqint : 1;	/* operands must have integer type */
-	u_int	m_rqsclt : 1;	/* operands must have scalar type */
-	u_int	m_rqatyp : 1;	/* operands must have arithmetic type */
-	u_int	m_fold : 1;	/* operands should be folded */
-	u_int	m_vctx : 1;	/* value context for left operand */
-	u_int	m_tctx : 1;	/* test context for left operand */
-	u_int	m_balance : 1;	/* op. requires balancing */
-	u_int	m_sideeff : 1;	/* op. has side effect */
-	u_int	m_tlansiu : 1;	/* warning if left op. is unsign. in ANSI C */
-	u_int	m_transiu : 1;	/* warning if right op. is unsign. in ANSI C */
-	u_int	m_tpconf : 1;	/* test possible precedence confusion */
-	u_int	m_comp : 1;	/* op. performs comparison */
-	u_int	m_enumop : 1;	/* valid operation on enums */
-	u_int	m_badeop : 1;	/* dubious operation on enums */
-	u_int	m_eqwarn : 1;	/* warning if on operand stems from == */
-	u_int	m_rqintcomp : 1;/* operands must be integer or complex */
-	const char *m_name;	/* name of op. */
+	bool	m_binary: 1;
+	bool	m_returns_bool: 1;
+	bool	m_takes_bool: 1;
+	bool	m_compares_with_zero: 1;
+	bool	m_requires_integer: 1;
+	bool	m_requires_integer_or_complex: 1;
+	bool	m_requires_arith: 1;
+	bool	m_requires_scalar: 1;
+	bool	m_fold_constant_operands: 1;
+	bool	m_value_context: 1;
+	bool	m_balance_operands: 1;
+	bool	m_has_side_effect: 1;
+	bool	m_warn_if_left_unsigned_in_c90: 1;
+	bool	m_warn_if_right_unsigned_in_c90: 1;
+	bool	m_possible_precedence_confusion: 1;
+	bool	m_comparison: 1;
+	bool	m_valid_on_enum: 1;
+	bool	m_bad_on_enum: 1;
+	bool	m_warn_if_operand_eq: 1;
+	const char *m_name;
 } mod_t;
 
-extern mod_t   modtab[];
+extern const mod_t modtab[];
 
-#include "ops.h"
+#define begin_ops() typedef enum {
+#define op(name, repr, \
+		is_binary, is_logical, takes_bool, requires_bool, \
+		is_integer, is_complex, is_arithmetic, is_scalar, \
+		can_fold, is_value, unused, balances_operands, \
+		side_effects, left_unsigned, right_unsigned, \
+		precedence_confusion, is_comparison, \
+		valid_on_enum, bad_on_enum, warn_if_eq) \
+	name,
+#define end_ops() } op_t;
+#include "ops.def"

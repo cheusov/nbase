@@ -1,4 +1,4 @@
-/*	$NetBSD: mem2.c,v 1.9 2004/06/20 22:20:17 jmc Exp $	*/
+/*	$NetBSD: mem2.c,v 1.15 2022/05/20 21:18:55 rillig Exp $	*/
 
 /*
  * Copyright (c) 1994, 1995 Jochen Pohl
@@ -36,13 +36,11 @@
 #endif
 
 #include <sys/cdefs.h>
-#if defined(__RCSID) && !defined(lint)
-__RCSID("$NetBSD: mem2.c,v 1.9 2004/06/20 22:20:17 jmc Exp $");
+#if defined(__RCSID)
+__RCSID("$NetBSD: mem2.c,v 1.15 2022/05/20 21:18:55 rillig Exp $");
 #endif
 
 #include <sys/param.h>
-#include <sys/types.h>
-#include <unistd.h>
 #include <string.h>
 
 #include "lint2.h"
@@ -59,11 +57,8 @@ static void	*mbuf;
 void
 initmem(void)
 {
-	int	pgsz;
 
-	pgsz = getpagesize();
-	mblklen = ((MBLKSIZ + pgsz - 1) / pgsz) * pgsz;
-
+	mblklen = mem_block_size();
 	nxtfree = mblklen;
 }
 
@@ -80,8 +75,7 @@ xalloc(size_t sz)
 	/* Align to at least 8 bytes. */
 	sz = (sz + 7) & ~7L;
 	if (nxtfree + sz > mblklen) {
-		/* use mmap() instead of malloc() to avoid malloc overhead. */
-		mbuf = xmapalloc(mblklen);
+		mbuf = xmalloc(mblklen);
 		(void)memset(mbuf, 0, mblklen);
 		nxtfree = 0;
 	}
@@ -89,5 +83,5 @@ xalloc(size_t sz)
 	ptr = (char *)mbuf + nxtfree;
 	nxtfree += sz;
 
-	return (ptr);
+	return ptr;
 }

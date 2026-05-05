@@ -1,4 +1,4 @@
-/*	$NetBSD: crc_extern.h,v 1.1 2006/09/04 20:01:10 dsl Exp $	*/
+/*	$NetBSD: crc_extern.h,v 1.2 2021/03/18 18:12:35 cheusov Exp $	*/
 
 /*-
  * Copyright (c) 1991, 1993

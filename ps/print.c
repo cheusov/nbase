@@ -1,4 +1,4 @@
-/*	$NetBSD: print.c,v 1.132.2.1 2021/04/06 18:07:28 martin Exp $	*/
+/*	$NetBSD: print.c,v 1.138 2022/01/26 11:48:53 andvar Exp $	*/
 
 /*
  * Copyright (c) 2000, 2007 The NetBSD Foundation, Inc.
@@ -63,18 +63,21 @@
 #if 0
 static char sccsid[] = "@(#)print.c	8.6 (Berkeley) 4/16/94";
 #else
-__RCSID("$NetBSD: print.c,v 1.132.2.1 2021/04/06 18:07:28 martin Exp $");
+__RCSID("$NetBSD: print.c,v 1.138 2022/01/26 11:48:53 andvar Exp $");
 #endif
 #endif /* not lint */
 
 #include <sys/param.h>
 #include <sys/time.h>
 #include <sys/resource.h>
+#include <sys/sysctl.h>
 #include <sys/lwp.h>
 #include <sys/proc.h>
 #include <sys/stat.h>
 #include <sys/ucred.h>
 #include <sys/sysctl.h>
+#include <sys/acct.h>
+#include <sys/ktrace.h>
 
 #include <err.h>
 #include <grp.h>
@@ -87,8 +90,10 @@ __RCSID("$NetBSD: print.c,v 1.132.2.1 2021/04/06 18:07:28 martin Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <util.h>
 #include <tzfile.h>
 #include <unistd.h>
+#include <signal.h>
 
 #include "ps.h"
 
@@ -108,6 +113,14 @@ static time_t now;
 #ifndef LSDEAD
 #define LSDEAD 6
 #endif
+
+static void __attribute__((__format__(__strftime__, 3, 0)))
+safe_strftime(char *buf, size_t bufsiz, const char *fmt,
+    const struct tm *tp)
+{
+	if (tp == NULL || strftime(buf, bufsiz, fmt, tp) == 0)
+		strlcpy(buf, "-", sizeof(buf));
+}
 
 static int
 iwidth(u_int64_t v)
@@ -792,13 +805,11 @@ started(struct pinfo *pi, VARENT *ve, enum mode mode)
 	if (now == 0)
 		(void)time(&now);
 	if (now - k->p_ustart_sec < SECSPERDAY)
-		/* I *hate* SCCS... */
-		(void)strftime(buf, sizeof(buf) - 1, "%l:%" "M%p", tp);
+		safe_strftime(buf, sizeof(buf) - 1, "%l:%M%p", tp);
 	else if (now - k->p_ustart_sec < DAYSPERWEEK * SECSPERDAY)
-		/* I *hate* SCCS... */
-		(void)strftime(buf, sizeof(buf) - 1, "%a%" "I%p", tp);
+		safe_strftime(buf, sizeof(buf) - 1, "%a%I%p", tp);
 	else
-		(void)strftime(buf, sizeof(buf) - 1, "%e%b%y", tp);
+		safe_strftime(buf, sizeof(buf) - 1, "%e%b%y", tp);
 	/* %e and %l can start with a space. */
 	cp = buf;
 	if (*cp == ' ')
@@ -827,22 +838,19 @@ lstarted(struct pinfo *pi, VARENT *ve, enum mode mode)
 		 * P1003.1-2004 comment in findvar()).
 		 *
 		 * XXX: The hardcoded "STARTED" string.  Better or
-		 * worse than a "<= 7" or some other arbitary number?
+		 * worse than a "<= 7" or some other arbitrary number?
 		 */
-		if (v->width <= (int)strlen("STARTED")) {
-			(void)strftime(buf, sizeof(buf) -1, "%c",
-			    localtime(&startt));
-			strprintorsetwidth(v, buf, mode);
+		if (v->width > (int)sizeof("STARTED") - 1) {
+			return;
 		}
 	} else {
 		if (!k->p_uvalid) {
 			(void)printf("%*s", v->width, "-");
-		} else {
-			(void)strftime(buf, sizeof(buf) -1, "%c",
-			    localtime(&startt));
-			strprintorsetwidth(v, buf, mode);
+			return;
 		}
 	}
+	safe_strftime(buf, sizeof(buf) - 1, "%c", localtime(&startt));
+	strprintorsetwidth(v, buf, mode);
 }
 
 void
@@ -1142,6 +1150,77 @@ tsize(struct pinfo *pi, VARENT *ve, enum mode mode)
 	intprintorsetwidth(v, pgtok(k->p_vm_tsize), mode);
 }
 
+static void
+printsig(VAR *v, const sigset_t *s, enum mode mode)
+{
+#define	SIGSETSIZE	__arraycount(s->__bits)
+	if ((v->flag & ALTPR) == 0) {
+		char buf[SIGSETSIZE * 8 + 1];
+		size_t i;
+
+		for (i = 0; i < SIGSETSIZE; i++)
+			(void)snprintf(&buf[i * 8], 9, "%.8x",
+			    s->__bits[(SIGSETSIZE - 1) - i]);
+
+		/* Skip leading zeroes */
+		for (i = 0; buf[i] == '0'; i++)
+			continue;
+
+		if (buf[i] == '\0')
+			i--;
+		strprintorsetwidth(v, buf + i, mode);
+	} else {
+		size_t maxlen = 1024, len = 0;
+		char *buf = emalloc(maxlen);
+		*buf = '\0';
+		for (size_t i = 0; i < SIGSETSIZE; i++) {
+			uint32_t m = s->__bits[i];
+			for (uint32_t j = 0; j < 32; j++) {
+				if ((m & (1 << j)) == 0)
+					continue;
+				const char *n = signalname(j + 1);
+				size_t sn = strlen(n);
+				if (len)
+					sn++;
+				if (len + sn >= maxlen) {
+					maxlen += 1024;
+					buf = erealloc(buf, maxlen);
+				}
+				snprintf(buf + len, sn + 1, "%s%s",
+				    len == 0 ? "" : ",", n);
+				len += sn;
+			}
+		}
+		strprintorsetwidth(v, buf, mode);
+		free(buf);
+#undef SIGSETSIZE
+	}
+}
+
+static void
+printflag(VAR *v, int flag, enum mode mode)
+{
+	char buf[1024];
+	const char *fmt;
+
+	switch (v->type) {
+	case PROCFLAG:
+		fmt = __SYSCTL_PROC_FLAG_BITS;
+		break;
+	case KTRACEFLAG:
+		fmt = __KTRACE_FLAG_BITS;
+		break;
+	case PROCACFLAG:
+		fmt = __ACCT_FLAG_BITS;
+		break;
+	default:
+		err(EXIT_FAILURE, "Bad type %d", v->type);
+	}
+
+	snprintb(buf, sizeof(buf), fmt, (unsigned)flag);
+	strprintorsetwidth(v, buf, mode);
+}
+
 /*
  * Generic output routines.  Print fields from various prototype
  * structures.
@@ -1185,6 +1264,10 @@ printval(void *bp, VAR *v, enum mode mode)
 			val = GET(short);
 			vok = VSIGN;
 			break;
+		case PROCACFLAG:
+			if (v->flag & ALTPR)
+				break;
+			/*FALLTHROUGH*/
 		case USHORT:
 			uval = CHK_INF127(GET(u_short));
 			vok = VUNSIGN;
@@ -1193,6 +1276,11 @@ printval(void *bp, VAR *v, enum mode mode)
 			val = GET(int32_t);
 			vok = VSIGN;
 			break;
+		case KTRACEFLAG:
+		case PROCFLAG:
+			if (v->flag & ALTPR)
+				break;
+			/*FALLTHROUGH*/
 		case INT:
 			val = GET(int);
 			vok = VSIGN;
@@ -1283,9 +1371,22 @@ printval(void *bp, VAR *v, enum mode mode)
 	case SHORT:
 		(void)printf(ofmt, width, GET(short));
 		return;
+	case PROCACFLAG:
+		if (v->flag & ALTPR) {
+			printflag(v, CHK_INF127(GET(u_short)), mode);
+			return;
+		}
+		/*FALLTHROUGH*/
 	case USHORT:
 		(void)printf(ofmt, width, CHK_INF127(GET(u_short)));
 		return;
+	case KTRACEFLAG:
+	case PROCFLAG:
+		if (v->flag & ALTPR) {
+			printflag(v, GET(int), mode);
+			return;
+		}
+		/*FALLTHROUGH*/
 	case INT:
 		(void)printf(ofmt, width, GET(int));
 		return;
@@ -1310,32 +1411,14 @@ printval(void *bp, VAR *v, enum mode mode)
 	case UINT32:
 		(void)printf(ofmt, width, CHK_INF127(GET(u_int32_t)));
 		return;
-	case SIGLIST:
-		{
-			sigset_t *s = (sigset_t *)(void *)bp;
-			size_t i;
-#define	SIGSETSIZE	(sizeof(s->__bits) / sizeof(s->__bits[0]))
-			char buf[SIGSETSIZE * 8 + 1];
-
-			for (i = 0; i < SIGSETSIZE; i++)
-				(void)snprintf(&buf[i * 8], 9, "%.8x",
-				    s->__bits[(SIGSETSIZE - 1) - i]);
-
-			/* Skip leading zeroes */
-			for (i = 0; buf[i] == '0'; i++)
-				continue;
-
-			if (buf[i] == '\0')
-				i--;
-			strprintorsetwidth(v, buf + i, mode);
-#undef SIGSETSIZE
-		}
-		return;
 	case INT64:
 		(void)printf(ofmt, width, GET(int64_t));
 		return;
 	case UINT64:
 		(void)printf(ofmt, width, CHK_INF127(GET(u_int64_t)));
+		return;
+	case SIGLIST:
+		printsig(v, (const sigset_t *)(void *)bp, mode);
 		return;
 	default:
 		errx(EXIT_FAILURE, "unknown type %d", v->type);

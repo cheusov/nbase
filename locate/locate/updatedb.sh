@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-#	$NetBSD: updatedb.sh,v 1.15 2014/08/04 21:56:30 apb Exp $
+#	$NetBSD: updatedb.sh,v 1.17.6.1 2023/01/23 13:18:32 martin Exp $
 #
 # Copyright (c) 1989, 1993
 #	The Regents of the University of California.  All rights reserved.
@@ -39,11 +39,11 @@
 #	@(#)updatedb.csh	8.4 (Berkeley) 10/27/94
 #
 
+PROG="$(basename "${0}")"
 LIBDIR="/usr/libexec"			# for subprograms
-					# for temp files
-TMPDIR=/tmp
+TMPDIR="/tmp"				# for temp files
 FCODES="/var/db/locate.database"	# the database
-CONF=/etc/locate.conf			# configuration file
+CONF="/etc/locate.conf"			# configuration file
 
 PATH="/bin:/usr/bin"
 
@@ -97,6 +97,23 @@ shell_quote()
 	printf "%s\n" "$result"
 )}
 
+usage()
+{
+	echo "usage: $PROG [-c config]" >&2
+	exit 1
+}
+
+while getopts c: f; do
+	case "$f" in
+	c)
+		CONF="$OPTARG" ;;
+	*)
+		usage ;;
+	esac
+done
+shift $((OPTIND - 1))
+[ $# -ne 0 ] && usage
+
 # read configuration file
 if [ -f "$CONF" ]; then
 	while read -r com args; do
@@ -149,6 +166,13 @@ if [ -f "$CONF" ]; then
 				echo "$CONF: workdir: $1 nonexistent" >&2
 			fi
 			;;
+		database)
+			if [ $# -ne 1 ]; then
+				echo "$CONF: database takes exactly one argument" >&2
+			else
+				FCODES="$1"
+			fi
+			;;
 		*)
 			echo "$CONF: $com: unknown config command" >&2
 			exit 1
@@ -192,6 +216,6 @@ if [ -z "$BIGRAMS" ]; then
 	echo 'locate: updatedb failed' >&2
 	exit 1
 else
-	$LIBDIR/locate.code "$BIGRAMS" <"$FILELIST" >"$FCODES"
+	$LIBDIR/locate.code -- "$BIGRAMS" <"$FILELIST" >"$FCODES"
 	chmod 644 "$FCODES"
 fi

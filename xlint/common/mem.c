@@ -1,4 +1,4 @@
-/*	$NetBSD: mem.c,v 1.7 2004/06/20 22:20:16 jmc Exp $	*/
+/*	$NetBSD: mem.c,v 1.20 2022/05/20 21:18:54 rillig Exp $	*/
 
 /*
  * Copyright (c) 1994, 1995 Jochen Pohl
@@ -36,90 +36,78 @@
 #endif
 
 #include <sys/cdefs.h>
-#if defined(__RCSID) && !defined(lint)
-__RCSID("$NetBSD: mem.c,v 1.7 2004/06/20 22:20:16 jmc Exp $");
+#if defined(__RCSID)
+__RCSID("$NetBSD: mem.c,v 1.20 2022/05/20 21:18:54 rillig Exp $");
 #endif
 
-#include <sys/param.h>
-#include <sys/types.h>
-#include <sys/mman.h>
+#include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "lint.h"
+
+#if defined(IS_LINT1) || defined(IS_LINT2)
+size_t
+mem_block_size(void)
+{
+	unsigned int pagesize;
+
+	pagesize = (unsigned int)getpagesize();
+	return (MBLKSIZ + pagesize - 1) / pagesize * pagesize;
+}
+#endif
+
+static void *
+not_null(void *ptr)
+{
+
+	if (ptr == NULL)
+		errx(1, "virtual memory exhausted");
+	return ptr;
+}
 
 void *
 xmalloc(size_t s)
 {
-	void	*p;
 
-	if ((p = malloc(s)) == NULL)
-		nomem();
-	return (p);
+	return not_null(malloc(s));
 }
 
 void *
 xcalloc(size_t n, size_t s)
 {
-	void	*p;
 
-	if ((p = calloc(n, s)) == NULL)
-		nomem();
-	return (p);
+	return not_null(calloc(n, s));
 }
 
 void *
 xrealloc(void *p, size_t s)
 {
-	void *n;
 
-	if ((n = realloc(p, s)) == NULL) {
-		free(p);
-		nomem();
-	}
-	p = n;
-	return (p);
+	return not_null(realloc(p, s));
 }
 
 char *
 xstrdup(const char *s)
 {
-	char	*s2;
 
-	if ((s2 = strdup(s)) == NULL)
-		nomem();
-	return (s2);
+	return not_null(strdup(s));
 }
 
-void
-nomem(void)
+#if defined(IS_XLINT)
+char *
+xasprintf(const char *fmt, ...)
 {
+	char *str;
+	int e;
+	va_list ap;
 
-	errx(1, "virtual memory exhausted");
+	va_start(ap, fmt);
+	e = vasprintf(&str, fmt, ap);
+	va_end(ap);
+	if (e < 0)
+		(void)not_null(NULL);
+	return str;
 }
-
-#if defined(MAP_ANONYMOUS) && !defined(MAP_ANON)
-#define	MAP_ANON	MAP_ANONYMOUS
 #endif
-
-void *
-xmapalloc(size_t len)
-{
-	static const int prot = PROT_READ | PROT_WRITE;
-	static int fd = -1;
-	void *p;
-#ifdef MAP_ANON
-	static const int flags = MAP_ANON | MAP_PRIVATE;
-#else
-	static const int flags = MAP_PRIVATE;
-
-	if (fd == -1) {
-		if ((fd = open("/dev/zero", O_RDWR)) == -1)
-			err(1, "Cannot open `/dev/zero'");
-	}
-#endif
-	p = mmap(NULL, len, prot, flags, fd, (off_t)0);
-	if (p == (void *)-1)
-		err(1, "Cannot map memory for %lu bytes", (unsigned long)len);
-	return p;
-}

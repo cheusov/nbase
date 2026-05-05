@@ -1,4 +1,4 @@
-/*	$NetBSD: mime_child.c,v 1.9.6.1 2019/12/17 12:30:36 martin Exp $	*/
+/*	$NetBSD: mime_child.c,v 1.10 2019/12/14 20:21:43 christos Exp $	*/
 
 /*-
  * Copyright (c) 2006 The NetBSD Foundation, Inc.
@@ -34,7 +34,7 @@
 
 #include <sys/cdefs.h>
 #ifndef __lint__
-__RCSID("$NetBSD: mime_child.c,v 1.9.6.1 2019/12/17 12:30:36 martin Exp $");
+__RCSID("$NetBSD: mime_child.c,v 1.10 2019/12/14 20:21:43 christos Exp $");
 #endif /* not __lint__ */
 
 #include <assert.h>

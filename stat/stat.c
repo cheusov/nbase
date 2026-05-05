@@ -1,4 +1,4 @@
-/*	$NetBSD: stat.c,v 1.44 2019/02/04 08:07:33 mrg Exp $ */
+/*	$NetBSD: stat.c,v 1.48 2022/06/22 18:20:30 kre Exp $ */
 
 /*
  * Copyright (c) 2002-2011 The NetBSD Foundation, Inc.
@@ -37,7 +37,7 @@
 
 #include <sys/cdefs.h>
 #if !defined(lint)
-__RCSID("$NetBSD: stat.c,v 1.44 2019/02/04 08:07:33 mrg Exp $");
+__RCSID("$NetBSD: stat.c,v 1.48 2022/06/22 18:20:30 kre Exp $");
 #endif
 
 #if ! HAVE_NBTOOL_CONFIG_H
@@ -328,9 +328,10 @@ main(int argc, char *argv[])
 
 	errs = 0;
 	do {
-		if (argc == 0)
+		if (argc == 0) {
+			fn = 0;
 			rc = fstat(STDIN_FILENO, &st);
-		else if (usestat) {
+		} else if (usestat) {
 			/*
 			 * Try stat() and if it fails, fall back to
 			 * lstat() just in case we're examining a
@@ -340,8 +341,7 @@ main(int argc, char *argv[])
 			    errno == ENOENT &&
 			    (rc = lstat(argv[0], &st)) == -1)
 				errno = ENOENT;
-		}
-		else
+		} else
 			rc = lstat(argv[0], &st);
 
 		if (rc == -1) {
@@ -351,8 +351,7 @@ main(int argc, char *argv[])
 				warn("%s: %s",
 				    argc == 0 ? "(stdin)" : argv[0],
 				    usestat ? "stat" : "lstat");
-		}
-		else
+		} else
 			output(&st, argv[0], statfmt, fn, nonl, quiet);
 
 		argv++;
@@ -475,9 +474,9 @@ output(const struct stat *st, const char *file,
 		} while (1/*CONSTCOND*/);
 
 		size = -1;
-		if (isdigit((unsigned)*statfmt)) {
+		if (isdigit((unsigned char)*statfmt)) {
 			size = 0;
-			while (isdigit((unsigned)*statfmt)) {
+			while (isdigit((unsigned char)*statfmt)) {
 				size = (size * 10) + (*statfmt - '0');
 				statfmt++;
 				if (size < 0)
@@ -490,7 +489,7 @@ output(const struct stat *st, const char *file,
 			statfmt++;
 
 			prec = 0;
-			while (isdigit((unsigned)*statfmt)) {
+			while (isdigit((unsigned char)*statfmt)) {
 				prec = (prec * 10) + (*statfmt - '0');
 				statfmt++;
 				if (prec < 0)
@@ -812,8 +811,8 @@ format1(const struct stat *st,
 			nsecs = st->st_ctimensec;
 #endif
 		}
-		/* FALLTHROUGH */
 #if HAVE_STRUCT_STAT_ST_BIRTHTIME
+		/* FALLTHROUGH */
 	case SHOW_st_btime:
 		if (!gottime) {
 			gottime = 1;
@@ -1036,17 +1035,19 @@ format1(const struct stat *st,
 			char majdev[20], mindev[20];
 			int l1, l2;
 
+			if (size == 0)		/* avoid -1/2 */
+				size++;		/* 1/2 == 0/2 so this is safe */
 			l1 = format1(st,
 			    file,
 			    fmt, flen,
 			    majdev, sizeof(majdev),
-			    flags, size, prec,
+			    flags, (size - 1) / 2, prec,
 			    ofmt, HIGH_PIECE, SHOW_st_rdev, quiet);
 			l2 = format1(st,
 			    file,
 			    fmt, flen,
 			    mindev, sizeof(mindev),
-			    flags, size, prec,
+			    flags | FLAG_MINUS , size / 2, prec,
 			    ofmt, LOW_PIECE, SHOW_st_rdev, quiet);
 			return (snprintf(buf, blen, "%.*s,%.*s",
 			    l1, majdev, l2, mindev));
@@ -1078,6 +1079,8 @@ format1(const struct stat *st,
 	if ((flags & FLAG_POUND) != 0 && ofmt == FMTF_STRING) {
 		flags &= !FLAG_POUND;
 		strncpy(visbuf, sdata, prefixlen);
+		/* Avoid GCC warnings. */
+		visbuf[prefixlen] = 0;
 		strnvis(visbuf + prefixlen, sizeof(visbuf) - prefixlen,
 		    sdata + prefixlen, VIS_WHITE | VIS_OCTAL | VIS_CSTYLE);
 		sdata = visbuf;

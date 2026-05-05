@@ -1,4 +1,4 @@
-/*	$NetBSD: regexp.c,v 1.13 2014/07/15 13:17:15 christos Exp $	*/
+/*	$NetBSD: regexp.c,v 1.15 2021/12/12 08:49:58 andvar Exp $	*/
 
 /*
  * Copyright (c) 1980, 1993
@@ -44,7 +44,7 @@ __COPYRIGHT("@(#) Copyright (c) 1980, 1993\
 #if 0
 static char sccsid[] = "@(#)regexp.c	8.1 (Berkeley) 6/6/93";
 #endif
-__RCSID("$NetBSD: regexp.c,v 1.13 2014/07/15 13:17:15 christos Exp $");
+__RCSID("$NetBSD: regexp.c,v 1.15 2021/12/12 08:49:58 andvar Exp $");
 #endif /* not lint */
 
 #include <assert.h>
@@ -123,7 +123,7 @@ STRNCMP(char *s1, char *s2, int len)
  *				character count
  *				the string
  *
- *		operatins :=	descriptor
+ *		operations :=	descriptor
  *				symbol
  *				character count
  */
@@ -331,7 +331,7 @@ expconv(void)
 
 
 /*
- *	The following routine recognises an irregular expresion
+ *	The following routine recognises an irregular expression
  *	with the following special characters:
  *
  *		\?	-	means last match was optional

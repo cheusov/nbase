@@ -1,4 +1,4 @@
-/* $NetBSD: externs2.h,v 1.8 2002/01/18 21:01:39 thorpej Exp $ */
+/* $NetBSD: externs2.h,v 1.16 2021/11/16 22:03:12 rillig Exp $ */
 
 /*
  * Copyright (c) 1996 Christopher G. Demetriou.  All Rights Reserved.
@@ -33,30 +33,29 @@
  */
 
 /*
- * main.c
+ * main2.c
  */
-extern	int	xflag;
-extern	int	uflag;
-extern	int	Cflag;
-extern	const	char *libname;
-extern	int	sflag;
-extern	int	tflag;
-extern	int	Hflag;
-extern	int	hflag;
-extern	int	Fflag;
-
+extern	bool	xflag;
+extern	bool	uflag;
+extern	bool	Cflag;
+extern	const char *libname;
+extern	bool	sflag;
+extern	bool	tflag;
+extern	bool	Hflag;
+extern	bool	hflag;
+extern	bool	Fflag;
 
 /*
  * hash.c
  */
-extern	void	_inithash(hte_t ***);
-extern	hte_t	*_hsearch(hte_t **, const char *, int);
-extern	void	_forall(hte_t **, void (*)(hte_t *));
+extern	hte_t**	htab_new(void);
+extern	hte_t	*_hsearch(hte_t **, const char *, bool);
+extern	void	symtab_init(void);
+extern	void	symtab_forall(void (*)(hte_t *));
+extern	void	symtab_forall_sorted(void (*)(hte_t *));
 extern	void	_destroyhash(hte_t **);
 
-#define	inithash()	_inithash(NULL);
 #define	hsearch(a, b)	_hsearch(NULL, (a), (b))
-#define	forall(a)	_forall(NULL, (a))
 
 /*
  * read.c
@@ -76,9 +75,8 @@ extern	void	*xalloc(size_t);
 /*
  * chk.c
  */
-extern	void	inittyp(void);
 extern	void	mainused(void);
-extern	void	chkname(hte_t *);
+extern	void	chkname(const hte_t *);
 
 /*
  * msg.c

@@ -1,4 +1,4 @@
-/*	$NetBSD: menus.mc,v 1.12.2.1 2019/12/09 12:48:22 martin Exp $	*/
+/*	$NetBSD: menus.mc,v 1.13 2019/12/03 01:45:34 uwe Exp $	*/
 
 /*
  * Copyright 1997 Piermont Information Systems Inc.

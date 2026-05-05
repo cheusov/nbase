@@ -1,4 +1,4 @@
-.\"	$NetBSD: find.1,v 1.89 2017/07/03 21:34:57 wiz Exp $
+.\"	$NetBSD: find.1,v 1.93 2020/11/02 07:03:48 uwe Exp $
 .\"
 .\" Copyright (c) 1990, 1993
 .\"	The Regents of the University of California.  All rights reserved.
@@ -32,7 +32,7 @@
 .\"
 .\"	from: @(#)find.1	8.7 (Berkeley) 5/9/95
 .\"
-.Dd June 13, 2016
+.Dd November 1, 2020
 .Dt FIND 1
 .Os
 .Sh NAME
@@ -141,7 +141,7 @@ is skipped.
 The delimiting characters include single
 .Pq Dq \&'
 and double
-.Pq Dq \&"
+.Pq Dq \&\*q
 quotes, backslash
 .Pq Dq \e ,
 space, tab, and newline characters.
@@ -739,6 +739,7 @@ The operators are listed in order of decreasing precedence.
 This evaluates to true if the parenthesized expression evaluates to
 true.
 .It Cm \&! Ar expression
+.It Cm -not Ar expression
 This is the unary
 .Tn NOT
 operator.
@@ -823,7 +824,7 @@ but do not print them.
 .It Li "find / \e( \-newer ttt \-or \-user wnj \e) \-ls \-exit 1"
 Same as above, but list the first file matching the criteria before exiting
 with a value of 1.
-.It Li "find . \-type f \-exec sh \-c 'file=\*[q]$1\*[q]; ...;' - {} \;"
+.It Li "find . \-type f \-exec sh \-c 'file=\*[q]$1\*[q]; ...;' - {} \e;"
 Perform an arbitrarily complex shell command for every file.
 .El
 .Sh SEE ALSO
@@ -846,7 +847,7 @@ utility syntax is a superset of the syntax specified by the
 .St -p1003.2
 standard.
 .Pp
-The options and the
+The options, the
 .Ic -amin ,
 .Ic -anewer ,
 .Ic -asince ,
@@ -873,7 +874,9 @@ The options and the
 .Ic -rm ,
 and
 .Ic -since
-primaries are extensions to
+primaries, and the
+.Ic -not
+operator are extensions to
 .St -p1003.2 .
 .Pp
 Historically, the

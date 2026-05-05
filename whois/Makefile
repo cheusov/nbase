@@ -1,5 +1,4 @@
 PROG =		whois
-CPPFLAGS +=	-DRIPE
 MAN       =	whois.1
 
 MKC_FEATURES +=		fgetln

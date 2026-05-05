@@ -1,4 +1,4 @@
-/*	$NetBSD: process.c,v 1.52 2015/03/12 12:40:41 christos Exp $	*/
+/*	$NetBSD: process.c,v 1.53.6.1 2024/10/14 17:44:57 martin Exp $	*/
 
 /*-
  * Copyright (c) 1992 Diomidis Spinellis.
@@ -38,7 +38,7 @@
 #endif
 
 #include <sys/cdefs.h>
-__RCSID("$NetBSD: process.c,v 1.52 2015/03/12 12:40:41 christos Exp $");
+__RCSID("$NetBSD: process.c,v 1.53.6.1 2024/10/14 17:44:57 martin Exp $");
 #ifdef __FBSDID
 __FBSDID("$FreeBSD: head/usr.bin/sed/process.c 192732 2009-05-25 06:45:33Z brian $");
 #endif
@@ -74,6 +74,7 @@ static SPACE HS, PS, SS, YS;
 #define	pd		PS.deleted
 #define	ps		PS.space
 #define	psl		PS.len
+#define	psanl		PS.append_newline
 #define	hs		HS.space
 #define	hsl		HS.len
 
@@ -96,7 +97,10 @@ static regex_t *defpreg;
 size_t maxnsub;
 regmatch_t *match;
 
-#define OUT() do {fwrite(ps, 1, psl, outfile); fputc('\n', outfile);} while (0)
+#define OUT() do {							\
+	fwrite(ps, 1, psl, outfile);					\
+	if (psanl) fputc('\n', outfile);				\
+} while (0)
 
 void
 process(void)
@@ -105,6 +109,7 @@ process(void)
 	SPACE tspace;
 	size_t oldpsl = 0;
 	char *p;
+	int oldpsanl;
 
 	p = NULL;
 
@@ -200,11 +205,15 @@ redirect:
 					break;
 				if ((p = memchr(ps, '\n', psl - 1)) != NULL) {
 					oldpsl = psl;
+					oldpsanl = psanl;
 					psl = (size_t)(p - ps);
+					psanl = 1;
 				}
 				OUT();
-				if (p != NULL)
+				if (p != NULL) {
 					psl = oldpsl;
+					psanl = oldpsanl;
+				}
 				break;
 			case 'q':
 				if (!nflag && !pd)
@@ -253,6 +262,7 @@ redirect:
 					cspace(&HS, "", 0, REPLACE);
 				tspace = PS;
 				PS = HS;
+				psanl = tspace.append_newline;
 				HS = tspace;
 				break;
 			case 'y':
@@ -461,6 +471,7 @@ substitute(struct s_command *cp)
 	 */
 	tspace = PS;
 	PS = SS;
+	psanl = tspace.append_newline;
 	SS = tspace;
 	SS.space = SS.back;
 
@@ -530,6 +541,7 @@ do_tr(struct s_tr *y)
 		/* Swap the translation space and the pattern space. */
 		tmp = PS;
 		PS = YS;
+		psanl = tmp.append_newline;
 		YS = tmp;
 		YS.space = YS.back;
 	}
@@ -623,7 +635,11 @@ lputs(char *s, size_t len)
 			fputc('\n', outfile);
 			col = 0;
 		} else if (iswprint(wc)) {
+#ifdef HAVE_NBTOOL_CONFIG_H
+			width = 1;	/* wcwidth is an XSI function */
+#else
 			width = (size_t)wcwidth(wc);
+#endif
 			if (col + width >= termwidth) {
 				fprintf(outfile, "\\\n");
 				col = 0;

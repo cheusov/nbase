@@ -1,4 +1,4 @@
-/* $NetBSD: utils.c,v 1.46.2.1 2021/09/23 10:11:02 martin Exp $ */
+/* $NetBSD: utils.c,v 1.49.6.1 2024/07/20 14:41:10 martin Exp $ */
 
 /*-
  * Copyright (c) 1991, 1993, 1994
@@ -40,12 +40,16 @@
 #if 0
 static char sccsid[] = "@(#)utils.c	8.3 (Berkeley) 4/1/94";
 #else
-__RCSID("$NetBSD: utils.c,v 1.46.2.1 2021/09/23 10:11:02 martin Exp $");
+__RCSID("$NetBSD: utils.c,v 1.49.6.1 2024/07/20 14:41:10 martin Exp $");
 #endif
 #endif /* not lint */
 
+#define _ACL_PRIVATE
 #include <sys/mman.h>
 #include <sys/param.h>
+#ifndef SMALL
+#include <sys/acl.h>
+#endif
 #if HAVE_FUNC2_FCPXATTR_SYS_EXTATTR_H
 #include <sys/extattr.h>
 #endif
@@ -183,10 +187,10 @@ copy_file(FTSENT *entp, int dne)
 	rval = 0;
 
 	/* 
-	 * There's no reason to do anything other than close the file
-	 * now if it's regular and empty, so let's not bother.
+	 * We always copy regular files, even if they appear to be 0-sized
+	 * because kernfs and procfs don't return file sizes.
 	 */
-	bool need_copy = !S_ISREG(fs->st_mode) || fs->st_size > 0;
+	bool need_copy = S_ISREG(fs->st_mode) || fs->st_size > 0;
 
 	struct finfo fi;
 
@@ -263,6 +267,11 @@ copy_file(FTSENT *entp, int dne)
 	if (pflag && (fcpxattr(from_fd, to_fd) != 0))
 		warn("%s: error copying extended attributes", to.p_path);
 #endif /* #if HAVE_FUNC2_FCPXATTR_SYS_EXTATTR_H */
+
+#ifndef SMALL
+	if (pflag && preserve_fd_acls(from_fd, to_fd) != 0)
+		rval = 1;
+#endif
 
 	(void)close(from_fd);
 
@@ -418,6 +427,147 @@ setfile(struct stat *fs, int fd)
 	    rval = 1;
 	return (rval);
 }
+
+#ifndef SMALL
+int
+preserve_fd_acls(int source_fd, int dest_fd)
+{
+	acl_t acl;
+	acl_type_t acl_type;
+	int acl_supported = 0, ret, trivial;
+
+	ret = fpathconf(source_fd, _PC_ACL_NFS4);
+	if (ret > 0 ) {
+		acl_supported = 1;
+		acl_type = ACL_TYPE_NFS4;
+	} else if (ret < 0 && errno != EINVAL) {
+		warn("fpathconf(..., _PC_ACL_NFS4) failed for %s", to.p_path);
+		return (1);
+	}
+	if (acl_supported == 0) {
+		ret = fpathconf(source_fd, _PC_ACL_EXTENDED);
+		if (ret > 0 ) {
+			acl_supported = 1;
+			acl_type = ACL_TYPE_ACCESS;
+		} else if (ret < 0 && errno != EINVAL) {
+			warn("fpathconf(..., _PC_ACL_EXTENDED) failed for %s",
+			    to.p_path);
+			return (1);
+		}
+	}
+	if (acl_supported == 0)
+		return (0);
+
+	acl = acl_get_fd_np(source_fd, acl_type);
+	if (acl == NULL) {
+		warn("failed to get acl entries while setting %s", to.p_path);
+		return (1);
+	}
+	if (acl_is_trivial_np(acl, &trivial)) {
+		warn("acl_is_trivial() failed for %s", to.p_path);
+		acl_free(acl);
+		return (1);
+	}
+	if (trivial) {
+		acl_free(acl);
+		return (0);
+	}
+	if (acl_set_fd_np(dest_fd, acl, acl_type) < 0) {
+		warn("failed to set acl entries for %s", to.p_path);
+		acl_free(acl);
+		return (1);
+	}
+	acl_free(acl);
+	return (0);
+}
+
+int
+preserve_dir_acls(struct stat *fs, char *source_dir, char *dest_dir)
+{
+	acl_t (*aclgetf)(const char *, acl_type_t);
+	int (*aclsetf)(const char *, acl_type_t, acl_t);
+	struct acl *aclp;
+	acl_t acl;
+	acl_type_t acl_type;
+	int acl_supported = 0, ret, trivial;
+
+	ret = pathconf(source_dir, _PC_ACL_NFS4);
+	if (ret > 0) {
+		acl_supported = 1;
+		acl_type = ACL_TYPE_NFS4;
+	} else if (ret < 0 && errno != EINVAL) {
+		warn("fpathconf(..., _PC_ACL_NFS4) failed for %s", source_dir);
+		return (1);
+	}
+	if (acl_supported == 0) {
+		ret = pathconf(source_dir, _PC_ACL_EXTENDED);
+		if (ret > 0) {
+			acl_supported = 1;
+			acl_type = ACL_TYPE_ACCESS;
+		} else if (ret < 0 && errno != EINVAL) {
+			warn("fpathconf(..., _PC_ACL_EXTENDED) failed for %s",
+			    source_dir);
+			return (1);
+		}
+	}
+	if (acl_supported == 0)
+		return (0);
+
+	/*
+	 * If the file is a link we will not follow it.
+	 */
+	if (S_ISLNK(fs->st_mode)) {
+		aclgetf = acl_get_link_np;
+		aclsetf = acl_set_link_np;
+	} else {
+		aclgetf = acl_get_file;
+		aclsetf = acl_set_file;
+	}
+	if (acl_type == ACL_TYPE_ACCESS) {
+		/*
+		 * Even if there is no ACL_TYPE_DEFAULT entry here, a zero
+		 * size ACL will be returned. So it is not safe to simply
+		 * check the pointer to see if the default ACL is present.
+		 */
+		acl = aclgetf(source_dir, ACL_TYPE_DEFAULT);
+		if (acl == NULL) {
+			warn("failed to get default acl entries on %s",
+			    source_dir);
+			return (1);
+		}
+		aclp = &acl->ats_acl;
+		if (aclp->acl_cnt != 0 && aclsetf(dest_dir,
+		    ACL_TYPE_DEFAULT, acl) < 0) {
+			warn("failed to set default acl entries on %s",
+			    dest_dir);
+			acl_free(acl);
+			return (1);
+		}
+		acl_free(acl);
+	}
+	acl = aclgetf(source_dir, acl_type);
+	if (acl == NULL) {
+		warn("failed to get acl entries on %s", source_dir);
+		return (1);
+	}
+	if (acl_is_trivial_np(acl, &trivial)) {
+		warn("acl_is_trivial() failed on %s", source_dir);
+		acl_free(acl);
+		return (1);
+	}
+	if (trivial) {
+		acl_free(acl);
+		return (0);
+	}
+	if (aclsetf(dest_dir, acl_type, acl) < 0) {
+		warn("failed to set acl entries on %s", dest_dir);
+		acl_free(acl);
+		return (1);
+	}
+	acl_free(acl);
+	return (0);
+}
+#endif
 
 void
 usage(void)

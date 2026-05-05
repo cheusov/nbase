@@ -1,4 +1,4 @@
-/*	$NetBSD: io.c,v 1.19 2019/04/04 15:22:13 kamil Exp $	*/
+/*	$NetBSD: io.c,v 1.148 2022/04/23 06:43:22 rillig Exp $	*/
 
 /*-
  * SPDX-License-Identifier: BSD-4-Clause
@@ -38,498 +38,682 @@
  */
 
 #if 0
-#ifndef lint
 static char sccsid[] = "@(#)io.c	8.1 (Berkeley) 6/6/93";
-#endif /* not lint */
 #endif
 
 #include <sys/cdefs.h>
-#ifndef lint
 #if defined(__NetBSD__)
-__RCSID("$NetBSD: io.c,v 1.19 2019/04/04 15:22:13 kamil Exp $");
+__RCSID("$NetBSD: io.c,v 1.148 2022/04/23 06:43:22 rillig Exp $");
 #elif defined(__FreeBSD__)
 __FBSDID("$FreeBSD: head/usr.bin/indent/io.c 334927 2018-06-10 16:44:18Z pstef $");
 #endif
-#endif
 
-#include <ctype.h>
-#include <err.h>
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "indent_globs.h"
+
 #include "indent.h"
 
-int         comment_open;
-static int  paren_target;
-static int pad_output(int current, int target);
-
-void
-dump_line(void)
-{				/* dump_line is the routine that actually
-				 * effects the printing of the new source. It
-				 * prints the label section, followed by the
-				 * code section with the appropriate nesting
-				 * level, followed by any comments */
-    int cur_col,
-                target_col = 1;
-    static int  not_first_line;
-
-    if (ps.procname[0]) {
-	ps.ind_level = 0;
-	ps.procname[0] = 0;
-    }
-    if (s_code == e_code && s_lab == e_lab && s_com == e_com) {
-	if (suppress_blanklines > 0)
-	    suppress_blanklines--;
-	else {
-	    ps.bl_line = true;
-	    n_real_blanklines++;
-	}
-    }
-    else if (!inhibit_formatting) {
-	suppress_blanklines = 0;
-	ps.bl_line = false;
-	if (prefix_blankline_requested && not_first_line) {
-	    if (opt.swallow_optional_blanklines) {
-		if (n_real_blanklines == 1)
-		    n_real_blanklines = 0;
-	    }
-	    else {
-		if (n_real_blanklines == 0)
-		    n_real_blanklines = 1;
-	    }
-	}
-	while (--n_real_blanklines >= 0)
-	    putc('\n', output);
-	n_real_blanklines = 0;
-	if (ps.ind_level == 0)
-	    ps.ind_stmt = 0;	/* this is a class A kludge. dont do
-				 * additional statement indentation if we are
-				 * at bracket level 0 */
-
-	if (e_lab != s_lab || e_code != s_code)
-	    ++code_lines;	/* keep count of lines with code */
-
-
-	if (e_lab != s_lab) {	/* print lab, if any */
-	    if (comment_open) {
-		comment_open = 0;
-		fprintf(output, ".*/\n");
-	    }
-	    while (e_lab > s_lab && (e_lab[-1] == ' ' || e_lab[-1] == '\t'))
-		e_lab--;
-	    *e_lab = '\0';
-	    cur_col = pad_output(1, compute_label_target());
-	    if (s_lab[0] == '#' && (strncmp(s_lab, "#else", 5) == 0
-				    || strncmp(s_lab, "#endif", 6) == 0)) {
-		char *s = s_lab;
-		if (e_lab[-1] == '\n') e_lab--;
-		do putc(*s++, output);
-		while (s < e_lab && 'a' <= *s && *s<='z');
-		while ((*s == ' ' || *s == '\t') && s < e_lab)
-		    s++;
-		if (s < e_lab)
-		    fprintf(output, s[0]=='/' && s[1]=='*' ? "\t%.*s" : "\t/* %.*s */",
-			    (int)(e_lab - s), s);
-	    }
-	    else fprintf(output, "%.*s", (int)(e_lab - s_lab), s_lab);
-	    cur_col = count_spaces(cur_col, s_lab);
-	}
-	else
-	    cur_col = 1;	/* there is no label section */
-
-	ps.pcase = false;
-
-	if (s_code != e_code) {	/* print code section, if any */
-	    char *p;
-
-	    if (comment_open) {
-		comment_open = 0;
-		fprintf(output, ".*/\n");
-	    }
-	    target_col = compute_code_target();
-	    {
-		int i;
-
-		for (i = 0; i < ps.p_l_follow; i++)
-		    if (ps.paren_indents[i] >= 0)
-			ps.paren_indents[i] = -(ps.paren_indents[i] + target_col);
-	    }
-	    cur_col = pad_output(cur_col, target_col);
-	    for (p = s_code; p < e_code; p++)
-		if (*p == (char) 0200)
-		    fprintf(output, "%d", target_col * 7);
-		else
-		    putc(*p, output);
-	    cur_col = count_spaces(cur_col, s_code);
-	}
-	if (s_com != e_com) {		/* print comment, if any */
-	    int target = ps.com_col;
-	    char *com_st = s_com;
-
-	    target += ps.comment_delta;
-	    while (*com_st == '\t')	/* consider original indentation in
-				     * case this is a box comment */
-		com_st++, target += opt.tabsize;
-	    while (target <= 0)
-		if (*com_st == ' ')
-		    target++, com_st++;
-		else if (*com_st == '\t') {
-		    target = opt.tabsize * (1 + (target - 1) / opt.tabsize) + 1;
-		    com_st++;
-		}
-		else
-		    target = 1;
-	    if (cur_col > target) {	/* if comment can't fit on this line,
-				     * put it on next line */
-		putc('\n', output);
-		cur_col = 1;
-		++ps.out_lines;
-	    }
-	    while (e_com > com_st && isspace((unsigned char)e_com[-1]))
-		e_com--;
-	    (void)pad_output(cur_col, target);
-	    fwrite(com_st, e_com - com_st, 1, output);
-	    ps.comment_delta = ps.n_comment_delta;
-	    ++ps.com_lines;	/* count lines with comments */
-	}
-	if (ps.use_ff)
-	    putc('\014', output);
-	else
-	    putc('\n', output);
-	++ps.out_lines;
-	if (ps.just_saw_decl == 1 && opt.blanklines_after_declarations) {
-	    prefix_blankline_requested = 1;
-	    ps.just_saw_decl = 0;
-	}
-	else
-	    prefix_blankline_requested = postfix_blankline_requested;
-	postfix_blankline_requested = 0;
-    }
-    ps.decl_on_line = ps.in_decl;	/* if we are in the middle of a
-					 * declaration, remember that fact for
-					 * proper comment indentation */
-    ps.ind_stmt = ps.in_stmt & ~ps.in_decl;	/* next line should be
-						 * indented if we have not
-						 * completed this stmt and if
-						 * we are not in the middle of
-						 * a declaration */
-    ps.use_ff = false;
-    ps.dumped_decl_indent = 0;
-    *(e_lab = s_lab) = '\0';	/* reset buffers */
-    *(e_code = s_code) = '\0';
-    *(e_com = s_com = combuf + 1) = '\0';
-    ps.ind_level = ps.i_l_follow;
-    ps.paren_level = ps.p_l_follow;
-    if (ps.paren_level > 0)
-	paren_target = -ps.paren_indents[ps.paren_level - 1];
-    not_first_line = 1;
-}
-
-int
-compute_code_target(void)
-{
-    int target_col = opt.ind_size * ps.ind_level + 1;
-
-    if (ps.paren_level)
-	if (!opt.lineup_to_parens)
-	    target_col += opt.continuation_indent *
-		(2 * opt.continuation_indent == opt.ind_size ? 1 : ps.paren_level);
-	else if (opt.lineup_to_parens_always)
-	    target_col = paren_target;
-	else {
-	    int w;
-	    int t = paren_target;
-
-	    if ((w = count_spaces(t, s_code) - opt.max_col) > 0
-		    && count_spaces(target_col, s_code) <= opt.max_col) {
-		t -= w + 1;
-		if (t > target_col)
-		    target_col = t;
-	    }
-	    else
-		target_col = t;
-	}
-    else if (ps.ind_stmt)
-	target_col += opt.continuation_indent;
-    return target_col;
-}
-
-int
-compute_label_target(void)
-{
-    return
-	ps.pcase ? (int) (case_ind * opt.ind_size) + 1
-	: *s_lab == '#' ? 1
-	: opt.ind_size * (ps.ind_level - label_offset) + 1;
-}
-
-
 /*
- * Copyright (C) 1976 by the Board of Trustees of the University of Illinois
+ * There are 3 modes for reading the input.
  *
- * All rights reserved
+ * default: In this mode, the input comes from the input file. The buffer
+ * 'inp' contains the current line, terminated with '\n'. The current read
+ * position is inp.s, and there is always inp.buf <= inp.s < inp.e. All other
+ * pointers are null.
  *
+ * copy-in: After reading 'if (expr)' or similar tokens, the input still comes
+ * from 'inp', but instead of processing it, it is copied to 'save_com'. The
+ * goal of this mode is to move the comments after the '{', that is to
+ * transform 'if (expr) comment {' to 'if (expr) { comment'. When the next
+ * token cannot be part of this transformation, switch to copy-out.
  *
- * NAME: fill_buffer
- *
- * FUNCTION: Reads one block of input into input_buffer
- *
- * HISTORY: initial coding 	November 1976	D A Willcox of CAC 1/7/77 A
- * Willcox of CAC	Added check for switch back to partly full input
- * buffer from temporary buffer
- *
+ * copy-out: In this mode, the input comes from 'save_com', which contains the
+ * tokens to be placed after the '{'. The input still comes from the range
+ * [inp.s, inp.e), but these two members have been overwritten with pointers
+ * into save_com_buf, so inp.buf and inp.s are unrelated, which is unusual.
+ * In this mode, inp.e[-1] is usually not terminated with '\n'. After reading
+ * all tokens from save_com, switch to default mode again.
  */
+static struct {
+    struct buffer inp;		/* one line of input, ready to be split into
+				 * tokens; occasionally 's' and 'e' switch
+				 * to save_com_buf */
+    char save_com_buf[5000];	/* input text is saved here when looking for
+				 * the brace after an if, while, etc */
+    char *save_com_s;		/* start of the comment in save_com_buf, or
+				 * null */
+    char *save_com_e;		/* end of the comment in save_com_buf, or
+				 * null */
+
+    char *saved_inp_s;		/* saved value of inp.s when taking input from
+				 * save_com, or null */
+    char *saved_inp_e;		/* saved value of inp.e, or null */
+} inbuf;
+
+static int paren_indent;
+
+
 void
-fill_buffer(void)
-{				/* this routine reads stuff from the input */
-    char *p;
-    int i;
-    FILE *f = input;
+inp_init(void)
+{
+    inbuf.inp.buf = xmalloc(10);
+    inbuf.inp.l = inbuf.inp.buf + 8;
+    inbuf.inp.s = inbuf.inp.buf;
+    inbuf.inp.e = inbuf.inp.buf;
+}
 
-    if (bp_save != NULL) {	/* there is a partly filled input buffer left */
-	buf_ptr = bp_save;	/* do not read anything, just switch buffers */
-	buf_end = be_save;
-	bp_save = be_save = NULL;
-	if (buf_ptr < buf_end)
-	    return;		/* only return if there is really something in
-				 * this buffer */
-    }
-    for (p = in_buffer;;) {
-	if (p >= in_buffer_limit) {
-	    int size = (in_buffer_limit - in_buffer) * 2 + 10;
-	    int offset = p - in_buffer;
-	    in_buffer = realloc(in_buffer, size);
-	    if (in_buffer == NULL)
-		errx(1, "input line too long");
-	    p = in_buffer + offset;
-	    in_buffer_limit = in_buffer + size - 2;
-	}
-	if ((i = getc(f)) == EOF) {
-		*p++ = ' ';
-		*p++ = '\n';
-		had_eof = true;
-		break;
-	}
-	if (i != '\0')
-	    *p++ = i;
-	if (i == '\n')
-		break;
-    }
-    buf_ptr = in_buffer;
-    buf_end = p;
-    if (p - in_buffer > 2 && p[-2] == '/' && p[-3] == '*') {
-	if (in_buffer[3] == 'I' && strncmp(in_buffer, "/**INDENT**", 11) == 0)
-	    fill_buffer();	/* flush indent error message */
-	else {
-	    int         com = 0;
+const char *
+inp_p(void)
+{
+    assert(inbuf.inp.s < inbuf.inp.e);
+    return inbuf.inp.s;
+}
 
-	    p = in_buffer;
-	    while (*p == ' ' || *p == '\t')
-		p++;
-	    if (*p == '/' && p[1] == '*') {
-		p += 2;
-		while (*p == ' ' || *p == '\t')
-		    p++;
-		if (p[0] == 'I' && p[1] == 'N' && p[2] == 'D' && p[3] == 'E'
-			&& p[4] == 'N' && p[5] == 'T') {
-		    p += 6;
-		    while (*p == ' ' || *p == '\t')
-			p++;
-		    if (*p == '*')
-			com = 1;
-		    else if (*p == 'O') {
-			if (*++p == 'N')
-			    p++, com = 1;
-			else if (*p == 'F' && *++p == 'F')
-			    p++, com = 2;
-		    }
-		    while (*p == ' ' || *p == '\t')
-			p++;
-		    if (p[0] == '*' && p[1] == '/' && p[2] == '\n' && com) {
-			if (s_com != e_com || s_lab != e_lab || s_code != e_code)
-			    dump_line();
-			if (!(inhibit_formatting = com - 1)) {
-			    n_real_blanklines = 0;
-			    postfix_blankline_requested = 0;
-			    prefix_blankline_requested = 0;
-			    suppress_blanklines = 1;
-			}
-		    }
-		}
-	    }
-	}
+const char *
+inp_line_start(void)
+{
+    return inbuf.saved_inp_s != NULL ? inbuf.save_com_buf : inbuf.inp.buf;
+}
+
+const char *
+inp_line_end(void)
+{
+    return inbuf.inp.e;
+}
+
+char
+inp_peek(void)
+{
+    assert(inbuf.inp.s < inbuf.inp.e);
+    return *inbuf.inp.s;
+}
+
+char
+inp_lookahead(size_t i)
+{
+    assert(i < (size_t)(inbuf.inp.e - inbuf.inp.s));
+    return inbuf.inp.s[i];
+}
+
+void
+inp_skip(void)
+{
+    assert(inbuf.inp.s < inbuf.inp.e);
+    inbuf.inp.s++;
+    if (inbuf.inp.s >= inbuf.inp.e)
+	inp_read_line();
+}
+
+char
+inp_next(void)
+{
+    char ch = inp_peek();
+    inp_skip();
+    return ch;
+}
+
+#ifdef debug
+static void
+debug_inp_buf(const char *name, const char *s, const char *e)
+{
+    if (s != NULL && e != NULL) {
+	debug_printf("    %-12s ", name);
+	debug_vis_range("\"", s, e, "\"\n");
     }
-    if (inhibit_formatting) {
-	p = in_buffer;
-	do
-	    putc(*p, output);
-	while (*p++ != '\n');
+}
+
+void
+debug_inp(const char *prefix)
+{
+    assert(inp_line_start() <= inbuf.inp.s);
+    assert(inbuf.inp.s <= inbuf.inp.e);
+
+    debug_println("%s %s:", __func__, prefix);
+    if (inbuf.saved_inp_s == NULL)
+	debug_inp_buf("inp.buf", inbuf.inp.buf, inbuf.inp.s);
+    debug_inp_buf("inp", inbuf.inp.s, inbuf.inp.e);	/* never null */
+    debug_inp_buf("save_com.buf", inbuf.save_com_buf, inbuf.save_com_s);
+    debug_inp_buf("save_com", inbuf.save_com_s, inbuf.save_com_e);
+    debug_inp_buf("saved_inp", inbuf.saved_inp_s, inbuf.saved_inp_e);
+}
+#endif
+
+static void
+inp_comment_check_size(size_t n)
+{
+    if ((size_t)(inbuf.save_com_e - inbuf.save_com_buf) + n <=
+	array_length(inbuf.save_com_buf))
+	return;
+
+    diag(1, "Internal buffer overflow - "
+	"Move big comment from right after if, while, or whatever");
+    fflush(output);
+    exit(1);
+}
+
+void
+inp_comment_init_newline(void)
+{
+    if (inbuf.save_com_e != NULL)
+	return;
+
+    inbuf.save_com_s = inbuf.save_com_buf;
+    inbuf.save_com_s[0] = ' ';	/* see inp_comment_insert_lbrace */
+    inbuf.save_com_s[1] = ' ';	/* see inp_comment_insert_lbrace */
+    inbuf.save_com_e = &inbuf.save_com_s[2];
+    debug_inp(__func__);
+}
+
+void
+inp_comment_init_comment(void)
+{
+    if (inbuf.save_com_e != NULL)
+	return;
+
+    /*
+     * Copy everything from the start of the line, because process_comment()
+     * will use that to calculate the original indentation of a boxed comment.
+     */
+    /*
+     * TODO: Don't store anything in the memory range [input.inp.buf,
+     * input.inp.s), as that data can easily get lost.
+     */
+    /*
+     * FIXME: The '4' below is completely wrong. For example, in the snippet
+     * 'if(expr)/''*comment', the 'r)' of the code is not copied. If there is
+     * an additional line break before the ')', memcpy tries to copy
+     * (size_t)-1 bytes.
+     *
+     * The original author of this magic number doesn't remember its purpose
+     * anymore, so there is no point in keeping it. The existing tests must
+     * still pass though.
+     */
+    assert((size_t)(inbuf.inp.s - inbuf.inp.buf) >= 4);
+    size_t line_len = (size_t)(inbuf.inp.s - inbuf.inp.buf) - 4;
+    assert(line_len < array_length(inbuf.save_com_buf));
+
+    memcpy(inbuf.save_com_buf, inbuf.inp.buf, line_len);
+    inbuf.save_com_s = inbuf.save_com_buf + line_len;
+
+    inbuf.save_com_s[0] = ' ';	/* see inp_comment_insert_lbrace */
+    inbuf.save_com_s[1] = ' ';	/* see inp_comment_insert_lbrace */
+    inbuf.save_com_e = &inbuf.save_com_s[2];
+
+    debug_vis_range("search_stmt_comment: before save_com is \"",
+	inbuf.save_com_buf, inbuf.save_com_s, "\"\n");
+    debug_vis_range("search_stmt_comment: save_com is \"",
+	inbuf.save_com_s, inbuf.save_com_e, "\"\n");
+}
+
+void
+inp_comment_init_preproc(void)
+{
+    if (inbuf.save_com_e == NULL) {	/* if this is the first comment, we
+					 * must set up the buffer */
+	/*
+	 * XXX: No space is reserved for a potential '{' here, unlike in
+	 * inp_comment_init_comment.
+	 */
+	inbuf.save_com_s = inbuf.save_com_buf;
+	inbuf.save_com_e = inbuf.save_com_s;
+    } else {
+	inp_comment_add_char('\n');	/* add newline between comments */
+	inp_comment_add_char(' ');
+	--line_no;
     }
+}
+
+void
+inp_comment_add_char(char ch)
+{
+    inp_comment_check_size(1);
+    *inbuf.save_com_e++ = ch;
+}
+
+void
+inp_comment_add_range(const char *s, const char *e)
+{
+    size_t len = (size_t)(e - s);
+    inp_comment_check_size(len);
+    memcpy(inbuf.save_com_e, s, len);
+    inbuf.save_com_e += len;
+}
+
+bool
+inp_comment_complete_block(void)
+{
+    return inbuf.save_com_e[-2] == '*' && inbuf.save_com_e[-1] == '/';
+}
+
+bool
+inp_comment_seen(void)
+{
+    return inbuf.save_com_e != NULL;
+}
+
+void
+inp_comment_rtrim_blank(void)
+{
+    while (inbuf.save_com_e > inbuf.save_com_s &&
+	    ch_isblank(inbuf.save_com_e[-1]))
+	inbuf.save_com_e--;
+}
+
+void
+inp_comment_rtrim_newline(void)
+{
+    while (inbuf.save_com_e > inbuf.save_com_s &&
+	    inbuf.save_com_e[-1] == '\n')
+	inbuf.save_com_e--;
 }
 
 /*
- * Copyright (C) 1976 by the Board of Trustees of the University of Illinois
- *
- * All rights reserved
- *
- *
- * NAME: pad_output
- *
- * FUNCTION: Writes tabs and spaces to move the current column up to the desired
- * position.
- *
- * ALGORITHM: Put tabs and/or blanks into pobuf, then write pobuf.
- *
- * PARAMETERS: current		integer		The current column target
- * nteger		The desired column
- *
- * RETURNS: Integer value of the new column.  (If current >= target, no action is
- * taken, and current is returned.
- *
- * GLOBALS: None
- *
- * CALLS: write (sys)
- *
- * CALLED BY: dump_line
- *
- * HISTORY: initial coding 	November 1976	D A Willcox of CAC
- *
+ * Switch the input to come from save_com, replaying the copied tokens while
+ * looking for the next '{'.
  */
+void
+inp_from_comment(void)
+{
+    debug_inp("before inp_from_comment");
+    inbuf.saved_inp_s = inbuf.inp.s;
+    inbuf.saved_inp_e = inbuf.inp.e;
+
+    inbuf.inp.s = inbuf.save_com_s;
+    inbuf.inp.e = inbuf.save_com_e;
+    inbuf.save_com_s = NULL;
+    inbuf.save_com_e = NULL;
+    debug_inp("after inp_from_comment");
+}
+
+/*
+ * After having read from save_com, continue with the rest of the input line
+ * before reading the next line from the input file.
+ */
+static bool
+inp_from_file(void)
+{
+    if (inbuf.saved_inp_s == NULL)
+	return false;
+
+    inbuf.inp.s = inbuf.saved_inp_s;
+    inbuf.inp.e = inbuf.saved_inp_e;
+    inbuf.saved_inp_s = inbuf.saved_inp_e = NULL;
+    debug_println("switched inp.s back to saved_inp_s");
+    return inbuf.inp.s < inbuf.inp.e;
+}
+
+void
+inp_comment_insert_lbrace(void)
+{
+    assert(inbuf.save_com_s[0] == ' ');	/* see inp_comment_init_newline */
+    inbuf.save_com_s[0] = '{';
+}
+
+static void
+inp_add(char ch)
+{
+    if (inbuf.inp.e >= inbuf.inp.l) {
+	size_t new_size = (size_t)(inbuf.inp.l - inbuf.inp.buf) * 2 + 10;
+	size_t offset = (size_t)(inbuf.inp.e - inbuf.inp.buf);
+	inbuf.inp.buf = xrealloc(inbuf.inp.buf, new_size);
+	inbuf.inp.s = inbuf.inp.buf;
+	inbuf.inp.e = inbuf.inp.buf + offset;
+	inbuf.inp.l = inbuf.inp.buf + new_size - 2;
+    }
+    *inbuf.inp.e++ = ch;
+}
+
+static void
+inp_read_next_line(FILE *f)
+{
+    inbuf.inp.s = inbuf.inp.buf;
+    inbuf.inp.e = inbuf.inp.buf;
+
+    for (;;) {
+	int ch = getc(f);
+	if (ch == EOF) {
+	    if (!inhibit_formatting) {
+		inp_add(' ');
+		inp_add('\n');
+	    }
+	    had_eof = true;
+	    break;
+	}
+
+	if (ch != '\0')
+	    inp_add((char)ch);
+	if (ch == '\n')
+	    break;
+    }
+}
+
+static void
+output_char(char ch)
+{
+    fputc(ch, output);
+    debug_vis_range("output_char '", &ch, &ch + 1, "'\n");
+}
+
+static void
+output_range(const char *s, const char *e)
+{
+    fwrite(s, 1, (size_t)(e - s), output);
+    debug_vis_range("output_range \"", s, e, "\"\n");
+}
+
 static int
-pad_output(int current, int target)
-			        /* writes tabs and blanks (if necessary) to
-				 * get the current output position up to the
-				 * target column */
-    /* current: the current column value */
-    /* target: position we want it at */
+output_indent(int old_ind, int new_ind)
 {
-    int curr;			/* internal column pointer */
+    int ind = old_ind;
 
-    if (current >= target)
-	return (current);	/* line is already long enough */
-    curr = current;
     if (opt.use_tabs) {
-	int tcur;
-
-	while ((tcur = opt.tabsize * (1 + (curr - 1) / opt.tabsize) + 1) <= target) {
-	    putc('\t', output);
-	    curr = tcur;
+	int tabsize = opt.tabsize;
+	int n = new_ind / tabsize - ind / tabsize;
+	if (n > 0)
+	    ind -= ind % tabsize;
+	for (int i = 0; i < n; i++) {
+	    fputc('\t', output);
+	    ind += tabsize;
 	}
     }
-    while (curr++ < target)
-	putc(' ', output);	/* pad with final blanks */
 
-    return (target);
+    for (; ind < new_ind; ind++)
+	fputc(' ', output);
+
+    debug_println("output_indent %d", ind);
+    return ind;
+}
+
+static int
+output_line_label(void)
+{
+    int ind;
+
+    while (lab.e > lab.s && ch_isblank(lab.e[-1]))
+	lab.e--;
+    *lab.e = '\0';
+
+    ind = output_indent(0, compute_label_indent());
+    output_range(lab.s, lab.e);
+    ind = ind_add(ind, lab.s, lab.e);
+
+    ps.is_case_label = false;
+    return ind;
+}
+
+static int
+output_line_code(int ind)
+{
+
+    int target_ind = compute_code_indent();
+    for (int i = 0; i < ps.nparen; i++) {
+	if (ps.paren[i].indent >= 0) {
+	    int paren_ind = ps.paren[i].indent;
+	    ps.paren[i].indent = (short)(-1 - (paren_ind + target_ind));
+	    debug_println(
+		"setting paren_indents[%d] from %d to %d for column %d",
+		i, paren_ind, ps.paren[i].indent, target_ind + 1);
+	}
+    }
+
+    ind = output_indent(ind, target_ind);
+    output_range(code.s, code.e);
+    return ind_add(ind, code.s, code.e);
+}
+
+static void
+output_line_comment(int ind)
+{
+    int target_ind = ps.com_ind;
+    const char *p = com.s;
+
+    target_ind += ps.comment_delta;
+
+    /* consider original indentation in case this is a box comment */
+    for (; *p == '\t'; p++)
+	target_ind += opt.tabsize;
+
+    for (; target_ind < 0; p++) {
+	if (*p == ' ')
+	    target_ind++;
+	else if (*p == '\t')
+	    target_ind = next_tab(target_ind);
+	else {
+	    target_ind = 0;
+	    break;
+	}
+    }
+
+    /* if comment can't fit on this line, put it on the next line */
+    if (ind > target_ind) {
+	output_char('\n');
+	ind = 0;
+	ps.stats.lines++;
+    }
+
+    while (com.e > p && ch_isspace(com.e[-1]))
+	com.e--;
+
+    (void)output_indent(ind, target_ind);
+    output_range(p, com.e);
+
+    ps.comment_delta = ps.n_comment_delta;
+    ps.stats.comment_lines++;
 }
 
 /*
- * Copyright (C) 1976 by the Board of Trustees of the University of Illinois
- *
- * All rights reserved
- *
- *
- * NAME: count_spaces
- *
- * FUNCTION: Find out where printing of a given string will leave the current
- * character position on output.
- *
- * ALGORITHM: Run thru input string and add appropriate values to current
- * position.
- *
- * RETURNS: Integer value of position after printing "buffer" starting in column
- * "current".
- *
- * HISTORY: initial coding 	November 1976	D A Willcox of CAC
- *
+ * Write a line of formatted source to the output file. The line consists of
+ * the label, the code and the comment.
  */
+static void
+output_complete_line(char line_terminator)
+{
+    static bool first_line = true;
+
+    ps.is_function_definition = false;
+
+    if (code.s == code.e && lab.s == lab.e && com.s == com.e) {
+	if (out.suppress_blanklines)
+	    out.suppress_blanklines = false;
+	else
+	    out.blank_lines_to_output++;
+
+    } else if (!inhibit_formatting) {
+	out.suppress_blanklines = false;
+	if (out.blank_line_before && !first_line) {
+	    if (opt.swallow_optional_blanklines) {
+		if (out.blank_lines_to_output == 1)
+		    out.blank_lines_to_output = 0;
+	    } else {
+		if (out.blank_lines_to_output == 0)
+		    out.blank_lines_to_output = 1;
+	    }
+	}
+
+	for (; out.blank_lines_to_output > 0; out.blank_lines_to_output--)
+	    output_char('\n');
+
+	if (ps.ind_level == 0)
+	    ps.in_stmt_cont = false;	/* this is a class A kludge */
+
+	if (lab.e != lab.s || code.e != code.s)
+	    ps.stats.code_lines++;
+
+	int ind = 0;
+	if (lab.e != lab.s)
+	    ind = output_line_label();
+	if (code.e != code.s)
+	    ind = output_line_code(ind);
+	if (com.e != com.s)
+	    output_line_comment(ind);
+
+	output_char(line_terminator);
+	ps.stats.lines++;
+
+	/* TODO: rename to blank_line_after_decl */
+	if (ps.just_saw_decl == 1 && opt.blanklines_after_decl) {
+	    out.blank_line_before = true;
+	    ps.just_saw_decl = 0;
+	} else
+	    out.blank_line_before = out.blank_line_after;
+	out.blank_line_after = false;
+    }
+
+    ps.decl_on_line = ps.in_decl;	/* for proper comment indentation */
+    ps.in_stmt_cont = ps.in_stmt_or_decl && !ps.in_decl;
+    ps.decl_indent_done = false;
+
+    *(lab.e = lab.s) = '\0';	/* reset buffers */
+    *(code.e = code.s) = '\0';
+    *(com.e = com.s = com.buf + 1) = '\0';
+
+    ps.ind_level = ps.ind_level_follow;
+    ps.line_start_nparen = ps.nparen;
+
+    if (ps.nparen > 0) {
+	/* TODO: explain what negative indentation means */
+	paren_indent = -1 - ps.paren[ps.nparen - 1].indent;
+	debug_println("paren_indent is now %d", paren_indent);
+    }
+
+    first_line = false;
+}
+
+void
+output_line(void)
+{
+    output_complete_line('\n');
+}
+
+void
+output_line_ff(void)
+{
+    output_complete_line('\f');
+}
+
+static int
+compute_code_indent_lineup(int base_ind)
+{
+    int ti = paren_indent;
+    int overflow = ind_add(ti, code.s, code.e) - opt.max_line_length;
+    if (overflow < 0)
+	return ti;
+
+    if (ind_add(base_ind, code.s, code.e) < opt.max_line_length) {
+	ti -= overflow + 2;
+	if (ti > base_ind)
+	    return ti;
+	return base_ind;
+    }
+
+    return ti;
+}
+
 int
-count_spaces_until(int cur, char *buffer, char *end)
-/*
- * this routine figures out where the character position will be after
- * printing the text in buffer starting at column "current"
- */
+compute_code_indent(void)
 {
-    char *buf;		/* used to look thru buffer */
+    int base_ind = ps.ind_level * opt.indent_size;
 
-    for (buf = buffer; *buf != '\0' && buf != end; ++buf) {
-	switch (*buf) {
+    if (ps.line_start_nparen == 0) {
+	if (ps.in_stmt_cont && ps.in_enum != in_enum_brace)
+	    return base_ind + opt.continuation_indent;
+	return base_ind;
+    }
 
-	case '\n':
-	case 014:		/* form feed */
-	    cur = 1;
-	    break;
+    if (opt.lineup_to_parens) {
+	if (opt.lineup_to_parens_always)
+	    return paren_indent;
+	return compute_code_indent_lineup(base_ind);
+    }
 
-	case '\t':
-	    cur = opt.tabsize * (1 + (cur - 1) / opt.tabsize) + 1;
-	    break;
-
-	case 010:		/* backspace */
-	    --cur;
-	    break;
-
-	default:
-	    ++cur;
-	    break;
-	}			/* end of switch */
-    }				/* end of for loop */
-    return (cur);
+    if (2 * opt.continuation_indent == opt.indent_size)
+	return base_ind + opt.continuation_indent;
+    else
+	return base_ind + opt.continuation_indent * ps.line_start_nparen;
 }
 
 int
-count_spaces(int cur, char *buffer)
+compute_label_indent(void)
 {
-    return (count_spaces_until(cur, buffer, NULL));
+    if (ps.is_case_label)
+	return (int)(case_ind * (float)opt.indent_size);
+    if (lab.s[0] == '#')
+	return 0;
+    return opt.indent_size * (ps.ind_level - 2);
+}
+
+static void
+skip_blank(const char **pp)
+{
+    while (ch_isblank(**pp))
+	(*pp)++;
+}
+
+static bool
+skip_string(const char **pp, const char *s)
+{
+    size_t len = strlen(s);
+    if (strncmp(*pp, s, len) == 0) {
+	*pp += len;
+	return true;
+    }
+    return false;
+}
+
+static void
+parse_indent_comment(void)
+{
+    bool on;
+
+    const char *p = inbuf.inp.buf;
+
+    skip_blank(&p);
+    if (!skip_string(&p, "/*"))
+	return;
+    skip_blank(&p);
+    if (!skip_string(&p, "INDENT"))
+	return;
+
+    skip_blank(&p);
+    if (*p == '*' || skip_string(&p, "ON"))
+	on = true;
+    else if (skip_string(&p, "OFF"))
+	on = false;
+    else
+	return;
+
+    skip_blank(&p);
+    if (!skip_string(&p, "*/\n"))
+	return;
+
+    if (com.s != com.e || lab.s != lab.e || code.s != code.e)
+	output_line();
+
+    inhibit_formatting = !on;
+    if (on) {
+	/*
+	 * XXX: Does this make sense? Is the handling of blank lines above
+	 * INDENT OFF comments essentially the same?
+	 */
+	out.blank_lines_to_output = 0;
+	out.blank_line_after = false;
+	out.blank_line_before = false;
+	out.suppress_blanklines = true;
+    }
 }
 
 void
-diag4(int level, const char *msg, int a, int b)
+inp_read_line(void)
 {
-    if (level)
-	found_err = 1;
-    if (output == stdout) {
-	fprintf(stdout, "/**INDENT** %s@%d: ", level == 0 ? "Warning" : "Error", line_no);
-	fprintf(stdout, msg, a, b);
-	fprintf(stdout, " */\n");
-    }
-    else {
-	fprintf(stderr, "%s@%d: ", level == 0 ? "Warning" : "Error", line_no);
-	fprintf(stderr, msg, a, b);
-	fprintf(stderr, "\n");
-    }
-}
+    if (inp_from_file())
+	return;
 
-void
-diag3(int level, const char *msg, int a)
-{
-    if (level)
-	found_err = 1;
-    if (output == stdout) {
-	fprintf(stdout, "/**INDENT** %s@%d: ", level == 0 ? "Warning" : "Error", line_no);
-	fprintf(stdout, msg, a);
-	fprintf(stdout, " */\n");
-    }
-    else {
-	fprintf(stderr, "%s@%d: ", level == 0 ? "Warning" : "Error", line_no);
-	fprintf(stderr, msg, a);
-	fprintf(stderr, "\n");
-    }
-}
+    inp_read_next_line(input);
 
-void
-diag2(int level, const char *msg)
-{
-    if (level)
-	found_err = 1;
-    if (output == stdout) {
-	fprintf(stdout, "/**INDENT** %s@%d: ", level == 0 ? "Warning" : "Error", line_no);
-	fprintf(stdout, "%s", msg);
-	fprintf(stdout, " */\n");
-    }
-    else {
-	fprintf(stderr, "%s@%d: ", level == 0 ? "Warning" : "Error", line_no);
-	fprintf(stderr, "%s", msg);
-	fprintf(stderr, "\n");
-    }
+    parse_indent_comment();
+
+    if (inhibit_formatting)
+	output_range(inbuf.inp.s, inbuf.inp.e);
 }

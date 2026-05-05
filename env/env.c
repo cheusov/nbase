@@ -1,3 +1,4 @@
+/*	$NetBSD: env.c,v 1.23.8.1 2024/11/01 14:39:50 martin Exp $	*/
 /*
  * Copyright (c) 1988, 1993, 1994
  *	The Regents of the University of California.  All rights reserved.
@@ -39,7 +40,7 @@ __COPYRIGHT("@(#) Copyright (c) 1988, 1993, 1994\
 
 #ifndef lint
 /*static char sccsid[] = "@(#)env.c	8.3 (Berkeley) 4/2/94";*/
-__RCSID("$NetBSD: env.c,v 1.20 2010/11/16 02:53:49 christos Exp $");
+__RCSID("$NetBSD: env.c,v 1.23.8.1 2024/11/01 14:39:50 martin Exp $");
 #endif /* not lint */
 
 #include <stdio.h>
@@ -49,26 +50,38 @@ __RCSID("$NetBSD: env.c,v 1.20 2010/11/16 02:53:49 christos Exp $");
 #include <locale.h>
 #include <errno.h>
 
-static void usage(void) __attribute__((__noreturn__));
+static void usage(void) __dead;
 
 extern char **environ;
 
 int
 main(int argc, char **argv)
 {
-	char **ep;
+	char **ep, term;
 	char *cleanenv[1];
 	int ch;
 
 	setprogname(*argv);
 	(void)setlocale(LC_ALL, "");
 
-	while ((ch = getopt(argc, argv, "-i")) != -1)
+	term = '\n';
+	while ((ch = getopt(argc, argv, "-0C:iu:")) != -1)
 		switch((char)ch) {
+		case '0':
+			term = '\0';
+			break;
+		case 'C':
+			if (chdir(optarg) == -1)
+				err(EXIT_FAILURE, "chdir '%s'", optarg);
+			break;
 		case '-':			/* obsolete */
 		case 'i':
 			environ = cleanenv;
 			cleanenv[0] = NULL;
+			break;
+		case 'u':
+			if (unsetenv(optarg) == -1)
+				err(EXIT_FAILURE, "unsetenv '%s'", optarg);
 			break;
 		case '?':
 		default:
@@ -80,7 +93,11 @@ main(int argc, char **argv)
 
 	if (*argv) {
 		/* return 127 if the command to be run could not be found; 126
-		   if the command was found but could not be invoked */
+		   if the command was found but could not be invoked; 125 if
+		   -0 was specified with utility.*/
+
+		if (term == '\0')
+			errx(125, "cannot specify command with -0");
 
 		(void)execvp(*argv, argv);
 		err((errno == ENOENT) ? 127 : 126, "%s", *argv);
@@ -88,7 +105,7 @@ main(int argc, char **argv)
 	}
 
 	for (ep = environ; *ep; ep++)
-		(void)printf("%s\n", *ep);
+		(void)printf("%s%c", *ep, term);
 
 	exit(0);
 }
@@ -96,7 +113,8 @@ main(int argc, char **argv)
 static void
 usage(void)
 {
-	(void)fprintf(stderr, "Usage: %s [-i] [name=value ...] [command]\n",
+	(void)fprintf(stderr,
+	    "Usage: %s [-0i] [-C dir] [-u name] [name=value ...] [command]\n",
 	    getprogname());
 	exit(1);
 }

@@ -1,4 +1,4 @@
-/*	$NetBSD: err.c,v 1.53 2018/09/07 15:16:15 christos Exp $	*/
+/*	$NetBSD: err.c,v 1.184 2022/10/01 09:42:40 rillig Exp $	*/
 
 /*
  * Copyright (c) 1994, 1995 Jochen Pohl
@@ -36,13 +36,14 @@
 #endif
 
 #include <sys/cdefs.h>
-#if defined(__RCSID) && !defined(lint)
-__RCSID("$NetBSD: err.c,v 1.53 2018/09/07 15:16:15 christos Exp $");
+#if defined(__RCSID)
+__RCSID("$NetBSD: err.c,v 1.184 2022/10/01 09:42:40 rillig Exp $");
 #endif
 
-#include <sys/types.h>
-#include <stdlib.h>
+#include <limits.h>
 #include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "lint1.h"
 
@@ -53,16 +54,11 @@ int	nerr;
 int	sytxerr;
 
 
-static	const	char *lbasename(const char *);
-static	void	verror(int, va_list);
-static	void	vwarning(int, va_list);
-
-
-const	char *msgs[] = {
+static const char *const msgs[] = {
 	"empty declaration",					      /* 0 */
-	"old style declaration; add int",			      /* 1 */
+	"old-style declaration; add 'int'",			      /* 1 */
 	"empty declaration",					      /* 2 */
-	"%s declared in argument declaration list",		      /* 3 */
+	"'%s' declared in argument declaration list",		      /* 3 */
 	"illegal type combination",				      /* 4 */
 	"modifying typedef with '%s'; only qualifiers allowed",	      /* 5 */
 	"use 'double' instead of 'long float'",			      /* 6 */
@@ -72,64 +68,64 @@ const	char *msgs[] = {
 	"duplicate '%s'",					      /* 10 */
 	"bit-field initializer out of range",			      /* 11 */
 	"compiler takes size of function",			      /* 12 */
-	"incomplete enum type: %s",				      /* 13 */
-	"compiler takes alignment of function",			      /* 14 */
-	"function returns illegal type",			      /* 15 */
+	"incomplete enum type '%s'",				      /* 13 */
+	"",							      /* 14 */
+	"function returns illegal type '%s'",			      /* 15 */
 	"array of function is illegal",				      /* 16 */
 	"null dimension",					      /* 17 */
 	"illegal use of 'void'",				      /* 18 */
-	"void type for %s",					      /* 19 */
+	"void type for '%s'",					      /* 19 */
 	"negative array dimension (%d)",			      /* 20 */
-	"redeclaration of formal parameter %s",			      /* 21 */
+	"redeclaration of formal parameter '%s'",		      /* 21 */
 	"incomplete or misplaced function definition",		      /* 22 */
-	"undefined label %s",					      /* 23 */
-	"cannot initialize function: %s",			      /* 24 */
-	"cannot initialize typedef: %s",			      /* 25 */
-	"cannot initialize extern declaration: %s",		      /* 26 */
-	"redeclaration of %s",					      /* 27 */
-	"redefinition of %s",					      /* 28 */
-	"previously declared extern, becomes static: %s",	      /* 29 */
-	"redeclaration of %s; ANSI C requires static",		      /* 30 */
-	"incomplete structure or union %s: %s",			      /* 31 */
-	"argument type defaults to 'int': %s",			      /* 32 */
-	"duplicate member name: %s",				      /* 33 */
-	"nonportable bit-field type",				      /* 34 */
-	"illegal bit-field type",				      /* 35 */
-	"illegal bit-field size",				      /* 36 */
+	"undefined label '%s'",					      /* 23 */
+	"cannot initialize function '%s'",			      /* 24 */
+	"cannot initialize typedef '%s'",			      /* 25 */
+	"cannot initialize extern declaration '%s'",		      /* 26 */
+	"redeclaration of '%s'",				      /* 27 */
+	"redefinition of '%s'",					      /* 28 */
+	"'%s' was previously declared extern, becomes static",	      /* 29 */
+	"redeclaration of '%s'; ANSI C requires static",	      /* 30 */
+	"'%s' has incomplete type '%s'",			      /* 31 */
+	"type of argument '%s' defaults to 'int'",		      /* 32 */
+	"duplicate member name '%s'",				      /* 33 */
+	"nonportable bit-field type '%s'",			      /* 34 */
+	"illegal bit-field type '%s'",				      /* 35 */
+	"illegal bit-field size: %d",				      /* 36 */
 	"zero size bit-field",					      /* 37 */
 	"function illegal in structure or union",		      /* 38 */
-	"zero sized array in struct is a C99 extension: %s",	      /* 39 */
-	"unknown size: %s",					      /* 40 */
-	"illegal use of bit-field",				      /* 41 */
+	"zero-sized array '%s' in struct is a C99 extension",	      /* 39 */
+	"",			/* never used */		      /* 40 */
+	"bit-field in union is very unusual",			      /* 41 */
 	"forward reference to enum type",			      /* 42 */
-	"redefinition hides earlier one: %s",			      /* 43 */
-	"declaration introduces new type in ANSI C: %s %s",	      /* 44 */
+	"redefinition of '%s' hides earlier one",		      /* 43 */
+	"declaration of '%s %s' introduces new type in ANSI C",	      /* 44 */
 	"base type is really '%s %s'",				      /* 45 */
-	"(%s) tag redeclared",					      /* 46 */
-	"zero sized %s is a C9X feature",			      /* 47 */
-	"overflow in enumeration values: %s",			      /* 48 */
-	"anonymous struct/union members is a C9X feature",	      /* 49 */
-	"a function is declared as an argument: %s",		      /* 50 */
+	"%s tag '%s' redeclared as %s",				      /* 46 */
+	"zero sized %s is a C99 feature",			      /* 47 */
+	"enumeration value '%s' overflows",			      /* 48 */
+	"anonymous struct/union members is a C11 feature",	      /* 49 */
+	"argument '%s' has function type, should be pointer",	      /* 50 */
 	"parameter mismatch: %d declared, %d defined",		      /* 51 */
-	"cannot initialize parameter: %s",			      /* 52 */
-	"declared argument %s is missing",			      /* 53 */
+	"cannot initialize parameter '%s'",			      /* 52 */
+	"declared argument '%s' is missing",			      /* 53 */
 	"trailing ',' prohibited in enum declaration",		      /* 54 */
 	"integral constant expression expected",		      /* 55 */
 	"integral constant too large",				      /* 56 */
-	"enumeration constant hides parameter: %s",		      /* 57 */
-	"type does not match prototype: %s",			      /* 58 */
-	"formal parameter lacks name: param #%d",		      /* 59 */
+	"enumeration constant '%s' hides parameter",		      /* 57 */
+	"type of '%s' does not match prototype",		      /* 58 */
+	"formal parameter #%d lacks name",			      /* 59 */
 	"void must be sole parameter",				      /* 60 */
-	"void parameter cannot have name: %s",			      /* 61 */
+	"void parameter '%s' cannot have name",			      /* 61 */
 	"function prototype parameters must have types",	      /* 62 */
 	"prototype does not match old-style definition",	      /* 63 */
 	"()-less function definition",				      /* 64 */
-	"%s has no named members",				      /* 65 */
-	"syntax requires ';' after last struct/union member",	      /* 66 */
+	"'%s' has no named members",				      /* 65 */
+	"",							      /* 66 */
 	"cannot return incomplete type",			      /* 67 */
 	"typedef already qualified with '%s'",			      /* 68 */
 	"inappropriate qualifiers with 'void'",			      /* 69 */
-	"%soperand of '%s' is unsigned in ANSI C",		      /* 70 */
+	"",			/* unused */			      /* 70 */
 	"too many characters in character constant",		      /* 71 */
 	"typedef declares no type name",			      /* 72 */
 	"empty character constant",				      /* 73 */
@@ -137,91 +133,91 @@ const	char *msgs[] = {
 	"overflow in hex escape",				      /* 75 */
 	"character escape does not fit in character",		      /* 76 */
 	"bad octal digit %c",					      /* 77 */
-	"nonportable character escape",				      /* 78 */
+	"",			/* unused */			      /* 78 */
 	"dubious escape \\%c",					      /* 79 */
 	"dubious escape \\%o",					      /* 80 */
 	"\\a undefined in traditional C",			      /* 81 */
 	"\\x undefined in traditional C",			      /* 82 */
 	"storage class after type is obsolescent",		      /* 83 */
 	"ANSI C requires formal parameter before '...'",	      /* 84 */
-	"dubious tag declaration: %s %s",			      /* 85 */
-	"automatic hides external declaration: %s",		      /* 86 */
-	"static hides external declaration: %s",		      /* 87 */
-	"typedef hides external declaration: %s",		      /* 88 */
-	"typedef redeclared: %s",				      /* 89 */
-	"inconsistent redeclaration of extern: %s",		      /* 90 */
-	"declaration hides parameter: %s",			      /* 91 */
-	"inconsistent redeclaration of static: %s",		      /* 92 */
-	"dubious static function at block level: %s",		      /* 93 */
-	"function has illegal storage class: %s",		      /* 94 */
-	"declaration hides earlier one: %s",			      /* 95 */
-	"cannot dereference non-pointer type",			      /* 96 */
+	"dubious tag declaration '%s %s'",			      /* 85 */
+	"automatic '%s' hides external declaration",		      /* 86 */
+	"static '%s' hides external declaration",		      /* 87 */
+	"typedef '%s' hides external declaration",		      /* 88 */
+	"typedef '%s' redeclared",				      /* 89 */
+	"inconsistent redeclaration of extern '%s'",		      /* 90 */
+	"declaration of '%s' hides parameter",			      /* 91 */
+	"inconsistent redeclaration of static '%s'",		      /* 92 */
+	"dubious static function '%s' at block level",		      /* 93 */
+	"function '%s' has illegal storage class",		      /* 94 */
+	"declaration of '%s' hides earlier one",		      /* 95 */
+	"cannot dereference non-pointer type '%s'",		      /* 96 */
 	"suffix U is illegal in traditional C",			      /* 97 */
 	"suffixes F and L are illegal in traditional C",	      /* 98 */
-	"%s undefined",						      /* 99 */
-	"unary + is illegal in traditional C",			      /* 100 */
-	"undefined struct/union member: %s",			      /* 101 */
-	"illegal member use: %s",				      /* 102 */
-	"left operand of '.' must be struct/union object",	      /* 103 */
-	"left operand of '->' must be pointer to struct/union not %s",/* 104 */
+	"'%s' undefined",					      /* 99 */
+	"unary '+' is illegal in traditional C",		      /* 100 */
+	"type '%s' does not have member '%s'",			      /* 101 */
+	"illegal use of member '%s'",				      /* 102 */
+	"left operand of '.' must be struct or union, not '%s'",      /* 103 */
+	"left operand of '->' must be pointer to struct or union, not '%s'", /* 104 */
 	"non-unique member requires struct/union %s",		      /* 105 */
 	"left operand of '->' must be pointer",			      /* 106 */
-	"operands of '%s' have incompatible types (%s != %s)",	      /* 107 */
-	"operand of '%s' has incompatible type (%s != %s)",	      /* 108 */
+	"operands of '%s' have incompatible types '%s' and '%s'",     /* 107 */
+	"operand of '%s' has invalid type '%s'",		      /* 108 */
 	"void type illegal in expression",			      /* 109 */
 	"pointer to function is not allowed here",		      /* 110 */
 	"unacceptable operand of '%s'",				      /* 111 */
 	"cannot take address of bit-field",			      /* 112 */
-	"cannot take address of register %s",			      /* 113 */
+	"cannot take address of register '%s'",			      /* 113 */
 	"%soperand of '%s' must be lvalue",			      /* 114 */
 	"%soperand of '%s' must be modifiable lvalue",		      /* 115 */
 	"illegal pointer subtraction",				      /* 116 */
-	"bitwise operation on signed value possibly nonportable",     /* 117 */
+	"bitwise '%s' on signed value possibly nonportable",	      /* 117 */
 	"semantics of '%s' change in ANSI C; use explicit cast",      /* 118 */
 	"conversion of '%s' to '%s' is out of range",		      /* 119 */
-	"bitwise operation on signed value nonportable",	      /* 120 */
+	"bitwise '%s' on signed value nonportable",		      /* 120 */
 	"negative shift",					      /* 121 */
-	"shift greater than size of object",			      /* 122 */
-	"illegal combination of %s (%s) and %s (%s), op %s",	      /* 123 */
-	"illegal pointer combination, op %s",			      /* 124 */
+	"shift amount %llu is greater than bit-size %llu of '%s'",    /* 122 */
+	"illegal combination of %s '%s' and %s '%s', op '%s'",	      /* 123 */
+	"illegal combination of '%s' and '%s', op '%s'",	      /* 124 */
 	"ANSI C forbids ordered comparisons of pointers to functions",/* 125 */
-	"incompatible types in conditional",			      /* 126 */
+	"incompatible types '%s' and '%s' in conditional",	      /* 126 */
 	"'&' before array or function: ignored",		      /* 127 */
-	"operands have incompatible pointer types, op %s (%s != %s)", /* 128 */
+	"operands of '%s' have incompatible pointer types to '%s' and '%s'", /* 128 */
 	"expression has null effect",				      /* 129 */
-	"enum type mismatch, op %s",				      /* 130 */
+	"enum type mismatch: '%s' '%s' '%s'",			      /* 130 */
 	"conversion to '%s' may sign-extend incorrectly",	      /* 131 */
 	"conversion from '%s' to '%s' may lose accuracy",	      /* 132 */
 	"conversion of pointer to '%s' loses bits",		      /* 133 */
 	"conversion of pointer to '%s' may lose bits",		      /* 134 */
-	"possible pointer alignment problem",			      /* 135 */
+	"converting '%s' to '%s' increases alignment from %u to %u",  /* 135 */
 	"cannot do pointer arithmetic on operand of unknown size",    /* 136 */
-	"use of incomplete enum type, op %s",			      /* 137 */
-	"unknown operand size, op %s",				      /* 138 */
+	"",			/* unused */			      /* 137 */
+	"unknown operand size, op '%s'",			      /* 138 */
 	"division by 0",					      /* 139 */
 	"modulus by 0",						      /* 140 */
-	"integer overflow detected, op %s",			      /* 141 */
-	"floating point overflow detected, op %s",		      /* 142 */
+	"integer overflow detected, op '%s'",			      /* 141 */
+	"floating point overflow on operator '%s'",		      /* 142 */
 	"cannot take size/alignment of incomplete type",	      /* 143 */
-	"cannot take size/alignment of function",		      /* 144 */
+	"cannot take size/alignment of function type '%s'",	      /* 144 */
 	"cannot take size/alignment of bit-field",		      /* 145 */
 	"cannot take size/alignment of void",			      /* 146 */
-	"invalid cast expression",				      /* 147 */
+	"invalid cast from '%s' to '%s'",			      /* 147 */
 	"improper cast of void expression",			      /* 148 */
-	"illegal function (type %s)",				      /* 149 */
-	"argument mismatch: %d arg%s passed, %d expected",	      /* 150 */
+	"cannot call '%s', must be a function",			      /* 149 */
+	"argument mismatch: %d %s passed, %d expected",		      /* 150 */
 	"void expressions may not be arguments, arg #%d",	      /* 151 */
 	"argument cannot have unknown size, arg #%d",		      /* 152 */
-	"argument has incompatible pointer type, arg #%d (%s != %s)", /* 153 */
-	"illegal combination of %s (%s) and %s (%s), arg #%d",	      /* 154 */
-	"argument is incompatible with prototype, arg #%d",	      /* 155 */
-	"enum type mismatch, arg #%d",			       	      /* 156 */
+	"converting '%s' to incompatible '%s' for argument %d",	      /* 153 */
+	"illegal combination of %s '%s' and %s '%s', arg #%d",	      /* 154 */
+	"passing '%s' to incompatible '%s', arg #%d",		      /* 155 */
+	"function expects '%s', passing '%s' for arg #%d",	      /* 156 */
 	"ANSI C treats constant as unsigned",			      /* 157 */
-	"%s may be used before set",			      	      /* 158 */
+	"'%s' may be used before set",				      /* 158 */
 	"assignment in conditional context",			      /* 159 */
 	"operator '==' found where '=' was expected",		      /* 160 */
 	"constant in conditional context",			      /* 161 */
-	"comparison of %s with %s, op %s",			      /* 162 */
+	"operator '%s' compares '%s' with '%s'",		      /* 162 */
 	"a cast does not yield an lvalue",			      /* 163 */
 	"assignment of negative constant to unsigned type",	      /* 164 */
 	"constant truncated by assignment",			      /* 165 */
@@ -230,30 +226,30 @@ const	char *msgs[] = {
 	"array subscript cannot be > %d: %ld",			      /* 168 */
 	"precedence confusion possible: parenthesize!",		      /* 169 */
 	"first operand must have scalar type, op ? :",		      /* 170 */
-	"assignment type mismatch (%s != %s)",			      /* 171 */
+	"cannot assign to '%s' from '%s'",			      /* 171 */
 	"too many struct/union initializers",			      /* 172 */
 	"too many array initializers, expected %d",		      /* 173 */
 	"too many initializers",				      /* 174 */
-	"initialisation of an incomplete type",			      /* 175 */
-	"invalid initializer type %s",				      /* 176 */
+	"initialization of incomplete type '%s'",		      /* 175 */
+	"",			/* no longer used */		      /* 176 */
 	"non-constant initializer",				      /* 177 */
 	"initializer does not fit",				      /* 178 */
 	"cannot initialize struct/union with no named member",	      /* 179 */
 	"bit-field initializer does not fit",			      /* 180 */
 	"{}-enclosed initializer required",			      /* 181 */
-	"incompatible pointer types (%s != %s)",		      /* 182 */
-	"illegal combination of %s (%s) and %s (%s)",	      	      /* 183 */
-	"illegal pointer combination",				      /* 184 */
-	"initialisation type mismatch (%s) and (%s)",		      /* 185 */
-	"bit-field initialisation is illegal in traditional C",	      /* 186 */
-	"non-null byte ignored in string initializer",		      /* 187 */
+	"incompatible pointer types to '%s' and '%s'",		      /* 182 */
+	"illegal combination of %s '%s' and %s '%s'",		      /* 183 */
+	"illegal combination of '%s' and '%s'",			      /* 184 */
+	"cannot initialize '%s' from '%s'",			      /* 185 */
+	"bit-field initialization is illegal in traditional C",	      /* 186 */
+	"string literal too long (%lu) for target array (%lu)",	      /* 187 */
 	"no automatic aggregate initialization in traditional C",     /* 188 */
-	"assignment of struct/union illegal in traditional C",	      /* 189 */
-	"empty array declaration: %s",				      /* 190 */
-	"%s set but not used in function %s",		      	      /* 191 */
-	"%s unused in function %s",				      /* 192 */
+	"",			/* no longer used */		      /* 189 */
+	"empty array declaration for '%s'",			      /* 190 */
+	"'%s' set but not used in function '%s'",		      /* 191 */
+	"'%s' unused in function '%s'",				      /* 192 */
 	"statement not reached",				      /* 193 */
-	"label %s redefined",					      /* 194 */
+	"label '%s' redefined",					      /* 194 */
 	"case not in switch",					      /* 195 */
 	"case label affected by conversion",			      /* 196 */
 	"non-constant case expression",				      /* 197 */
@@ -262,51 +258,51 @@ const	char *msgs[] = {
 	"duplicate case in switch: %lu",			      /* 200 */
 	"default outside switch",				      /* 201 */
 	"duplicate default in switch",				      /* 202 */
-	"case label must be of type `int' in traditional C",	      /* 203 */
+	"case label must be of type 'int' in traditional C",	      /* 203 */
 	"controlling expressions must have scalar type",	      /* 204 */
 	"switch expression must have integral type",		      /* 205 */
 	"enumeration value(s) not handled in switch",		      /* 206 */
 	"loop not entered at top",				      /* 207 */
 	"break outside loop or switch",				      /* 208 */
 	"continue outside loop",				      /* 209 */
-	"enum type mismatch in initialisation",			      /* 210 */
-	"return value type mismatch (%s) and (%s)",		      /* 211 */
+	"enum type mismatch between '%s' and '%s' in initialization", /* 210 */
+	"function has return type '%s' but returns '%s'",	      /* 211 */
 	"cannot return incomplete type",			      /* 212 */
-	"void function %s cannot return value",			      /* 213 */
-	"function %s expects to return value",			      /* 214 */
-	"function implicitly declared to return int",		      /* 215 */
-	"function %s has return (e); and return;",		      /* 216 */
-	"function %s falls off bottom without returning value",	      /* 217 */
-	"ANSI C treats constant as unsigned, op %s",		      /* 218 */
+	"void function '%s' cannot return value",		      /* 213 */
+	"function '%s' expects to return value",		      /* 214 */
+	"function '%s' implicitly declared to return int",	      /* 215 */
+	"function '%s' has 'return expr' and 'return'",		      /* 216 */
+	"function '%s' falls off bottom without returning value",     /* 217 */
+	"ANSI C treats constant as unsigned, op '%s'",		      /* 218 */
 	"concatenated strings are illegal in traditional C",	      /* 219 */
 	"fallthrough on case statement",			      /* 220 */
-	"initialisation of unsigned with negative constant",	      /* 221 */
+	"initialization of unsigned with negative constant",	      /* 221 */
 	"conversion of negative constant to unsigned type",	      /* 222 */
 	"end-of-loop code not reached",				      /* 223 */
 	"cannot recover from previous errors",			      /* 224 */
-	"static function called but not defined: %s()",		      /* 225 */
-	"static variable %s unused",				      /* 226 */
-	"const object %s should have initializer",		      /* 227 */
+	"static function '%s' called but not defined",		      /* 225 */
+	"static variable '%s' unused",				      /* 226 */
+	"const object '%s' should have initializer",		      /* 227 */
 	"function cannot return const or volatile object",	      /* 228 */
-	"questionable conversion of function pointer",		      /* 229 */
-	"nonportable character comparison, op %s",		      /* 230 */
-	"argument %s unused in function %s",			      /* 231 */
-	"label %s unused in function %s",			      /* 232 */
-	"struct %s never defined",				      /* 233 */
-	"union %s never defined",				      /* 234 */
-	"enum %s never defined",				      /* 235 */
-	"static function %s unused",				      /* 236 */
-	"redeclaration of formal parameter %s",			      /* 237 */
-	"initialisation of union is illegal in traditional C",	      /* 238 */
-	"constant argument to NOT",				      /* 239 */
-	"assignment of different structures (%s != %s)",	      /* 240 */
-	"dubious operation on enum, op %s",			      /* 241 */
-	"combination of '%s' and '%s', op %s",			      /* 242 */
-	"dubious comparison of enums, op %s",			      /* 243 */
+	"converting '%s' to '%s' is questionable",		      /* 229 */
+	"nonportable character comparison '%s %d'",		      /* 230 */
+	"argument '%s' unused in function '%s'",		      /* 231 */
+	"label '%s' unused in function '%s'",			      /* 232 */
+	"struct '%s' never defined",				      /* 233 */
+	"union '%s' never defined",				      /* 234 */
+	"enum '%s' never defined",				      /* 235 */
+	"static function '%s' unused",				      /* 236 */
+	"redeclaration of formal parameter '%s'",		      /* 237 */
+	"initialization of union is illegal in traditional C",	      /* 238 */
+	"constant argument to '!'",				      /* 239 */
+	"",			/* unused */			      /* 240 */
+	"dubious operation on enum, op '%s'",			      /* 241 */
+	"combination of '%s' and '%s', op '%s'",		      /* 242 */
+	"dubious comparison of enums, op '%s'",			      /* 243 */
 	"illegal structure pointer combination",		      /* 244 */
-	"illegal structure pointer combination, op %s",		      /* 245 */
+	"incompatible structure pointers: '%s' '%s' '%s'",	      /* 245 */
 	"dubious conversion of enum to '%s'",			      /* 246 */
-	"pointer casts may be troublesome",			      /* 247 */
+	"pointer cast from '%s' to '%s' may be troublesome",	      /* 247 */
 	"floating-point constant out of range",			      /* 248 */
 	"syntax error '%s'",					      /* 249 */
 	"unknown character \\%o",				      /* 250 */
@@ -318,38 +314,38 @@ const	char *msgs[] = {
 	"unterminated comment",					      /* 256 */
 	"extra characters in lint comment",			      /* 257 */
 	"unterminated string constant",				      /* 258 */
-	"conversion to '%s' due to prototype, arg #%d",		      /* 259 */
-	"previous declaration of %s",				      /* 260 */
-	"previous definition of %s",				      /* 261 */
+	"argument #%d is converted from '%s' to '%s' due to prototype", /* 259 */
+	"previous declaration of '%s'",				      /* 260 */
+	"previous definition of '%s'",				      /* 261 */
 	"\\\" inside character constants undefined in traditional C", /* 262 */
 	"\\? undefined in traditional C",			      /* 263 */
 	"\\v undefined in traditional C",			      /* 264 */
-	"%s C does not support 'long long'",			      /* 265 */
+	"%s does not support 'long long'",			      /* 265 */
 	"'long double' is illegal in traditional C",		      /* 266 */
-	"shift equal to size of object",			      /* 267 */
-	"variable declared inline: %s",				      /* 268 */
-	"argument declared inline: %s",				      /* 269 */
+	"shift amount %u equals bit-size of '%s'",		      /* 267 */
+	"variable '%s' declared inline",			      /* 268 */
+	"argument '%s' declared inline",			      /* 269 */
 	"function prototypes are illegal in traditional C",	      /* 270 */
-	"switch expression must be of type `int' in traditional C",   /* 271 */
+	"switch expression must be of type 'int' in traditional C",   /* 271 */
 	"empty translation unit",				      /* 272 */
 	"bit-field type '%s' invalid in ANSI C",		      /* 273 */
 	"ANSI C forbids comparison of %s with %s",		      /* 274 */
-	"cast discards 'const' from pointer target type",	      /* 275 */
-	"__%s__ is illegal for type %s",			      /* 276 */
-	"initialisation of '%s' with '%s'",			      /* 277 */
+	"cast discards 'const' from type '%s'",			      /* 275 */
+	"'__%s__' is illegal for type '%s'",			      /* 276 */
+	"initialization of '%s' with '%s'",			      /* 277 */
 	"combination of '%s' and '%s', arg #%d",		      /* 278 */
 	"combination of '%s' and '%s' in return",		      /* 279 */
-	"must be outside function: /* %s */",			      /* 280 */
-	"duplicate use of /* %s */",				      /* 281 */
-	"must precede function definition: /* %s */",		      /* 282 */
-	"argument number mismatch with directive: /* %s */",	      /* 283 */
+	"comment /* %s */ must be outside function",		      /* 280 */
+	"duplicate comment /* %s */",				      /* 281 */
+	"comment /* %s */ must precede function definition",	      /* 282 */
+	"argument number mismatch with directive /* %s */",	      /* 283 */
 	"fallthrough on default statement",			      /* 284 */
 	"prototype declaration",				      /* 285 */
 	"function definition is not a prototype",		      /* 286 */
 	"function declaration is not a prototype",		      /* 287 */
 	"dubious use of /* VARARGS */ with /* %s */",		      /* 288 */
 	"can't be used together: /* PRINTFLIKE */ /* SCANFLIKE */",   /* 289 */
-	"static function %s declared but not defined",		      /* 290 */
+	"static function '%s' declared but not defined",	      /* 290 */
 	"invalid multibyte character",				      /* 291 */
 	"cannot concatenate wide and regular string literals",	      /* 292 */
 	"argument %d must be 'char *' for PRINTFLIKE/SCANFLIKE",      /* 293 */
@@ -358,38 +354,125 @@ const	char *msgs[] = {
 	"conversion of negative constant to unsigned type, arg #%d",  /* 296 */
 	"conversion to '%s' may sign-extend incorrectly, arg #%d",    /* 297 */
 	"conversion from '%s' to '%s' may lose accuracy, arg #%d",    /* 298 */
-	"prototype does not match old style definition, arg #%d",     /* 299 */
-	"old style definition",					      /* 300 */
+	"prototype does not match old-style definition, arg #%d",     /* 299 */
+	"old-style definition",					      /* 300 */
 	"array of incomplete type",				      /* 301 */
-	"%s returns pointer to automatic object",		      /* 302 */
+	"'%s' returns pointer to automatic object",		      /* 302 */
 	"ANSI C forbids conversion of %s to %s",		      /* 303 */
 	"ANSI C forbids conversion of %s to %s, arg #%d",	      /* 304 */
 	"ANSI C forbids conversion of %s to %s, op %s",		      /* 305 */
-	"constant truncated by conversion, op %s",		      /* 306 */
-	"static variable %s set but not used",			      /* 307 */
-	"Invalid type %s for _Complex",				      /* 308 */
-	"extra bits set to 0 in conversion of '%s' to '%s', op %s",   /* 309 */
+	"constant truncated by conversion, op '%s'",		      /* 306 */
+	"static variable '%s' set but not used",		      /* 307 */
+	"invalid type for _Complex",				      /* 308 */
+	"extra bits set to 0 in conversion of '%s' to '%s', op '%s'", /* 309 */
 	"symbol renaming can't be used on function arguments",	      /* 310 */
 	"symbol renaming can't be used on automatic variables",	      /* 311 */
-	"%s C does not support // comments",			      /* 312 */
-	"struct or union member name in initializer is a C9X feature",/* 313 */
-	"%s is not a structure or a union",			      /* 314 */
+	"%s does not support // comments",			      /* 312 */
+	"struct or union member name in initializer is a C99 feature",/* 313 */
+	"",		/* never used */			      /* 314 */
 	"GCC style struct or union member name in initializer",	      /* 315 */
 	"__FUNCTION__/__PRETTY_FUNCTION__ is a GCC extension",	      /* 316 */
-	"__func__ is a C9X feature",				      /* 317 */
+	"__func__ is a C99 feature",				      /* 317 */
 	"variable array dimension is a C99/GCC extension",	      /* 318 */
-	"compound literals are a C9X/GCC extension",		      /* 319 */
+	"compound literals are a C99/GCC extension",		      /* 319 */
 	"({ }) is a GCC extension",				      /* 320 */
-	"array initializer with designators is a C9X feature",	      /* 321 */
+	"array initializer with designators is a C99 feature",	      /* 321 */
 	"zero sized array is a C99 extension",			      /* 322 */
 	"continue in 'do ... while (0)' loop",			      /* 323 */
-	"suggest cast from '%s' to '%s' on op %s to avoid overflow",  /* 324 */
-	"variable declaration in for loop", 			      /* 325 */
-	"%s attribute ignored for %s",				      /* 326 */
-	"declarations after statements is a C9X feature",	      /* 327 */
-	"union cast is a C9X feature",				      /* 328 */
+	"suggest cast from '%s' to '%s' on op '%s' to avoid overflow", /* 324 */
+	"variable declaration in for loop",			      /* 325 */
+	"attribute '%s' ignored for '%s'",			      /* 326 */
+	"declarations after statements is a C99 feature",	      /* 327 */
+	"union cast is a GCC extension",			      /* 328 */
 	"type '%s' is not a member of '%s'",			      /* 329 */
+	"operand of '%s' must be bool, not '%s'",		      /* 330 */
+	"left operand of '%s' must be bool, not '%s'",		      /* 331 */
+	"right operand of '%s' must be bool, not '%s'",		      /* 332 */
+	"controlling expression must be bool, not '%s'",	      /* 333 */
+	"argument #%d expects '%s', gets passed '%s'",		      /* 334 */
+	"operand of '%s' must not be bool",			      /* 335 */
+	"left operand of '%s' must not be bool",		      /* 336 */
+	"right operand of '%s' must not be bool",		      /* 337 */
+	"option '%c' should be handled in the switch",		      /* 338 */
+	"option '%c' should be listed in the options string",	      /* 339 */
+	"initialization with '[a...b]' is a GCC extension",	      /* 340 */
+	"argument to '%s' must be 'unsigned char' or EOF, not '%s'",  /* 341 */
+	"argument to '%s' must be cast to 'unsigned char', not to '%s'", /* 342 */
+	"static array size is a C11 extension",			      /* 343 */
+	"bit-field of type plain 'int' has implementation-defined signedness", /* 344 */
+	"generic selection requires C11 or later",		      /* 345 */
+	"call to '%s' effectively discards 'const' from argument",    /* 346 */
+	"redeclaration of '%s' with type '%s', expected '%s'",	      /* 347 */
+	"maximum value %d of '%s' does not match maximum array index %d", /* 348 */
+	"non type argument to alignof is a GCC extension",	      /* 349 */
 };
+
+static bool	is_suppressed[sizeof(msgs) / sizeof(msgs[0])];
+
+static struct include_level {
+	const char *filename;
+	int lineno;
+	struct include_level *by;
+} *includes;
+
+void
+suppress_messages(char *ids)
+{
+	char *ptr, *end;
+	unsigned long id;
+
+	for (ptr = strtok(ids, ","); ptr != NULL; ptr = strtok(NULL, ",")) {
+		id = strtoul(ptr, &end, 10);
+		if (*end != '\0' || ptr == end ||
+		    id >= sizeof(msgs) / sizeof(msgs[0]))
+			errx(1, "invalid error message id '%s'", ptr);
+		is_suppressed[id] = true;
+	}
+}
+
+void
+update_location(const char *filename, int lineno, bool is_begin, bool is_end)
+{
+	struct include_level *top;
+
+	top = includes;
+	if (is_begin && top != NULL)
+		top->lineno = curr_pos.p_line;
+
+	if (top == NULL || is_begin) {
+		top = xmalloc(sizeof(*top));
+		top->filename = filename;
+		top->lineno = lineno;
+		top->by = includes;
+		includes = top;
+	} else {
+		if (is_end) {
+			includes = top->by;
+			free(top);
+			top = includes;
+		}
+		if (top != NULL) {
+			top->filename = filename;
+			top->lineno = lineno;
+		}
+	}
+}
+
+static void
+print_stack_trace(void)
+{
+	const struct include_level *top;
+
+	if ((top = includes) == NULL)
+		return;
+	/*
+	 * Skip the innermost include level since it is already listed in the
+	 * diagnostic itself.  Furthermore, its lineno is the line number of
+	 * the last '#' line, not the current line.
+	 */
+	for (top = top->by; top != NULL; top = top->by)
+		printf("\tincluded from %s(%d)\n", top->filename, top->lineno);
+}
 
 /*
  * print a list of the messages with their ids
@@ -399,167 +482,281 @@ msglist(void)
 {
 	size_t i;
 
-	for (i = 0; i < sizeof(msgs) / sizeof(msgs[0]); i++)
-		printf("%zu\t%s\n", i, msgs[i]);
+	for (i = 0; i < sizeof(msgs) / sizeof(msgs[0]); i++) {
+		if (msgs[i][0] != '\0')
+			printf("%zu\t%s\n", i, msgs[i]);
+		else
+			printf("---\t(no longer used)\n");
+	}
 }
 
 /*
- * If Fflag is not set lbasename() returns a pointer to the last
+ * If Fflag is not set, lbasename() returns a pointer to the last
  * component of the path, otherwise it returns the argument.
  */
 static const char *
 lbasename(const char *path)
 {
-	const	char *cp, *cp1, *cp2;
+	const char *p, *base, *dir;
 
 	if (Fflag)
-		return (path);
+		return path;
 
-	cp = cp1 = cp2 = path;
-	while (*cp != '\0') {
-		if (*cp++ == '/') {
-			cp2 = cp1;
-			cp1 = cp;
+	p = base = dir = path;
+	while (*p != '\0') {
+		if (*p++ == '/') {
+			dir = base;
+			base = p;
 		}
 	}
-	return (*cp1 == '\0' ? cp2 : cp1);
+	return *base != '\0' ? base : dir;
 }
 
 static void
-verror( int n, va_list ap)
+verror_at(int msgid, const pos_t *pos, va_list ap)
 {
 	const	char *fn;
 
-	if (ERR_ISSET(n, &msgset))
+	if (is_suppressed[msgid])
 		return;
 
-	fn = lbasename(curr_pos.p_file);
-	(void)printf("%s(%d): ", fn, curr_pos.p_line);
-	(void)vprintf(msgs[n], ap);
-	(void)printf(" [%d]\n", n);
+	fn = lbasename(pos->p_file);
+	(void)printf("%s(%d): error: ", fn, pos->p_line);
+	(void)vprintf(msgs[msgid], ap);
+	(void)printf(" [%d]\n", msgid);
 	nerr++;
+	print_stack_trace();
 }
 
 static void
-vwarning(int n, va_list ap)
+vwarning_at(int msgid, const pos_t *pos, va_list ap)
 {
 	const	char *fn;
 
-	if (ERR_ISSET(n, &msgset))
+	if (is_suppressed[msgid])
 		return;
 
-#ifdef DEBUG
-	printf("%s: lwarn=%d n=%d\n", __func__, lwarn, n);
-#endif
-	if (lwarn == LWARN_NONE || lwarn == n)
+	debug_step("%s: lwarn=%d msgid=%d", __func__, lwarn, msgid);
+	if (lwarn == LWARN_NONE || lwarn == msgid)
 		/* this warning is suppressed by a LINTED comment */
 		return;
 
-	fn = lbasename(curr_pos.p_file);
-	(void)printf("%s(%d): warning: ", fn, curr_pos.p_line);
-	(void)vprintf(msgs[n], ap);
-	(void)printf(" [%d]\n", n);
+	fn = lbasename(pos->p_file);
+	(void)printf("%s(%d): warning: ", fn, pos->p_line);
+	(void)vprintf(msgs[msgid], ap);
+	(void)printf(" [%d]\n", msgid);
 	if (wflag)
 		nerr++;
+	print_stack_trace();
+}
+
+static void
+vmessage_at(int msgid, const pos_t *pos, va_list ap)
+{
+	const char *fn;
+
+	if (is_suppressed[msgid])
+		return;
+
+	fn = lbasename(pos->p_file);
+	(void)printf("%s(%d): ", fn, pos->p_line);
+	(void)vprintf(msgs[msgid], ap);
+	(void)printf(" [%d]\n", msgid);
+	print_stack_trace();
 }
 
 void
-error(int n, ...)
+(error_at)(int msgid, const pos_t *pos, ...)
 {
 	va_list	ap;
 
-	va_start(ap, n);
-	verror(n, ap);
+	va_start(ap, pos);
+	verror_at(msgid, pos, ap);
 	va_end(ap);
 }
 
 void
-lerror(const char *file, int line, const char *msg, ...)
+(error)(int msgid, ...)
+{
+	va_list	ap;
+
+	va_start(ap, msgid);
+	verror_at(msgid, &curr_pos, ap);
+	va_end(ap);
+}
+
+void
+internal_error(const char *file, int line, const char *msg, ...)
 {
 	va_list	ap;
 	const	char *fn;
 
-	va_start(ap, msg);
 	fn = lbasename(curr_pos.p_file);
-	(void)fprintf(stderr, "%s(%d): lint error: %s, %d: ",
-	    fn, curr_pos.p_line, file, line);
+	(void)fflush(stdout);
+	(void)fprintf(stderr, "lint: internal error in %s:%d near %s:%d: ",
+	    file, line, fn, curr_pos.p_line);
+	va_start(ap, msg);
 	(void)vfprintf(stderr, msg, ap);
-	(void)fprintf(stderr, "\n");
 	va_end(ap);
+	(void)fprintf(stderr, "\n");
+	print_stack_trace();
 	abort();
 }
 
 void
-warning(int n, ...)
+assert_failed(const char *file, int line, const char *func, const char *cond)
+{
+	const	char *fn;
+
+	/*
+	 * After encountering a parse error in the grammar, lint often does
+	 * not properly clean up its data structures, especially in 'dcs',
+	 * the stack of declaration levels.  This often leads to assertion
+	 * failures.  These cases are not interesting though, as the purpose
+	 * of lint is to check syntactically valid code.  In such a case,
+	 * exit gracefully.  This allows a fuzzer like afl to focus on more
+	 * interesting cases instead of reporting nonsense translation units
+	 * like 'f=({e:;}' or 'v(const(char););e(v){'.
+	 */
+	if (sytxerr > 0)
+		norecover();
+
+	fn = lbasename(curr_pos.p_file);
+	(void)fflush(stdout);
+	(void)fprintf(stderr,
+	    "lint: assertion \"%s\" failed in %s at %s:%d near %s:%d\n",
+	    cond, func, file, line, fn, curr_pos.p_line);
+	print_stack_trace();
+	(void)fflush(stdout);
+	abort();
+}
+
+void
+(warning_at)(int msgid, const pos_t *pos, ...)
 {
 	va_list	ap;
 
-	va_start(ap, n);
-	vwarning(n, ap);
+	va_start(ap, pos);
+	vwarning_at(msgid, pos, ap);
 	va_end(ap);
 }
 
 void
-message(int n, ...)
+(warning)(int msgid, ...)
 {
 	va_list	ap;
-	const	char *fn;
 
-	if (ERR_ISSET(n, &msgset))
+	va_start(ap, msgid);
+	vwarning_at(msgid, &curr_pos, ap);
+	va_end(ap);
+}
+
+void
+(message_at)(int msgid, const pos_t *pos, ...)
+{
+	va_list ap;
+
+	va_start(ap, pos);
+	vmessage_at(msgid, pos, ap);
+	va_end(ap);
+}
+
+void
+(c99ism)(int msgid, ...)
+{
+	va_list	ap;
+
+	if (allow_c99)
 		return;
 
-	va_start(ap, n);
-	fn = lbasename(curr_pos.p_file);
-	(void)printf("%s(%d): ", fn, curr_pos.p_line);
-	(void)vprintf(msgs[n], ap);
-	(void)printf(" [%d]\n", n);
+	va_start(ap, msgid);
+	int severity = (!allow_gcc ? 1 : 0) + (!allow_trad ? 1 : 0);
+	if (severity == 2)
+		verror_at(msgid, &curr_pos, ap);
+	if (severity == 1)
+		vwarning_at(msgid, &curr_pos, ap);
 	va_end(ap);
 }
 
-/*
- * XXX I think the logic is possibly somewhat screwed up here. The
- * question is, how do we want to interpret the -s and -S flags going
- * forward? We need to answer that and then we can fix this to be
- * "right"... [perry, 2 Nov 2002]
-*/
-int
-c99ism(int n, ...)
+void
+(c11ism)(int msgid, ...)
 {
 	va_list	ap;
-	int	msg;
 
-	va_start(ap, n);
-	if (sflag && !(Sflag || gflag)) {
-		verror(n, ap);
-		msg = 1;
-	} else if (!sflag && (Sflag || gflag)) {
-		msg = 0;
-	} else {
-		vwarning(n, ap);
-		msg = 1;
-	}
+	/* FIXME: C11 mode has nothing to do with GCC mode. */
+	if (allow_c11 || allow_gcc)
+		return;
+	va_start(ap, msgid);
+	verror_at(msgid, &curr_pos, ap);
 	va_end(ap);
-
-	return (msg);
 }
 
-int
-gnuism(int n, ...)
+bool
+(gnuism)(int msgid, ...)
 {
 	va_list	ap;
-	int	msg;
+	int severity = (!allow_gcc ? 1 : 0) +
+	    (!allow_trad && !allow_c99 ? 1 : 0);
 
-	va_start(ap, n);
-	if (sflag && !gflag) {
-		verror(n, ap);
-		msg = 1;
-	} else if (!sflag && gflag) {
-		msg = 0;
-	} else {
-		vwarning(n, ap);
-		msg = 1;
-	}
+	va_start(ap, msgid);
+	if (severity == 2)
+		verror_at(msgid, &curr_pos, ap);
+	if (severity == 1)
+		vwarning_at(msgid, &curr_pos, ap);
 	va_end(ap);
+	return severity > 0;
+}
 
-	return (msg);
+
+static const char *queries[] = {
+	"",			/* unused, to make queries 1-based */
+	"implicit conversion from floating point '%s' to integer '%s'", /* Q1 */
+	"cast from floating point '%s' to integer '%s'",	      /* Q2 */
+	"implicit conversion changes sign from '%s' to '%s'",	      /* Q3 */
+	"usual arithmetic conversion for '%s' from '%s' to '%s'",     /* Q4 */
+	"pointer addition has integer on the left-hand side",	      /* Q5 */
+	"no-op cast from '%s' to '%s'",				      /* Q6 */
+	"redundant cast from '%s' to '%s' before assignment",	      /* Q7 */
+};
+
+bool any_query_enabled;		/* for optimizing non-query scenarios */
+static bool is_query_enabled[sizeof(queries) / sizeof(queries[0])];
+
+void
+(query_message)(int query_id, ...)
+{
+	va_list ap;
+
+	if (!is_query_enabled[query_id])
+		return;
+
+	(void)printf("%s(%d): ", lbasename(curr_pos.p_file), curr_pos.p_line);
+	va_start(ap, query_id);
+	(void)vprintf(queries[query_id], ap);
+	va_end(ap);
+	(void)printf(" [Q%d]\n", query_id);
+	print_stack_trace();
+}
+
+void
+enable_queries(const char *arg)
+{
+
+	for (const char *s = arg;;) {
+		const char *e = s + strcspn(s, ",");
+
+		char *end;
+		unsigned long id = strtoul(s, &end, 10);
+		if (!(ch_isdigit(s[0]) && end == e &&
+		      id < sizeof(queries) / sizeof(queries[0]) &&
+		      queries[id][0] != '\0'))
+			errx(1, "invalid query ID '%s'", s);
+
+		any_query_enabled = true;
+		is_query_enabled[id] = true;
+
+		if (*e == '\0')
+			break;
+		s = e + 1;
+	}
 }

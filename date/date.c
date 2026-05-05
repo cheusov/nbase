@@ -1,4 +1,4 @@
-/* $NetBSD: date.c,v 1.61 2014/09/01 21:42:21 dholland Exp $ */
+/* $NetBSD: date.c,v 1.63.2.2 2024/10/14 17:44:57 martin Exp $ */
 
 /*
  * Copyright (c) 1985, 1987, 1988, 1993
@@ -29,6 +29,10 @@
  * SUCH DAMAGE.
  */
 
+#if HAVE_NBTOOL_CONFIG_H
+#include "nbtool_config.h"
+#endif
+
 #include <sys/cdefs.h>
 #ifndef lint
 __COPYRIGHT(
@@ -40,7 +44,7 @@ __COPYRIGHT(
 #if 0
 static char sccsid[] = "@(#)date.c	8.2 (Berkeley) 4/28/95";
 #else
-__RCSID("$NetBSD: date.c,v 1.61 2014/09/01 21:42:21 dholland Exp $");
+__RCSID("$NetBSD: date.c,v 1.63.2.2 2024/10/14 17:44:57 martin Exp $");
 #endif
 #endif /* not lint */
 
@@ -70,11 +74,21 @@ __RCSID("$NetBSD: date.c,v 1.61 2014/09/01 21:42:21 dholland Exp $");
 #include "extern.h"
 
 static time_t tval;
-static int aflag, jflag, rflag, nflag;
+static int Rflag, aflag, jflag, rflag, nflag;
 
 __dead static void badcanotime(const char *, const char *, size_t);
 static void setthetime(const char *);
 __dead static void usage(void);
+
+#if HAVE_NBTOOL_CONFIG_H
+static int parse_iso_datetime(time_t *, const char *);
+#else
+static char *fmt;
+#endif
+
+#if !defined(isleap)
+# define isleap(y)   (((y) % 4) == 0 && (((y) % 100) != 0 || ((y) % 400) == 0))
+#endif
 
 int
 main(int argc, char *argv[])
@@ -89,7 +103,7 @@ main(int argc, char *argv[])
 	setprogname(argv[0]);
 	(void)setlocale(LC_ALL, "");
 
-	while ((ch = getopt(argc, argv, "ad:jnr:u")) != -1) {
+	while ((ch = getopt(argc, argv, "ad:f:jnRr:u")) != -1) {
 		switch (ch) {
 		case 'a':		/* adjust time slowly */
 			aflag = 1;
@@ -97,17 +111,32 @@ main(int argc, char *argv[])
 			break;
 		case 'd':
 			rflag = 1;
+#ifdef HAVE_NBTOOL_CONFIG_H
+			if (parse_iso_datetime(&tval, optarg))
+				break;
+			errx(EXIT_FAILURE,
+			    "-d only supports ISO format in the tool version");
+			break;
+#else
+			errno = 0;
 			tval = parsedate(optarg, NULL, NULL);
-			if (tval == -1) {
+			if (tval == -1 && errno != 0) {
 				errx(EXIT_FAILURE,
 				    "%s: Unrecognized date format", optarg);
 			}
 			break;
+		case 'f':
+			fmt = optarg;
+			break;
+#endif
 		case 'j':		/* don't set time */
 			jflag = 1;
 			break;
 		case 'n':		/* don't set network */
 			nflag = 1;
+			break;
+		case 'R':		/* RFC-5322 email format */
+			Rflag = 1;
 			break;
 		case 'r':		/* user specified seconds */
 			if (optarg[0] == '\0') {
@@ -143,12 +172,19 @@ main(int argc, char *argv[])
 	if (*argv && **argv == '+') {
 		format = *argv;
 		++argv;
+	} else if (Rflag) {
+		(void)setlocale(LC_TIME, "C");
+		format = "+%a, %-e %b %Y %H:%M:%S %z";
 	} else
 		format = "+%a %b %e %H:%M:%S %Z %Y";
 
 	if (*argv) {
 		setthetime(*argv);
 		++argv;
+#ifndef HAVE_NBTOOL_CONFIG_H
+	} else if (fmt) {
+		usage();
+#endif
 	}
 
 	if (*argv && **argv == '+')
@@ -182,6 +218,122 @@ badcanotime(const char *msg, const char *val, size_t where)
 
 #define ATOI2(s) ((s) += 2, ((s)[-2] - '0') * 10 + ((s)[-1] - '0'))
 
+#if HAVE_NBTOOL_CONFIG_H
+
+inline static int
+digitstring(const char *s, int len)
+{
+	while (--len > 0) {
+		if (!isdigit(*(unsigned char *)s))
+			return 0;
+		s++;
+	}
+	return 1;
+}
+
+static int
+parse_iso_datetime(time_t * res, const char * string)
+{
+	struct tm tm;
+	time_t t;
+
+	memset(&tm, 0, sizeof tm);
+
+	if (!digitstring(string, 4))
+		return 0;
+	tm.tm_year = ATOI2(string) * 100;
+	tm.tm_year += ATOI2(string);
+	tm.tm_year -= 1900;
+
+	if (*string == '-')
+		string++;
+
+	if (!digitstring(string, 2))
+		return 0;
+
+	tm.tm_mon = ATOI2(string);
+	if (tm.tm_mon < 1 || tm.tm_mon > 12)
+		return 0;
+	tm.tm_mon--;
+
+	if (*string == '-')
+		string++;
+
+	if (!digitstring(string, 2))
+		return 0;
+
+	tm.tm_mday = ATOI2(string);
+	if (tm.tm_mday < 1)
+		return 0;
+	switch (tm.tm_mon) {
+	case 0: case 2: case 4: case 6: case 7: case 9: case 11:
+		if (tm.tm_mday > 31)
+			return 0;
+		break;
+	case 3: case 5: case 8: case 10:
+		if (tm.tm_mday > 30)
+			return 0;
+		break;
+	case 1:
+		if (tm.tm_mday > 28 + isleap(tm.tm_year + 1900))
+			return 0;
+		break;
+	default:
+		abort();
+	}
+
+	do {
+		if (*string == '\0')
+			break;
+		if (*string == 'T' || *string == 't' || *string == ' ' ||
+		    *string == '-')
+			string++;
+
+		if (!digitstring(string, 2))
+			return 0;
+		tm.tm_hour = ATOI2(string);
+		if (tm.tm_hour > 23)
+			return 0;
+
+		if (*string == '\0')
+			break;
+		if (*string == ':')
+			string++;
+
+		if (!digitstring(string, 2))
+			return 0;
+		tm.tm_min = ATOI2(string);
+		if (tm.tm_min >= 60)
+			return 0;
+
+		if (*string == '\0')
+			break;
+		if (*string == ':')
+			string++;
+
+		if (!digitstring(string, 2))
+			return 0;
+		tm.tm_sec = ATOI2(string);
+		if (tm.tm_sec >= 60)
+			return 0;
+	} while (0);
+
+	if (*string != '\0')
+		return 0;
+
+	tm.tm_isdst = -1;
+	tm.tm_wday = -1;
+
+	t = mktime(&tm);
+	if (tm.tm_wday == -1)
+		return 0;
+
+	*res = t;
+	return 1;
+}
+
+#endif	/*NBTOOL*/
+
 static void
 setthetime(const char *p)
 {
@@ -192,6 +344,24 @@ setthetime(const char *p)
 	size_t len;
 	int yearset;
 
+	if ((lt = localtime(&tval)) == NULL)
+		err(EXIT_FAILURE, "%lld: localtime", (long long)tval);
+
+	lt->tm_isdst = -1;			/* Divine correct DST */
+
+#ifndef HAVE_NBTOOL_CONFIG_H
+	if (fmt) {
+		t = strptime(p, fmt, lt);
+		if (t == NULL) {
+			warnx("Failed conversion of ``%s''"
+			    " using format ``%s''\n", p, fmt);
+		} else if (*t != '\0')
+			warnx("Ignoring %zu extraneous"
+				" characters in date string (%s)",
+				strlen(t), t);
+		goto setit;
+	}
+#endif
 	for (t = p, dot = NULL; *t; ++t) {
 		if (*t == '.') {
 			if (dot == NULL) {
@@ -204,10 +374,6 @@ setthetime(const char *p)
 		}
 	}
 
-	if ((lt = localtime(&tval)) == NULL)
-		err(EXIT_FAILURE, "%lld: localtime", (long long)tval);
-
-	lt->tm_isdst = -1;			/* Divine correct DST */
 
 	if (dot != NULL) {			/* .ss */
 		len = strlen(dot);
@@ -322,11 +488,11 @@ setthetime(const char *p)
 		    badcanotime("Not enough digits", p, strlen(p) - len);
 	    }
 	}
-
+setit:
 	/* convert broken-down time to UTC clock time */
 	if ((new_time = mktime(lt)) == -1) {
 		/* Can this actually happen? */
-		err(EXIT_FAILURE, "%s: mktime", op);
+		err(EXIT_FAILURE, "mktime");
 	}
 
 	/* if jflag is set, don't actually change the time, just return */
@@ -336,6 +502,13 @@ setthetime(const char *p)
 	}
 
 	/* set the time */
+#ifndef HAVE_NBTOOL_CONFIG_H
+	struct utmpx utx;
+	memset(&utx, 0, sizeof(utx));
+	utx.ut_type = OLD_TIME;
+	(void)gettimeofday(&utx.ut_tv, NULL);
+	pututxline(&utx);
+
 	if (nflag || netsettime(new_time)) {
 		logwtmp("|", "date", "");
 		if (aflag) {
@@ -352,19 +525,28 @@ setthetime(const char *p)
 		}
 		logwtmp("{", "date", "");
 	}
+	utx.ut_type = NEW_TIME;
+	(void)gettimeofday(&utx.ut_tv, NULL);
+	pututxline(&utx);
 
 	if ((p = getlogin()) == NULL)
 		p = "???";
 	syslog(LOG_AUTH | LOG_NOTICE, "date set by %s", p);
+#else
+	errx(EXIT_FAILURE, "Can't set the time in the tools version");
+#endif
 }
 
 static void
 usage(void)
 {
 	(void)fprintf(stderr,
-	    "Usage: %s [-ajnu] [-d date] [-r seconds] [+format]",
+	    "Usage: %s [-ajnRu] [-d date] [-r seconds] [+format]",
 	    getprogname());
 	(void)fprintf(stderr, " [[[[[[CC]yy]mm]dd]HH]MM[.SS]]\n");
+	(void)fprintf(stderr,
+	    "       %s [-ajnRu] -f input_format new_date [+format]\n",
+	    getprogname());
 	exit(EXIT_FAILURE);
 	/* NOTREACHED */
 }

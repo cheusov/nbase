@@ -1,4 +1,4 @@
-/*	$NetBSD: lint.h,v 1.14 2018/09/07 15:16:15 christos Exp $	*/
+/*	$NetBSD: lint.h,v 1.35 2022/02/07 21:57:47 rillig Exp $	*/
 
 /*
  * Copyright (c) 1994, 1995 Jochen Pohl
@@ -38,15 +38,17 @@
 #endif
 
 #include <sys/types.h>
-#include <stddef.h>
+#include <ctype.h>
 #include <err.h>
 #include <inttypes.h>
+#include <stdbool.h>
+#include <stddef.h>
 #include <stdio.h>
 
 #include "param.h"
 
 /*
- * Type specifiers, used in type structures (type_t) and otherwere.
+ * Type specifiers, used in type structures (type_t) and elsewhere.
  */
 typedef enum {
 	NOTSPEC = 0,
@@ -78,62 +80,82 @@ typedef enum {
 	PTR,		/* pointer */
 	ARRAY,		/* array */
 	FUNC,		/* function */
-	COMPLEX,	/* _Complex */
+	COMPLEX,	/* keyword "_Complex", only used in the parser */
 	FCOMPLEX,	/* float _Complex */
 	DCOMPLEX,	/* double _Complex */
-	LCOMPLEX,	/* long double _Complex */
-	NTSPEC
+	LCOMPLEX	/* long double _Complex */
+#define NTSPEC (LCOMPLEX + 1)
 } tspec_t;
+
 
 /*
  * size of types, name and classification
  */
 typedef	struct {
-	size_t	tt_sz;			/* size in bits */
-	size_t	tt_psz;			/* size, different from tt_sz
-					   if pflag is set */
-	tspec_t	tt_styp;		/* signed counterpart */
-	tspec_t	tt_utyp;		/* unsigned counterpart */
-	u_int	tt_isityp : 1;		/* 1 if integer type */
-	u_int	tt_isutyp : 1;		/* 1 if unsigned integer type */
-	u_int	tt_isftyp : 1;		/* 1 if floating point type */
-	u_int	tt_isatyp : 1;		/* 1 if arithmetic type */
-	u_int	tt_issclt : 1;		/* 1 if scalar type */
-	u_int	tt_isctyp : 1;		/* 1 if complex type */
-	const char *tt_name;		/* Bezeichnung des Typs */
+#ifdef IS_LINT1
+	unsigned int tt_size_in_bits;
+	unsigned int tt_portable_size_in_bits; /* different from
+					 * tt_size_in_bits if pflag is set */
+#endif
+	tspec_t	tt_signed_counterpart;
+	tspec_t	tt_unsigned_counterpart;
+	bool	tt_is_integer:1;	/* integer type */
+#ifdef IS_LINT1
+	bool	tt_is_uinteger:1;	/* unsigned integer type */
+	bool	tt_is_floating:1;	/* floating point type */
+	bool	tt_is_arithmetic:1;	/* arithmetic type */
+	bool	tt_is_scalar:1;		/* scalar type */
+	bool	tt_is_complex:1;	/* complex type */
+#endif
+	const char *tt_name;		/* name of the type */
 } ttab_t;
 
-#define size(t)		(ttab[t].tt_sz)
-#define psize(t)	(ttab[t].tt_psz)
-#define styp(t)		(ttab[t].tt_styp)
-#define utyp(t)		(ttab[t].tt_utyp)
-#define isityp(t)	(ttab[t].tt_isityp)
-#define isutyp(t)	(ttab[t].tt_isutyp)
-#define isftyp(t)	(ttab[t].tt_isftyp)
-#define isatyp(t)	(ttab[t].tt_isatyp)
-#define isctyp(t)	(ttab[t].tt_isctyp)
-#define issclt(t)	(ttab[t].tt_issclt)
+#define size_in_bits(t)		(ttab[t].tt_size_in_bits)
+#define portable_size_in_bits(t) (ttab[t].tt_portable_size_in_bits)
+#define signed_type(t)		(ttab[t].tt_signed_counterpart)
+#define unsigned_type(t)	(ttab[t].tt_unsigned_counterpart)
+#define is_integer(t)		(ttab[t].tt_is_integer)
+#define is_uinteger(t)		(ttab[t].tt_is_uinteger)
+#define is_floating(t)		(ttab[t].tt_is_floating)
+#define is_arithmetic(t)	(ttab[t].tt_is_arithmetic)
+#define is_complex(t)		(ttab[t].tt_is_complex)
+#define is_scalar(t)		(ttab[t].tt_is_scalar)
 
+#if defined(IS_LINT1) || defined(IS_LINT2)
 extern	ttab_t	ttab[];
+#endif
 
 
 typedef	enum {
-	NODECL,			/* until now not declared */
+	NODECL,			/* not declared until now */
 	DECL,			/* declared */
 	TDEF,			/* tentative defined */
 	DEF			/* defined */
 } def_t;
 
-/*
- * Following structure contains some data used for the output buffer.
- */
+/* Some data used for the output buffer. */
 typedef	struct	ob {
 	char	*o_buf;		/* buffer */
 	char	*o_end;		/* first byte after buffer */
 	size_t	o_len;		/* length of buffer */
-	char	*o_nxt;		/* next free byte in buffer */
+	char	*o_next;	/* next free byte in buffer */
 } ob_t;
 
-typedef struct type type_t;
+#if defined(IS_LINT1)
+typedef struct lint1_type type_t;
+#else
+typedef struct lint2_type type_t;
+#endif
 
 #include "externs.h"
+
+static inline bool
+ch_isalnum(char ch) { return isalnum((unsigned char)ch) != 0; }
+static inline bool
+ch_isdigit(char ch) { return isdigit((unsigned char)ch) != 0; }
+static inline bool
+ch_isprint(char ch) { return isprint((unsigned char)ch) != 0; }
+static inline bool
+ch_isspace(char ch) { return isspace((unsigned char)ch) != 0; }
+static inline bool
+ch_isupper(char ch) { return isupper((unsigned char)ch) != 0; }

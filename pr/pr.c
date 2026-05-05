@@ -1,4 +1,4 @@
-/*	$NetBSD: pr.c,v 1.24 2012/08/01 02:27:48 ginsbach Exp $	*/
+/*	$NetBSD: pr.c,v 1.27 2022/05/23 19:52:35 andvar Exp $	*/
 
 /*-
  * Copyright (c) 1991 Keith Muller.
@@ -45,7 +45,7 @@ __COPYRIGHT("@(#) Copyright (c) 1993\
 #if 0
 from: static char sccsid[] = "@(#)pr.c	8.1 (Berkeley) 6/6/93";
 #else
-__RCSID("$NetBSD: pr.c,v 1.24 2012/08/01 02:27:48 ginsbach Exp $");
+__RCSID("$NetBSD: pr.c,v 1.27 2022/05/23 19:52:35 andvar Exp $");
 #endif
 #endif /* not lint */
 
@@ -842,7 +842,7 @@ mulfile(int argc, char *argv[])
 	 * do not know how many columns yet. The number of operands provide an
 	 * upper bound on the number of columns. We use the number of files
 	 * we can open successfully to set the number of columns. The operation
-	 * of the merge operation (-m) in relation to unsuccesful file opens
+	 * of the merge operation (-m) in relation to unsuccessful file opens
 	 * is unspecified by posix.
 	 */
 	j = 0;
@@ -861,7 +861,7 @@ mulfile(int argc, char *argv[])
 		goto out;
 
 	/*
-	 * calculate page boundries based on open file count
+	 * calculate page boundaries based on open file count
 	 */
 	clcnt = j;
 	if (nmwd) {
@@ -1021,7 +1021,7 @@ out:
  *	inf:	file
  *	buf:	buffer
  *	lim:	buffer length
- *	cps:	column positon 1st char in buffer (large line support)
+ *	cps:	column position 1st char in buffer (large line support)
  *	trnc:	throw away data more than lim up to \n 
  *	mor:	set if more data in line (not truncated)
  */
@@ -1497,7 +1497,7 @@ prhead(char *buf, const char *fname, int pagcnt)
 	 * restrictions. The specification for header line format
 	 * in the spec clearly does not limit length. No pr currently
 	 * restricts header length. However if we need to truncate in
-	 * an reasonable way, adjust the length of the printf by
+	 * a reasonable way, adjust the length of the printf by
 	 * changing HDFMT to allow a length max as an argument printf.
 	 * buf (which contains the offset spaces and time field could
 	 * also be trimmed

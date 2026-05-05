@@ -1,4 +1,4 @@
-/*	$NetBSD: main2.c,v 1.9 2016/09/05 00:40:30 sevan Exp $	*/
+/*	$NetBSD: main2.c,v 1.24 2022/05/20 21:18:55 rillig Exp $	*/
 
 /*
  * Copyright (c) 1994, 1995 Jochen Pohl
@@ -36,8 +36,8 @@
 #endif
 
 #include <sys/cdefs.h>
-#if defined(__RCSID) && !defined(lint)
-__RCSID("$NetBSD: main2.c,v 1.9 2016/09/05 00:40:30 sevan Exp $");
+#if defined(__RCSID)
+__RCSID("$NetBSD: main2.c,v 1.24 2022/05/20 21:18:55 rillig Exp $");
 #endif
 
 #include <stdio.h>
@@ -50,47 +50,51 @@ __RCSID("$NetBSD: main2.c,v 1.9 2016/09/05 00:40:30 sevan Exp $");
 #include "mkc_posix_getopt.h"
 
 /* warnings for symbols which are declared but not defined or used */
-int	xflag;
+bool	xflag;
 
 /*
  * warnings for symbols which are used and not defined or defined
  * and not used
  */
-int	uflag = 1;
+bool	uflag = true;
 
 /* Create a lint library in the current directory with name libname. */
-int	Cflag;
-const	char *libname;
-
-int	pflag;
+bool	Cflag;
+const char *libname;
 
 /*
  * warnings for (tentative) definitions of the same name in more than
  * one translation unit
  */
-int	sflag;
+bool	sflag;
 
-int	tflag;
+bool	tflag;
 
 /*
  * If a complaint stems from a included file, print the name of the included
- * file instead of the name spezified at the command line followed by '?'
+ * file instead of the name specified at the command line followed by '?'
  */
-int	Hflag;
+bool	Hflag;
 
-int	hflag;
+bool	hflag;
 
 /* Print full path names, not only the last component */
-int	Fflag;
+bool	Fflag;
 
 /*
  * List of libraries (from -l flag). These libraries are read after all
  * other input files has been read and, for Cflag, after the new lint library
  * has been written.
  */
-const	char	**libs;
+const char **libs;
 
-static	void	usage(void);
+static	void	usage(void) __attribute__((noreturn));
+
+static void
+check_name(hte_t *hte)
+{
+	chkname(hte);
+}
 
 int
 main(int argc, char *argv[])
@@ -99,51 +103,48 @@ main(int argc, char *argv[])
 	size_t	len;
 	char	*lname;
 
-	libs = xcalloc(1, sizeof (char *));
+	libs = xcalloc(1, sizeof(*libs));
 
 	opterr = 0;
-	while ((c = getopt(argc, argv, "hpstxuC:HFl:")) != -1) {
+	while ((c = getopt(argc, argv, "hstxuC:HFl:")) != -1) {
 		switch (c) {
 		case 's':
-			sflag = 1;
+			sflag = true;
 			break;
 		case 't':
-			tflag = 1;
+			tflag = true;
 			break;
 		case 'u':
-			uflag = 0;
+			uflag = false;
 			break;
 		case 'x':
-			xflag = 1;
-			break;
-		case 'p':
-			pflag = 1;
+			xflag = true;
 			break;
 		case 'C':
 			len = strlen(optarg);
 			lname = xmalloc(len + 10);
 			(void)sprintf(lname, "llib-l%s.ln", optarg);
 			libname = lname;
-			Cflag = 1;
-			uflag = 0;
+			Cflag = true;
+			uflag = false;
 			break;
 		case 'H':
-			Hflag = 1;
+			Hflag = true;
 			break;
 		case 'h':
-			hflag++;
+			hflag = true;
 			break;
 		case 'F':
-			Fflag = 1;
+			Fflag = true;
 			break;
 		case 'l':
 			for (i = 0; libs[i] != NULL; i++)
 				continue;
-			libs = xrealloc(libs, (i + 2) * sizeof (char *));
+			libs = xrealloc(libs, (i + 2) * sizeof(*libs));
 			libs[i] = xstrdup(optarg);
 			libs[i + 1] = NULL;
 			break;
-		case '?':
+		default:
 			usage();
 		}
 	}
@@ -156,17 +157,14 @@ main(int argc, char *argv[])
 
 	initmem();
 
-	/* initialize hash table */
-	inithash();
-
-	inittyp();
+	symtab_init();
 
 	for (i = 0; i < argc; i++)
 		readfile(argv[i]);
 
 	/* write the lint library */
 	if (Cflag) {
-		forall(mkstatic);
+		symtab_forall(mkstatic);
 		outlib(libname);
 	}
 
@@ -174,12 +172,12 @@ main(int argc, char *argv[])
 	for (i = 0; libs[i] != NULL; i++)
 		readfile(libs[i]);
 
-	forall(mkstatic);
+	symtab_forall(mkstatic);
 
 	mainused();
 
 	/* perform all tests */
-	forall(chkname);
+	symtab_forall_sorted(check_name);
 
 	exit(0);
 	/* NOTREACHED */
@@ -189,6 +187,6 @@ static void
 usage(void)
 {
 	(void)fprintf(stderr,
-		      "usage: lint2 -hpstxuHF -Clib -l lib ... src1 ...\n");
+		      "usage: lint2 -hpstxuHFT -Clib -l lib ... src1 ...\n");
 	exit(1);
 }

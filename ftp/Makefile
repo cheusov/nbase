@@ -1,4 +1,4 @@
-#	$NetBSD: Makefile,v 1.37.12.1 2021/06/14 11:57:39 martin Exp $
+#	$NetBSD: Makefile,v 1.39 2021/06/03 10:23:33 lukem Exp $
 #	from: @(#)Makefile	8.2 (Berkeley) 4/3/94
 
 .include <bsd.own.mk>
@@ -30,5 +30,7 @@ CPPFLAGS+= -DINET6
 
 cmds.o fetch.o: version.h
 main.o:	ftp_var.h
+
+CWARNFLAGS.gcc+=	${GCC_NO_FORMAT_OVERFLOW}
 
 .include <bsd.prog.mk>

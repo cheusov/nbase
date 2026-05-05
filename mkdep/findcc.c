@@ -1,4 +1,4 @@
-/* $NetBSD: findcc.c,v 1.6 2011/09/04 20:30:06 joerg Exp $ */
+/* $NetBSD: findcc.c,v 1.10 2021/08/20 06:36:10 rillig Exp $ */
 
 /*-
  * Copyright (c) 1999 The NetBSD Foundation, Inc.
@@ -37,7 +37,7 @@
 #if !defined(lint)
 __COPYRIGHT("@(#) Copyright (c) 1999 The NetBSD Foundation, Inc.\
  All rights reserved.");
-__RCSID("$NetBSD: findcc.c,v 1.6 2011/09/04 20:30:06 joerg Exp $");
+__RCSID("$NetBSD: findcc.c,v 1.10 2021/08/20 06:36:10 rillig Exp $");
 #endif /* not lint */
 
 #include <sys/param.h>
@@ -51,36 +51,38 @@ __RCSID("$NetBSD: findcc.c,v 1.6 2011/09/04 20:30:06 joerg Exp $");
 char *
 findcc(const char *progname)
 {
-	char   *path, *dir, *next;
-	char   buffer[MAXPATHLEN];
+	char *cc;
+	const char *path, *dir;
+	char buffer[MAXPATHLEN];
+	size_t progname_len, dir_len;
 
-	if ((next = strchr(progname, ' ')) != NULL) {
-		*next = '\0';
+	progname_len = strcspn(progname, " ");
+
+	if (memchr(progname, '/', progname_len) != NULL) {
+		if ((cc = strndup(progname, progname_len)) == NULL)
+			return NULL;
+		if (access(cc, X_OK) == 0)
+			return cc;
+		free(cc);
+		return NULL;
 	}
 
-	if (strchr(progname, '/') != NULL)
-		return access(progname, X_OK) ? NULL : strdup(progname);
-
-	if (((path = getenv("PATH")) == NULL) ||
-	    ((path = strdup(path)) == NULL))
+	if ((path = getenv("PATH")) == NULL)
 		return NULL;
 
-	dir = path;
-	while (dir != NULL) {
-		if ((next = strchr(dir, ':')) != NULL)
-			*next++ = '\0';
+	for (dir = path; *dir != '\0'; ) {
+		dir_len = strcspn(dir, ":");
 
-		if (snprintf(buffer, sizeof(buffer),
-		    "%s/%s", dir, progname) < (int)sizeof(buffer)) {
-			if (!access(buffer, X_OK)) {
-				free(path);
-				return strdup(buffer);
-			}
-		}
-		dir = next;
+		if ((size_t)snprintf(buffer, sizeof(buffer), "%.*s/%.*s",
+			(int)dir_len, dir, (int)progname_len, progname)
+		    < sizeof(buffer)
+		    && access(buffer, X_OK) == 0)
+			return strdup(buffer);
+
+		dir += dir_len;
+		if (*dir == ':')
+			dir++;
 	}
 
-	free(path);
 	return NULL;
 }
-

@@ -1,7 +1,7 @@
-/*	$NetBSD: extern.h,v 1.82 2019/06/22 23:40:53 christos Exp $	*/
+/*	$NetBSD: extern.h,v 1.82.10.2 2024/12/02 10:19:39 martin Exp $	*/
 
 /*-
- * Copyright (c) 1996-2009 The NetBSD Foundation, Inc.
+ * Copyright (c) 1996-2023 The NetBSD Foundation, Inc.
  * All rights reserved.
  *
  * This code is derived from software contributed to The NetBSD Foundation
@@ -137,7 +137,7 @@ char   *getoptionvalue(const char *);
 void	getremoteinfo(void);
 int	getreply(int);
 char   *globulize(const char *);
-char   *gunique(const char *);
+char   *gunique(char *);
 void	help(int, char **);
 char   *hookup(const char *, const char *);
 void	idlecmd(int, char **);
@@ -176,7 +176,7 @@ void	quit(int, char **);
 void	justquit(void) __dead;
 void	quote(int, char **);
 void	quote1(const char *, int, char **);
-void	recvrequest(const char *, const char *, const char *,
+void	recvrequest(const char *, char *, const char *,
 	    const char *, int, int);
 void	reget(int, char **);
 char   *remglob(char **, int, const char **);
@@ -243,6 +243,7 @@ void	user(int, char **);
 int	ftp_connect(int, const struct sockaddr *, socklen_t, int);
 int	ftp_listen(int, int);
 int	ftp_poll(struct pollfd *, int, int);
+int	ftp_truthy(const char *, const char *, int);
 #ifndef SMALL
 void   *ftp_malloc(size_t);
 StringList *ftp_sl_init(void);

@@ -1,4 +1,4 @@
-/*	$NetBSD: misc.c,v 1.23 2011/11/07 22:24:23 jym Exp $	*/
+/*	$NetBSD: misc.c,v 1.26 2021/10/09 20:44:55 rillig Exp $	*/
 
 /*-
  * Copyright (c) 1991, 1993, 1994
@@ -42,7 +42,7 @@
 #if 0
 static char sccsid[] = "@(#)misc.c	8.3 (Berkeley) 4/2/94";
 #else
-__RCSID("$NetBSD: misc.c,v 1.23 2011/11/07 22:24:23 jym Exp $");
+__RCSID("$NetBSD: misc.c,v 1.26 2021/10/09 20:44:55 rillig Exp $");
 #endif
 #endif /* not lint */
 
@@ -80,16 +80,14 @@ summary(void)
 #ifdef NO_MSGFMT
 	posix_summary();
 #else /* NO_MSGFMT */
-	if (strncmp(msgfmt, "human", sizeof("human")) == 0)
-		return human_summary();
-
-	if (strncmp(msgfmt, "posix", sizeof("posix")) == 0)
-		return posix_summary();
-
-	if (strncmp(msgfmt, "quiet", sizeof("quiet")) == 0)
-		return quiet_summary();
-
-	custom_summary();
+	if (strcmp(msgfmt, "human") == 0)
+		human_summary();
+	else if (strcmp(msgfmt, "posix") == 0)
+		posix_summary();
+	else if (strcmp(msgfmt, "quiet") == 0)
+		quiet_summary();
+	else
+		custom_summary();
 #endif /* NO_MSGFMT */
 }
 
@@ -206,9 +204,9 @@ dd_write_msg(const char *fmt, int enable)
 		mS = 1;
 
 #define ADDC(c) do { if (enable != 0) buffer_write(&c, 1, 0); } \
-	while (/*CONSTCOND*/0)
+	while (0)
 #define ADDS(p) do { if (enable != 0) buffer_write(p, strlen(p), 0); } \
-	while (/*CONSTCOND*/0)
+	while (0)
 
 	for (ptr = fmt; *ptr; ptr++) {
 		if (*ptr != '%') {

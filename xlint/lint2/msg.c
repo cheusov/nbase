@@ -1,4 +1,4 @@
-/*	$NetBSD: msg.c,v 1.11 2011/05/24 12:49:11 joerg Exp $	*/
+/*	$NetBSD: msg.c,v 1.17 2022/05/20 21:18:55 rillig Exp $	*/
 
 /*
  * Copyright (c) 1994, 1995 Jochen Pohl
@@ -36,12 +36,12 @@
 #endif
 
 #include <sys/cdefs.h>
-#if defined(__RCSID) && !defined(lint)
-__RCSID("$NetBSD: msg.c,v 1.11 2011/05/24 12:49:11 joerg Exp $");
+#if defined(__RCSID)
+__RCSID("$NetBSD: msg.c,v 1.17 2022/05/20 21:18:55 rillig Exp $");
 #endif
 
-#include <stdio.h>
 #include <stdarg.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "lint2.h"
@@ -92,7 +92,7 @@ lbasename(const char *path)
 	const	char *cp, *cp1, *cp2;
 
 	if (Fflag)
-		return (path);
+		return path;
 
 	cp = cp1 = cp2 = path;
 	while (*cp != '\0') {
@@ -101,7 +101,7 @@ lbasename(const char *path)
 			cp1 = cp;
 		}
 	}
-	return (*cp1 == '\0' ? cp2 : cp1);
+	return *cp1 == '\0' ? cp2 : cp1;
 }
 
 /*
@@ -114,7 +114,8 @@ mkpos(pos_t *posp)
 	const	char *fn;
 	static	char	*buf;
 	static	size_t	blen = 0;
-	int	qm, src, line;
+	bool	qm;
+	int	src, line;
 
 	if (Hflag && posp->p_src != posp->p_isrc) {
 		src = posp->p_isrc;
@@ -126,7 +127,7 @@ mkpos(pos_t *posp)
 	qm = !Hflag && posp->p_src != posp->p_isrc;
 
 	len = strlen(fn = lbasename(fnames[src]));
-	len += 3 * sizeof (u_short) + 4;
+	len += 3 * sizeof(unsigned short) + 4;
 
 	if (len > blen)
 		buf = xrealloc(buf, blen = len);
@@ -137,5 +138,5 @@ mkpos(pos_t *posp)
 		(void)sprintf(buf, "%s", fn);
 	}
 
-	return (buf);
+	return buf;
 }

@@ -1,4 +1,4 @@
-/* $NetBSD: read.c,v 1.28 2018/09/07 15:16:15 christos Exp $ */
+/* $NetBSD: read.c,v 1.76 2022/05/20 21:18:55 rillig Exp $ */
 
 /*
  * Copyright (c) 1996 Christopher G. Demetriou.  All Rights Reserved.
@@ -37,16 +37,16 @@
 #endif
 
 #include <sys/cdefs.h>
-#if defined(__RCSID) && !defined(lint)
-__RCSID("$NetBSD: read.c,v 1.28 2018/09/07 15:16:15 christos Exp $");
+#if defined(__RCSID)
+__RCSID("$NetBSD: read.c,v 1.76 2022/05/20 21:18:55 rillig Exp $");
 #endif
 
 #include <ctype.h>
 #include <limits.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdarg.h>
 
 #include "lint2.h"
 
@@ -62,7 +62,7 @@ static	short	*inpfns;
 static	size_t	ninpfns;
 
 /*
- * The array pointed to by *fnames maps file name indizes to file names.
+ * The array pointed to by *fnames maps file name indices to file names.
  * Indices of type short are used instead of pointers to save memory.
  */
 const	char **fnames;
@@ -72,14 +72,14 @@ static	size_t	nfnames;
 /*
  * Types are shared (to save memory for the types itself) and accessed
  * via indices (to save memory for references to types (indices are short)).
- * To share types, a equal type must be located fast. This is done by a
+ * To share types, an equal type must be located fast. This is done by a
  * hash table. Access by indices is done via an array of pointers to the
  * types.
  */
 typedef struct thtab {
-	const	char *th_name;
-	u_short	th_idx;
-	struct	thtab *th_nxt;
+	const char *th_name;
+	unsigned short th_idx;
+	struct thtab *th_next;
 } thtab_t;
 static	thtab_t	**thtab;		/* hash table */
 type_t	**tlst;				/* array for indexed access */
@@ -87,49 +87,139 @@ static	size_t	tlstlen;		/* length of tlst */
 
 static	hte_t **renametab;
 
-/* index of current C source file (as spezified at the command line) */
+/* index of current C source file (as specified at the command line) */
 static	int	csrcfile;
 
+static	const char *readfile_line;
 
-#define 	inperr(fmt, args...) \
-    inperror(__FILE__, __LINE__, fmt, ##args)
-static	void	inperror(const char *, size_t, const char *, ...);
+static	void	inperr(const char *, ...)
+    __attribute__((format(printf, 1, 2), noreturn));
 static	void	setsrc(const char *);
 static	void	setfnid(int, const char *);
-static	void	funccall(pos_t *, const char *);
-static	void	decldef(pos_t *, const char *);
-static	void	usedsym(pos_t *, const char *);
-static	u_short	inptype(const char *, const char **);
-static	int	gettlen(const char *, const char **);
-static	u_short	findtype(const char *, size_t, int);
-static	u_short	storetyp(type_t *, const char *, size_t, int);
-static	int	thash(const char *, size_t);
+static	void	funccall(pos_t, const char *);
+static	void	decldef(pos_t, const char *);
+static	void	usedsym(pos_t, const char *);
+static	unsigned short inptype(const char *, const char **);
+static	size_t	gettlen(const char *, const char **);
+static	unsigned short findtype(const char *, size_t, int);
+static	unsigned short storetyp(type_t *, const char *, size_t, int);
+static	unsigned int thash(const char *, size_t);
 static	char	*inpqstrg(const char *, const char **);
 static	const	char *inpname(const char *, const char **);
 static	int	getfnidx(const char *);
+
+static bool
+try_parse_int(const char **p, int *num)
+{
+	char *end;
+
+	*num = (int)strtol(*p, &end, 10);
+	if (end == *p)
+		return false;
+	*p = end;
+	return true;
+}
+
+static int
+parse_int(const char **p)
+{
+	char *end;
+	int n;
+
+	n = (int)strtol(*p, &end, 10);
+	if (end == *p)
+		inperr("not a number: %s", *p);
+	*p = end;
+	return n;
+}
+
+static short
+parse_short(const char **p)
+{
+	return (short)parse_int(p);
+}
+
+static void
+read_ln_line(const char *line)
+{
+	const char *cp;
+	int cline, isrc, iline;
+	char rt;
+	pos_t pos;
+
+	cp = line;
+
+	/* line number in csrcfile */
+	if (!try_parse_int(&cp, &cline))
+		cline = -1;
+
+	/* record type */
+	if (*cp == '\0')
+		inperr("missing record type");
+	rt = *cp++;
+
+	if (rt == 'S') {
+		setsrc(cp);
+		return;
+	}
+	if (rt == 's') {
+		setfnid(cline, cp);
+		return;
+	}
+
+	/*
+	 * Index of (included) source file. If this index is
+	 * different from csrcfile, it refers to an included
+	 * file.
+	 */
+	isrc = parse_int(&cp);
+	isrc = inpfns[isrc];
+
+	/* line number in isrc */
+	if (*cp++ != '.')
+		inperr("bad line number");
+	iline = parse_int(&cp);
+
+	pos.p_src = (unsigned short)csrcfile;
+	pos.p_line = (unsigned short)cline;
+	pos.p_isrc = (unsigned short)isrc;
+	pos.p_iline = (unsigned short)iline;
+
+	/* process rest of this record */
+	switch (rt) {
+	case 'c':
+		funccall(pos, cp);
+		break;
+	case 'd':
+		decldef(pos, cp);
+		break;
+	case 'u':
+		usedsym(pos, cp);
+		break;
+	default:
+		inperr("bad record type %c", rt);
+	}
+}
 
 void
 readfile(const char *name)
 {
 	FILE	*inp;
 	size_t	len;
-	const	char *cp;
-	char	*line, *eptr, rt = '\0';
-	int	cline, isrc, iline;
-	pos_t	pos;
+	char	*line;
 
 	if (inpfns == NULL)
-		inpfns = xcalloc(ninpfns = 128, sizeof (short));
+		inpfns = xcalloc(ninpfns = 128, sizeof(*inpfns));
 	if (fnames == NULL)
-		fnames = xcalloc(nfnames = 256, sizeof (char *));
+		fnames = xcalloc(nfnames = 256, sizeof(*fnames));
 	if (flines == NULL)
-		flines = xcalloc(nfnames, sizeof (size_t));
+		flines = xcalloc(nfnames, sizeof(*flines));
 	if (tlstlen == 0)
-		tlst = xcalloc(tlstlen = 256, sizeof (type_t *));
+		tlst = xcalloc(tlstlen = 256, sizeof(*tlst));
 	if (thtab == NULL)
-		thtab = xcalloc(THSHSIZ2, sizeof (thtab_t));
+		thtab = xcalloc(THSHSIZ2, sizeof(*thtab));
 
-	_inithash(&renametab);
+	renametab = htab_new();
 
 	srcfile = getfnidx(name);
 
@@ -139,78 +229,18 @@ readfile(const char *name)
 	while ((line = fgetln(inp, &len)) != NULL) {
 		flines[srcfile]++;
 
+		readfile_line = line;
 		if (len == 0 || line[len - 1] != '\n')
-			inperr("%s", &line[len - 1]);
+			inperr("missing newline after '%s'", &line[len - 1]);
 		line[len - 1] = '\0';
-		cp = line;
 
-		/* line number in csrcfile */
-		cline = (int)strtol(cp, &eptr, 10);
-		if (cp == eptr) {
-		        cline = -1;
-		} else {
-			cp = eptr;
-		}
-
-		/* record type */
-		if (*cp != '\0') {
-			rt = *cp++;
-		} else {
-			inperr("null cp");
-		}
-
-		if (rt == 'S') {
-			setsrc(cp);
-			continue;
-		} else if (rt == 's') {
-			setfnid(cline, cp);
-			continue;
-		}
-
-		/*
-		 * Index of (included) source file. If this index is
-		 * different from csrcfile, it refers to an included
-		 * file.
-		 */
-		isrc = (int)strtol(cp, &eptr, 10);
-		if (cp == eptr)
-			inperr("not a number: %s", cp);
-		cp = eptr;
-		isrc = inpfns[isrc];
-
-		/* line number in isrc */
-		if (*cp++ != '.')
-			inperr("bad line number");
-		iline = (int)strtol(cp, &eptr, 10);
-		if (cp == eptr)
-			inperr("not a number: %s", cp);
-		cp = eptr;
-
-		pos.p_src = (u_short)csrcfile;
-		pos.p_line = (u_short)cline;
-		pos.p_isrc = (u_short)isrc;
-		pos.p_iline = (u_short)iline;
-
-		/* process rest of this record */
-		switch (rt) {
-		case 'c':
-			funccall(&pos, cp);
-			break;
-		case 'd':
-			decldef(&pos, cp);
-			break;
-		case 'u':
-			usedsym(&pos, cp);
-			break;
-		default:
-			inperr("bad record type %c", rt);
-		}
-
+		read_ln_line(line);
+		readfile_line = NULL;
 	}
 
 	_destroyhash(renametab);
 
-	if (ferror(inp))
+	if (ferror(inp) != 0)
 		err(1, "read error on %s", name);
 
 	(void)fclose(inp);
@@ -218,7 +248,7 @@ readfile(const char *name)
 
 
 static void
-inperror(const char *file, size_t line, const char *fmt, ...)
+inperr(const char *fmt, ...)
 {
 	va_list ap;
 	char buf[1024];
@@ -227,8 +257,8 @@ inperror(const char *file, size_t line, const char *fmt, ...)
 	(void)vsnprintf(buf, sizeof(buf), fmt, ap);
 	va_end(ap);
 
-	errx(1, "%s,%zu: input file error: %s,%zu (%s)", file, line,
-	    fnames[srcfile], flines[srcfile], buf);
+	errx(1, "error: %s:%zu: %s (for '%s')",
+	    fnames[srcfile], flines[srcfile], buf, readfile_line);
 }
 
 /*
@@ -256,8 +286,8 @@ setfnid(int fid, const char *cp)
 		inperr("bad fid");
 
 	if ((size_t)fid >= ninpfns) {
-		inpfns = xrealloc(inpfns, (ninpfns * 2) * sizeof (short));
-		(void)memset(inpfns + ninpfns, 0, ninpfns * sizeof (short));
+		inpfns = xrealloc(inpfns, (ninpfns * 2) * sizeof(*inpfns));
+		(void)memset(inpfns + ninpfns, 0, ninpfns * sizeof(*inpfns));
 		ninpfns *= 2;
 	}
 	/*
@@ -266,70 +296,69 @@ setfnid(int fid, const char *cp)
 	 */
 	if ((size_t)fid >= ninpfns)
 		errx(1, "internal error: setfnid()");
-	inpfns[fid] = (u_short)getfnidx(cp);
+	inpfns[fid] = (unsigned short)getfnidx(cp);
 }
 
 /*
  * Process a function call record (c-record).
  */
 static void
-funccall(pos_t *posp, const char *cp)
+funccall(pos_t pos, const char *cp)
 {
 	arginf_t *ai, **lai;
-	char	c, *eptr;
-	int	rused, rdisc;
+	char	c;
+	bool	rused, rdisc;
 	hte_t	*hte;
 	fcall_t	*fcall;
 	const char *name;
 
-	fcall = xalloc(sizeof (fcall_t));
-	STRUCT_ASSIGN(fcall->f_pos, *posp);
+	fcall = xalloc(sizeof(*fcall));
+	fcall->f_pos = pos;
 
 	/* read flags */
-	rused = rdisc = 0;
+	rused = rdisc = false;
 	lai = &fcall->f_args;
-	while ((c = *cp) == 'u' || c == 'i' || c == 'd' ||
-	       c == 'z' || c == 'p' || c == 'n' || c == 's') {
-		cp++;
-		switch (c) {
-		case 'u':
-			if (rused || rdisc)
-				inperr("used or discovered: %c", c);
-			rused = 1;
-			break;
-		case 'i':
-			if (rused || rdisc)
-				inperr("used or discovered: %c", c);
-			break;
-		case 'd':
-			if (rused || rdisc)
-				inperr("used or discovered: %c", c);
-			rdisc = 1;
-			break;
-		case 'z':
-		case 'p':
-		case 'n':
-		case 's':
-			ai = xalloc(sizeof (arginf_t));
-			ai->a_num = (int)strtol(cp, &eptr, 10);
-			if (cp == eptr)
-				inperr("bad number: %s", cp);
-			cp = eptr;
-			if (c == 'z') {
-				ai->a_pcon = ai->a_zero = 1;
-			} else if (c == 'p') {
-				ai->a_pcon = 1;
-			} else if (c == 'n') {
-				ai->a_ncon = 1;
-			} else {
-				ai->a_fmt = 1;
-				ai->a_fstrg = inpqstrg(cp, &cp);
-			}
-			*lai = ai;
-			lai = &ai->a_nxt;
-			break;
+
+again:
+	c = *cp++;
+	switch (c) {
+	case 'u':
+		if (rused || rdisc)
+			inperr("used or discovered: %c", c);
+		rused = true;
+		goto again;
+	case 'i':
+		if (rused || rdisc)
+			inperr("used or discovered: %c", c);
+		goto again;
+	case 'd':
+		if (rused || rdisc)
+			inperr("used or discovered: %c", c);
+		rdisc = true;
+		goto again;
+	case 'z':
+	case 'p':
+	case 'n':
+	case 's':
+		ai = xalloc(sizeof(*ai));
+		ai->a_num = parse_int(&cp);
+		if (c == 'z')
+			ai->a_pcon = ai->a_zero = true;
+		else if (c == 'p')
+			ai->a_pcon = true;
+		else if (c == 'n')
+			ai->a_ncon = true;
+		else {
+			ai->a_fmt = true;
+			ai->a_fstrg = inpqstrg(cp, &cp);
 		}
+		*lai = ai;
+		lai = &ai->a_next;
+		goto again;
+	default:
+		cp--;
 	}
+
 	fcall->f_rused = rused;
 	fcall->f_rdisc = rdisc;
 
@@ -337,145 +366,146 @@ funccall(pos_t *posp, const char *cp)
 	name = inpname(cp, &cp);
 
 	/* first look it up in the renaming table, then in the normal table */
-	hte = _hsearch(renametab, name, 0);
+	hte = _hsearch(renametab, name, false);
 	if (hte != NULL)
 		hte = hte->h_hte;
 	else
-		hte = hsearch(name, 1);
-	hte->h_used = 1;
+		hte = hsearch(name, true);
+	hte->h_used = true;
 
 	fcall->f_type = inptype(cp, &cp);
 
 	*hte->h_lcall = fcall;
-	hte->h_lcall = &fcall->f_nxt;
+	hte->h_lcall = &fcall->f_next;
 
 	if (*cp != '\0')
 		inperr("trailing line data: %s", cp);
+}
+
+static bool
+parse_function_attribute(const char **pp, sym_t *sym, bool *used)
+{
+
+	switch (*(*pp)++) {
+	case 'd':
+		if (sym->s_def != NODECL)
+			inperr("def");
+		sym->s_def = DEF;
+		break;
+	case 'e':
+		if (sym->s_def != NODECL)
+			inperr("decl");
+		sym->s_def = DECL;
+		break;
+	case 'i':
+		if (sym->s_inline)
+			inperr("inline");
+		sym->s_inline = true;
+		break;
+	case 'o':
+		if (sym->s_old_style_function)
+			inperr("osdef");
+		sym->s_old_style_function = true;
+		break;
+	case 'r':
+		if (sym->s_function_has_return_value)
+			inperr("r");
+		sym->s_function_has_return_value = true;
+		break;
+	case 's':
+		if (sym->s_static)
+			inperr("static");
+		sym->s_static = true;
+		break;
+	case 't':
+		if (sym->s_def != NODECL)
+			inperr("tdef");
+		sym->s_def = TDEF;
+		break;
+	case 'u':
+		if (*used)
+			inperr("used");
+		*used = true;
+		break;
+	case 'v':
+		if (sym->s_check_only_first_args)
+			inperr("v");
+		sym->s_check_only_first_args = true;
+		sym->s_check_num_args = parse_short(pp);
+		break;
+	case 'P':
+		if (sym->s_printflike)
+			inperr("P");
+		sym->s_printflike = true;
+		sym->s_printflike_arg = parse_short(pp);
+		break;
+	case 'S':
+		if (sym->s_scanflike)
+			inperr("S");
+		sym->s_scanflike = true;
+		sym->s_scanflike_arg = parse_short(pp);
+		break;
+	default:
+		(*pp)--;
+		return false;
+	}
+	return true;
 }
 
 /*
  * Process a declaration or definition (d-record).
  */
 static void
-decldef(pos_t *posp, const char *cp)
+decldef(pos_t pos, const char *cp)
 {
 	sym_t	*symp, sym;
-	char	c, *ep, *pos1, *tname;
-	int	used, renamed;
+	char	*pos1, *tname;
+	bool	used, renamed;
 	hte_t	*hte, *renamehte = NULL;
 	const char *name, *newname;
 
-	(void)memset(&sym, 0, sizeof (sym));
-	STRUCT_ASSIGN(sym.s_pos, *posp);
+	(void)memset(&sym, 0, sizeof(sym));
+	sym.s_pos = pos;
 	sym.s_def = NODECL;
 
-	used = 0;
+	used = false;
 
-	while (strchr("deiorstuvPS", (c = *cp)) != NULL) {
-		cp++;
-		switch (c) {
-		case 'd':
-			if (sym.s_def != NODECL)
-				inperr("nodecl %c", c);
-			sym.s_def = DEF;
-			break;
-		case 'e':
-			if (sym.s_def != NODECL)
-				inperr("nodecl %c", c);
-			sym.s_def = DECL;
-			break;
-		case 'i':
-			if (sym.s_inline != NODECL)
-				inperr("inline %c", c);
-			sym.s_inline = DECL;
-			break;
-		case 'o':
-			if (sym.s_osdef)
-				inperr("osdef");
-			sym.s_osdef = 1;
-			break;
-		case 'r':
-			if (sym.s_rval)
-				inperr("rval");
-			sym.s_rval = 1;
-			break;
-		case 's':
-			if (sym.s_static)
-				inperr("static");
-			sym.s_static = 1;
-			break;
-		case 't':
-			if (sym.s_def != NODECL)
-				inperr("nodecl %c", c);
-			sym.s_def = TDEF;
-			break;
-		case 'u':
-			if (used)
-				inperr("used %c", c);
-			used = 1;
-			break;
-		case 'v':
-			if (sym.s_va)
-				inperr("va");
-			sym.s_va = 1;
-			sym.s_nva = (short)strtol(cp, &ep, 10);
-			if (cp == ep)
-				inperr("bad number: %s", cp);
-			cp = ep;
-			break;
-		case 'P':
-			if (sym.s_prfl)
-				inperr("prfl");
-			sym.s_prfl = 1;
-			sym.s_nprfl = (short)strtol(cp, &ep, 10);
-			if (cp == ep)
-				inperr("bad number: %s", cp);
-			cp = ep;
-			break;
-		case 'S':
-			if (sym.s_scfl)
-				inperr("scfl");
-			sym.s_scfl = 1;
-			sym.s_nscfl = (short)strtol(cp, &ep, 10);
-			if (cp == ep)
-				inperr("bad number: %s", cp);
-			cp = ep;
-			break;
-		}
-	}
+	while (parse_function_attribute(&cp, &sym, &used))
+		continue;
 
 	/* read symbol name, doing renaming if necessary */
 	name = inpname(cp, &cp);
-	renamed = 0;
+	renamed = false;
 	if (*cp == 'r') {
 		cp++;
 		tname = xstrdup(name);
 		newname = inpname(cp, &cp);
 
 		/* enter it and see if it's already been renamed */
-		renamehte = _hsearch(renametab, tname, 1);
+		renamehte = _hsearch(renametab, tname, true);
 		if (renamehte->h_hte == NULL) {
-			hte = hsearch(newname, 1);
+			hte = hsearch(newname, true);
 			renamehte->h_hte = hte;
-			renamed = 1;
-		} else if (strcmp((hte = renamehte->h_hte)->h_name, newname)) {
+			renamed = true;
+		} else if (hte = renamehte->h_hte,
+		    strcmp(hte->h_name, newname) != 0) {
 			pos1 = xstrdup(mkpos(&renamehte->h_syms->s_pos));
-			/* %s renamed multiple times\t%s  ::  %s */
+			/* %s renamed multiple times  \t%s  ::  %s */
 			msg(18, tname, pos1, mkpos(&sym.s_pos));
 			free(pos1);
 		}
 		free(tname);
 	} else {
 		/* it might be a previously-done rename */
-		hte = _hsearch(renametab, name, 0);
+		hte = _hsearch(renametab, name, false);
 		if (hte != NULL)
 			hte = hte->h_hte;
 		else
-			hte = hsearch(name, 1);
+			hte = hsearch(name, true);
 	}
 	hte->h_used |= used;
 	if (sym.s_def == DEF || sym.s_def == TDEF)
-		hte->h_def = 1;
+		hte->h_def = true;
 
 	sym.s_type = inptype(cp, &cp);
 
@@ -486,28 +516,28 @@ decldef(pos_t *posp, const char *cp)
 	 * because static symbols, tentatively defined at the same location
 	 * but in different translation units are really different symbols.
 	 */
-	for (symp = hte->h_syms; symp != NULL; symp = symp->s_nxt) {
+	for (symp = hte->h_syms; symp != NULL; symp = symp->s_next) {
 		if (symp->s_pos.p_isrc == sym.s_pos.p_isrc &&
 		    symp->s_pos.p_iline == sym.s_pos.p_iline &&
 		    symp->s_type == sym.s_type &&
 		    ((symp->s_def == DECL && sym.s_def == DECL) ||
 		     (!sflag && symp->s_def == TDEF && sym.s_def == TDEF)) &&
-		    !symp->s_static && !sym.s_static) {
+		    !symp->s_static && !sym.s_static)
 			break;
-		}
 	}
 
 	if (symp == NULL) {
-		/* allocsym reserviert keinen Platz fuer s_nva */
-		if (sym.s_va || sym.s_prfl || sym.s_scfl) {
-			symp = xalloc(sizeof (sym_t));
-			STRUCT_ASSIGN(*symp, sym);
+		if (sym.s_check_only_first_args ||
+		    sym.s_printflike || sym.s_scanflike) {
+			symp = xalloc(sizeof(*symp));
+			*symp = sym;
 		} else {
-			symp = xalloc(sizeof (symp->s_s));
-			STRUCT_ASSIGN(symp->s_s, sym.s_s);
+			/* no need to allocate memory for unused members */
+			symp = xalloc(sizeof(symp->s_s));
+			symp->s_s = sym.s_s;
 		}
 		*hte->h_lsym = symp;
-		hte->h_lsym = &symp->s_nxt;
+		hte->h_lsym = &symp->s_next;
 
 		/* XXX hack so we can remember where a symbol was renamed */
 		if (renamed)
@@ -519,79 +549,46 @@ decldef(pos_t *posp, const char *cp)
 }
 
 /*
- * Read an u-record (emited by lint1 if a symbol was used).
+ * Read an u-record (emitted by lint1 if a symbol was used).
  */
 static void
-usedsym(pos_t *posp, const char *cp)
+usedsym(pos_t pos, const char *cp)
 {
 	usym_t	*usym;
 	hte_t	*hte;
 	const char *name;
 
-	usym = xalloc(sizeof (usym_t));
-	STRUCT_ASSIGN(usym->u_pos, *posp);
+	usym = xalloc(sizeof(*usym));
+	usym->u_pos = pos;
 
 	/* needed as delimiter between two numbers */
 	if (*cp++ != 'x')
 		inperr("bad delim %c", cp[-1]);
 
 	name = inpname(cp, &cp);
-	hte = _hsearch(renametab, name, 0);
+	hte = _hsearch(renametab, name, false);
 	if (hte != NULL)
 		hte = hte->h_hte;
 	else
-		hte = hsearch(name, 1);
-	hte->h_used = 1;
+		hte = hsearch(name, true);
+	hte->h_used = true;
 
 	*hte->h_lusym = usym;
-	hte->h_lusym = &usym->u_nxt;
+	hte->h_lusym = &usym->u_next;
 }
 
-/*
- * Read a type and return the index of this type.
- */
-static u_short
-inptype(const char *cp, const char **epp)
+static tspec_t
+parse_tspec(const char **pp, char c, bool *osdef)
 {
-	char	c, s, *eptr;
-	const	char *ep;
-	type_t	*tp;
-	int	narg, i, osdef = 0;
-	size_t	tlen;
-	u_short	tidx, sidx;
-	int	h;
-
-	/* If we have this type already, return its index. */
-	tlen = gettlen(cp, &ep);
-	h = thash(cp, tlen);
-	if ((tidx = findtype(cp, tlen, h)) != 0) {
-		*epp = ep;
-		return (tidx);
-	}
-
-	/* No, we must create a new type. */
-	tp = xalloc(sizeof (type_t));
-
-	tidx = storetyp(tp, cp, tlen, h);
-
-	c = *cp++;
-
-	while (c == 'c' || c == 'v') {
-		if (c == 'c') {
-			tp->t_const = 1;
-		} else {
-			tp->t_volatile = 1;
-		}
-		c = *cp++;
-	}
+	char s;
 
 	switch (c) {
-	case 's':
-	case 'u':
-	case 'l':
-	case 'e':
+	case 's':	/* 'signed' or 'struct' or 'float' */
+	case 'u':	/* 'unsigned' or 'union' */
+	case 'l':	/* 'long double' */
+	case 'e':	/* 'enum' */
 		s = c;
-		c = *cp++;
+		c = *(*pp)++;
 		break;
 	default:
 		s = '\0';
@@ -600,177 +597,165 @@ inptype(const char *cp, const char **epp)
 
 	switch (c) {
 	case 'B':
-		tp->t_tspec = BOOL;
-		break;
+		return BOOL;
 	case 'C':
-		tp->t_tspec = s == 's' ? SCHAR : (s == 'u' ? UCHAR : CHAR);
-		break;
+		return s == 's' ? SCHAR : (s == 'u' ? UCHAR : CHAR);
 	case 'S':
-		tp->t_tspec = s == 'u' ? USHORT : SHORT;
-		break;
+		return s == 'u' ? USHORT : SHORT;
 	case 'I':
-		tp->t_tspec = s == 'u' ? UINT : INT;
-		break;
+		return s == 'u' ? UINT : INT;
 	case 'L':
-		tp->t_tspec = s == 'u' ? ULONG : LONG;
-		break;
+		return s == 'u' ? ULONG : LONG;
 	case 'Q':
-		tp->t_tspec = s == 'u' ? UQUAD : QUAD;
-		break;
+		return s == 'u' ? UQUAD : QUAD;
+#ifdef INT128_SIZE
+	case 'J':
+		return s == 'u' ? UINT128 : INT128;
+#endif
 	case 'D':
-		tp->t_tspec = s == 's' ? FLOAT : (s == 'l' ? LDOUBLE : DOUBLE);
-		break;
+		return s == 's' ? FLOAT : (s == 'l' ? LDOUBLE : DOUBLE);
 	case 'V':
-		tp->t_tspec = VOID;
-		break;
+		return VOID;
 	case 'P':
-		tp->t_tspec = PTR;
-		break;
+		return PTR;
 	case 'A':
-		tp->t_tspec = ARRAY;
-		break;
+		return ARRAY;
 	case 'F':
 	case 'f':
-		osdef = c == 'f';
-		tp->t_tspec = FUNC;
-		break;
+		*osdef = c == 'f';
+		return FUNC;
 	case 'T':
-		tp->t_tspec = s == 'e' ? ENUM : (s == 's' ? STRUCT : UNION);
-		break;
+		return s == 'e' ? ENUM : (s == 's' ? STRUCT : UNION);
 	case 'X':
-		tp->t_tspec = s == 's' ? FCOMPLEX
+		return s == 's' ? FCOMPLEX
 				       : (s == 'l' ? LCOMPLEX : DCOMPLEX);
-		break;
+	default:
+		inperr("tspec '%c'", c);
+		/* NOTREACHED */
 	}
+}
+
+/*
+ * Read a type and return the index of this type.
+ */
+static unsigned short
+inptype(const char *cp, const char **epp)
+{
+	char	c;
+	const	char *ep;
+	type_t	*tp;
+	int	narg, i;
+	bool	osdef = false;
+	size_t	tlen;
+	unsigned short tidx;
+	int	h;
+
+	/* If we have this type already, return its index. */
+	tlen = gettlen(cp, &ep);
+	h = thash(cp, tlen);
+	if ((tidx = findtype(cp, tlen, h)) != 0) {
+		*epp = ep;
+		return tidx;
+	}
+
+	/* No, we must create a new type. */
+	tp = xalloc(sizeof(*tp));
+
+	tidx = storetyp(tp, cp, tlen, h);
+
+	c = *cp++;
+
+	if (c == 'c') {
+		tp->t_const = true;
+		c = *cp++;
+	}
+	if (c == 'v') {
+		tp->t_volatile = true;
+		c = *cp++;
+	}
+
+	tp->t_tspec = parse_tspec(&cp, c, &osdef);
 
 	switch (tp->t_tspec) {
 	case ARRAY:
-		tp->t_dim = (int)strtol(cp, &eptr, 10);
-		cp = eptr;
-		sidx = inptype(cp, &cp); /* force seq. point! (ditto below) */
-		tp->t_subt = TP(sidx);
+		tp->t_dim = parse_int(&cp);
+		tp->t_subt = TP(inptype(cp, &cp));
 		break;
 	case PTR:
-		sidx = inptype(cp, &cp);
-		tp->t_subt = TP(sidx);
+		tp->t_subt = TP(inptype(cp, &cp));
 		break;
 	case FUNC:
 		c = *cp;
-		if (isdigit((u_char)c)) {
+		if (ch_isdigit(c)) {
 			if (!osdef)
-				tp->t_proto = 1;
-			narg = (int)strtol(cp, &eptr, 10);
-			cp = eptr;
-			tp->t_args = xcalloc((size_t)(narg + 1),
-					     sizeof (type_t *));
+				tp->t_proto = true;
+			narg = parse_int(&cp);
+			tp->t_args = xcalloc((size_t)narg + 1,
+					     sizeof(*tp->t_args));
 			for (i = 0; i < narg; i++) {
 				if (i == narg - 1 && *cp == 'E') {
-					tp->t_vararg = 1;
+					tp->t_vararg = true;
 					cp++;
-				} else {
-					sidx = inptype(cp, &cp);
-					tp->t_args[i] = TP(sidx);
-				}
+				} else
+					tp->t_args[i] = TP(inptype(cp, &cp));
 			}
 		}
-		sidx = inptype(cp, &cp);
-		tp->t_subt = TP(sidx);
+		tp->t_subt = TP(inptype(cp, &cp));
 		break;
 	case ENUM:
 		tp->t_tspec = INT;
-		tp->t_isenum = 1;
+		tp->t_is_enum = true;
 		/* FALLTHROUGH */
 	case STRUCT:
 	case UNION:
 		switch (*cp++) {
 		case '1':
-			tp->t_istag = 1;
-			tp->t_tag = hsearch(inpname(cp, &cp), 1);
+			tp->t_istag = true;
+			tp->t_tag = hsearch(inpname(cp, &cp), true);
 			break;
 		case '2':
-			tp->t_istynam = 1;
-			tp->t_tynam = hsearch(inpname(cp, &cp), 1);
+			tp->t_istynam = true;
+			tp->t_tynam = hsearch(inpname(cp, &cp), true);
 			break;
 		case '3':
-			tp->t_isuniqpos = 1;
-			tp->t_uniqpos.p_line = strtol(cp, &eptr, 10);
-			cp = eptr;
+			tp->t_isuniqpos = true;
+			tp->t_uniqpos.p_line = parse_int(&cp);
 			cp++;
 			/* xlate to 'global' file name. */
 			tp->t_uniqpos.p_file =
-			    addoutfile(inpfns[strtol(cp, &eptr, 10)]);
-			cp = eptr;
+			    addoutfile(inpfns[parse_int(&cp)]);
 			cp++;
-			tp->t_uniqpos.p_uniq = strtol(cp, &eptr, 10);
-			cp = eptr;
+			tp->t_uniqpos.p_uniq = parse_int(&cp);
 			break;
 		}
 		break;
-	case LONG:
-	case VOID:
-	case LDOUBLE:
-	case DOUBLE:
-	case FLOAT:
-	case UQUAD:
-	case QUAD:
-#ifdef INT128_SIZE
-	case UINT128:
-	case INT128:
-#endif
-	case ULONG:
-	case UINT:
-	case INT:
-	case USHORT:
-	case SHORT:
-	case UCHAR:
-	case SCHAR:
-	case CHAR:
-	case BOOL:
-	case UNSIGN:
-	case SIGNED:
-	case NOTSPEC:
-	case FCOMPLEX:
-	case DCOMPLEX:
-	case LCOMPLEX:
-	case COMPLEX:
+	default:
 		break;
-	case NTSPEC:
-		abort();
 	}
 
 	*epp = cp;
-	return (tidx);
+	return tidx;
 }
 
 /*
  * Get the length of a type string.
  */
-static int
+static size_t
 gettlen(const char *cp, const char **epp)
 {
 	const	char *cp1;
-	char	c, s, *eptr;
+	char	c, s;
 	tspec_t	t;
-	int	narg, i, cm, vm;
+	int	narg, i;
 
 	cp1 = cp;
 
 	c = *cp++;
 
-	cm = vm = 0;
-
-	while (c == 'c' || c == 'v') {
-		if (c == 'c') {
-			if (cm)
-				inperr("cm: %c", c);
-			cm = 1;
-		} else {
-			if (vm)
-				inperr("vm: %c", c);
-			vm = 1;
-		}
+	if (c == 'c')
 		c = *cp++;
-	}
+	if (c == 'v')
+		c = *cp++;
 
 	switch (c) {
 	case 's':
@@ -793,50 +778,52 @@ gettlen(const char *cp, const char **epp)
 			t = BOOL;
 		break;
 	case 'C':
-		if (s == 's') {
+		if (s == 's')
 			t = SCHAR;
-		} else if (s == 'u') {
+		else if (s == 'u')
 			t = UCHAR;
-		} else if (s == '\0') {
+		else if (s == '\0')
 			t = CHAR;
-		}
 		break;
 	case 'S':
-		if (s == 'u') {
+		if (s == 'u')
 			t = USHORT;
-		} else if (s == '\0') {
+		else if (s == '\0')
 			t = SHORT;
-		}
 		break;
 	case 'I':
-		if (s == 'u') {
+		if (s == 'u')
 			t = UINT;
-		} else if (s == '\0') {
+		else if (s == '\0')
 			t = INT;
-		}
 		break;
 	case 'L':
-		if (s == 'u') {
+		if (s == 'u')
 			t = ULONG;
-		} else if (s == '\0') {
+		else if (s == '\0')
 			t = LONG;
-		}
 		break;
 	case 'Q':
-		if (s == 'u') {
+		if (s == 'u')
 			t = UQUAD;
-		} else if (s == '\0') {
+		else if (s == '\0')
 			t = QUAD;
-		}
 		break;
+#ifdef INT128_SIZE
+	case 'J':
+		if (s == 'u')
+			t = UINT128;
+		else if (s == '\0')
+			t = INT128;
+		break;
+#endif
 	case 'D':
-		if (s == 's') {
+		if (s == 's')
 			t = FLOAT;
-		} else if (s == 'l') {
+		else if (s == 'l')
 			t = LDOUBLE;
-		} else if (s == '\0') {
+		else if (s == '\0')
 			t = DOUBLE;
-		}
 		break;
 	case 'V':
 		if (s == '\0')
@@ -856,37 +843,31 @@ gettlen(const char *cp, const char **epp)
 			t = FUNC;
 		break;
 	case 'T':
-		if (s == 'e') {
+		if (s == 'e')
 			t = ENUM;
-		} else if (s == 's') {
+		else if (s == 's')
 			t = STRUCT;
-		} else if (s == 'u') {
+		else if (s == 'u')
 			t = UNION;
-		}
 		break;
 	case 'X':
-		if (s == 's') {
+		if (s == 's')
 			t = FCOMPLEX;
-		} else if (s == 'l') {
+		else if (s == 'l')
 			t = LCOMPLEX;
-		} else if (s == '\0') {
+		else if (s == '\0')
 			t = DCOMPLEX;
-		}
 		break;
 	default:
-		inperr("bad type: %c %c", c, s);
+		break;
 	}
 
-	if (t == NOTSPEC) {
-		inperr("undefined type: %c %c", c, s);
-	}
+	if (t == NOTSPEC)
+		inperr("bad type: %c %c", c, s);
 
 	switch (t) {
 	case ARRAY:
-		(void)strtol(cp, &eptr, 10);
-		if (cp == eptr)
-			inperr("bad number: %s", cp);
-		cp = eptr;
+		(void)parse_int(&cp);
 		(void)gettlen(cp, &cp);
 		break;
 	case PTR:
@@ -894,15 +875,13 @@ gettlen(const char *cp, const char **epp)
 		break;
 	case FUNC:
 		c = *cp;
-		if (isdigit((u_char)c)) {
-			narg = (int)strtol(cp, &eptr, 10);
-			cp = eptr;
+		if (ch_isdigit(c)) {
+			narg = parse_int(&cp);
 			for (i = 0; i < narg; i++) {
-				if (i == narg - 1 && *cp == 'E') {
+				if (i == narg - 1 && *cp == 'E')
 					cp++;
-				} else {
+				else
 					(void)gettlen(cp, &cp);
-				}
 			}
 		}
 		(void)gettlen(cp, &cp);
@@ -912,98 +891,57 @@ gettlen(const char *cp, const char **epp)
 	case UNION:
 		switch (*cp++) {
 		case '1':
-			(void)inpname(cp, &cp);
-			break;
 		case '2':
 			(void)inpname(cp, &cp);
 			break;
 		case '3':
 			/* unique position: line.file.uniquifier */
-			(void)strtol(cp, &eptr, 10);
-			if (cp == eptr)
-				inperr("bad number: %s", cp);
-			cp = eptr;
+			(void)parse_int(&cp);
 			if (*cp++ != '.')
 				inperr("not dot: %c", cp[-1]);
-			(void)strtol(cp, &eptr, 10);
-			if (cp == eptr)
-				inperr("bad number: %s", cp);
-			cp = eptr;
+			(void)parse_int(&cp);
 			if (*cp++ != '.')
 				inperr("not dot: %c", cp[-1]);
-			(void)strtol(cp, &eptr, 10);
-			if (cp == eptr)
-				inperr("bad number: %s", cp);
-			cp = eptr;
+			(void)parse_int(&cp);
 			break;
 		default:
-			inperr("bad value: %c\n", cp[-1]);
+			inperr("bad value: %c", cp[-1]);
 		}
 		break;
-	case FLOAT:
-	case USHORT:
-	case SHORT:
-	case UCHAR:
-	case SCHAR:
-	case CHAR:
-	case BOOL:
-	case UNSIGN:
-	case SIGNED:
-	case NOTSPEC:
-	case INT:
-	case UINT:
-	case DOUBLE:
-	case LDOUBLE:
-	case VOID:
-	case ULONG:
-	case LONG:
-	case QUAD:
-	case UQUAD:
-#ifdef INT128_SIZE
-	case INT128:
-	case UINT128:
-#endif
-	case FCOMPLEX:
-	case DCOMPLEX:
-	case LCOMPLEX:
-	case COMPLEX:
+	default:
 		break;
-#ifndef __COVERITY__
-	case NTSPEC:
-		abort();
-#endif
 	}
 
 	*epp = cp;
-	return (cp - cp1);
+	return (size_t)(cp - cp1);
 }
 
 /*
  * Search a type by its type string.
  */
-static u_short
+static unsigned short
 findtype(const char *cp, size_t len, int h)
 {
 	thtab_t	*thte;
 
-	for (thte = thtab[h]; thte != NULL; thte = thte->th_nxt) {
+	for (thte = thtab[h]; thte != NULL; thte = thte->th_next) {
 		if (strncmp(thte->th_name, cp, len) != 0)
 			continue;
 		if (thte->th_name[len] == '\0')
-			return (thte->th_idx);
+			return thte->th_idx;
 	}
 
-	return (0);
+	return 0;
 }
 
 /*
- * Store a type and its type string so we can later share this type
+ * Store a type and its type string, so we can later share this type
  * if we read the same type string from the input file.
  */
-static u_short
+static unsigned short
 storetyp(type_t *tp, const char *cp, size_t len, int h)
 {
-	static	u_int	tidx = 1;	/* 0 is reserved */
+	static unsigned int tidx = 1;	/* 0 is reserved */
 	thtab_t	*thte;
 	char	*name;
 
@@ -1011,8 +949,8 @@ storetyp(type_t *tp, const char *cp, size_t len, int h)
 		errx(1, "sorry, too many types");
 
 	if (tidx == tlstlen - 1) {
-		tlst = xrealloc(tlst, (tlstlen * 2) * sizeof (type_t *));
-		(void)memset(tlst + tlstlen, 0, tlstlen * sizeof (type_t *));
+		tlst = xrealloc(tlst, (tlstlen * 2) * sizeof(*tlst));
+		(void)memset(tlst + tlstlen, 0, tlstlen * sizeof(*tlst));
 		tlstlen *= 2;
 	}
 
@@ -1023,29 +961,29 @@ storetyp(type_t *tp, const char *cp, size_t len, int h)
 	(void)memcpy(name, cp, len);
 	name[len] = '\0';
 
-	thte = xalloc(sizeof (thtab_t));
+	thte = xalloc(sizeof(*thte));
 	thte->th_name = name;
 	thte->th_idx = tidx;
-	thte->th_nxt = thtab[h];
+	thte->th_next = thtab[h];
 	thtab[h] = thte;
 
-	return ((u_short)tidx++);
+	return (unsigned short)tidx++;
 }
 
 /*
  * Hash function for types
  */
-static int
+static unsigned int
 thash(const char *s, size_t len)
 {
-	u_int	v;
+	unsigned int v;
 
 	v = 0;
 	while (len-- != 0) {
-		v = (v << sizeof (v)) + (u_char)*s++;
-		v ^= v >> (sizeof (v) * CHAR_BIT - sizeof (v));
+		v = (v << sizeof(v)) + (unsigned char)*s++;
+		v ^= v >> (sizeof(v) * CHAR_BIT - sizeof(v));
 	}
-	return (v % THSHSIZ2);
+	return v % THSHSIZ2;
 }
 
 /*
@@ -1056,7 +994,7 @@ inpqstrg(const char *src, const char **epp)
 {
 	char	*strg, *dst;
 	size_t	slen;
-	int	c;
+	char	c;
 	int	v;
 
 	dst = strg = xmalloc(slen = 32);
@@ -1109,7 +1047,7 @@ inpqstrg(const char *src, const char **epp)
 				if ((c = *src++) < '0' || c > '7')
 					inperr("not octal: %c", c);
 				v |= c - '0';
-				c = (u_char)v;
+				c = (char)v;
 				break;
 			default:
 				inperr("bad \\ escape: %c", c);
@@ -1121,14 +1059,14 @@ inpqstrg(const char *src, const char **epp)
 			dst = strg + (slen - 1);
 			slen *= 2;
 		}
-		*dst++ = (char)c;
+		*dst++ = c;
 		if ((c = *src++) == '\0')
 			inperr("missing closing quote");
 	}
 	*dst = '\0';
 
 	*epp = src;
-	return (strg);
+	return strg;
 }
 
 /*
@@ -1140,24 +1078,21 @@ inpname(const char *cp, const char **epp)
 	static	char	*buf;
 	static	size_t	blen = 0;
 	size_t	len, i;
-	char	*eptr, c;
+	char	c;
 
-	len = (int)strtol(cp, &eptr, 10);
-	if (cp == eptr)
-		inperr("bad number: %s", cp);
-	cp = eptr;
+	len = parse_int(&cp);
 	if (len + 1 > blen)
 		buf = xrealloc(buf, blen = len + 1);
 	for (i = 0; i < len; i++) {
 		c = *cp++;
-		if (!isalnum((unsigned char)c) && c != '_')
+		if (!ch_isalnum(c) && c != '_')
 			inperr("not alnum or _: %c", c);
 		buf[i] = c;
 	}
 	buf[i] = '\0';
 
 	*epp = cp;
-	return (buf);
+	return buf;
 }
 
 /*
@@ -1172,21 +1107,21 @@ getfnidx(const char *fn)
 	/* 0 is reserved */
 	for (i = 1; fnames[i] != NULL; i++) {
 		if (strcmp(fnames[i], fn) == 0)
-			return i;
+			return (int)i;
 	}
 
 	if (i == nfnames - 1) {
 		size_t nlen = nfnames * 2;
-		fnames = xrealloc(fnames, nlen * sizeof(char *));
-		(void)memset(fnames + nfnames, 0, nfnames * sizeof(char *));
-		flines = xrealloc(flines, nlen * sizeof(size_t));
-		(void)memset(flines + nfnames, 0, nfnames * sizeof(size_t));
+		fnames = xrealloc(fnames, nlen * sizeof(*fnames));
+		(void)memset(fnames + nfnames, 0, nfnames * sizeof(*fnames));
+		flines = xrealloc(flines, nlen * sizeof(*flines));
+		(void)memset(flines + nfnames, 0, nfnames * sizeof(*flines));
 		nfnames = nlen;
 	}
 
 	fnames[i] = xstrdup(fn);
 	flines[i] = 0;
-	return (i);
+	return (int)i;
 }
 
 /*
@@ -1199,10 +1134,10 @@ mkstatic(hte_t *hte)
 	fcall_t	**callp, *call;
 	usym_t	**usymp, *usym;
 	hte_t	*nhte;
-	int	ofnd;
+	bool	ofnd;
 
 	/* Look for first static definition */
-	for (sym1 = hte->h_syms; sym1 != NULL; sym1 = sym1->s_nxt) {
+	for (sym1 = hte->h_syms; sym1 != NULL; sym1 = sym1->s_next) {
 		if (sym1->s_static)
 			break;
 	}
@@ -1210,24 +1145,24 @@ mkstatic(hte_t *hte)
 		return;
 
 	/* Do nothing if this name is used only in one translation unit. */
-	ofnd = 0;
-	for (sym = hte->h_syms; sym != NULL && !ofnd; sym = sym->s_nxt) {
+	ofnd = false;
+	for (sym = hte->h_syms; sym != NULL && !ofnd; sym = sym->s_next) {
 		if (sym->s_pos.p_src != sym1->s_pos.p_src)
-			ofnd = 1;
+			ofnd = true;
 	}
-	for (call = hte->h_calls; call != NULL && !ofnd; call = call->f_nxt) {
+	for (call = hte->h_calls; call != NULL && !ofnd; call = call->f_next) {
 		if (call->f_pos.p_src != sym1->s_pos.p_src)
-			ofnd = 1;
+			ofnd = true;
 	}
-	for (usym = hte->h_usyms; usym != NULL && !ofnd; usym = usym->u_nxt) {
+	for (usym = hte->h_usyms; usym != NULL && !ofnd; usym = usym->u_next) {
 		if (usym->u_pos.p_src != sym1->s_pos.p_src)
-			ofnd = 1;
+			ofnd = true;
 	}
 	if (!ofnd) {
-		hte->h_used = 1;
+		hte->h_used = true;
 		/* errors about undef. static symbols are printed in lint1 */
-		hte->h_def = 1;
-		hte->h_static = 1;
+		hte->h_def = true;
+		hte->h_static = true;
 		return;
 	}
 
@@ -1235,16 +1170,16 @@ mkstatic(hte_t *hte)
 	 * Create a new hash table entry
 	 *
 	 * XXX this entry should be put at the beginning of the list to
-	 * avoid to process the same symbol twice.
+	 * avoid processing the same symbol twice.
 	 */
 	for (nhte = hte; nhte->h_link != NULL; nhte = nhte->h_link)
 		continue;
-	nhte->h_link = xmalloc(sizeof (hte_t));
+	nhte->h_link = xmalloc(sizeof(*nhte->h_link));
 	nhte = nhte->h_link;
 	nhte->h_name = hte->h_name;
-	nhte->h_used = 1;
-	nhte->h_def = 1;	/* error in lint1 */
-	nhte->h_static = 1;
+	nhte->h_used = true;
+	nhte->h_def = true;	/* error in lint1 */
+	nhte->h_static = true;
 	nhte->h_syms = NULL;
 	nhte->h_lsym = &nhte->h_syms;
 	nhte->h_calls = NULL;
@@ -1260,47 +1195,47 @@ mkstatic(hte_t *hte)
 	 */
 	for (symp = &hte->h_syms; (sym = *symp) != NULL; ) {
 		if (sym->s_pos.p_src == sym1->s_pos.p_src) {
-			sym->s_static = 1;
-			(*symp) = sym->s_nxt;
-			if (hte->h_lsym == &sym->s_nxt)
+			sym->s_static = true;
+			*symp = sym->s_next;
+			if (hte->h_lsym == &sym->s_next)
 				hte->h_lsym = symp;
-			sym->s_nxt = NULL;
+			sym->s_next = NULL;
 			*nhte->h_lsym = sym;
-			nhte->h_lsym = &sym->s_nxt;
+			nhte->h_lsym = &sym->s_next;
 		} else {
-			symp = &sym->s_nxt;
+			symp = &sym->s_next;
 		}
 	}
 	for (callp = &hte->h_calls; (call = *callp) != NULL; ) {
 		if (call->f_pos.p_src == sym1->s_pos.p_src) {
-			(*callp) = call->f_nxt;
-			if (hte->h_lcall == &call->f_nxt)
+			*callp = call->f_next;
+			if (hte->h_lcall == &call->f_next)
 				hte->h_lcall = callp;
-			call->f_nxt = NULL;
+			call->f_next = NULL;
 			*nhte->h_lcall = call;
-			nhte->h_lcall = &call->f_nxt;
+			nhte->h_lcall = &call->f_next;
 		} else {
-			callp = &call->f_nxt;
+			callp = &call->f_next;
 		}
 	}
 	for (usymp = &hte->h_usyms; (usym = *usymp) != NULL; ) {
 		if (usym->u_pos.p_src == sym1->s_pos.p_src) {
-			(*usymp) = usym->u_nxt;
-			if (hte->h_lusym == &usym->u_nxt)
+			*usymp = usym->u_next;
+			if (hte->h_lusym == &usym->u_next)
 				hte->h_lusym = usymp;
-			usym->u_nxt = NULL;
+			usym->u_next = NULL;
 			*nhte->h_lusym = usym;
-			nhte->h_lusym = &usym->u_nxt;
+			nhte->h_lusym = &usym->u_next;
 		} else {
-			usymp = &usym->u_nxt;
+			usymp = &usym->u_next;
 		}
 	}
 
 	/* h_def must be recalculated for old hte */
-	hte->h_def = nhte->h_def = 0;
-	for (sym = hte->h_syms; sym != NULL; sym = sym->s_nxt) {
+	hte->h_def = nhte->h_def = false;
+	for (sym = hte->h_syms; sym != NULL; sym = sym->s_next) {
 		if (sym->s_def == DEF || sym->s_def == TDEF) {
-			hte->h_def = 1;
+			hte->h_def = true;
 			break;
 		}
 	}

@@ -1,4 +1,4 @@
-DIST =		${.CURDIR}/../dist
+#	$NetBSD: Makefile,v 1.11 2020/02/18 21:12:21 christos Exp $
 .PATH:		${DIST}
 
 PROG =		awk
@@ -13,7 +13,7 @@ ${awkgram_depends:S/$/.os/}:	awkgram.h
 WARNS   =	3
 WARNERR =	no
 
-CPPFLAGS +=	-I${DIST} -I${.OBJDIR} -I${.CURDIR}
+CPPFLAGS +=	-I${DIST} -I${.OBJDIR} -I${.CURDIR} -DHAS_ISBLANK
 YHEADER   =	yes
 #COPTS.run.c+=	-Wno-format-nonliteral
 #COPTS.tran.c+=	-Wno-format-nonliteral

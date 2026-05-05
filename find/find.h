@@ -1,4 +1,4 @@
-/*	$NetBSD: find.h,v 1.26 2016/06/13 00:04:40 pgoyette Exp $	*/
+/*	$NetBSD: find.h,v 1.28 2022/01/22 14:08:19 christos Exp $	*/
 
 /*-
  * Copyright (c) 1990, 1993
@@ -83,7 +83,7 @@ typedef struct _plandata {
 		struct _ex {
 			char **_e_argv;		/* argv array */
 			char **_e_orig;		/* original strings */
-			int *_e_len;		/* allocated length */
+			size_t *_e_len;		/* allocated length */
 			char **_ep_bxp;		/* ptr to 1st addt'l arg */
 			char *_ep_p;		/* current buffer pointer */
 			char *_ep_bbp;		/* begin buffer pointer */

@@ -1,4 +1,4 @@
-/*	$NetBSD: complete.c,v 1.20.48.1 2019/12/17 12:30:36 martin Exp $	*/
+/*	$NetBSD: complete.c,v 1.25 2022/08/06 18:26:43 andvar Exp $	*/
 
 /*-
  * Copyright (c) 1997-2000,2005,2006 The NetBSD Foundation, Inc.
@@ -37,7 +37,7 @@
 
 #include <sys/cdefs.h>
 #ifndef lint
-__RCSID("$NetBSD: complete.c,v 1.20.48.1 2019/12/17 12:30:36 martin Exp $");
+__RCSID("$NetBSD: complete.c,v 1.25 2022/08/06 18:26:43 andvar Exp $");
 #endif /* not lint */
 
 /*
@@ -200,7 +200,7 @@ mail_sl_add(StringList *sl, char *i)
  * return value. Can't control multiple values being expanded from the
  * expression, we return only the first.
  * Returns NULL on error, or a pointer to a buffer containing the filename
- * that's the caller's responsiblity to free(3) when finished with.
+ * that's the caller's responsibility to free(3) when finished with.
  */
 static char *
 globulize(const char *pattern)
@@ -1078,7 +1078,7 @@ mime_enc_complete(EditLine *el, int ch)
  * Our public interface to el_gets():
  *
  * init_editline()
- *    Initializes of all editline and completion data strutures.
+ *    Initializes of all editline and completion data structures.
  *
  * my_gets()
  *    Displays prompt, calls el_gets() and deals with history.

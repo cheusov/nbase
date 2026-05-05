@@ -1,4 +1,4 @@
-.\" $NetBSD: lint.1,v 1.39 2016/12/25 11:10:53 wiz Exp $
+.\" $NetBSD: lint.1,v 1.55 2022/10/01 09:42:40 rillig Exp $
 .\"
 .\" Copyright (c) 1996 Christopher G. Demetriou.  All Rights Reserved.
 .\" Copyright (c) 1994, 1995 Jochen Pohl
@@ -30,7 +30,7 @@
 .\" (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 .\" THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 .\"
-.Dd December 24, 2016
+.Dd July 5, 2022
 .Dt LINT 1
 .Os
 .Sh NAME
@@ -38,9 +38,9 @@
 .Nd a C program verifier
 .Sh SYNOPSIS
 .Nm
-.Op Fl abceFgHhPprVvwxz
+.Op Fl abceFgHhPprTVvwxz
 .Op Fl i | Fl nu
-.Op Fl S | Fl s | Fl t
+.Op Fl S | Fl s | Fl t | Fl Ac11
 .Op Fl B Ar directory
 .Op Fl D Ar name Ns Op =def
 .Op Fl d Ar directory
@@ -49,12 +49,15 @@
 .Op Fl MD
 .Op Fl l Ar library
 .Op Fl o Ar outputfile
+.Op Fl q Ar id Ns Op ,id ...
 .Op Fl U Ar name
+.Op Fl W Ar cppwarnarg
 .Op Fl X Ar id Ns Op ,id ...
+.Op Fl Z Ar cpparg
 .Ar
 .Nm lint
-.Op Fl abceFgHhprVvwz
-.Op Fl S | Fl s | Fl t
+.Op Fl abceFgHhprTVvwz
+.Op Fl S | Fl s | Fl t | Fl Ac11
 .Fl C Ar library
 .Op Fl B Ar directory
 .Op Fl D Ar name Ns Op =def
@@ -63,18 +66,28 @@
 .Op Fl MD
 .Op Fl R Ar old=new
 .Op Fl U Ar name
+.Op Fl W Ar cppwarnarg
 .Op Fl X Ar id Ns Op ,id ...
+.Op Fl Z Ar cpparg
 .Ar
 .Sh DESCRIPTION
 .Nm
 attempts to detect features of the named C program files
 that are likely to be bugs, to be non-portable, or to be
 wasteful.
-It also performs stricter type checking than does the C compiler.
-The list of errors
+It also performs stricter type checking than traditional pre-C90 C compilers.
+The list of errors and warnings that
 .Nm
 produces are enumerated in
 .Xr lint 7 .
+.Pp
+In the first synopsis form,
+.Nm
+checks each given file as a separate translation unit.
+In the second synopsis form,
+.Nm
+cross-checks the results of the first synopsis form for inconsistencies
+between translation units.
 .Pp
 .Nm
 runs the C preprocessor as its first phase, with the
@@ -95,11 +108,11 @@ variables declared and not used, and logical expressions
 with constant values.
 Function calls are checked for
 inconsistencies, such as calls to functions that return
-values in some places and not in others, functions called
-with varying numbers of arguments, function calls that
+values in some places and not in others, non-prototype functions called
+with varying numbers of arguments, non-prototype function calls that
 pass arguments of a type other than the type the function
-expects to receive, functions whose values are not used,
-and calls to functions not returning values that use
+expects to receive, functions whose return values are not used,
+and calls to non-prototype functions not returning values that nevertheless use
 the non-existent return value of the function.
 .Pp
 Filename arguments ending with
@@ -156,32 +169,19 @@ files are ignored.
 When the
 .Fl i
 option is
-.Em omitted
+.Em omitted ,
 the second pass of
 .Nm
-checks this list of files for mutual compatibility.
+checks this list of files for mutual compatibility
+but always exits successfully.
 At this point, if a complaint stems not from a given source file,
 but from one of its included files, the source filename will be
 printed followed by a question mark.
 .Pp
-The special input file name
-.Dq Pa -
-causes
-.Nm
-to take input from standard input (until end of file) and process
-it as if it were a
-.Pa \&.c
-file.
-If the
-.Fl i
-flag is given and
-.Dq Pa -
-is named as one of the input files, the
-.Fl o
-flag must also be specified to provide an output file name.
-.Pp
 .Sy Options
-.Bl -tag -width XoXoutputfileXXX
+.Bl -tag -width XXoutputfile
+.It Fl Ac11
+Allow features from C11, C99 and C90.
 .It Fl a
 Report assignments of
 .Sy long
@@ -244,11 +244,10 @@ instead of
 as the default place to find include files.
 .It Fl e
 Complain about unusual operations on
-.Sy enum Ns -Types
-and combinations of
-.Sy enum Ns -
-and
-.Sy integer Ns -Types .
+.Sy enum
+types and combinations of
+.Sy enum
+and integer types.
 .It Fl F
 Print pathnames of files.
 .Nm
@@ -263,7 +262,7 @@ enum declarations, C++ -style
 .Dq //
 comments,
 zero sized structures, subscripting of non-lvalue arrays, prototypes
-overriding old style function declarations and long long
+overriding old-style function declarations and long long
 integer types.
 The
 .Fl g
@@ -277,7 +276,7 @@ and
 .Sy inline
 are always available).
 .It Fl H
-If a complaint stems from an included file
+If a complaint stems from an included file,
 .Nm
 prints the name of the included file instead of the source file name
 followed by a question mark.
@@ -313,7 +312,7 @@ Include the lint library
 Pass
 .Fl MD
 to
-.Xr cpp 1
+.Xr cpp 1 ,
 causing cpp to create files containing dependency information for
 each source file.
 .It Fl n
@@ -329,7 +328,7 @@ The
 option simply saves this file in the named output file.
 If the
 .Fl i
-option is also used the files are not checked for compatibility.
+option is also used, the files are not checked for compatibility.
 To produce a
 .Pa llib-l Ns Ar library Ns Pa \&.ln
 without extraneous messages, use of the
@@ -340,11 +339,26 @@ The
 option is useful if the source file(s) for the lint library
 are just external interfaces.
 .It Fl P
-Enable more portability warnings: Enum comparisons, sign extension issues
+Enable more portability warnings: enum comparisons, sign extension issues
 when assigning to wider integer types, overflow warnings when assigning
 to wider types.
 .It Fl p
-Attempt to check portability of code to other dialects of C.
+Attempt to check portability of code to other platforms of C.
+.It Fl q Ar id Op ,id ...
+In addition to the usual warnings and errors, run the selected queries,
+which are listed in
+.Xr lint 7 Ns .
+These queries are similar to warnings,
+they do not highlight possible bugs though,
+but instead point to other events in the code
+that may be interesting to look at on a case-by-case basis.
+The most convenient way to run queries on a source file is to run:
+.Pp
+.Dl make LINT=\*qlint \-q3,5,7\*q source.ln
+.Pp
+To allow this command to be run repeatedly, the option
+.Fl q
+prevents creating the .ln file.
 .It Fl R Ar old=new
 Remap
 .Ar old
@@ -352,21 +366,24 @@ directory prefixes to
 .Ar new
 for reproducible builds.
 .It Fl r
-In case of redeclarations report the position of the
-previous declaration.
+In case of redeclarations, report the position of the previous declaration.
 .It Fl S
-C9X mode.
+C99 mode.
 Currently not fully implemented.
 .It Fl s
-Strict ANSI C mode.
-Issue warnings and errors required by ANSI C.
+Strict ANSI C89/ISO C90 mode.
+Issue warnings and errors required by ISO C90, as opposed to traditional C.
 Also do not produce warnings for constructs which behave
-differently in traditional C and ANSI C.
+differently in traditional C and ISO C90.
 With the
 .Fl s
 flag,
 .Li __STRICT_ANSI__
 is a predefined preprocessor macro.
+.It Fl T
+Treat
+.Sy _Bool
+as a data type that is incompatible with all other scalar types.
 .It Fl t
 Traditional C mode.
 .Li __STDC__
@@ -403,6 +420,9 @@ run the C preprocessor and
 first and second pass.
 .It Fl v
 Suppress complaints about unused arguments in functions.
+.It Fl W Ar cppwarnarg
+Pass the warning directive to
+.Xr cpp 1 .
 .It Fl w
 Treat warnings as errors.
 .It Fl X Ar id Ns Op ,id ...
@@ -413,6 +433,16 @@ A list of messages and ids can be found in
 Report variables referred to by
 .Sy extern
 declarations, but never used.
+.It Fl Z Ar cpparg
+Pass
+.Ar cpparg
+to
+.Xr cpp 1
+directly.
+Multiple
+.Fl Z
+.Ar cppargs
+can be passed in the order they are received.
 .It Fl z
 Do not complain about structures that are never defined
 (for example, using a structure pointer without knowing
@@ -560,6 +590,11 @@ option must exist.
 If this environment variable is undefined, then the default path
 .Pa /usr/libdata/lint
 will be used to search for the libraries.
+.It Ev LINT_KEEP_CPPOUT_ON_ERROR
+If
+.Nm
+exits unsuccessfully, do no delete the output from the C preprocessor,
+allowing for manual inspection.
 .It Ev TMPDIR
 Usually the path for temporary files can be redefined by setting
 this environment variable.
@@ -584,6 +619,9 @@ temporaries
 .Xr lint 7
 .Sh AUTHORS
 .An Jochen Pohl
+(1995)
+.An Roland Illig
+(2021)
 .Sh BUGS
 The routines
 .Xr exit 3 ,

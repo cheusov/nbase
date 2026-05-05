@@ -1,4 +1,4 @@
-/*	$NetBSD: ps.h,v 1.29 2016/12/02 21:59:03 christos Exp $	*/
+/*	$NetBSD: ps.h,v 1.32 2021/09/14 22:01:17 christos Exp $	*/
 
 /*-
  * Copyright (c) 1990, 1993
@@ -44,7 +44,8 @@ enum type {
 	UNSPECIFIED,
 	CHAR, UCHAR, SHORT, USHORT, INT, UINT, LONG, ULONG,
 	KPTR, KPTR24, INT32, UINT32, SIGLIST, INT64, UINT64,
-	TIMEVAL, CPUTIME, PCPU, VSIZE
+	TIMEVAL, CPUTIME, PCPU, VSIZE, PROCFLAG, PROCACFLAG,
+	KTRACEFLAG
 };
 
 /* Variables. */
@@ -73,6 +74,7 @@ typedef struct var {
 #define	LWP	0x10		/* dispatch to kinfo_lwp routine */
 #define	UAREA	0x20		/* need to check p_uvalid */
 #define	ALIAS	0x40		/* entry is alias for 'header' */
+#define	ALTPR	0x80		/* use alternate printing method */
 	u_int	flag;
 				/* output routine */
 	void	(*oproc)(struct pinfo *pi, struct varent *, enum mode);
@@ -99,6 +101,6 @@ typedef struct var {
 	if ((vent)->var->flag & LWP)			\
 	    pi->li = kl;				\
 	((vent)->var->oproc)(pi, (vent), (mode));	\
-	} while (/*CONSTCOND*/ 0)
+	} while (0)
 
 #include "extern.h"

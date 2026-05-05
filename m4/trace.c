@@ -1,4 +1,4 @@
-/*	$NetBSD: trace.c,v 1.8.34.1 2020/07/07 10:40:46 martin Exp $	*/
+/*	$NetBSD: trace.c,v 1.9 2020/06/25 02:25:53 uwe Exp $	*/
 /* $OpenBSD: trace.c,v 1.15 2006/03/24 08:03:44 espie Exp $ */
 /*
  * Copyright (c) 2001 Marc Espie.
@@ -28,7 +28,7 @@
 #include "nbtool_config.h"
 #endif
 #include <sys/cdefs.h>
-__RCSID("$NetBSD: trace.c,v 1.8.34.1 2020/07/07 10:40:46 martin Exp $");
+__RCSID("$NetBSD: trace.c,v 1.9 2020/06/25 02:25:53 uwe Exp $");
 
 #include <sys/types.h>
 #include <stddef.h>

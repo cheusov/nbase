@@ -1,4 +1,4 @@
-/*	$NetBSD: thread.c,v 1.10 2012/10/21 22:18:16 christos Exp $	*/
+/*	$NetBSD: thread.c,v 1.14 2021/12/17 15:29:44 kre Exp $	*/
 
 /*-
  * Copyright (c) 2006 The NetBSD Foundation, Inc.
@@ -37,7 +37,7 @@
 
 #include <sys/cdefs.h>
 #ifndef __lint__
-__RCSID("$NetBSD: thread.c,v 1.10 2012/10/21 22:18:16 christos Exp $");
+__RCSID("$NetBSD: thread.c,v 1.14 2021/12/17 15:29:44 kre Exp $");
 #endif /* not __lint__ */
 
 #include <assert.h>
@@ -453,7 +453,7 @@ thread_fix_old_links(struct message *nmessage, struct message *message, int omsg
 # define FIX_LINK(p)	do {\
 	if (p)\
 		p = nmessage + (p - message);\
-  } while (/*CONSTCOND*/0)
+  } while (0)
 
 	FIX_LINK(current_thread.t_head);
 	for (i = 0; i < omsgCount; i++) {
@@ -594,6 +594,9 @@ first_visible_message(struct message *mp)
 
 	if (mp == NULL)
 		mp = current_thread.t_head;
+
+	if (mp == NULL)
+		return NULL;
 
 	oldmp = mp;
 	if ((S_IS_RESTRICT(state) && is_tagged(mp)) || mp->m_flag & MDELETED)
@@ -823,6 +826,9 @@ static void
 thread_array(struct key_sort_s *marray, size_t mcount, int cutit)
 {
 	struct message *parent;
+
+	if (mcount == 0)
+		return;
 
 	parent = marray[0].mp->m_plink;
 	qsort(marray, mcount, sizeof(*marray), qsort_cmpfn);

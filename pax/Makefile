@@ -1,4 +1,4 @@
-PROG=   pax
+#	$NetBSD: Makefile,v 1.41 2019/10/13 07:28:04 mrg Exp $
 SRCS=	ar_io.c ar_subs.c buf_subs.c file_subs.c ftree.c \
 	gen_subs.c getoldopt.c options.c pat_rep.c pax.c sel_subs.c tables.c \
 	tar.c tty_subs.c
@@ -50,6 +50,8 @@ MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 
 # write(2)
 CFLAGS.check +=		-Wno-error=unused-result
+COPTS.tar.c+=	${GCC_NO_STRINGOP_TRUNCATION}
+
 
 # clang-16 and options.c "if ((num == OFFT_MAX) || ..."
 CFLAGS.check +=		-Wno-error=tautological-constant-out-of-range-compare

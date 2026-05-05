@@ -1,4 +1,4 @@
-/* $NetBSD: lint2.h,v 1.8 2017/12/26 17:02:19 christos Exp $ */
+/* $NetBSD: lint2.h,v 1.22 2022/02/07 21:57:47 rillig Exp $ */
 
 /*
  * Copyright (c) 1996 Christopher G. Demetriou.  All Rights Reserved.
@@ -37,23 +37,23 @@
 /*
  * Types are described by structures of type type_t.
  */
-struct type {
+struct lint2_type {
 	tspec_t	t_tspec;	/* type specifier */
-	u_int	t_const : 1;	/* constant */
-	u_int	t_volatile : 1;	/* volatile */
-	u_int	t_vararg : 1;	/* function has variable number of arguments */
-	u_int	t_isenum : 1;	/* enum type */
-	u_int	t_proto : 1;	/* this is a prototype */
-	u_int	t_istag : 1;	/* tag with _t_tag valid */
-	u_int	t_istynam : 1;	/* tag with _t_tynam valid */
-	u_int	t_isuniqpos : 1; /* tag with _t_uniqpos valid */
+	bool	t_const:1;	/* constant */
+	bool	t_volatile:1;	/* volatile */
+	bool	t_vararg:1;	/* function has variable number of arguments */
+	bool	t_is_enum:1;
+	bool	t_proto:1;	/* this is a prototype */
+	bool	t_istag:1;	/* tag with _t_tag valid */
+	bool	t_istynam:1;	/* tag with _t_tynam valid */
+	bool	t_isuniqpos:1;	/* tag with _t_uniqpos valid */
 	union {
 		int	_t_dim;		/* if the type is an ARRAY than this
 					   is the dimension of the array. */
 		struct	hte *_t_tag;	/* hash table entry of tag if
-					   t_isenum, STRUCT or UNION */
+					   t_is_enum, STRUCT or UNION */
 		struct	hte *_t_tynam;	/* hash table entry of typename if
-					   t_isenum, STRUCT or UNION */
+					   t_is_enum, STRUCT or UNION */
 		struct {
 			int p_line;
 			short p_file;
@@ -61,11 +61,12 @@ struct type {
 		} _t_uniqpos;		/* unique position, for untagged
 					   untyped STRUCTs, UNIONS, and ENUMs,
 					   if t_isuniqpos */
-		struct	type **_t_args;	/* list of argument types if this
-					   is a prototype */
+		struct	lint2_type **_t_args; /* list of argument types if
+					   this is a prototype */
 	} t_u;
-	struct	type *t_subt;	/* indirected type (array element, pointed to
-				   type, type of return value) */
+	struct	lint2_type *t_subt;	/* element type (if ARRAY),
+					   return type (if FUNC),
+					   target type (if PTR) */
 };
 
 #define	t_dim		t_u._t_dim
@@ -82,79 +83,77 @@ struct type {
  */
 typedef	struct arginf {
 	int	a_num;		/* # of argument (1..) */
-	u_int	a_zero : 1;	/* argument is 0 */
-	u_int	a_pcon : 1;	/* msb of argument is not set */
-	u_int	a_ncon : 1;	/* msb of argument is set */
-	u_int	a_fmt : 1;	/* a_fstrg points to format string */
+	bool	a_zero:1;	/* argument is 0 */
+	bool	a_pcon:1;	/* msb of argument is not set */
+	bool	a_ncon:1;	/* msb of argument is set */
+	bool	a_fmt:1;	/* a_fstrg points to format string */
 	char	*a_fstrg;	/* format string */
-	struct	arginf *a_nxt;	/* information for next const. argument */
+	struct	arginf *a_next;	/* information for next const. argument */
 } arginf_t;
 
 /*
  * Keeps information about position in source file.
  */
 typedef	struct {
-	u_short	p_src;		/* index of name of translation unit
+	unsigned short p_src;	/* index of name of translation unit
 				   (the name which was specified at the
 				   command line) */
-	u_short	p_line;		/* line number in p_src */
-	u_short	p_isrc;		/* index of (included) file */
-	u_short p_iline;	/* line number in p_iline */
+	unsigned short p_line;	/* line number in p_src */
+	unsigned short p_isrc;	/* index of (included) file */
+	unsigned short p_iline;	/* line number in p_iline */
 } pos_t;
 
-/*
- * Used for definitions and declarations
- *
- * To save memory, variable sized structures are used. If
- * all s_va, s_prfl and s_scfl are not set, the memory allocated
- * for a symbol is only large enough to keep the first member of
- * struct sym, s_s.
- */
+/* Used for definitions and declarations. */
 typedef	struct sym {
 	struct {
 		pos_t	s_pos;		/* pos of def./decl. */
-#ifndef lint
-		u_int	s_def : 3;	/* DECL, TDEF or DEF */
+#if !defined(lint) && !defined(DEBUG)
+		unsigned char s_def;	/* DECL, TDEF or DEF */
 #else
 		def_t	s_def;
 #endif
-		u_int	s_rval : 1;	/* function has return value */
-		u_int	s_inline : 1;	/* function is inline */
-		u_int	s_osdef : 1;	/* old style function definition */
-		u_int	s_static : 1;	/* symbol is static */
-		u_int	s_va : 1;	/* check only first s_nva arguments */
-		u_int	s_prfl : 1;	/* printflike */
-		u_int	s_scfl : 1;	/* scanflike */
-		u_short	s_type;		/* type */
-		struct	sym *s_nxt;	/* next symbol with same name */
+		bool	s_function_has_return_value:1;
+		bool	s_inline:1;
+		bool	s_old_style_function:1;
+		bool	s_static:1;
+		bool	s_check_only_first_args:1;
+		bool	s_printflike:1;
+		bool	s_scanflike:1;
+		unsigned short s_type;
+		/* XXX: gap of 4 bytes on LP64 platforms */
+		struct	sym *s_next;	/* next symbol with same name */
 	} s_s;
-	short	s_nva;
-	short	s_nprfl;
-	short	s_nscfl;
+	/*
+	 * To save memory, the remaining members are only allocated if one of
+	 * s_check_only_first_args, s_printflike and s_scanflike is set.
+	 */
+	short	s_check_num_args;	/* if s_check_only_first_args */
+	short	s_printflike_arg;	/* if s_printflike */
+	short	s_scanflike_arg;	/* if s_scanflike */
 } sym_t;
 
 #define s_pos		s_s.s_pos
-#define s_rval		s_s.s_rval
-#define s_osdef		s_s.s_osdef
+#define s_function_has_return_value s_s.s_function_has_return_value
+#define s_old_style_function s_s.s_old_style_function
 #define s_inline	s_s.s_inline
 #define s_static	s_s.s_static
 #define s_def		s_s.s_def
-#define s_va		s_s.s_va
-#define s_prfl		s_s.s_prfl
-#define s_scfl		s_s.s_scfl
+#define s_check_only_first_args	s_s.s_check_only_first_args
+#define s_printflike	s_s.s_printflike
+#define s_scanflike	s_s.s_scanflike
 #define s_type		s_s.s_type
-#define s_nxt		s_s.s_nxt
+#define s_next		s_s.s_next
 
 /*
- * Used to store informations about function calls.
+ * Used to store information about function calls.
  */
 typedef	struct fcall {
 	pos_t	f_pos;		/* position of call */
-	u_int	f_rused : 1;	/* return value used */
-	u_int	f_rdisc : 1;	/* return value discarded (casted to void) */
-	u_short	f_type;		/* types of expected return value and args */
+	bool	f_rused:1;	/* return value used */
+	bool	f_rdisc:1;	/* return value discarded (casted to void) */
+	unsigned short f_type;	/* types of expected return value and args */
 	arginf_t *f_args;	/* information about constant arguments */
-	struct	fcall *f_nxt;	/* next call of same function */
+	struct	fcall *f_next;	/* next call of same function */
 } fcall_t;
 
 /*
@@ -163,7 +162,7 @@ typedef	struct fcall {
  */
 typedef	struct usym {
 	pos_t	u_pos;		/* position */
-	struct	usym *u_nxt;	/* next usage */
+	struct	usym *u_next;	/* next usage */
 } usym_t;
 
 /*
@@ -171,20 +170,24 @@ typedef	struct usym {
  */
 typedef	struct hte {
 	const	char *h_name;	/* name */
-	u_int	h_used : 1;	/* symbol is used */
-	u_int	h_def : 1;	/* symbol is defined */
-	u_int	h_static : 1;	/* static symbol */
+	bool	h_used:1;	/* symbol is used */
+	bool	h_def:1;	/* symbol is defined */
+	bool	h_static:1;	/* static symbol */
 	sym_t	*h_syms;	/* declarations and definitions */
-	sym_t	**h_lsym;	/* points to s_nxt of last decl./def. */
+	sym_t	**h_lsym;	/* points to s_next of last decl./def. */
 	fcall_t	*h_calls;	/* function calls */
-	fcall_t	**h_lcall;	/* points to f_nxt of last call */
+	fcall_t	**h_lcall;	/* points to f_next of last call */
 	usym_t	*h_usyms;	/* usage info */
-	usym_t	**h_lusym;	/* points to u_nxt of last usage info */
+	usym_t	**h_lusym;	/* points to u_next of last usage info */
 	struct	hte *h_link;	/* next hte with same hash function */
-	struct  hte *h_hte;	/* pointer to other htes (for renames */
+	struct  hte *h_hte;	/* pointer to other htes (for renames) */
 } hte_t;
 
-/* maps type indices into pointers to type structs */
-#define TP(idx)		(tlst[idx])
-
 #include "externs2.h"
+
+/* maps type indices into pointers to type structs */
+static inline type_t *
+TP(unsigned short type_id) {
+	/* force sequence point for newly parsed type_id */
+	return tlst[type_id];
+}

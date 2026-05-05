@@ -1,5 +1,5 @@
 /*	$OpenBSD: eval.c,v 1.66 2008/08/21 21:01:47 espie Exp $	*/
-/*	$NetBSD: eval.c,v 1.27 2018/07/30 22:58:09 kre Exp $	*/
+/*	$NetBSD: eval.c,v 1.29 2022/05/24 20:50:21 andvar Exp $	*/
 
 /*
  * Copyright (c) 1989, 1993
@@ -42,7 +42,7 @@
 #include "nbtool_config.h"
 #endif
 #include <sys/cdefs.h>
-__RCSID("$NetBSD: eval.c,v 1.27 2018/07/30 22:58:09 kre Exp $");
+__RCSID("$NetBSD: eval.c,v 1.29 2022/05/24 20:50:21 andvar Exp $");
 
 #include <sys/types.h>
 #include <ctype.h>
@@ -187,7 +187,7 @@ expand_builtin(const char *argv[], int argc, int td)
 		int maxdigits = 0;
 		int e;
 
-		if (argc > 3) {
+		if (argc > 3 && *argv[3] != '\0') {
 			base = strtoi(argv[3], NULL, 0, 2, 36, &e);
 			if (e) {
 				m4errx(1, "expr: base %s invalid.", argv[3]);
@@ -913,7 +913,7 @@ dosub(const char *argv[], int argc)
  * language. Within mapvec, we replace every character of "from" with
  * the corresponding character in "to". If "to" is shorter than "from",
  * than the corresponding entries are null, which means that those
- * characters dissapear altogether. Furthermore, imagine
+ * characters disapear altogether. Furthermore, imagine
  * map(dest, "sourcestring", "srtin", "rn..*") type call. In this case,
  * `s' maps to `r', `r' maps to `n' and `n' maps to `*'. Thus, `s'
  * ultimately maps to `*'. In order to achieve this effect in an efficient

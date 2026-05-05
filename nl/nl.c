@@ -1,4 +1,4 @@
-/*	$NetBSD: nl.c,v 1.12.28.1 2021/02/10 16:54:52 martin Exp $	*/
+/*	$NetBSD: nl.c,v 1.15 2020/12/31 04:07:37 ginsbach Exp $	*/
 
 /*-
  * Copyright (c) 1999 The NetBSD Foundation, Inc.
@@ -33,7 +33,7 @@
 #ifndef lint
 __COPYRIGHT("@(#) Copyright (c) 1999\
  The NetBSD Foundation, Inc.  All rights reserved.");
-__RCSID("$NetBSD: nl.c,v 1.12.28.1 2021/02/10 16:54:52 martin Exp $");
+__RCSID("$NetBSD: nl.c,v 1.15 2020/12/31 04:07:37 ginsbach Exp $");
 #endif    
 
 #include <errno.h>

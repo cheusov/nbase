@@ -1,4 +1,4 @@
-/*	$NetBSD: main.c,v 1.34 2015/03/12 12:40:41 christos Exp $	*/
+/*	$NetBSD: main.c,v 1.38 2021/03/11 15:45:55 christos Exp $	*/
 
 /*-
  * Copyright (c) 2013 Johann 'Myrkraverk' Oskarsson.
@@ -39,7 +39,7 @@
 #endif
 
 #include <sys/cdefs.h>
-__RCSID("$NetBSD: main.c,v 1.34 2015/03/12 12:40:41 christos Exp $");
+__RCSID("$NetBSD: main.c,v 1.38 2021/03/11 15:45:55 christos Exp $");
 #ifdef __FBSDID
 __FBSDID("$FreeBSD: head/usr.bin/sed/main.c 252231 2013-06-26 04:14:19Z pfg $");
 #endif
@@ -149,11 +149,14 @@ main(int argc, char *argv[])
 	fflag = 0;
 	inplace = NULL;
 
-	while ((c = getopt(argc, argv, "EI::ae:f:i::lnru")) != -1)
+	while ((c = getopt(argc, argv, "EGI::ae:f:gi::lnru")) != -1)
 		switch (c) {
 		case 'r':		/* Gnu sed compat */
 		case 'E':
-			rflags = REG_EXTENDED;
+			rflags |= REG_EXTENDED;
+			break;
+		case 'G':
+			rflags &= ~REG_GNU;
 			break;
 		case 'I':
 			inplace = optarg ? optarg : __UNCONST("");
@@ -172,6 +175,9 @@ main(int argc, char *argv[])
 		case 'f':
 			fflag = 1;
 			add_compunit(CU_FILE, optarg);
+			break;
+		case 'g':
+			rflags |= REG_GNU;
 			break;
 		case 'i':
 			inplace = optarg ? optarg : __UNCONST("");
@@ -231,8 +237,8 @@ static void
 usage(void)
 {
 	(void)fprintf(stderr,
-	    "Usage:  %s [-aElnru] command [file ...]\n"
-	    "\t%s [-aElnru] [-e command] [-f command_file] [-I[extension]]\n"
+	    "Usage:  %s [-aEGglnru] command [file ...]\n"
+	    "\t%s [-aEGglnru] [-e command] [-f command_file] [-I[extension]]\n"
 	    "\t    [-i[extension]] [file ...]\n", getprogname(), getprogname());
 	exit(1);
 }
@@ -276,6 +282,8 @@ again:
 			s = script->s;
 			state = ST_STRING;
 			goto again;
+		default:
+			abort();
 		}
 	case ST_FILE:
 		if ((p = fgets(buf, n, f)) != NULL) {
@@ -471,8 +479,14 @@ mf_fgets(SPACE *sp, enum e_spflag spflag)
 	ssize_t slen = getline(&p, &plen, infile);
 	if (slen == -1)
 		err(1, "%s", fname);
-	if (slen != 0 && p[slen - 1] == '\n')
+	if (slen != 0 && p[slen - 1] == '\n') {
+		sp->append_newline = 1;
 		slen--;
+	} else if (!lastline()) {
+		sp->append_newline = 1;
+	} else {
+		sp->append_newline = 0;
+	}
 	cspace(sp, p, (size_t)slen, spflag);
 
 	linenum++;
@@ -511,15 +525,49 @@ add_file(char *s)
 	fl_nextp = &fp->next;
 }
 
+static int
+next_files_have_lines(void)
+{
+	struct s_flist *file;
+	FILE *file_fd;
+	int ch;
+
+	file = files;
+	while ((file = file->next) != NULL) {
+		if ((file_fd = fopen(file->fname, "r")) == NULL)
+			continue;
+
+		if ((ch = getc(file_fd)) != EOF) {
+			/*
+			 * This next file has content, therefore current
+			 * file doesn't contains the last line.
+			 */
+			ungetc(ch, file_fd);
+			fclose(file_fd);
+			return (1);
+		}
+
+		fclose(file_fd);
+	}
+
+	return (0);
+}
+
 int
 lastline(void)
 {
 	int ch;
 
-	if (files->next != NULL && (inplace == NULL || ispan))
-		return (0);
-	if ((ch = getc(infile)) == EOF)
-		return (1);
+	if (feof(infile)) {
+		return !(
+		    (inplace == NULL || ispan) &&
+		    next_files_have_lines());
+	}
+	if ((ch = getc(infile)) == EOF) {
+		return !(
+		    (inplace == NULL || ispan) &&
+		    next_files_have_lines());
+	}
 	ungetc(ch, infile);
 	return (0);
 }
