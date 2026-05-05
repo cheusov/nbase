@@ -48,6 +48,7 @@ __RCSID("$NetBSD: what.c,v 1.15 2021/12/07 18:38:50 rillig Exp $");
 #include <unistd.h>
 
 #include "mkc_posix_getopt.h"
+#include "mkc_warn.h"
 
 static void search(void);
 __dead static void usage(void);

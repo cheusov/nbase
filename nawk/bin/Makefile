@@ -1,4 +1,4 @@
-#	$NetBSD: Makefile,v 1.11 2020/02/18 21:12:21 christos Exp $
+DIST =		${.CURDIR}/../dist
 .PATH:		${DIST}
 
 PROG =		awk

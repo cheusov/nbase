@@ -78,6 +78,8 @@ __RCSID("$NetBSD: shlock.c,v 1.15 2021/04/17 00:02:19 christos Exp $");
 #include <unistd.h>
 #include <stdlib.h>
 
+#include <mkc_warn.h>
+
 #define	LOCK_SET	0
 #define	LOCK_FAIL	1
 

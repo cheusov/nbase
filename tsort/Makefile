@@ -1,9 +1,7 @@
 PROG =	tsort
 MAN  =	tsort.1
 
-MKC_NOAUTO_FUNCLIBS = 1
-
-MKC_FEATURES +=	err warn
+MKC_FEATURES +=	err warn efun
 
 CPPFLAGS +=	-I${.OBJDIR}
 

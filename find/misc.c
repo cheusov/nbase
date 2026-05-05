@@ -51,10 +51,15 @@ __RCSID("$NetBSD: misc.c,v 1.15 2022/01/22 14:08:19 christos Exp $");
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
-#include <mkc_err.h>
+#include <fcntl.h>
+#if HAVE_HEADER_PATHS_H
+# include <paths.h>
+#endif
 
 #include "find.h"
+
+#include <mkc_err.h>
+#include <mkc_macro.h>
 
 /*
  * brace_subst --

@@ -60,6 +60,7 @@ __RCSID("$NetBSD: tsort.c,v 1.26 2021/02/06 16:02:16 dbj Exp $");
 #include <mkc_posix_getopt.h>
 #include <mkc_err.h>
 #include <mkc_warn.h>
+#include <mkc_efun.h>
 
 /*
  *  Topological sort.  Input is a list of pairs of strings separated by

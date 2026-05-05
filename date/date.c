@@ -71,6 +71,10 @@ __RCSID("$NetBSD: date.c,v 1.63.2.2 2024/10/14 17:44:57 martin Exp $");
 #include "mkc_posix_getopt.h"
 #include "imp_parsedate.h"
 
+#if !HAVE_NBTOOL_CONFIG_H
+#include <utmpx.h>
+#endif
+
 #include "extern.h"
 
 static time_t tval;

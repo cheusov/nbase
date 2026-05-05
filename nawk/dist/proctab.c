@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "awk.h"
-#include "ytab.h"
+#include "awkgram.h"
 
 static const char * const printname[96] = {
 	"FIRSTTOKEN",	/* 257 */
