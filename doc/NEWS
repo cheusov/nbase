@@ -1,4 +1,17 @@
 ======================================================================
+Version 9.3.0.4, by Aleksey Cheusov, Tue,  5 May 2026 20:29:28 +0300
+
+  pax: unblock cpio and tar
+
+  Add tools base64, chroot, ftp, nologin, pathchk, progress, spell, vacation, which and whereis
+
+  ls: fix PR #11 by enabling NetBSD version of getbsize(3) on all non-NetBSD systems
+
+  tail: partially fix PR #12, "tail -f" is still not supported on systems that do not support kqueue
+
+  Diverse fixes for SunOS/SunC and Linux/musl
+
+======================================================================
 Version 9.3.0.3, by Aleksey Cheusov, Sun, 30 Jun 2024 20:40:36 +0400
 
   Enable -Werror=implicit-function-declaration globally if it works.
