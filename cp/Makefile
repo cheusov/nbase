@@ -5,10 +5,11 @@ SRCS =	cp.c utils.c
 MKC_CHECK_FUNCS2 +=	fcpxattr:sys/extattr.h
 MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 MKC_CHECK_HEADERS    +=	sys/acl.h
+MKC_CHECK_FUNCS2     += acl_get_fd_np:sys/acl.h
 
 .include <mkc.configure.mk>
 
-.if !${HAVE_HEADER.sys_acl_h:U0}
+.if !${HAVE_FUNC1.acl_get_fd_np.sys_acl_h:U0}
 CPPFLAGS             +=	-DSMALL=1
 .endif
 
