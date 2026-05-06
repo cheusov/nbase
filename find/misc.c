@@ -59,6 +59,7 @@ __RCSID("$NetBSD: misc.c,v 1.15 2022/01/22 14:08:19 christos Exp $");
 #include "find.h"
 
 #include <mkc_err.h>
+#include <mkc_progname.h>
 #include <mkc_macro.h>
 
 /*
@@ -160,7 +161,7 @@ show_path(int sig)
 	if (ttyfd == -1)
 		goto out;
 
-	n = snprintf_ss(buf, sizeof(buf), "%s: path %s\n", getprogname(), 
+	n = snprintf(buf, sizeof(buf), "%s: path %s\n", getprogname(), 
 	    g_entry->fts_path);
 
 	if (n <= 0)

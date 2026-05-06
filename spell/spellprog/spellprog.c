@@ -101,6 +101,7 @@ static const char rcsid[] = "$OpenBSD: spellprog.c,v 1.4 2003/06/03 02:56:16 mil
 #include <mkc_efun.h>
 #include <mkc_progname.h>
 #include <mkc_strlcat.h>
+#include <mkc_reallocarr.h>
 
 #ifndef SIZE_T_MAX
 # define SIZE_T_MAX sizeof(size_t)

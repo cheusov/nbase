@@ -38,6 +38,7 @@ __RCSID("$NetBSD: undo.c,v 1.8 2021/11/02 08:04:20 nia Exp $");
 
 #include "ed.h"
 
+#include <mkc_reallocarr.h>
 
 #define USIZE 100				/* undo stack size */
 undo_t *ustack = NULL;				/* undo stack */

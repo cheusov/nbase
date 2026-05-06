@@ -59,12 +59,13 @@ __RCSID("$NetBSD: join.c,v 1.34 2021/11/02 10:05:49 nia Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_progname.h"
-#include "mkc_fgetln.h"
-#include "mkc_posix_getopt.h"
-#include "mkc_err.h"
-#include "mkc_warn.h"
-#include "mkc_strsep.h"
+#include <mkc_progname.h>
+#include <mkc_fgetln.h>
+#include <mkc_posix_getopt.h>
+#include <mkc_err.h>
+#include <mkc_warn.h>
+#include <mkc_strsep.h>
+#include <mkc_reallocarr.h>
 
 /*
  * There's a structure per input file which encapsulates the state of the

@@ -6,7 +6,7 @@ CPPFLAGS +=	-D_NETBSD_SOURCE
 
 MKC_REQUIRE_FUNCLIBS +=	fts_open:fts
 MKC_CHECK_HEADERS    +=	paths.h
-MKC_FEATURES         +=	efun pwdgrp err macro
+MKC_FEATURES         +=	efun pwdgrp err macro progname
 
 .include <mkc.init.mk>
 

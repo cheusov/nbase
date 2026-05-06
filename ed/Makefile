@@ -14,4 +14,6 @@ SRCS      =	buf.c cbc.c glbl.c io.c main.c re.c sub.c undo.c
 #LDADD    += -lcrypt
 #DPADD    += ${LIBCRYPT}
 
+MKC_FEATURES +=		reallocarr
+
 .include "../mk/addlinks.mk"

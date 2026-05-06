@@ -65,6 +65,9 @@ __RCSID("$NetBSD: col.c,v 1.20 2021/09/10 21:52:17 rillig Exp $");
 #include "mkc_posix_getopt.h"
 #include "mkc_err.h"
 #include "mkc_warn.h"
+#include "mkc_progname.h"
+#include "mkc_errc.h"
+#include "mkc_strtoi.h"
 
 #define	BS	'\b'		/* backspace */
 #define	TAB	'\t'		/* tab */

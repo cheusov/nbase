@@ -77,6 +77,7 @@ __RCSID("$NetBSD: shlock.c,v 1.15 2021/04/17 00:02:19 christos Exp $");
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <inttypes.h>
 
 #include <mkc_warn.h>
 

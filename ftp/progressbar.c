@@ -45,6 +45,7 @@ __RCSID("$NetBSD: progressbar.c,v 1.24.6.2 2024/12/02 10:19:39 martin Exp $");
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 #include <time.h>
 #if HAVE_HEADER_TZFILE_H
@@ -55,6 +56,7 @@ __RCSID("$NetBSD: progressbar.c,v 1.24.6.2 2024/12/02 10:19:39 martin Exp $");
 #include "progressbar.h"
 
 #include <mkc_err.h>
+#include <imp_macro.h>
 
 #ifndef timersub
 #define timersub(tvp, uvp, vvp)                                 \

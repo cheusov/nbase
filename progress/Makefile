@@ -11,6 +11,8 @@ CPPFLAGS +=	-I${.CURDIR}/../ftp -DSTANDALONE_PROGRESS
 CFLAGS.check +=	-Wno-error=unused-result
 
 MKC_CHECK_HEADERS +=	sys/ptyvar.h sys/ioccom.h
+MKC_FEATURES      +=	macro
 
 .include "../mk/imp.f_strsuftoll.mk"
+.include "../mk/imp.f_macro.mk"
 .include "../mk/addlinks.mk"

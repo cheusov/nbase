@@ -156,7 +156,11 @@ main(int argc, char *argv[])
 			rflags |= REG_EXTENDED;
 			break;
 		case 'G':
+#ifdef REG_GNU
 			rflags &= ~REG_GNU;
+#else
+			err(1, "REG_GNU is not supported");
+#endif
 			break;
 		case 'I':
 			inplace = optarg ? optarg : __UNCONST("");
@@ -177,7 +181,11 @@ main(int argc, char *argv[])
 			add_compunit(CU_FILE, optarg);
 			break;
 		case 'g':
+#ifdef REG_GNU
 			rflags |= REG_GNU;
+#else
+			err(1, "REG_GNU is not supported");
+#endif
 			break;
 		case 'i':
 			inplace = optarg ? optarg : __UNCONST("");
