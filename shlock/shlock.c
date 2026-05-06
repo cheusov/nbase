@@ -297,7 +297,7 @@ mklock(const char *file, pid_t pid, int uucpstyle)
 			}
 			if (stlock.st_nlink != 1) {
 				dprintf("%s: someone else linked to it %d\n",
-				    Pname, stlock.st_nlink);
+				    Pname, (int)stlock.st_nlink);
 				goto out;
 			}
 			if (link(file, tmp2) == -1) {
@@ -317,7 +317,7 @@ mklock(const char *file, pid_t pid, int uucpstyle)
 			}
 			if (stlock2.st_nlink != 2) {
 				dprintf("%s: someone else linked to it %d\n",
-				    Pname, stlock2.st_nlink);
+				    Pname, (int)stlock2.st_nlink);
 				goto out2;
 			}
 				
