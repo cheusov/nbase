@@ -157,9 +157,16 @@ show_path(int sig)
 	}
 
 	oerrno = errno;
-	if (ttyfd == -2)
+	if (ttyfd == -2) {
+#ifdef O_CLOEXEC
 		ttyfd = open(_PATH_TTY, O_RDWR | O_CLOEXEC);
-
+#else
+		ttyfd = open(_PATH_TTY, O_RDWR);
+		if (ttyfd != -1) {
+			if (fcntl(ttyfd, F_SETFD, FD_CLOEXEC) == -1) goto out;
+		}
+#endif
+	}
 	if (ttyfd == -1)
 		goto out;
 
