@@ -62,6 +62,8 @@ __RCSID("$NetBSD: misc.c,v 1.15 2022/01/22 14:08:19 christos Exp $");
 #include <mkc_progname.h>
 #include <mkc_macro.h>
 
+#include "imp_macro.h"
+
 /*
  * brace_subst --
  *	Replace occurrences of {} in orig with path, and place it in a malloced

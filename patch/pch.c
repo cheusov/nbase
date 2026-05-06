@@ -44,7 +44,8 @@ __RCSID("$NetBSD: pch.c,v 1.32 2021/05/25 11:25:59 cjep Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_strlcpy.h"
+#include <mkc_strlcpy.h>
+#include <mkc_getline.h>
 
 #include "common.h"
 #include "util.h"

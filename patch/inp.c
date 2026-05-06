@@ -50,13 +50,14 @@ __RCSID("$NetBSD: inp.c,v 1.28 2021/05/26 07:57:05 cjep Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#include "imp_macro.h"
-
 #include "common.h"
 #include "util.h"
 #include "pch.h"
 #include "inp.h"
 
+#include <mkc_getline.h>
+
+#include "imp_macro.h"
 
 /* Input-file-with-indexable-lines abstract type */
 

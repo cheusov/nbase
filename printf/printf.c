@@ -58,9 +58,10 @@ __RCSID("$NetBSD: printf.c,v 1.54 2021/05/20 02:01:07 christos Exp $");
 #include <string.h>
 #include <unistd.h>
 
-#include "mkc_progname.h"
-#include "mkc_posix_getopt.h"
-#include "mkc_warn.h"
+#include <mkc_progname.h>
+#include <mkc_posix_getopt.h>
+#include <mkc_warn.h>
+#include <mkc_err.h>
 
 #ifdef __GNUC__
 #define ESCAPE '\e'

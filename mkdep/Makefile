@@ -7,7 +7,7 @@ SRCS =	mkdep.c findcc.c
 CFLAGS.check  +=	-Wno-error=deprecated-declarations
 CFLAGS.check  +=	-erroff=E_DEPRECATED_ATT
 
-MKC_FEATURES  +=	dprintf
+MKC_FEATURES  +=	dprintf strndup
 
 .include "../mk/hacks.mk"
 

@@ -48,6 +48,8 @@ __RCSID("$NetBSD: findcc.c,v 1.10 2021/08/20 06:36:10 rillig Exp $");
 
 #include "findcc.h"
 
+#include <mkc_strndup.h>
+
 char *
 findcc(const char *progname)
 {
