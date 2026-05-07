@@ -116,7 +116,6 @@ static const uint32_t crctab[] = {
 int
 crc(int fd, uint32_t *cval, off_t *clen)
 {
-	u_char *p;
 	ssize_t nr;
 	uint32_t thecrc;
 	off_t len;
