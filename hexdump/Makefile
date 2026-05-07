@@ -1,4 +1,4 @@
-#	$NetBSD: Makefile,v 1.15 2019/10/13 07:28:15 mrg Exp $
+PROG =	hexdump
 SRCS =	conv.c display.c hexdump.c hexsyntax.c odsyntax.c parse.c
 MAN =	hexdump.1 od.1
 
