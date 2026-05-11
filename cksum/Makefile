@@ -30,5 +30,6 @@ MLINKS +=	cksum.1 rmd160.1
 CFLAGS.check +=	-Wno-error=shadow
 
 .include "../mk/imp.f_digestfuncs.mk"
+.include "../mk/imp.f_be32dec.mk"
 
 .include "../mk/addlinks.mk"

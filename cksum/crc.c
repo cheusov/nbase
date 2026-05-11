@@ -46,9 +46,10 @@ __RCSID("$NetBSD: crc.c,v 1.22 2021/03/18 18:12:35 cheusov Exp $");
 #endif /* not lint */
 
 #include <sys/types.h>
-#include <sys/endian.h>
 
 #include <unistd.h>
+
+#include <imp_be32dec.h>
 
 #include "extern.h"
 
