@@ -7,7 +7,7 @@ _IMP_F_MACRO_MK := 1
 
 MKC_CHECK_TYPES         +=	u_quad_t:sys/types.h
 MKC_CHECK_HEADER_FILES  +=	sys/sysmacros.h sys/cdefs.h paths.h
-
+MKC_CHECK_DEFINES       +=	CLK_TCK:time.h
 CPPFLAGS +=	-D_IMP_CHECK_MACRO
 
 .include <mkc.conf.mk>

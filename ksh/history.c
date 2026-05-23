@@ -757,6 +757,9 @@ hist_finish()
   else
     hp = histlist;
 
+#ifndef O_EXLOCK
+# define O_EXLOCK 0
+#endif
   if ((fd = open(hname, O_WRONLY | O_CREAT | O_TRUNC | O_EXLOCK, 0600)) != -1) {
     /* Remove anything written before we got the lock */
     ftruncate(fd, 0);

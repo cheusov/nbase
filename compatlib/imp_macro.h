@@ -222,6 +222,10 @@ typedef unsigned long int u_quad_t;
 #define __predict_false(exp) (exp)
 #endif
 
+#ifndef CLK_TCK
+# define CLK_TCK sysconf(_SC_CLK_TCK)
+#endif
+
 #ifndef timespecadd
 #define	timespecadd(tsp, usp, vsp)					\
 	do {								\

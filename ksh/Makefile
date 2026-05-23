@@ -46,4 +46,5 @@ CFLAGS.check +=	-Wno-error=implicit-fallthrough
 CFLAGS.check +=	-Wno-error=unused-result # jobs.c:nice
 
 .include "../mk/imp.f_macro.mk"
+.include "../mk/imp.f_setproctitle.mk"
 .include <mkc.prog.mk>

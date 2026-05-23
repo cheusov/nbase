@@ -16,6 +16,7 @@ __RCSID("$NetBSD: c_ksh.c,v 1.30 2021/09/16 19:43:33 christos Exp $");
 
 #include <mkc_macro.h>
 #include "imp_macro.h"
+#include "imp_setproctitle.h"
 
 int
 c_cd(wp)
