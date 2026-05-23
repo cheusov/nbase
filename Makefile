@@ -46,7 +46,7 @@ PROJECTS += apply asa nawk/bin banner base64 basename cal cat chmod chown      \
   deroff dd	\
   dirname domainname du echo ed env error expand expr false fgen find	\
   flock fmt fold fpr from fsplit getconf getopt grep head hexdump	\
-  hostname id join jot kill lam leave ln logname look \
+  hostname id join jot kill ksh lam leave ln logname look \
   lorder ls m4	\
   machine menuc mkdep mkdir mkfifo mknod mkstr mktemp msgc mtree mv     \
   nice nl nohup nologin pathchk					\
