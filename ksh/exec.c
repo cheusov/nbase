@@ -16,6 +16,9 @@ __RCSID("$NetBSD: exec.c,v 1.28 2018/06/03 12:18:29 kamil Exp $");
 #include "sh.h"
 #include "c_test.h"
 
+#include <mkc_macro.h>
+#include "imp_macro.h"
+
 /* Does ps4 get parameter substitutions done? */
 #ifdef KSH
 # define PS4_SUBSTITUTE(s)	substitute((s), 0)

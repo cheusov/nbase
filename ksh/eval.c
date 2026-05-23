@@ -16,6 +16,10 @@ __RCSID("$NetBSD: eval.c,v 1.26 2019/09/26 11:01:09 mlelstv Exp $");
 #include "sh.h"
 #include "ksh_dir.h"
 
+#include <mkc_strlcpy.h>
+#include <mkc_macro.h>
+#include "imp_macro.h"
+
 /*
  * string expansion
  *

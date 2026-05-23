@@ -12,6 +12,9 @@ __RCSID("$NetBSD: tree.c,v 1.10 2021/09/16 19:44:01 christos Exp $");
 
 #include "sh.h"
 
+#include <mkc_macro.h>
+#include "imp_macro.h"
+
 #define INDENT	4
 
 #define tputc(c, shf)	shf_putchar(c, shf);

@@ -13,6 +13,8 @@ __RCSID("$NetBSD: lex.c,v 1.24 2019/09/26 11:01:09 mlelstv Exp $");
 #include "sh.h"
 #include <ctype.h>
 
+#include <mkc_macro.h>
+#include "imp_macro.h"
 
 /* Structure to keep track of the lexing state and the various pieces of info
  * needed for each particular state.

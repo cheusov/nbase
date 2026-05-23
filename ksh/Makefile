@@ -9,6 +9,8 @@ SRCS    =	alloc.c c_ksh.c c_sh.c c_test.c c_ulimit.c edit.c emacs.c \
 DPSRCS  =	emacs.out siglist.out
 DPSRCS +=	ksh.1
 
+MKC_FEATURES +=	arc4random macro strlcpy strlcat
+
 # needs tbl for the man page.
 # USETBL= 
 
@@ -41,5 +43,7 @@ ksh.1: ksh.Man mkman
 	    && mv ksh.1.tmp ksh.1
 
 CFLAGS.check +=	-Wno-error=implicit-fallthrough
+CFLAGS.check +=	-Wno-error=unused-result # jobs.c:nice
 
+.include "../mk/imp.f_macro.mk"
 .include <mkc.prog.mk>

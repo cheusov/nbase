@@ -9,6 +9,9 @@ __RCSID("$NetBSD: path.c,v 1.14 2022/10/31 21:22:05 andvar Exp $");
 
 #include "sh.h"
 
+#include <mkc_macro.h>
+#include "imp_macro.h"
+
 /*
  *	Contains a routine to search a : separated list of
  *	paths (a la CDPATH) and make appropriate file names.

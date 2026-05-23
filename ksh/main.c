@@ -18,6 +18,9 @@ __RCSID("$NetBSD: main.c,v 1.23 2018/05/08 16:37:59 kamil Exp $");
 
 #include "sh.h"
 
+#include <mkc_macro.h>
+#include "imp_macro.h"
+
 extern char **environ;
 
 /*

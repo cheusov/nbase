@@ -26,6 +26,10 @@ __RCSID("$NetBSD: history.c,v 1.19 2018/05/08 16:37:59 kamil Exp $");
 
 #include "sh.h"
 
+#include <mkc_strlcat.h>
+#include <mkc_macro.h>
+#include "imp_macro.h"
+
 #ifdef HISTORY
 # ifdef EASY_HISTORY
 

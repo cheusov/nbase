@@ -31,6 +31,8 @@ __RCSID("$NetBSD: jobs.c,v 1.19 2017/06/30 04:41:19 kamil Exp $");
 #include "sh.h"
 #include "tty.h"
 
+#include <mkc_strlcpy.h>
+
 /* Start of system configuration stuff */
 
 /* We keep CHILD_MAX zombie processes around (exact value isn't critical) */

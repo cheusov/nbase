@@ -15,6 +15,7 @@ __RCSID("$NetBSD: c_sh.c,v 1.24 2018/05/08 16:37:59 kamil Exp $");
 #include <time.h>
 
 #include "sh.h"
+#include "imp_macro.h"
 
 static	char *clocktos ARGS((clock_t t));
 

@@ -15,6 +15,10 @@ __RCSID("$NetBSD: var.c,v 1.24 2018/05/08 16:37:59 kamil Exp $");
 #include "sh.h"
 #include "ksh_limval.h"
 
+#include <mkc_strlcpy.h>
+#include <mkc_macro.h>
+#include "imp_macro.h"
+
 /*
  * Variables
  *

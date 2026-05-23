@@ -24,6 +24,8 @@ __RCSID("$NetBSD: edit.c,v 1.35 2018/06/03 12:18:29 kamil Exp $");
 #include <sys/stat.h>
 #include <ctype.h>
 
+#include <mkc_macro.h>
+#include "imp_macro.h"
 
 #if defined(TIOCGWINSZ)
 static RETSIGTYPE x_sigwinch ARGS((int sig));

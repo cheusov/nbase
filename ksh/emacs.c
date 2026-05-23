@@ -25,6 +25,8 @@ __RCSID("$NetBSD: emacs.c,v 1.38 2018/05/08 16:37:59 kamil Exp $");
 #include "ksh_dir.h"
 #include "edit.h"
 
+#include <mkc_strlcpy.h>
+
 static	Area	aedit;
 #define	AEDIT	&aedit		/* area for kill ring and macro defns */
 

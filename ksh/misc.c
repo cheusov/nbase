@@ -14,6 +14,8 @@ __RCSID("$NetBSD: misc.c,v 1.25 2019/10/29 16:19:59 joerg Exp $");
 #include <ctype.h>	/* for FILECHCONV */
 #include <limits.h>
 
+#include <mkc_strlcpy.h>
+
 #ifndef UCHAR_MAX
 # define UCHAR_MAX	0xFF
 #endif
