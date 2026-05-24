@@ -217,7 +217,7 @@ can_seek(fd)
 struct shf	shf_iob[3];
 
 void
-initio()
+initio(void)
 {
 	shf_fdopen(1, SHF_WR, shl_stdout);	/* force buffer allocation */
 	shf_fdopen(2, SHF_WR, shl_out);
@@ -348,7 +348,7 @@ check_fd(name, mode, emsgp)
 #ifdef KSH
 /* Called once from main */
 void
-coproc_init()
+coproc_init(void)
 {
 	coproc.read = coproc.readw = coproc.write = -1;
 	coproc.njobs = 0;

@@ -276,7 +276,7 @@ j_init(mflagset)
 
 /* job cleanup before shell exit */
 void
-j_exit()
+j_exit(void)
 {
 	/* kill stopped, and possibly running, jobs */
 	Job	*j;
@@ -333,7 +333,7 @@ j_exit()
 #ifdef JOBS
 /* turn job control on or off according to Flag(FMONITOR) */
 void
-j_change()
+j_change(void)
 {
 	int i;
 
@@ -676,7 +676,7 @@ exchild(t, flags, close_fd)
 
 /* start the last job: only used for `command` jobs */
 void
-startlast()
+startlast(void)
 {
 	sigset_t omask;
 
@@ -692,7 +692,7 @@ startlast()
 
 /* wait for last job: only used for `command` jobs */
 int
-waitlast()
+waitlast(void)
 {
 	int	rv;
 	Job	*j;
@@ -921,7 +921,7 @@ j_resume(cp, bg)
 
 /* are there any running or stopped jobs ? */
 int
-j_stopped_running()
+j_stopped_running(void)
 {
 	Job	*j;
 	int	which = 0;
@@ -998,7 +998,7 @@ j_jobs(cp, slp, nflag)
 
 /* list jobs for top-level notification */
 void
-j_notify()
+j_notify(void)
 {
 	Job	*j, *tmp;
 	sigset_t omask;
@@ -1026,7 +1026,7 @@ j_notify()
 
 /* Return pid of last process in last asynchronous job */
 pid_t
-j_async()
+j_async(void)
 {
 	sigset_t omask;
 
@@ -1636,7 +1636,7 @@ static Proc	*free_procs;
  * If jobs are compiled in then this routine expects sigchld to be blocked.
  */
 static Job *
-new_job()
+new_job(void)
 {
 	int	i;
 	Job	*newj, *j;
@@ -1664,7 +1664,7 @@ new_job()
  * If jobs are compiled in then this routine expects sigchld to be blocked.
  */
 static Proc *
-new_proc()
+new_proc(void)
 {
 	Proc	*p;
 

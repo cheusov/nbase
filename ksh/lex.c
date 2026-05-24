@@ -765,7 +765,7 @@ Done:
 }
 
 static void
-gethere()
+gethere(void)
 {
 	struct ioword **p;
 
@@ -884,7 +884,7 @@ pushs(type, areap)
 }
 
 static int
-getsc__()
+getsc__(void)
 {
 	Source *s = source;
 	int c;

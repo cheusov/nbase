@@ -45,7 +45,7 @@ static char vdisable_c;
 
 /* Called from main */
 void
-x_init()
+x_init(void)
 {
 	/* set to -2 to force initial binding */
 	edchars.erase = edchars.kill = edchars.intr = edchars.quit
@@ -158,7 +158,7 @@ x_read(buf, len)
 /* tty I/O */
 
 int
-x_getc()
+x_getc(void)
 {
 	char c;
 	int n;
@@ -175,7 +175,7 @@ x_getc()
 }
 
 void
-x_flush()
+x_flush(void)
 {
 	shf_flush(shl_out);
 }

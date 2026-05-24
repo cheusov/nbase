@@ -1372,7 +1372,7 @@ static char	holdbuf[CMDLEN];	/* place to hold last edit buffer */
 static int	holdlen;		/* length of holdbuf */
 
 static void
-save_cbuf()
+save_cbuf(void)
 {
 	memmove(holdbuf, es->cbuf, es->linelen);
 	holdlen = es->linelen;
@@ -1380,7 +1380,7 @@ save_cbuf()
 }
 
 static void
-restore_cbuf()
+restore_cbuf(void)
 {
 	es->cursor = 0;
 	es->linelen = holdlen;
@@ -1768,7 +1768,7 @@ refresh(leftside)
 }
 
 static int
-outofwin()
+outofwin(void)
 {
 	int	cur, col;
 
@@ -1784,7 +1784,7 @@ outofwin()
 }
 
 static void
-rewindow()
+rewindow(void)
 {
 	int		tcur, tcol;
 	int		holdcur1, holdcol1;
@@ -2164,7 +2164,7 @@ vi_pprompt(full)
 }
 
 static void
-vi_error()
+vi_error(void)
 {
 	/* Beem out of any macros as soon as an error occurs */
 	vi_macro_reset();
@@ -2173,7 +2173,7 @@ vi_error()
 }
 
 static void
-vi_macro_reset()
+vi_macro_reset(void)
 {
 	if (macro.p) {
 		afree(macro.buf, APERM);

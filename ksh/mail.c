@@ -44,7 +44,7 @@ static mbox_t * mballoc     ARGS((char *p, char *m)); /* allocate a new mbox */
 static void     mprintit    ARGS((mbox_t *mbp));
 
 void
-mcheck()
+mcheck(void)
 {
 	mbox_t	*mbp;
 	time_t		 now;

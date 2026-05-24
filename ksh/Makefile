@@ -9,6 +9,8 @@ SRCS    =	alloc.c c_ksh.c c_sh.c c_test.c c_ulimit.c edit.c emacs.c \
 DPSRCS  =	emacs.out siglist.out
 DPSRCS +=	ksh.1
 
+# CCSTD   =	c11
+
 MKC_FEATURES +=	arc4random macro strlcpy strlcat
 
 # needs tbl for the man page.
@@ -44,6 +46,8 @@ ksh.1: ksh.Man mkman
 
 CFLAGS.check +=	-Wno-error=implicit-fallthrough
 CFLAGS.check +=	-Wno-error=unused-result # jobs.c:nice
+CFLAGS.check +=	-Wno-error=deprecated-non-prototype # failed with C23
+CFLAGS.check +=	-Wno-error=cast-qual # xp->u.strv = (const char **) XPptrv(wv);
 
 .include "../mk/imp.f_macro.mk"
 .include "../mk/imp.f_setproctitle.mk"

@@ -670,7 +670,7 @@ newenv(type)
 }
 
 void
-quitenv()
+quitenv(void)
 {
 	struct env *ep = e;
 	int fd;
@@ -719,7 +719,7 @@ quitenv()
 
 /* Called after a fork to cleanup stuff left over from parents environment */
 void
-cleanup_parents_env()
+cleanup_parents_env(void)
 {
 	struct env *ep;
 	int fd;
@@ -744,7 +744,7 @@ cleanup_parents_env()
 
 /* Called just before an execve cleanup stuff temporary files */
 void
-cleanup_proc_env()
+cleanup_proc_env(void)
 {
 	struct env *ep;
 
@@ -754,7 +754,7 @@ cleanup_proc_env()
 
 /* remove temp files and free ATEMP Area */
 static void
-reclaim()
+reclaim(void)
 {
 	remove_temps(e->temps);
 	e->temps = NULL;

@@ -144,7 +144,7 @@ tty_init(init_ttystate)
 }
 
 void
-tty_close()
+tty_close(void)
 {
 	if (tty_fd >= 0) {
 		close(tty_fd);

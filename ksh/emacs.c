@@ -618,7 +618,7 @@ x_del_fword(c)
 }
 
 static int
-x_bword()
+x_bword(void)
 {
 	int	nc = 0;
 	char *cp = xcp;
@@ -645,7 +645,7 @@ x_bword()
 }
 
 static int
-x_fword()
+x_fword(void)
 {
 	int	nc = 0;
 	char	*cp = xcp;
@@ -1472,7 +1472,7 @@ x_bind(a1, a2, macro, list)
 }
 
 void
-x_init_emacs()
+x_init_emacs(void)
 {
 	size_t i;
 	int j;
@@ -1833,7 +1833,7 @@ do_complete(flags, type)
  */
 
 static void
-x_adjust()
+x_adjust(void)
 {
   x_adj_done++;			/* flag the fact that we were called. */
   /*
@@ -1856,7 +1856,7 @@ x_e_ungetc(c)
 }
 
 static int
-x_e_getc()
+x_e_getc(void)
 {
 	int c;
 	
@@ -2158,7 +2158,7 @@ x_fold_case(c)
  */
 
 static char *
-x_lastcp()
+x_lastcp(void)
 {
   char *rcp;
   int i;

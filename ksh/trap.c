@@ -25,7 +25,7 @@ Trap sigtraps[SIGNALS+1] = {
 static struct sigaction Sigact_ign, Sigact_trap;
 
 void
-inittraps()
+inittraps(void)
 {
 #ifdef HAVE_SYS_SIGLIST
 # ifndef SYS_SIGLIST_DECLARED
@@ -65,7 +65,7 @@ inittraps()
 static RETSIGTYPE alarm_catcher ARGS((int sig));
 
 void
-alarm_init()
+alarm_init(void)
 {
 	sigtraps[SIGALRM].flags |= TF_SHELL_USES;
 	setsig(&sigtraps[SIGALRM], alarm_catcher,
@@ -153,7 +153,7 @@ trapsig(i)
  * work if user has trapped SIGINT.
  */
 void
-intrcheck()
+intrcheck(void)
 {
 	if (intrsig)
 		runtraps(TF_DFL_INTR|TF_FATAL);
@@ -163,7 +163,7 @@ intrcheck()
  * termination has been received.
  */
 int
-fatal_trap_check()
+fatal_trap_check(void)
 {
 	int i;
 	Trap *p;
@@ -181,7 +181,7 @@ fatal_trap_check()
  * is set.
  */
 int
-trap_pending()
+trap_pending(void)
 {
 	int i;
 	Trap *p;
@@ -276,7 +276,7 @@ runtrap(p)
 
 /* clear pending traps and reset user's trap handlers; used after fork(2) */
 void
-cleartraps()
+cleartraps(void)
 {
 	int i;
 	Trap *p;
@@ -293,7 +293,7 @@ cleartraps()
 
 /* restore signals just before an exec(2) */
 void
-restoresigs()
+restoresigs(void)
 {
 	int i;
 	Trap *p;
@@ -346,7 +346,7 @@ settrap(p, s)
  * kill shell (unless user catches it and exits)
  */
 int
-block_pipe()
+block_pipe(void)
 {
 	int restore_dfl = 0;
 	Trap *p = &sigtraps[SIGPIPE];

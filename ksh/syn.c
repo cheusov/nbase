@@ -67,7 +67,7 @@ static	int	symbol;		/* yylex value */
 	((reject) ? (symbol) : (REJECT, symbol = yylex(cf)))
 
 static void
-yyparse()
+yyparse(void)
 {
 	int c;
 
@@ -103,7 +103,7 @@ pipeline(cf)
 }
 
 static struct op *
-andor()
+andor(void)
 {
 	struct op *t, *p;
 	int c;
@@ -423,7 +423,7 @@ get_command(cf)
 }
 
 static struct op *
-dogroup()
+dogroup(void)
 {
 	int c;
 	struct op *list;
@@ -446,7 +446,7 @@ dogroup()
 }
 
 static struct op *
-thenpart()
+thenpart(void)
 {
 	struct op *t;
 
@@ -460,7 +460,7 @@ thenpart()
 }
 
 static struct op *
-elsepart()
+elsepart(void)
 {
 	struct op *t;
 
@@ -483,7 +483,7 @@ elsepart()
 }
 
 static struct op *
-caselist()
+caselist(void)
 {
 	struct op *t, *tl;
 	int c;
@@ -599,7 +599,7 @@ function_body(name, ksh_func)
 }
 
 static char **
-wordlist()
+wordlist(void)
 {
 	int c;
 	XPtrV args;
@@ -687,7 +687,7 @@ const	struct tokeninfo {
 };
 
 void
-initkeywords()
+initkeywords(void)
 {
 	struct tokeninfo const *tt;
 	struct tbl *p;

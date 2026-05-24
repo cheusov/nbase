@@ -44,7 +44,7 @@ static struct tbl *arraysearch  ARGS((struct tbl *, int));
  * assume caller has allocated and set up e->loc
  */
 void
-newblock()
+newblock(void)
 {
 	struct block *l;
 	static char *const empty[] = {null};
@@ -70,7 +70,7 @@ newblock()
  * pop a block handling special variables
  */
 void
-popblock()
+popblock(void)
 {
 	struct block *l = e->loc;
 	struct tbl *vp, **vpp = l->vars.tbls, *vq;
@@ -93,7 +93,7 @@ popblock()
 
 /* called by main() to initialize variable data structures */
 void
-initvar()
+initvar(void)
 {
 	static const struct {
 		const char *name;
@@ -872,7 +872,7 @@ is_wdvarassign(s)
  * Make the exported environment from the exported names in the dictionary.
  */
 char **
-makenv()
+makenv(void)
 {
 	struct block *l = e->loc;
 	XPtrV env;
@@ -914,7 +914,7 @@ makenv()
  * if the parent doesn't use $RANDOM.
  */
 void
-change_random()
+change_random(void)
 {
     rand();
 }

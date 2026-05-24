@@ -570,7 +570,7 @@ assign_check(es, op, vasn)
 }
 
 static struct tbl *
-tempvar()
+tempvar(void)
 {
 	struct tbl *vp;
 

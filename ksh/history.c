@@ -446,7 +446,7 @@ hist_get_newest(allow_cur)
 
 /* Return a pointer to the newest command in the history */
 static char **
-hist_get_oldest()
+hist_get_oldest(void)
 {
 	if (histptr <= histlist) {
 		bi_errorf("no history (yet)");
@@ -459,7 +459,7 @@ hist_get_oldest()
 /* Back up over last histsave */
 /******************************/
 static void
-histbackup()
+histbackup(void)
 {
 	static int last_line = -1;
 
@@ -475,13 +475,13 @@ histbackup()
  * Return the current position.
  */
 char **
-histpos()
+histpos(void)
 {
 	return current;
 }
 
 int
-histN()
+histN(void)
 {
 	return curpos;
 }
@@ -602,7 +602,7 @@ sethistfile(name)
  *	initialise the history vector
  */
 void
-init_histvec()
+init_histvec(void)
 {
 	if (histlist == NULL) {
 		histsize = HISTORYSIZE;
@@ -737,7 +737,7 @@ hist_init(s)
  */
 
 void
-hist_finish()
+hist_finish(void)
 {
   static int once;
   int fd;

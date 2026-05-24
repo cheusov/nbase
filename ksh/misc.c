@@ -47,7 +47,7 @@ setctypes(s, t)
 }
 
 void
-initctypes()
+initctypes(void)
 {
 	int c;
 
@@ -270,7 +270,7 @@ printoptions(verbose)
 }
 
 char *
-getoptions()
+getoptions(void)
 {
 	size_t i;
 	char m[(int) FNFLAGS + 1];
