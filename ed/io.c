@@ -307,7 +307,7 @@ int
 put_tty_line(char *s, int l, long n, int gflag)
 {
 	int col = 0;
-	char *cp;
+	const char *cp;
 #ifndef BACKWARDS
 	int lc = 0;
 #endif

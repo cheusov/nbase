@@ -54,7 +54,7 @@ __RCSID("$NetBSD: option.c,v 1.29 2021/08/09 20:49:10 andvar Exp $");
 #include "find.h"
 
 int typecompare(const void *, const void *);
-static OPTION *option(char *);
+static const OPTION *option(char *);
 
 /* NB: the following table must be sorted lexically. */
 static OPTION const options[] = {
@@ -159,7 +159,7 @@ static OPTION const options[] = {
 PLAN *
 find_create(char ***argvp)
 {
-	OPTION *p;
+	const OPTION *p;
 	PLAN *new;
 	char **argv;
 	char *opt;
@@ -179,13 +179,13 @@ find_create(char ***argvp)
 	return (new);
 }
 
-static OPTION *
+static const OPTION *
 option(char *name)
 {
 	OPTION tmp;
 
 	tmp.name = name;
-	return ((OPTION *)bsearch(&tmp, options,
+	return ((const OPTION *)bsearch(&tmp, options,
 	    sizeof(options)/sizeof(OPTION), sizeof(OPTION), typecompare));
 }
 

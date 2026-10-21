@@ -1183,7 +1183,8 @@ debunk(dp, sp, dlen)
 	const char *sp;
 	size_t dlen;
 {
-	char *d, *s;
+	char *d;
+	const char *s;
 
 	if ((s = strchr(sp, MAGIC))) {
 		if (s - sp >= (ptrdiff_t)dlen)

@@ -414,7 +414,7 @@ int
 decimal_places(const char *number)
 {
 	int places = 0;
-	char *dp;
+	const char *dp;
 
 	/* look for a decimal point */
 	if ((dp = strstr(number, decimal_point))) {
